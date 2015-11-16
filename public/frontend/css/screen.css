@@ -1,0 +1,277 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*..........common styles..........*/
+
+body,html{
+	height:100%;
+	font-family: 'Open Sans', sans-serif;
+}
+.md15{
+	margin-bottom:15px;	
+}
+.mu15{
+	margin-top:15px;	
+}
+.md30{
+	margin-bottom:30px;	
+}
+.btn-default{
+	font-size:21px;
+	color:#fff;
+	font-weight:300;
+	line-height:24px;
+	padding:9px 20px;
+	background:#22c3e1;
+	border:1px solid #4ecfe7;
+	border-radius:5px;	
+}
+
+/*..........login page styles..............*/
+
+.brand_login{
+	height:100%;
+	display:table;
+	width:100%;
+	background:url(../images/login_back.jpg) no-repeat center center;
+	background-size:cover;
+	table-layout: fixed;
+	overflow:hidden;	
+}
+.login_cont{
+	width:100%;
+	display:table-cell;
+	height:100%;
+	vertical-align:middle;	
+}
+.log_inner{
+	margin:0 auto;	
+}
+.log_inner h2{
+    font-size: 50px;
+    color: #000304;
+    line-height: 52px;
+    margin-bottom: 50px;
+	font-weight:300;	
+}
+.tot_formlog{
+	width:336px;
+	margin:20px auto;	
+}
+.tot_formlog .input-group{
+	padding:2px;
+	background:#dedede;
+	border:1px solid rgba(255, 255, 255, 0.3);
+	border-radius:5px;	
+}
+.tot_formlog .input-group .form-control{
+	border: none;
+    background-color: transparent;
+    box-shadow: none;
+	font-size:17px;
+	color:#797979;
+	font-weight:600;
+	height:41px;
+	line-height:41px;
+	border-right:1px solid #f0f0f0;
+	transition:all .3s ease-in-out;
+	-webkit-transition:all .3s ease-in-out;
+	-moz-transition:all .3s ease-in-out;	
+}
+.tot_formlog .input-group .input-group-addon{
+	border: none;
+	color:#797979;
+	font-size:20px;
+	padding:0 10px;
+	height:41px;
+	border-left:1px solid #b0b0b0;
+	background:transparent;
+	transition:all .3s ease-in-out;
+	-webkit-transition:all .3s ease-in-out;
+	-moz-transition:all .3s ease-in-out;	
+}
+.tot_formlog .input-group.input-group-focus .input-group-addon,.tot_formlog .input-group.input-group-focus .form-control{
+	color:#22c3e1;	
+}
+.tot_formlog .radio, .tot_formlog .checkbox{
+	margin:0;	
+}
+
+.tot_formlog .radio label, .tot_formlog .checkbox label{
+	font-size:13px;
+	color:#fff;
+	font-weight:600;	
+}
+.tot_formlog .btn-link{
+	font-size:13px;
+	font-weight:600;	
+}
+.tot_formlog .sub_btn{
+    margin-top: 25px;
+    float: left;
+    width: 100%;	
+}
+.brand_p{
+	font-size:21px;
+	color:#797979;
+	line-height:24px;
+	clear:both;
+	font-weight:600;	
+}
+.brand_p a{
+	color:#fff;	
+}
+
+ /*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+/*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+/*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+.signup_form_panel {
+    width: 70%;
+    margin: 15px auto;
+ text-align:left;
+}
+.signup_form_panel .input-group{
+ padding:2px;
+ background:#fafafa;
+ border:0;
+ border-radius:5px; 
+ width:100%;
+}
+
+.signup_form_panel input.form-control{
+ border: none;
+    background-color: transparent;
+    box-shadow: none;
+ font-size:17px;
+ color:#797979;
+ font-weight:600;
+ height:41px;
+ line-height:41px;
+ transition:all .3s ease-in-out;
+ -webkit-transition:all .3s ease-in-out;
+ -moz-transition:all .3s ease-in-out;
+ width:100%; 
+}
+.signup_form_panel select{
+ border: none;
+    background-color: transparent;
+    box-shadow: none;
+ font-size:17px;
+ color:#797979;
+ font-weight:600;
+ height:41px;
+ line-height:41px;
+ transition:all .3s ease-in-out;
+ -webkit-transition:all .3s ease-in-out;
+ -moz-transition:all .3s ease-in-out;
+ width:100%; 
+ background:url(../images/arrow1.png) no-repeat 95% 50%;
+ -moz-appearance:none;
+ -webkit-appearance:none;
+}
+.signup_form_panel .radio label, .signup_form_panel .checkbox label{
+ font-size:12px;
+ color:#fff;
+ font-weight:600; 
+}
+.signup_form_panel .btn-default {
+    width: 100%;
+ margin-bottom:30px;
+}
+.signup_form_panel .input-group.input-group-focus .input-group-addon,.signup_form_panel .input-group.input-group-focus .form-control{
+ color:#22c3e1; 
+}
+.signup_form_panel .form-control::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+.signup_form_panel .form-control:-ms-input-placeholder, .signup_form_panel .form-control option{
+  color: #777;
+}
+.signup_form_panel .form-control::-webkit-input-placeholder {
+  color: #777;
+}
+.brand_login_panel{
+    margin: 15px auto;
+    text-align: left;
+    width: 70%;
+}
+.brand_login_panel .signup_form_panel {
+    margin: 15px auto;
+    text-align: left;
+    width: 100%;
+}
+.brand_login_panel h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #024552;
+    border-bottom: 1px solid #024552;
+}
+textarea.form-control{
+	border:0;
+}
+.form-horizontal .control-label {
+    font-size: 17px;
+}
+/*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+/*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+/*--------------------------------------------SUMIT 3.10.2015--------------------------*/
+
+.tot_formlog .input-group.md15{
+    margin-bottom:25px;
+    position:relative;
+}
+label.error {
+    position: absolute;
+    left: 0;
+    bottom: -29px;
+    color: #AB0000;
+    padding-left: 11px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.signup_form_panel .input-group.md15{
+	margin-bottom:25px;	
+}
+
+.tool_tipcls{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 15px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #afc149;
+    margin: 10px 0 0;
+    display: inline-block;
+    position: absolute;
+    left: -20px;
+    top: 4px;	
+}
+.ingredient_form tr td{
+	position:relative;	
+}
+.form_check_table .table>thead>tr>th, .form_check_table .table>tbody>tr>th, .form_check_table .table>tfoot>tr>th, .form_check_table .table>thead>tr>td, .form_check_table .table>tbody>tr>td, .form_check_table .table>tfoot>tr>td{
+	padding:15px 10px;
+	text-align:center;	
+}
+.form_check_table .fa-check{
+	color:#afc149;	
+}
+.form_check_table .fa-times{
+	color:red;	
+}
+.form_check_table .table>thead>tr>th{
+	font-size:16px;	
+}
+.form_check_table {
+	margin-top:20px;	
+}
+.form_check_table .table>thead>tr>th.all_selec{
+    background: #afc149;
+    color: #fff;		
+}
+.form_check_table .table>tbody>tr>td.all_selec{
+	background: #EEF3D5;	
+}

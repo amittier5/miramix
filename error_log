@@ -1,0 +1,7 @@
+[17-Oct-2015 07:51:11 UTC] PHP Parse error:  syntax error, unexpected 'address' (T_STRING), expecting ']' in /home/miramix/public_html/storage/framework/views/7725bbf5ce068351818cc41052402b6b on line 136
+[17-Oct-2015 07:52:12 UTC] PHP Parse error:  syntax error, unexpected 'address' (T_STRING), expecting ']' in /home/miramix/public_html/storage/framework/views/7725bbf5ce068351818cc41052402b6b on line 136
+[17-Oct-2015 08:01:00 UTC] PHP Parse error:  syntax error, unexpected 'address' (T_STRING), expecting ']' in /home/miramix/public_html/storage/framework/views/7725bbf5ce068351818cc41052402b6b on line 136
+[17-Oct-2015 08:03:12 UTC] PHP Parse error:  syntax error, unexpected 'address' (T_STRING), expecting ']' in /home/miramix/public_html/storage/framework/views/7725bbf5ce068351818cc41052402b6b on line 136
+[17-Oct-2015 11:02:34 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/miramix/public_html/storage/framework/views/227f22438bec77e2d252f6e95e141852 on line 81
+[17-Oct-2015 11:04:22 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/miramix/public_html/storage/framework/views/227f22438bec77e2d252f6e95e141852 on line 86
+[17-Oct-2015 13:15:51 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 10368 bytes) in /home/miramix/public_html/app/Helper/helpers.php on line 21
