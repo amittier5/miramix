@@ -21,8 +21,8 @@
 
     $(document).ready(function(){
       $('#pro_type').change(function(){
-        //alert('{!! url('admin/product-list')!!}');
-        window.location.href = "{!! url('admin/product-list')!!}/"+$('#pro_type').val();
+        search();
+
       })
     })
 
@@ -38,11 +38,11 @@ $(function(){
 $(document).ready(function(){  
 //alert('r');  
     $( "#search_name" ).autocomplete({
-      source: "{!!url('admin/discontinue-product-search')!!}"
+      source: "{!!url('admin/discontinue-product-search/'.$discountinue)!!}" 
     });
 });
  
-</script>
+</script> 
 
     <div class="pull-left">
        <input type="text" name="search_name" id="search_name" value="{!! $param !!}"  placeholder="Search By Product Name" class="span4"> 
@@ -51,8 +51,8 @@ $(document).ready(function(){
     </div>
 
     <select name="pro_type" id="pro_type" style="float:right">
-      <option value="1">Discontinue Product</option>
-      <option value="0">Continue Product</option>
+      <option value="1" @if($discountinue=="1") selected="selected" @endif>Discontinue Product</option>
+      <option value="0" @if($discountinue=="0") selected="selected" @endif>Continue Product</option>
     </select>
     <hr>                      
     <div class="module">
@@ -60,11 +60,12 @@ $(document).ready(function(){
         <thead>
             <tr>
               <th>Image</th>
+              <th>Label</th>
               <th>Name</th>
               <th>Brand</th>
               <th>Form Factors (Price)</th>
               <th>Edit</th>
-             <!--  <th>Delete</th> -->                
+              <th>Delete</th>                
             </tr>
         </thead>            
         <tbody>
@@ -73,6 +74,13 @@ $(document).ready(function(){
             <!-- {!! "<pre>"; print_r($product); !!} -->
             <tr class="odd gradeX">
                <td class=""><img src="{!! url();!!}/uploads/product/medium/{!! $product->image1 !!}"></td>
+               <td class="">
+                 <?php if($product->label!="" && file_exists('uploads/product/medium/'.$product->label)) {?>
+                    <img src="<?php echo url();?>/uploads/product/medium/<?php echo $product->label;?>" alt="" width="125" />
+                  <?php } else {?>
+                    <img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/>
+                  <?php } ?>
+               </td>
                <td class="">{!! $product->product_name !!}</td>
                <td class="">{!! $product->GetBrandDetails['fname'].' '.$product->GetBrandDetails['lname']; !!}</td>
                <td class="">{!! rtrim($product->formfactor_name,'<br/>'); !!}</td>
@@ -80,11 +88,11 @@ $(document).ready(function(){
                 <td>
                     <a href="{!!route('admin.product.edit',$product->id)!!}" class="btn btn-warning">Edit</a>
                 </td>
-                <!-- <td>
-                    {!! Form::open(['method' => 'DELETE', 'route'=>['admin.ingredient.destroy', $product->id], 'onsubmit' => 'return ConfirmDelete()']) !!}
+                <td>
+                    {!! Form::open(['method' => 'DELETE', 'route'=>['admin.product.destroy', $product->id], 'onsubmit' => 'return ConfirmDelete()']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
-                </td> -->
+                </td>
             </tr>
             <?php $i++; ?>
             @endforeach

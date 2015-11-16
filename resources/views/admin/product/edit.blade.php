@@ -355,12 +355,25 @@
                 <div class="col-sm-3 text-right"><label>Tags</label></div>
                   <div class="col-sm-6"><input type="text" name="tags" id="tags" value="{!! $products->tags!!}"></div>
               </div>
+              <div class="upload_button_panel img_modify">
+                <p class="upload_image">
+                 <input class="upload_button files_label" type="file" name="label" id="label" accept="image/*">
+                </p>
+                 <div class="selectedFiles">
+                  <?php if($products->label!="" && file_exists('uploads/product/medium/'.$products->label)) {?>
+                    <img src="<?php echo url();?>/uploads/product/medium/<?php echo $products->label;?>" alt="" width="125" />
+                     <input type="hidden" name="hidden_label" id="hidden_label" value="<?php echo $products->label;?>">
+                  <?php } else {?>
+                    <img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/>
+                  <?php } ?>
+                </div>
+              </div>
             </div>
             <div class="submit_panel">
               <div class="container-fluid">
                     <div class="row">
                       <div class="col-sm-12">
-                            <a href="<?php echo url();?>/admin/product-list" class="backbtn pull-left"><i class="fa fa-angle-left"></i> Back to Product</a>
+                            <a href="<?php echo url();?>/admin/product-list/<?php echo $discountinue;?>" class="backbtn pull-left"><i class="fa fa-angle-left"></i> Back to Product</a>
                               <input type="hidden" id="excluded_val" name="excluded_val">
                             <input type="submit" class="btn" value="Submit Your Product">
                         </div>
@@ -371,6 +384,73 @@
      {!! Form::close() !!}
 <!-- End Add Products panel --> 
  </div>
+
+<script type="text/javascript">
+  $(document).on('change','.files_label',function(e){
+   
+   var $this=$(this);
+    e.addClass('asdas');
+   
+   
+      
+  },handleFileSelect);
+    
+  function handleFileSelect(e) {
+
+    
+    var class_val=e.currentTarget.parentNode.parentNode.childNodes[3].className;
+
+    if(!e.target.files || !window.FileReader) return;
+    
+    var files = e.target.files;
+    var filesArr = Array.prototype.slice.call(files);
+    filesArr.forEach(function(f) {
+      if(!f.type.match("image.*")) {
+        return;
+      }
+     // alert(f.size);
+      if(f.size>2 * 1024 * 1024){
+        sweetAlert("Oops...", "Image size should be less than 2MB", "error");
+        return;
+      }
+  
+      var reader = new FileReader();
+      
+      reader.onload = function (g) {
+
+        var image = new Image();flag=0;
+          image.src = g.target.result;
+
+          image.onload = function() {
+             
+              // access image size here 
+              if(this.width<600){
+                sweetAlert("Oops...", "Image width should not be less than 600 px", "error");
+
+            return;
+          }
+          if(this.height<650){
+            
+            sweetAlert("Oops...", "Image height should not be less than 650 px", "error");
+            return;
+          }
+
+          var html = "<span class=\"image_up\"><img src=\"" + g.target.result + "\"> <input class=\"edit_icon\" type=\"file\" name=\"files\" accept=\"image/*\"></span> <br clear=\"left\"/>";
+
+          e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML=''; 
+          e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML=html; 
+
+              
+          };
+      }
+      reader.readAsDataURL(f); 
+      
+    });
+    
+    
+  }
+</script>
+
  
 <script type="text/javascript">
   var z=0;

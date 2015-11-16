@@ -215,6 +215,11 @@ class CheckoutController extends BaseController {
 
 			if(Request::isMethod('post'))
 			{
+				Session::put('name_card',Input::get('name_card'));//Input::get('name_card');
+		        Session::put('card_number',Input::get('card_number')); //Input::get('card_number'); //"4042760173301988";//
+		        Session::put('card_exp_month',Input::get('card_exp_month')); // "03"; //
+		        Session::put('card_exp_year',Input::get('card_exp_year'));  // "19"; //
+
 				$shp_address = DB::table('addresses')
                                 ->join('countries', 'countries.country_id', '=', 'addresses.country_id')
                                 ->join('zones', 'zones.zone_id', '=', 'addresses.zone_id')
@@ -250,11 +255,11 @@ class CheckoutController extends BaseController {
 										'shipping_cost'    			=> $shipping_rate,
 										'shipping_type'    			=> 'flat',
 										'user_id'          			=> Session::get('member_userid'),
-										'ip_address'  				=> $_SERVER['REMOTE_ADDR'],
+										'ip_address'  				=> "'".$_SERVER['REMOTE_ADDR']."'",
 										'payment_method'          	=> "'".Session::get('payment_method')."'",
 										'transaction_id'    		=> '',
 										'transaction_status'      	=> '',
-										'shiping_address_serialize' => $shiping_address_serial,
+										'shiping_address_serialize' => "'".$shiping_address_serial."'",
 										'created_at' => date('Y-m-d H:s:i'),
 										'updated_at' => date('Y-m-d H:s:i')
 									]);
@@ -362,8 +367,16 @@ class CheckoutController extends BaseController {
 
     public function checkoutPaypal($id)
     {
+    	/* Site Setting All details */
+
+    	$sitesettings = DB::table('sitesettings')->get();
+    	$all_sitesetting = array();
+    	foreach($sitesettings as $each_sitesetting)
+	    {
+	    	$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+    	}
+
     	$order_id = $id;
-    	
 		$order_list = DB::table('orders')
                     ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
                     ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
@@ -375,10 +388,10 @@ class CheckoutController extends BaseController {
         return view('frontend.checkout.checkout_paypalpage',compact('body_class','order_list'),array('title'=>'MIRAMIX | Checkout-Paypal'));
     	//echo "boom";
     }
-	// public function paypalNotify()
- //    {
- //    	@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING1".$message, "Invalid Response<br />data = <pre>".print_r($post, true)."</pre>");
- //    }
+		// public function paypalNotify()
+	 //    {
+	 //    	@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING1".$message, "Invalid Response<br />data = <pre>".print_r($post, true)."</pre>");
+	 //    }
 	public function paypalNotify()
     {
     		
@@ -482,6 +495,7 @@ if($data['payment_status'] =='Completed')
     	//SuccessFull payment View
 
     	$xsrfToken = app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token());
+    	print_r($_POST);
     	return view('frontend.checkout.pyament_success',array('title'=>'MIRAMIX | Checkout-Success'))->with('xsrf_token', $xsrfToken);
     }
     public function cancel()
@@ -492,22 +506,41 @@ if($data['payment_status'] =='Completed')
 
     public function checkoutAuthorize($id)
     {
-    	$card_type 		= Input::get('card_type');
-        $card_number 	= "4042760173301988";//Input::get('card_number');
-        $card_exp_month = "03"; //Input::get('card_exp_month');
-        $card_exp_year 	= "19"; //Input::get('card_exp_year');
-		
+    	$sitesettings = DB::table('sitesettings')->get();
+    	$all_sitesetting = array();
+    	foreach($sitesettings as $each_sitesetting)
+	    {
+	    	$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+    	}
+    	//echo "<pre>";print_r($all_sitesetting); exit;
+    	
+    	$admin_users_email = $all_sitesetting['email']; // Admin Support Email
+    	$payment_method =  $all_sitesetting['payment_mode'];
+
+    	if($payment_method == 'test')
+        {
+        	$authorize_url = $all_sitesetting['authorize.net_url_test'];	
+        	$authorize_login_key = $all_sitesetting['authorize.net_login_key_test'];
+        	$authorize_transaction_key = $all_sitesetting['authorize.net_transaction_key_test'];
+        }
+        elseif($payment_method == 'live')
+        {
+        	$authorize_url = $all_sitesetting['authorize.net_url_live'];	
+        	$authorize_login_key = $all_sitesetting['authorize.net_login_key_live'];
+        	$authorize_transaction_key = $all_sitesetting['authorize.net_transaction_key_live'];
+        }
+
+		echo 'cn='.Session::get('card_number').' card_number='.$card_number.' card_exp_month= '.Session::get('card_exp_month').' card_exp_year= '.$card_exp_year.' pm= '.Session::get('payment_method'); exit;
     	$order_id = $id;
     	$order_details = DB::table('orders')->where('id',$order_id)->first();
 		
-    	
-		$post_url = "https://test.authorize.net/gateway/transact.dll";
+    	$post_url = $authorize_url; //"https://test.authorize.net/gateway/transact.dll";
 
 		$post_values = array(
 			
 			// the API Login ID and Transaction Key must be replaced with valid values
-			"x_login"			=> "2BPuf2X4wmn",
-			"x_tran_key"		=> "7kR5A9k8xa8F9ztz",
+			"x_login"			=> $authorize_login_key, 		//"2BPuf2X4wmn",
+			"x_tran_key"		=> $authorize_transaction_key, //"7kR5A9k8xa8F9ztz",
 
 			"x_version"			=> "3.1",
 			"x_delim_data"		=> "TRUE",
@@ -516,8 +549,8 @@ if($data['payment_status'] =='Completed')
 
 			"x_type"			=> "AUTH_CAPTURE",
 			"x_method"			=> "CC",
-			"x_card_num"		=> $card_number, //"4042760173301988", $card_number
-			"x_exp_date"		=> $card_exp_month.$card_exp_year ,				//$card_exp_month.$card_exp_year
+			"x_card_num"		=> Session::get('card_number'), //"4042760173301988", $card_number
+			"x_exp_date"		=> Session::get('card_exp_month').Session::get('card_exp_year'),				//$card_exp_month.$card_exp_year
 
 			"x_amount"			=> $order_details->order_total,
 			"x_description"		=> "Miramix Transaction"
@@ -545,18 +578,6 @@ if($data['payment_status'] =='Completed')
 		
 		if($response_array[0] == 1)
 		{ 
-			$sitesettings = DB::table('sitesettings')->get();
-			
-			if(!empty($sitesettings))
-            {
-            foreach($sitesettings as $each_sitesetting)
-            {
-              if($each_sitesetting->name == 'email')
-              {
-                $admin_users_email = $each_sitesetting->value;
-              }
-            }
-            }
 			//echo "ss= ".$admin_users_email; exit;
 			$transaction_status ="success";
 			$update_order = DB::table('orders')
@@ -646,25 +667,20 @@ if($data['payment_status'] =='Completed')
               Session::flash('success', 'Your order successfully placed.'); 
               //return redirect('memberLogin');
             }
-
-            Session::flash('success', 'Your order has been placed successfully.');
+            Session::get('order_number',$order_list->order_number);
+            Session::get('order_id',$order_id);
             return redirect('/checkout-success'); 
 		}
 		else
 		{
+			$update_order = DB::table('orders')
+							->where('id', $order_id)
+							->update(['order_status'=>'completed','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status]);
 			$msg = $response_array[3];
 			Session::flash('error', $msg);
             return redirect('/checkout-cancel'); 
 		}
-		//echo "<pre>"; print_r($response_array); exit;
-		// The results are output to the screen in the form of an html numbered list.
-		// echo "<OL>\n";
-		// foreach ($response_array as $value)
-		// {
-		// 	echo "<LI>" . $value . "&nbsp;</LI>\n";
-		// }
-		// echo "</OL>\n";
-		
+				
     }
 
     /* update Cart Start */

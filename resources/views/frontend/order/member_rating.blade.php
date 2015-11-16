@@ -1,7 +1,7 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-<script src="<?php echo url();?>/public/frontend/js/jRating.jquery.js"></script>
-<link href="<?php echo url();?>/public/frontend/css/jRating.jquery.css" rel="stylesheet">
+<script src="<?php echo url();?>/public/frontend/js/jquery.raty.js"></script>
+<link href="<?php echo url();?>/public/frontend/css/jquery.raty.css" rel="stylesheet">
 
 <?php $url=url()."/rate-product/".$product->id;
 
@@ -75,7 +75,7 @@
 <script type="text/javascript">
 var token='{!! csrf_token() !!}';
   $(document).ready(function(){
-    $(".basic").jRating({
+    /*$(".basic").jRating({
     bigStarsPath:'<?php echo url();?>/public/frontend/css/icons/stars.png',
     smallStarsPath:'<?php echo url();?>/public/frontend/css/icons/small.png',
     onClick : function(element,rate) {
@@ -85,7 +85,17 @@ var token='{!! csrf_token() !!}';
     showRateInfo: true,
     rateMax : 5,
     phpPath :'<?php echo url();?>/rate-ajax?',
-    });
+    });*/
+    
+    $('.basic').raty({
+                 click: function(score, evt) {
+		    // alert('ID: ' + this.id + "\nscore: " + score + "\nevent: " + evt);
+		      $("#rating_val").val(score)
+		   },
+                  starHalf    : '<?php echo url();?>/public/frontend/css/images/star-half.png',
+                  starOff     : '<?php echo url();?>/public/frontend/css/images/star-off.png',
+                  starOn      : '<?php echo url();?>/public/frontend/css/images/star-on.png'  , 
+                  });
     
     
     

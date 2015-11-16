@@ -559,6 +559,7 @@ button.ui-button::-moz-focus-inner {
 	font-size: 0;
 	line-height: 0;
 	border-width: 1px 0 0 0;
+	display:none;
 }
 .ui-menu .ui-state-focus,
 .ui-menu .ui-state-active {

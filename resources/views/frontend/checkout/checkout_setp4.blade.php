@@ -1,10 +1,47 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
 
+<script>
+  
+  // When the browser is ready...
+  $(function() {
+    // Setup form validation  //
+
+    $("#checkout_form").validate({
+        // Specify the validation rules
+        rules: {            
+            card_number: {
+                          required: true,
+                          creditcard: true
+                         },
+            card_exp_month: "required",
+            card_exp_year: "required",
+            cvv: {
+                  required: true,
+                  minlength: 3
+                }   
+        },
+        
+        // Specify the validation error messages
+        messages: {
+            card_number: {
+               required: "Please enter valid card number."
+            }
+        },
+        
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
+
+  });
+  
+</script>
+
 <div class="inner_page_container">
     	<div class="header_panel">
         	<div class="container">
-        	 <h2>Brands</h2>
+        	 <h2>Checkout</h2>
              <!-- <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Brands</a></li>
@@ -30,6 +67,7 @@
     <div class="col-sm-12">
     <div class="row">
     {!! Form::open(['url' => 'checkout-step4','method'=>'POST', 'files'=>true,'class'=>'form-horizontal row-fluid','id'=>'checkout_form']) !!}
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="checkout_cont clearfix nopad_bot">
     <h5>Step 4 :  Confirm Order</h5>
     
@@ -121,49 +159,47 @@
     <div class="row">
       <div class="row">
       <div class="form-group col-sm-6">
-        <label class="col-sm-4">Card Type:</label>
+        <label class="col-sm-4">Card Number:*</label>
         <div class="col-sm-8">
-        <select class="form-control" name="card_type">
-          <option value="visa">Visa</option>
-          <option value="mastercard">MasterCard</option>
-          <option value="amex">American Express</option>
-        </select>
+        <input type="text" class="form-control ccjs-number" placeholder="Card Number" name="card_number"  id="card_number" value="">
         </div>
       </div>
       <div class="form-group col-sm-6">
-        <label class="col-sm-4">Card Number:</label>
-        <div class="col-sm-8"><input type="password" class="form-control" placeholder="Card Number" name="card_number"></div>
-      </div>
-      <div class="form-group col-sm-6">
-        <label class="col-sm-4">Card Expiry Date:</label>
+         <label class="col-sm-4">Card Expiry Date:*</label>
         <div class="col-sm-8">
         <div class="row">
         <div class="col-sm-6">
-        <select class="form-control" name="card_exp_month">
+        <select class="form-control" name="card_exp_month"  id="card_exp_month">
           
           <option value="">Month</option>
           <?php for($i=1;$i<=12;$i++) {?>
           <option value="<?php echo sprintf('%02d', $i)?>"><?php echo sprintf('%02d', $i);?></option>
           <?php } ?>
-		 
+     
         </select>
         </div>
         
         <div class="col-sm-6">
-        <select class="form-control" name="card_exp_year">
+          <select class="form-control" name="card_exp_year"  id="card_exp_year">
           <option value="">Year</option>
           <?php for($i=15;$i<50;$i++) {?>
           <option value="<?php echo $i;?>"><?php echo $i;?></option>
           <?php } ?>
-        </select>
+          </select>
         </div>
         </div>
         </div>
       </div>
+
       <div class="form-group col-sm-6">
-        <label class="col-sm-4">Card Security Code:</label>
+        <label class="col-sm-4">Name on Card:</label>
+        <div class="col-sm-8"><input type="text" class="form-control" placeholder="Name on Card" name="name_card" id="name_card"  value=""></div>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label class="col-sm-4">Card Security Code:*</label>
         <div class="col-sm-8">
-        <input type="text" class="form-control" placeholder="Card Security Code (CVV)" name="cvv">
+        <input type="password" class="form-control" placeholder="Card Security Code (CVV)" name="cvv" id="cvv"  value="">
         </div>
       </div>
       </div>

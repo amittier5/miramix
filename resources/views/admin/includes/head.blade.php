@@ -11,9 +11,14 @@
 <script src="<?php echo url();?>/public/backend/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="<?php echo url();?>/resources/assets/js/jquery.validate-1.9.1.min.js"></script>
 <script src="<?php echo url();?>/public/backend/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+<link type="text/css" href="<?php echo url();?>/public/backend/css/jquery-ui.css" rel="stylesheet">
 
 <script src="<?php echo url();?>/resources/assets/js/additional-methods-1.10.0.js"></script>
 
+ <!-- Sweetalert CSS Styles  -->
+  <link href="<?php echo url();?>/public/frontend/dist/sweetalert.css" rel="stylesheet">
+  <script type="text/javascript" src="<?php echo url();?>/public/frontend/dist/sweetalert-dev.js"></script>
+ <!-- SweetAlert -->
 
 

@@ -77,26 +77,29 @@ class ProductController extends BaseController {
 
                 $frm_fctr = DB::table('form_factors')->where('id',$each_formfactor['formfactor_id'])->first();
 
-                // Assign Form-factor and its price
-                $value->formfactor_name .= ' '.$frm_fctr->name.' => $'.number_format($each_formfactor->actual_price,2).'<br/>';
+                // Assign Form-factor and its prices  
+                $value->formfactor_name .= ' '.$frm_fctr->name.' ($'.number_format($each_formfactor->actual_price,2).')<br/>';
 
               }
 
-            }
+            } 
           }
         }
 
       }
 
-
+      if($discountinue==0)
+        $title = "Continue";
+      else
+        $title = "Discontinue";
       
      //echo "<pre>";print_r($products);     exit;
-      return view('admin.product.index',compact('products','param','discountinue'),array('title'=>'Discontinue Products','module_head'=>'Discontinue Products'));
+      return view('admin.product.index',compact('products','param','discountinue'),array('title'=>$title.' Products','module_head'=>'Discontinue Products'));
     }
 
     public function discontinue_product_search($param = false){
 
-      $ingredients = DB::table('products')->where('product_name', 'LIKE', '%' . $_REQUEST['term'] . '%')->where('discountinue',1)->groupBy('product_name')->orderBy('product_name','ASC')->get();
+      $ingredients = DB::table('products')->where('product_name', 'LIKE', '%' . $_REQUEST['term'] . '%')->where('discountinue',$param)->groupBy('product_name')->orderBy('product_name','ASC')->get();
       $arr = array();
 
       foreach ($ingredients as $value) {
@@ -124,10 +127,10 @@ class ProductController extends BaseController {
       $check_arr = $weight_check_arr = $arr = $ing_form_ids = $all_ingredient = $group_ingredient = array(); 
       $total_count = $tot_price = $tot_weight = 0;
 
+     $total_group_count = 0;
       if(!empty($ingredient_group)){
-        $i = 0;$total_group_count = 0;
         foreach($ingredient_group as $each_ing_gr){
-
+           $i = 0;
           $total_group_weight = 0;
           $group_ingredient[$i]['group_name'] = $each_ing_gr->group_name;
 
@@ -208,12 +211,12 @@ class ProductController extends BaseController {
       // Get only those form factor which is created for this particular prouct
       $pro_form_factor = DB::table('product_formfactors as pff')->select(DB::raw('pff.*,ff.name,ff.price,ff.maximum_weight,ff.minimum_weight'))->Join('form_factors as ff','ff.id','=','pff.formfactor_id')->where('product_id',$products->id)->where('min_price','!=',0)->get();
       
-      
+      $discountinue = $products->discountinue;
 
-    // echo "<pre>";print_r($check_arr);exit;
+    // echo "<pre>";print_r($total_group_count);exit;
 
       
-      return view('admin.product.edit',compact('products','ingredients','all_ingredient','check_arr','tot_weight','tot_price','formfac','pro_form_factor','group_ingredient','individual_ingredient_lists','pro_form_factor_ids','total_count','total_group_count','individual_total_count'),array('title'=>'Edit Product'));
+      return view('admin.product.edit',compact('products','ingredients','all_ingredient','check_arr','tot_weight','tot_price','formfac','pro_form_factor','group_ingredient','individual_ingredient_lists','pro_form_factor_ids','total_count','total_group_count','individual_total_count','discountinue'),array('title'=>'Edit Product'));
       
     }
 
@@ -316,6 +319,21 @@ class ProductController extends BaseController {
         $fileName6 = Request::input('hidden_image6');
       }
 
+      if(Input::hasFile('label')){
+        $destinationPath = 'uploads/product/';   // upload path
+        $thumb_path = 'uploads/product/thumb/';
+        $medium = 'uploads/product/medium/';
+        $extension = Input::file('label')->getClientOriginalExtension(); // getting image extension
+        $label = rand(111111111,999999999).'.'.$extension; // renameing image
+        Input::file('label')->move($destinationPath, $label); // uploading file to given path
+
+        $this->obj->createThumbnail($label,600,650,$destinationPath,$thumb_path);
+        $this->obj->createThumbnail($label,109,89,$destinationPath,$medium);
+      }
+      else{
+        $label = Request::input('hidden_label');
+      }
+
       $product = Product::find($id);
 
       $product['id'] = $id;
@@ -327,6 +345,7 @@ class ProductController extends BaseController {
       $product['image4'] = $fileName4;
       $product['image5'] = $fileName5;
       $product['image6'] = $fileName6;
+      $product['label']   = $label;
       $product['description1']      = htmlentities(Request::input('description1'));
       $product['description2']      = htmlentities(Request::input('description2'));
       $product['description3']      = htmlentities(Request::input('description3'));
@@ -398,13 +417,22 @@ class ProductController extends BaseController {
     
 
       Session::flash('success', 'Product edit successfully'); 
-      return redirect('admin/product-list');
+      return redirect('admin/product-list/'.$product['discountinue']);
 
 
       //echo "<pre>";print_r(Request::all());exit;
     }
 
+    public function destroy($id)
+    {        
+        $pro = Product::find($id);
+        $pro['is_deleted'] = 1;
+        
+        $pro->save();
 
+        Session::flash('success', 'Product deleted successfully'); 
+        return redirect('admin/product-list/'.$pro['discountinue']);
+    }
 
     
 

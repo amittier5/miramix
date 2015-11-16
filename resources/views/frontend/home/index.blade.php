@@ -134,12 +134,12 @@ var u=0;
                 success: function( data ) {
                     response( $.map( data, function( item ) {
                     
-                    temp1 = item.tags.split(",");
+                   /* temp1 = item.tags.split(",");
                     //console.log(temp1);
                     //temp[u++]=temp1;
                     for (var i=0;i<temp1.length;i++){
                         temp.push(temp1[i]);    
-                    }
+                    }*/
                     
                         return {
                             label: item.value,
@@ -165,14 +165,15 @@ var u=0;
 		  select: function( event, ui ) {
 			//alert(ui.item.value);
 			var html='<p data="'+ui.item.value+'" class="alert tags" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button><span class="ui_span_val">'+ui.item.value+'</span></p>';
-			$("#top_searvh_addhere").append(html);
+			//$("#top_searvh_addhere").append(html);
+                        $(".search_button").trigger("click");
 		  }
         },
         showAutocompleteOnFocus: true
       });
       $(document).on("click",'.tags', function(){
         //$('#searchbox').tokenfield('createToken', $(this).attr("data"));
-         $('#top_searvh_addhere').tokenfield('createToken', $(this).attr("data"));
+        // $('#top_searvh_addhere').tokenfield('createToken', $(this).attr("data"));
         //alert($('#searchbox').tokenfield('getTokensList', ';'));
       });
       

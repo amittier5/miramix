@@ -13,7 +13,7 @@ class ProductIngredient extends Model
 
     public function ingredientProducts()
     {
-        return $this->belongsTo('App\Model\Product','product_id');
+        return $this->belongsTo('App\Model\Product','product_id')->where('is_deleted', '=', 0);
     }
     public function fProducts()
     {

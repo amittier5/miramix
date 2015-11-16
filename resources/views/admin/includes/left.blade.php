@@ -36,7 +36,7 @@ $open1 = "class='unstyled collapse'";
     <ul class="widget widget-menu unstyled">
         <li><a href="<?php echo url().'/admin/form-factor'?>"><i class="menu-icon icon-bullhorn"></i>Form Factor Management </a></li>
         <li class="{!! $ingredient_class !!}"><a href="<?php echo url().'/admin/ingredient-list'?>"><i class="menu-icon icon-bullhorn"></i>Ingredients Management </a></li>
-        <li class="{!! $product_class !!}"><a href="<?php echo url().'/admin/product-list/1'?>"><i class="menu-icon icon-bullhorn"></i>Products</a></li>
+        <li class="{!! $product_class !!}"><a href="<?php echo url().'/admin/product-list/0'?>"><i class="menu-icon icon-bullhorn"></i>Products</a></li>
 
         <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
         </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">

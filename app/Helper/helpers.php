@@ -290,6 +290,21 @@ function time_elapsed_string($ptime)
     }
 }
 
+public function get_minprice($pid){
+	
+	$products = DB::table('products')
+                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
+                 ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+                 ->where('is_deleted', 0)
+                 ->whereRaw('products.active="1"')
+		 ->where('product_formfactors.actual_price','!=', 0)
+		 ->where('products.id', $pid)
+                 ->groupBy('product_formfactors.product_id')->first();
+	if(!empty($products))
+	return $products->min_price;
+	else
+	return 0;
+}
 
 }
 ?>

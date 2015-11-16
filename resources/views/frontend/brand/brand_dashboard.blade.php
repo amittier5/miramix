@@ -59,16 +59,16 @@
                     </div>
                 </div>
                 
-                <div class="acct_box green_acct">
+                <!--<div class="acct_box green_acct">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/change-password"><img src="<?php echo url();?>/public/frontend/images/account/changepassword.png" alt=""></a>
                         <a href="<?php echo url();?>/change-password">Change Password</a>
                         </div>                    	
                     </div>
-                </div>
+                </div>-->
                 
-                <div class="acct_box violet_acct no_marg">
+                <div class="acct_box violet_acct front">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
@@ -77,14 +77,14 @@
                     </div>
                 </div>
                 
-                <div class="acct_box orange_acct no_marg pull-right">
+               <!-- <div class="acct_box orange_acct no_marg pull-right">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <img src="<?php echo url();?>/public/frontend/images/account/store.png" alt="">
                         <a href="javascript:void(0);">Store Font<span>Coming Soon</span></a>
                         </div>                    	
                     </div>
-                </div>
+                </div>-->
 		    
 		    
 		<div class="acct_box blue_acct front">
@@ -97,7 +97,7 @@
                 </div>
 		    
 		    
-		<div class="acct_box blue_acct front">
+		<div class="acct_box blue_acct no_marg">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/brand-paydetails"><i class="fa fa-cc-paypal fa-2x"></i></a>

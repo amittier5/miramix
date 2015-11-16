@@ -28,11 +28,15 @@
         {
           foreach($ingrproducts as $each_product)
             {
+	    if(count($each_product->ingredientProducts)>0){
       ?>
               <div class="product">
                 	<div class="head_section">
                    	  <h2>{!! ucwords($each_product->ingredientProducts->product_name) !!}</h2>
-                       <p class="price">$0<?php //echo isset($each_product->formfactorProducts->min_price)?'$'.$each_product->ingredientProducts->formfactorProducts->min_price:"$0";?> </p>
+                       <p class="price">$<?php
+		      echo $obj->get_minprice($each_product->product_id)?>
+		      
+		       <?php //echo isset($each_product->formfactorProducts->min_price)?'$'.$each_product->ingredientProducts->formfactorProducts->min_price:"$0";?> </p>
                       </div>
                   <?php //print_r($each_product->formfactorProducts);?>
                   
@@ -58,7 +62,8 @@
               </div> 
 
        
-        <?php 
+        <?php
+	}
             }
         }
         else
@@ -93,7 +98,7 @@
            
 	  
 	   
-	   {!! str_replace('/?', '?', $ingrproducts->appends(Input::except('inventory-products'))->render()) !!}
+	   <?php /*{!! str_replace('/?', '?', $ingrproducts->appends(Input::except('inventory-products'))->render()) !!} */?>
 	   
  </div>
 

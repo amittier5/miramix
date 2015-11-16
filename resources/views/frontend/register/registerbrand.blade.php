@@ -192,6 +192,33 @@
                 
         {!! Form::open(['url' => 'brandregister','method'=>'POST', 'files'=>true, 'onsubmit'=>'return validatebrand()', 'id'=>'member_form']) !!}
 	<input type="hidden" name="callvalid" id="callvalid" value="invalid"/>
+	
+	<div class="brand_login_panel">
+                    <div class="row">
+                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-8  wow fadeInDown"><h2 class="">Business or Personal Account</h2></div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    
+		    <div class="form_panel">
+		   
+                <div class="row signup_form_panel">
+                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-8">
+                       
+			    
+			    <div class="checkbox check_now wow slideInRight md15">
+			    <label><input type="radio" name="account_type" id="personal" value="p" > Personal Brand Account</label>
+				
+			    <label><input type="radio" name="account_type" id="personal" value="b" > Business Brand Account</label>
+			    </div>
+                    </div>
+                    
+                    <div class="col-sm-2">&nbsp;</div>
+                </div>
+                    </div>
+                </div>
+		    
                 <div class="brand_login_panel">
                     <div class="row">
                         <div class="col-sm-2">&nbsp;</div>
@@ -246,10 +273,10 @@
                             
                         </div>
                         <div class="col-sm-4">
-                           
+                           <!--
                             <div class="input-group wow slideInRight md15">
                                 {!! Form::file('image',['class'=>'btn','id'=>'image','placeholder'=>'Issue Id'])!!}
-                            </div>
+                            </div>-->
                          </div>
                          <div class="col-sm-2">&nbsp;</div>                             
 
@@ -257,6 +284,14 @@
                       </div>
                 	</div>
                 <div class="brand_login_panel">
+		<div class="row">
+		<div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-8">
+		    <p>Either wire transfer, check, or Paypal will be used for payment distributions from revenue generated on the Miramix platform. Complete Information for at least one deposit location. Thank you</p>
+		    </div>
+		    <div class="col-sm-2">&nbsp;</div>
+		    
+		</div>
                     <div class="row">
                         <div class="col-sm-2">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Banking Information</h2></div>
@@ -268,7 +303,7 @@
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
-			    <label><input type="radio" name="default_band_preference" id="banking_address1" value="0" > Routing Number / Account Number</label>
+			    <label><input type="radio" name="default_band_preference" id="banking_address1" value="0" > Routing Number / Account Number -Make default deposit method</label>
 			    </div>
 		    </div>
                     <div class="row">
@@ -299,6 +334,15 @@
                  </div>
 		   
 		   <div class="form_panel">
+		   <div class="row">
+		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-8">
+		    <div class="checkbox check_now wow slideInRight md15">
+                        	<label><input type="radio" name="default_band_preference" id="paypal_email_radio" value="1" checked="checked"> Paypal Email - Make default deposit method</label>
+                        </div>
+		    </div>
+		    <div class="col-sm-2">&nbsp;</div>
+		   </div>
                     <div class="row signup_form_panel">                    
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-8">
@@ -309,9 +353,7 @@
 			    
                         </div></div>
                         <div class="col-sm-6">
-                        <div class="checkbox check_now wow slideInRight md15">
-                        	<label><input type="radio" name="default_band_preference" id="paypal_email_radio" value="1" checked="checked"> Paypal Email</label>
-                        </div>
+                        &nbsp;
                         </div></div>
 		    </div></div></div></div>
 			
@@ -327,7 +369,7 @@
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
-                        <label><input type="radio" name="default_band_preference" id="mailing_info" value="2"> Check</label>
+                        <label><input type="radio" name="default_band_preference" id="mailing_info" value="2"> Check - Make default deposit method</label>
                         </div>
 		    </div>
                     <div class="row">	    
@@ -606,10 +648,16 @@
                 <div class="brand_login_panel">
                     <div class="row">
                         <div class="col-sm-2">&nbsp;</div>
-                        <div class="col-sm-8  wow fadeInDown"><h2 class="">Picture of govt issues ID(passport or Driver's License)</h2></div>
+                        <div class="col-sm-8  wow fadeInDown"><h2 class="">Verification Documents</h2></div>
                         <div class="col-sm-2">&nbsp;</div>
                     </div>
-                    <div class="form_panel">
+                    
+		    <div class="form_panel">
+		    <div class="row">
+		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-8"><h3>Government Issued ID ( Driver’s License or Passport)</h3></div>
+			<div class="col-sm-2">&nbsp;</div>
+		    </div>
                          <div class="row signup_form_panel">
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-8">
@@ -627,7 +675,7 @@
                 <div class="brand_login_panel">
                     <div class="row">
                         <div class="col-sm-2">&nbsp;</div>
-                        <div class="col-sm-8  wow fadeInDown"><h2 class="">Call Date Time</h2></div>
+                        <div class="col-sm-8  wow fadeInDown"><h2 class="">(Schedule Intro) call date (and) time (Eastern Time Zone)</h2></div>
                         <div class="col-sm-2">&nbsp;</div>
                     </div>
                     <div class="form_panel">
@@ -640,13 +688,16 @@
                         </div></div>
                         <div class="col-sm-6"><div  class="input-group ">
                              {!! Form::text('calltime',null,['class'=>'form-control','id'=>'calltime','placeholder'=>'Call Time'])!!}
-                        </div></div>
+			     
+                        </div>
+			<div  id="callmsg" class="error"></div>
+			</div>
                         </div>
                     </div>
                     
                     <div class="col-sm-2">&nbsp;</div>
                 </div>
-		    <div class="row" id="callmsg"></div>
+		    
                     </div>
                 </div>
 
@@ -655,7 +706,7 @@
                          <div class="row signup_form_panel">
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-8">
-                        <p>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!} Accepting of Brand Contract with electronic signature on document</p>
+                        <p>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!} I accept Brand Contract with electronic signature on document.</p>
                     </div>
                     
                     <div class="col-sm-2">&nbsp;</div>
@@ -822,7 +873,7 @@ enabledHours: [8,9, 10, 11, 12, 13, 14, 15, 16,17,18,19,20]
     var callstat=$("#callvalid").val();
     
     if (callstat=='invalid'){
-	$("#callmsg").html("Please select valid time format");
+	//$("#callmsg").html("Please select valid time format");
 	return false
     }
      if (callstat=='alreadybooked'){

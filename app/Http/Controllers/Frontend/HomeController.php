@@ -46,20 +46,31 @@ class HomeController extends BaseController {
 	
 	
 
-	$item_per_page=2;
+	$item_per_page=3;
 	
 	$products = DB::table('products')
                  ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
+		 ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id');
                 
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
-	    $tag=explode(",",$tags);
+	    $tag=str_replace(",","','",$tags);
+	    $tag=str_replace(" ","",$tag);
+	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$tag."')")->get();
+	    
+	    $pids='';
+	    foreach($tagpro as $tagp){
+		 $pids .=$tagp->product_id.",";
+	    }
+	   
+	    $pids=rtrim($pids,",");
+	   
 	    $i=1;
-	    foreach($tag as $t){
+	   /* foreach($tag as $t){
 		if($i==1){
 		$products->whereRaw('product_name LIKE "%'.trim($t).'%"');
 		}else{
@@ -67,7 +78,8 @@ class HomeController extends BaseController {
 		}
 		$products->orWhereRaw('INSTR(tags,"'.trim($t).'")');
 		$i++;
-	    }
+	    }*/
+	   $products->whereRaw('products.id IN('.$pids.')');
 	  }
 	$sortby=Request::input('sortby');
 	 if(!empty($sortby)){
@@ -96,7 +108,19 @@ class HomeController extends BaseController {
                 
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
-	    $tag=explode(",",$tags);
+	    
+	     $tag=str_replace(",","','",$tags);
+	    $tag=str_replace(" ","",$tag);
+	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$tag."')")->get();
+	    
+	    $pids='';
+	    foreach($tagpro as $tagp){
+		 $pids .=$tagp->product_id.",";
+	    }
+	   
+	    $pids=rtrim($pids,",");
+	    
+	    /*$tag=explode(",",$tags);
 	    $i=1;
 	    foreach($tag as $t){
 		if($i==1){
@@ -106,7 +130,8 @@ class HomeController extends BaseController {
 		}
 		$products2->orWhereRaw('INSTR(tags,"'.trim($t).'")');
 		$i++;
-	    }
+	    }*/
+	    $products2->whereRaw('products.id IN('.$pids.')');
 	  }
 	  
 	 $total_records=$products2->count();
@@ -665,7 +690,16 @@ class HomeController extends BaseController {
    public function searchtags(){
     $tags=array();
     $terms=Request::input('term');
-     $products = DB::table('products')->where('active', 1)->where('is_deleted', 0);
+     $tags = DB::table('searchtags')->where('name', 'LIKE', Request::input('term').'%')->get();
+     $product_id='';
+     foreach($tags as $tag){
+	//$tag=preg_replace( "/\r|\n/", "", $tag->name );
+	//$tag=str_replace(" ","",$tag);
+    $tags[]=array("id"=>$tag->product_id,"value"=>$tag->name,"tags"=>$tag->name);
+    
+    }
+    
+    /* $products = DB::table('products')->where('active', 1)->where('is_deleted', 0);
      if(!empty($terms)){
 	$products->where('product_name', 'LIKE', Request::input('term').'%');
 	$products->orwhereRaw('INSTR(tags,"'.Request::input('term').'")');
@@ -677,7 +711,7 @@ class HomeController extends BaseController {
 	$tag=str_replace(" ","",$tag);
     $tags[]=array("id"=>$product->id,"value"=>$product->product_name,"tags"=>$tag);
     
-    }
+    }*/
     
     echo json_encode($tags);
    }

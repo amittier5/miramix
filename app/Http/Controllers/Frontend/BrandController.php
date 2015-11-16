@@ -66,6 +66,7 @@ class BrandController extends BaseController {
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
                  ->where('products.brandmember_id', '=', $all_brand_member->id)
                  ->where('products.active', 1)
+                 ->where('products.is_deleted', 0)
                  ->where('product_formfactors.servings', '!=',0)
                  ->where('products.discountinue', 0)
                  ->groupBy('product_formfactors.product_id')
@@ -74,6 +75,7 @@ class BrandController extends BaseController {
         $total_brand_pro = DB::table('products')
                  ->where('products.brandmember_id', '=', $all_brand_member->id)
                  ->where('products.active', 1)
+                 ->where('products.is_deleted', 0)
                  ->where('products.discountinue', 0)
                  ->count();
 

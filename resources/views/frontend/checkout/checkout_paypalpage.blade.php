@@ -15,7 +15,8 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
         <input type="hidden" name="business" value="amit.unified@gmail.com">
         <input type="hidden" name="return" value="<?php echo url();?>/checkout-success">
         <input type="hidden" name="cancel_return" value="<?php echo url();?>/checkout-cancel">
-        <input type="hidden" name="notify_url" value="<?php echo url();?>/paypal-notify">
+        <!--<input type="hidden" name="notify_url" value="<?php echo url();?>/paypal-notify">-->
+        <input type="hidden" name="notify_url" value="http://www.phppowerhousedemo.com/webroot/team13/test/test.php">
         <input type="hidden" name="currency_code" value="USD" />
 
 		<?php 

@@ -258,59 +258,63 @@
       <h6>Supplement Facts</h6>
         <!--supp_box-->
       <div class="supp_box">
+      <?php if(($productdetails->label !='') && (file_exists('uploads/product/'.$productdetails->label))) {?>
+       <img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->label !!}" alt="">
+      <?php } else { ?>
+
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elementum nulla et nisi lacinia viverra. Class aptent taciti sociosqu </p>
         
         <div class="table-responsive spec_table">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th width="60%">&nbsp;</th>
-              <th width="20%">Amount per Savings</th>
-              <th width="20%">% Daliy Value</th>
-            </tr>
-            </thead>
-          <tbody>
-            <tr>
-              <td>Kale Powder</td>
-              <td>100 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Cocao Extract</td>
-              <td>50 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Kale Powder</td>
-              <td>100 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Cocao Extract</td>
-              <td>50 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Kale Powder</td>
-              <td>100 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Cocao Extract</td>
-              <td>50 mg</td>
-              <td>N/A</td>
-            </tr>
-            <tr>
-              <td>Cocao Extract</td>
-              <td>50 mg</td>
-              <td>N/A</td>
-            </tr>
-          </tbody>
-        </table>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th width="60%">&nbsp;</th>
+                <th width="20%">Amount per Savings</th>
+                <th width="20%">% Daliy Value</th>
+              </tr>
+              </thead>
+            <tbody>
+              <tr>
+                <td>Kale Powder</td>
+                <td>100 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Cocao Extract</td>
+                <td>50 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Kale Powder</td>
+                <td>100 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Cocao Extract</td>
+                <td>50 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Kale Powder</td>
+                <td>100 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Cocao Extract</td>
+                <td>50 mg</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Cocao Extract</td>
+                <td>50 mg</td>
+                <td>N/A</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        
-        </div>
+      <?php } ?>
+      </div>
         <!--supp_box-->
     </div>
     </div>

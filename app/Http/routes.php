@@ -236,13 +236,13 @@ $router->group([
     resource('admin/ingredient-search', 'IngredientController@ingredient_search');    
     resource('admin/vitamin-search', 'IngredientController@viatmin_auto_search');
     resource('admin/component-search', 'IngredientController@component_auto_search');
-    //resource('admin/testst', 'IngredientController@aaaa');
 
 
 // ++++++++++++++++++++++++++++===++++++++++++++ Product ++++++++++++++++++++++++++++===++++++++++++++ 
     resource('admin/product', 'ProductController');
-    resource('admin/product-list', 'ProductController@index');
-    //resource('admin/product-list/{id}', 'ProductController@index');
+    //resource('admin/product-list', 'ProductController');
+    get('admin/product-list/{id}', 'ProductController@index');
+    get('admin/product-list/{id}/{param}', 'ProductController@index');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  
 
 // ++++++++++++++++++++++++++++===++++++++++++++ Product ++++++++++++++++++++++++++++===++++++++++++++ 

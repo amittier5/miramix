@@ -59,7 +59,7 @@ class InventoryController extends BaseController {
 		Session::flash('error', 'Please select valid ingrediant.');
 		return redirect('inventory');	
 	}
-        $ingrproducts=ProductIngredient::with('ingredientProducts')->where("ingredient_id",$inventory_id)->paginate(2);
+        $ingrproducts=ProductIngredient::with('ingredientProducts')->where("ingredient_id",$inventory_id)->get();
        
         //$ingrproducts->setpath("inventory-products/".$inventory_id);
         return view('frontend.inventory.products',compact('ingrproducts'),array('title'=>'Miramix Inventory Products'));

@@ -63,10 +63,16 @@ class Product1Controller extends BaseController {
                                 ->select('products.*', 'brandmembers.fname', 'brandmembers.lname', 'brandmembers.pro_image', 'brandmembers.brand_details', 'brandmembers.brand_sitelink', 'brandmembers.status', 'brandmembers.admin_status')
                                 ->where('products.product_slug','=',$slug)
                                 ->where('products.active',1)
+                                ->where('products.is_deleted',0)
                                 ->where('brandmembers.status',1)
                                 ->where('brandmembers.admin_status',1)
                                 ->first();
         //echo "<pre/>";print_r($productdetails); exit;
+
+        // Return to home page if the product is not active or deleted
+        if(empty($productdetails))
+            return redirect('home');
+
         $productformfactor = DB::table('product_formfactors')
                                 ->join('form_factors', 'form_factors.id', '=', 'product_formfactors.formfactor_id')
                                 ->join('products', 'products.id', '=', 'product_formfactors.product_id')
