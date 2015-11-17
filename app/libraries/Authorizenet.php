@@ -107,6 +107,7 @@ class Authorizenet {
     if($customerProfileId && $paymentProfileId ){
          $result=array('customer'=>$customer);
         $result['status']='success';
+        $result['message']='success';
         
     }else{
         $result['status']='fail';

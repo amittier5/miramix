@@ -5,7 +5,15 @@
     	<div class="header_panel">
         	<div class="container">
         	  <h2>Payment Cancel</h2>
-             @if(Session::has('success'))
+            
+            </div>
+        </div> 
+
+    <div class="products_panel">
+	<div class="container">
+	  <div>Payment Canceled.</div>
+       <p>
+       @if(Session::has('success'))
                     <div class="alert alert-success container">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{!! Session::get('success') !!}</strong>
@@ -17,12 +25,10 @@
                 <strong>{!! Session::get('error') !!}</strong>
                 </div>
               @endif
-            </div>
-        </div> 
-
-    <div class="products_panel">
-	<div class="container">
-	  <div>Payment Canceled.</div>
+        </p>
+        <p>
+            Your Order Id #<a href="<?php url();?>/order-detail/{!! Session::get('order_id') !!}">{!! Session::get('order_number') !!}</a>  Is Canceled.
+        </p>
 	</div>
 	</div>
 

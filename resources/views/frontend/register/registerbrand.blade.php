@@ -18,8 +18,13 @@
     }, "Please enter a valid email address.");
     
     $.validator.addMethod("bankinginfo", function(value, element) {
+		
+		if($('#personal').is(':checked')){
+			return true;	
+		}
       
       if($('#banking_address1').is(':checked')) { 
+	  
 	if ($("#routing_number").val()=='' && $("#account_number").val()==''){
 	  return false;
 	}else{
@@ -32,7 +37,10 @@
     }, 'Please enter either routing number or account number.');
     
     $.validator.addMethod("paypalinfo", function(value, element) {
-      
+      if($('#personal').is(':checked')){
+			return true;	
+	  }
+	  
       if($('#paypal_email_radio').is(':checked')) { 
 	if ($("#paypal_email").val()==''){
 	  return false;
@@ -46,7 +54,10 @@
     }, 'Please enter your paypal email address.');
     
     $.validator.addMethod("mailinginfo", function(value, element) {
-      
+      if($('#personal').is(':checked')){
+			return true;	
+	  }
+	  
       if($('#mailing_info').is(':checked')) { 
 	if ($("#mailing_name").val()=='' || $("#mailing_lastname").val()=='' || $("#mailing_address").val()=='' || $("#mailing_country_id").val()=='' || $("#mailing_state").val()=='' || $("#mailing_city").val()=='' || $("#mailing_postcode").val()==''){
 	  return false;
@@ -210,7 +221,7 @@
 			    <div class="checkbox check_now wow slideInRight md15">
 			    <label><input type="radio" name="account_type" id="personal" value="p" > Personal Brand Account</label>
 				
-			    <label><input type="radio" name="account_type" id="personal" value="b" > Business Brand Account</label>
+			    <label><input type="radio" name="account_type" id="business" value="b" checked > Business Brand Account</label>
 			    </div>
                     </div>
                     

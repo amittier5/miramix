@@ -101,7 +101,7 @@ class RegisterController extends BaseController {
 			//echo $_FILES['image']['name']."<pre>";print_r($_FILES);exit;
 
 			//if(Input::hasFile('government_issue'))
-			if($_FILES['government_issue']['name']!="")
+			if(isset($_FILES['government_issue']['name']) && $_FILES['government_issue']['name']!="")
 			{
 				$destinationPath = 'uploads/brand_government_issue_id/'; // upload path
 				$extension = Input::file('government_issue')->getClientOriginalExtension(); // getting image extension
@@ -114,7 +114,7 @@ class RegisterController extends BaseController {
 				$government_issue = '';
 			}
 			//if(Input::hasFile('image'))
-			if($_FILES['image']['name']!="")
+			if(isset($_FILES['image']['name']) && $_FILES['image']['name']!="")
 			{
 				$destinationPath = 'uploads/brandmember/'; // upload path
                 $thumb_path = 'uploads/brandmember/thumb/';

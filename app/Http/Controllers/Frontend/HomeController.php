@@ -4,7 +4,7 @@ use App\Model\Brandmember; /* Model name*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
 use Illuminate\Support\Facades\Request;
-
+use Mail;
 use Input; /* For input */
 use Validator;
 use Session;

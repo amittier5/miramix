@@ -12,7 +12,7 @@
 	<div class="container">
   <p>Your Order Has Been Received Successfully</p>
   <p>Thank you For Your Purchase!</p>
-  <p>Your Order Id is <a href="<?php url();?>/order-detail/{!! Session::put('order_id') !!}">{!! Session::put('order_number') !!}</a> </p>
+  <p>Your Order Id is #<a href="<?php url();?>/order-detail/{!! Session::get('order_id') !!}">{!! Session::get('order_number') !!}</a> </p>
   <p>You will receive an order confirmation email with details of your order.</p>
 	</div>
 	</div>

@@ -94,7 +94,7 @@ class ProductController extends BaseController {
         $title = "Discontinue";
       
      //echo "<pre>";print_r($products);     exit;
-      return view('admin.product.index',compact('products','param','discountinue'),array('title'=>$title.' Products','module_head'=>'Discontinue Products'));
+      return view('admin.product.index',compact('products','param','discountinue'),array('title'=>$title.' Products','module_head'=>$title.' Products'));
     }
 
     public function discontinue_product_search($param = false){

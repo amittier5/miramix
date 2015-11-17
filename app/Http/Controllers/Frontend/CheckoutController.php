@@ -255,11 +255,11 @@ class CheckoutController extends BaseController {
 										'shipping_cost'    			=> $shipping_rate,
 										'shipping_type'    			=> 'flat',
 										'user_id'          			=> Session::get('member_userid'),
-										'ip_address'  				=> "'".$_SERVER['REMOTE_ADDR']."'",
-										'payment_method'          	=> "'".Session::get('payment_method')."'",
+										'ip_address'  				=> $_SERVER['REMOTE_ADDR'],
+										'payment_method'          	=> Session::get('payment_method'),
 										'transaction_id'    		=> '',
 										'transaction_status'      	=> '',
-										'shiping_address_serialize' => "'".$shiping_address_serial."'",
+										'shiping_address_serialize' => $shiping_address_serial,
 										'created_at' => date('Y-m-d H:s:i'),
 										'updated_at' => date('Y-m-d H:s:i')
 									]);
@@ -493,9 +493,10 @@ if($data['payment_status'] =='Completed')
     public function success()
     {
     	//SuccessFull payment View
+    	// For Paypal Payment Only //
+    	
 
-    	$xsrfToken = app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token());
-    	print_r($_POST);
+    	$xsrfToken = app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token());    	
     	return view('frontend.checkout.pyament_success',array('title'=>'MIRAMIX | Checkout-Success'))->with('xsrf_token', $xsrfToken);
     }
     public function cancel()
@@ -530,7 +531,7 @@ if($data['payment_status'] =='Completed')
         	$authorize_transaction_key = $all_sitesetting['authorize.net_transaction_key_live'];
         }
 
-		echo 'cn='.Session::get('card_number').' card_number='.$card_number.' card_exp_month= '.Session::get('card_exp_month').' card_exp_year= '.$card_exp_year.' pm= '.Session::get('payment_method'); exit;
+		//echo 'cn='.Session::get('card_number').' card_exp_month= '.Session::get('card_exp_month').'  pm= '.Session::get('payment_method'); exit;
     	$order_id = $id;
     	$order_details = DB::table('orders')->where('id',$order_id)->first();
 		
@@ -582,7 +583,7 @@ if($data['payment_status'] =='Completed')
 			$transaction_status ="success";
 			$update_order = DB::table('orders')
 							->where('id', $order_id)
-							->update(['order_status'=>'completed','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status]);
+							->update(['order_status'=>'completed','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status,'response_code'=>$response_array[0]]);
 
 			/* Order details for perticular order id */
 			$order_list = DB::table('orders')
@@ -667,17 +668,20 @@ if($data['payment_status'] =='Completed')
               Session::flash('success', 'Your order successfully placed.'); 
               //return redirect('memberLogin');
             }
-            Session::get('order_number',$order_list->order_number);
-            Session::get('order_id',$order_id);
+            Session::put('order_number',$order_list[0]->order_number);
+            Session::put('order_id',$order_id);
             return redirect('/checkout-success'); 
 		}
 		else
 		{
+			$transaction_status = "cancel";
 			$update_order = DB::table('orders')
 							->where('id', $order_id)
-							->update(['order_status'=>'completed','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status]);
+							->update(['order_status'=>'cancel','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status,'response_code'=>$response_array[0]]);
 			$msg = $response_array[3];
 			Session::flash('error', $msg);
+			Session::put('order_number',$order_list[0]->order_number);
+            Session::put('order_id',$order_id);
             return redirect('/checkout-cancel'); 
 		}
 				
