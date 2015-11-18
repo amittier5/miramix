@@ -245,25 +245,19 @@
                         <div class="col-sm-12">
                         <div class="table-responsive form_check_table">
                         <table class="table table-bordered">
-                            <thead>
-                             <tr>
-                             <td>Weights</td>
-                             @if (!empty($formfac))
-                                  @foreach ($formfac as $key => $value) 
-                                     <td><span class="weight_range">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm)</span></td>
-                                  @endforeach
-                                @endif
-                             </tr>	
+                        	<thead>
+                             	
                               <tr>
-                                <th>Ingredient</th>
-                               
-                                @if (!empty($formfac))
+                                <th>Ingredient<span class="weight_span">Weight Range</span></th>
+                               @if (!empty($formfac))
                                   @foreach ($formfac as $key => $value) 
-                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}</th>
+                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm)<a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Not Within Available Weight Range">i</a></span></th>
                                   @endforeach
                                 @endif
+                                
                               </tr>
                             </thead>
+                            
                             <tbody>
                             <?php 
                               if(!empty($all_ingredient)){
@@ -351,11 +345,11 @@
                   <div class="col-sm-12"><a href="javascript:void(0);" class="add_form"><i class="fa fa-plus-square"></i> Add Form Factor</a></div>
                 </div>
                 </div>
-              <div class="product_name">
+              <div class="product_name col-sm-9">
                 <div class="col-sm-3 text-right"><label>Tags</label></div>
                   <div class="col-sm-6"><input type="text" name="tags" id="tags" value="{!! $products->tags!!}"></div>
               </div>
-              <div class="upload_button_panel img_modify">
+              <div class="col-sm-3"><div class="upload_button_panel img_modify bottom_img_define pull-right">
                 <p class="upload_image">
                  <input class="upload_button files_label" type="file" name="label" id="label" accept="image/*">
                 </p>
@@ -367,7 +361,7 @@
                     <img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/>
                   <?php } ?>
                 </div>
-              </div>
+              </div></div>
             </div>
             <div class="submit_panel">
               <div class="container-fluid">
@@ -384,16 +378,8 @@
      {!! Form::close() !!}
 <!-- End Add Products panel --> 
  </div>
-
 <script type="text/javascript">
-  $(document).on('change','.files_label',function(e){
-   
-   var $this=$(this);
-    e.addClass('asdas');
-   
-   
-      
-  },handleFileSelect);
+  $(document).on('change','.files_label',handleFileSelect);
     
   function handleFileSelect(e) {
 
@@ -450,8 +436,6 @@
     
   }
 </script>
-
- 
 <script type="text/javascript">
   var z=0;
   function check_addrow(){
@@ -489,32 +473,32 @@ function selec_option(){
 }
 
 function total_weight(obj){
-      var total_pr = total_wg = 0;
-      var $this=obj;	
-      var this_vald=$this.val();
-      if(this_vald==''){
-      this_vald=0;	
-      }
-      else{
-      this_vald=$this.val();	
-      }
-      //alert(this_vald);
+var total_pr = total_wg = 0;
+var $this=obj;	
+var this_vald=$this.val();
+if(this_vald==''){
+this_vald=0;	
+}
+else{
+this_vald=$this.val();	
+}
+//alert(this_vald);
 
-      var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().find('.get_val').val());
+var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().find('.get_val').val());
 
         //$('.tot_val').val(total_value.toFixed(2));
         $this.parent().parent().find('.tot_val').val(total_value.toFixed(2));
 
 
         $( ".weightclass" ).each(function( index ) {
-      		  var $this=$(this);	
-      		  var each_weightval=$( this ).val();
-      		  if(each_weightval==''){
-      			each_weightval=0;	
-      		  }
-      		  else{
-      			each_weightval=$this.val();	
-      		  }	
+		  var $this=$(this);	
+		  var each_weightval=$( this ).val();
+		  if(each_weightval==''){
+			each_weightval=0;	
+		  }
+		  else{
+			each_weightval=$this.val();	
+		  }	
           total_wg += parseFloat(each_weightval);
           console.log( index + ": " + each_weightval );
         });
@@ -557,7 +541,10 @@ function total_weight(obj){
 	var prevValue = $(this).data('previous');
 	$('.right_border select.selectclass').not(this).find('option[value="'+prevValue+'"]').show();    
 	var value = $(this).val();
-	$(this).data('previous',value); $('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
+	$(this).data('previous',value);
+	if(value==''){}
+	else
+	$('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
 	
 	//alert(this_selcval);
     if($this.val()!=""){
@@ -702,17 +689,30 @@ function total_weight(obj){
   $(document).on('blur','.weightclass',function(){
     var intRegex = /^-?\d*(\.\d+)?$/;
     var $this = $(this);
-    
-
+	var this_val=$this.val();
+    //alert($this.parent().parent().find('.selectclass option:selected').val());
+	var this_sel_val=$this.parent().parent().find('.selectclass option:selected').val();
+	if(this_sel_val==''){
+		$this.parent().parent().find('.selectclass').addClass('red_border');
+		$this.parent().parent().parent().parent().parent().find('.error_p').remove();
+		$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please Select A value from unselected Select options</p>');
+		$this.val('')
+	}
+	else{
+		$this.removeClass('red_border');
+		$this.parent().parent().parent().parent().parent().find('.error_p').remove();
+		$this.parent().parent().find('.selectclass').removeClass('red_border');
     if(intRegex.test($(this).val()) && $this.parent().parent().find('.get_val').val()!=""){
 		//alert();
         //alert($this.parent().parent().find('.get_val').val());
 		total_weight($this);
         
       }
-	  
+	  	var this_id=$this.parent().parent().find('.selectclass').attr('id');
+		//alert(this_id);
 		checktable_val();
-	 
+		$('#tr_'+this_id).find('.inputed_weight').html('Total Weight:&nbsp;'+this_val);
+	}
 	  
   });
 var select_opt;
@@ -950,7 +950,7 @@ function checktable_val(){
    $(document).ready(function(e) {
     //for adding new ingredient
     var x='<?php echo ($individual_total_count);?>'; var z=0;
-    var y = '<?php echo ($total_group_count-1);?>'; 
+    var y = '<?php echo ($total_group_count-1);?>';
 	var no_count=1;
 	var for_selc='<?php echo ($total_count);?>';
 	var selected_val;
@@ -971,23 +971,40 @@ function checktable_val(){
       // Individual ingredient
       $(document).on('click','.remove_row',function(){		
         var $this=$(this);
+		console.log($this);
+		//calc_weight_ingred($this);
+		var tot_recieve=calc_weight_ingred($this);
+		//alert(tot_recieve);
+		$(this).parent().parent().parent().parent().parent().parent().parent().children('.top_panel').find('.back_bg').val(tot_recieve);
+		
 		$(this).closest('tr').remove();
 		var this_sle_id=$(this).parent().parent().find('.selectclass').attr('id');
 		$('.form_check_table table tr#tr_'+this_sle_id).remove();
 		var this_reqval=$this.parent().parent().find('.selectclass option:selected').val();
 		//alert(this_reqval);
-		$('.right_border select.selectclass').each(function(index, element) {
-			//var $this=$(this);
-            $('option[value="'+this_reqval+'"]',this).show();
-        });
+		if(this_reqval==''){
+		}
+		else{
+			$('.right_border select.selectclass').each(function(index, element) {
+				//var $this=$(this);
+				
+				//remember ayan
+				$('option[value="'+this_reqval+'"]',this).show();
+			});
+		}
 		
 		$('.form_check_table table').css({'opacity':0});
 		$('#load_table').show();
 		
-		checktable_val();
+		
 		
 		total_weight($this);
-			  
+		
+		checktable_val();
+		
+		
+		
+		
 		
 		//check_addrow();
 		
@@ -1009,6 +1026,7 @@ function checktable_val(){
 		  }
 		  check_addrow(); 
 	  });
+
 
       // Ingredient Group
       $(document).on('click','.click_more',function(){
@@ -1074,7 +1092,7 @@ function checktable_val(){
 		$('.form_check_table th').each(function(index, element) {
              if($(this).hasClass('all_selec')){
 					//alert($(this).text()); 
-				var this_text=$(this).text();
+				var this_text=$(this).clone().children().remove().end().text();
 				var this_val=$(this).attr('data-rel');
 					
 				total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
@@ -1093,27 +1111,6 @@ function checktable_val(){
 		
 		});
 		
-		//counting and comparing if a row of form factor can be added
-		
-		
-		/*$(document).on('change','#formfactortable select.form-control',function(){
-			var prevValue = $(this).data('previous');
-			if(prevValue=='' || prevValue==0){
-				
-			}
-			else{
-			$('#formfactortable select.form-control').not(this).find('option[value="'+prevValue+'"]').show();    
-			}
-			var value = $(this).val();
-			//alert(value);
-			if(value=='' || value==0){
-				
-			}
-			else{
-			$(this).data('previous',value); $('#formfactortable select.form-control').not(this).find('option[value="'+value+'"]').hide();
-			}
-			
-		});*/
 
 
   $(document).on('change','#formfactortable select.form-control',function(){
@@ -1127,7 +1124,7 @@ function checktable_val(){
           success:function(data)
           {
               $this.parent().parent().find('.upcharge').val(data);
-
+			  $this.parent().parent().find('.serv_text').trigger('blur'); 
            
           }
       });
@@ -1148,7 +1145,10 @@ function checktable_val(){
   });
   
   $(function() {
-	var flag=false;  
+	var flag=false;
+	var check_duplicate=false;
+	var check_weight_empty=false;
+	var arr_dupvals;
   $("#product_form").validate({
     
         // Specify the validation rules
@@ -1168,10 +1168,24 @@ function checktable_val(){
         },
         
         submitHandler: function(form, event) {
-			
+			//alert(arr_dupvals.length);
+			if(flag==false || priceflag==false || (arr_dupvals.length)!=0 || check_weight_empty==false){
+			//alert(priceflag);
+			$('.alert-danger').remove();
 			if(flag==false){
-			//alert(flag);
-				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>')
+				
+				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+			}
+			else if(check_weight_empty==false){
+				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
+			}
+			else if((arr_dupvals.length)!=0){
+				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+			}
+			else{
+				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
+			}
+			
 				return false;	
 			}
 			else{
@@ -1182,41 +1196,87 @@ function checktable_val(){
     });
 	
 	$(document).on('click','.add_product_panel .submit_panel input[type="submit"]',function(){
-    $('#excluded_val').val('');
-    var hid_vald='';
-    hid_vald=$('#excluded_val').val();
-    var tot_lastopt=[];
-    var index_val=0;
-    
-    var sele_id=[];
-    $('#formfactortable select.form-control').each(function(index, element) {
-      var $this=$(this);
-      var selec_val=$('option:selected',this).val();
-      
-      sele_id.push(selec_val);
-    });
-    
-    $('.add_product_panel .form_factore_panel tr:nth-child(2) select.form-control option').each(function(index, element) {
-      var $this=$(this); 
-      var this_opttext=$(this).text();
-      var this_optval=$(this).val();
-      var check_bool=false;
-      for(var x=0;x<sele_id.length;x++){
-        //alert(tot_lastopt[x]);
-        if(sele_id[x]==this_optval || this_optval==''){
-        check_bool=true;  
-        }
-        else{
-          
-        }
-        
-      }
-      if(check_bool==false){
-        //alert(this_optval);
-        hid_vald=hid_vald+this_optval+',';
-      }
-    });
-    $('#excluded_val').val(hid_vald);
+		$('#excluded_val').val('');
+		var hid_vald='';
+		hid_vald=$('#excluded_val').val();
+		var tot_lastopt=[];
+		var index_val=0;
+		
+		var sele_id=[];
+		$('#formfactortable select.form-control').each(function(index, element) {
+			var $this=$(this);
+			var selec_val=$('option:selected',this).val();
+			
+			sele_id.push(selec_val);
+		});
+		
+		$('.add_product_panel .form_factore_panel tr:nth-child(2) select.form-control option').each(function(index, element) {
+			var $this=$(this); 
+			var this_opttext=$(this).text();
+			var this_optval=$(this).val();
+			var check_bool=false;
+			for(var x=0;x<sele_id.length;x++){
+				//alert(tot_lastopt[x]);
+				if(sele_id[x]==this_optval || this_optval==''){
+				check_bool=true;	
+				}
+				else{
+					
+				}
+				
+			}
+			if(check_bool==false){
+				//alert(this_optval);
+				hid_vald=hid_vald+this_optval+',';
+			}
+		});
+		$('#excluded_val').val(hid_vald);
+		
+		/**from tomorrow***/
+		check_duplicate=false;
+		arr_dupvals=[];
+		//var last=sele_id[0];
+		var recipientsArray = sele_id.sort(); 
+
+		
+		for (var i = 0; i < recipientsArray.length - 1; i++) {
+			if (recipientsArray[i + 1] == recipientsArray[i]) {
+				arr_dupvals.push(recipientsArray[i]);
+			}
+		}
+		//alert(arr_dupvals.length);
+		
+		/**from tomorrow***/
+		
+		check_weight_empty=true;
+		$('.weightclass').each(function(index, element) {
+            var $this=$(this);
+			var this_val=$this.val();
+			$('.selectclass').removeClass('red_border');
+			$('.weightclass').removeClass('red_border');
+			$('.error_p').remove();
+			$this.parent().parent().parent().parent().parent().find('.error_p').remove();
+			var this_sel_val=$this.parent().parent().find('.selectclass option:selected').val();
+			if(this_sel_val=='' || this_val==''){
+				if(this_sel_val==''){
+					$('html, body').animate({
+						scrollTop: $this.offset().top-200
+					}, 400);
+					$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please Select A value from unselected Select options</p>');
+					$this.parent().parent().find('.selectclass').addClass('red_border');
+				}
+				else{
+					$('html, body').animate({
+						scrollTop: $this.offset().top-200
+					}, 400);
+					$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please Enter Weight</p>');
+					$this.addClass('red_border');
+				}
+				check_weight_empty=false;
+				return false;	
+			}
+        });
+		
 		flag=false;
 		//alert($('#formfactortable select.form-control').length);
 		if($('#formfactortable select.form-control').length>0){
@@ -1235,6 +1295,20 @@ function checktable_val(){
 		else{
 			flag=false;	
 		}
+		
+		$('.actual_price').each(function(index, element) {
+            var $this=$(this);
+			var this_val=$this.val();
+			var min_price=$this.parent().parent().find('.min_price').val();
+			if(this_val=='')
+			 	this_val=0;
+			if(min_price=='')
+			 	min_price=0;
+			if(parseFloat(this_val)<parseFloat(min_price) || min_price==0)
+				priceflag=false;
+			else
+				priceflag=true;
+        });
 		
 	});
 	
@@ -1263,9 +1337,15 @@ function checktable_val(){
 function showSelectedOptions(){
 	$('.right_border .selectclass').each(function(){
 		var prevValue = $(this).data('previous');
-		 $('.right_border select.selectclass').not(this).find('option[value="'+prevValue+'"]').show();    
-		 var value = $(this).val();
-		 $(this).data('previous',value); $('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
+		if(prevValue==''){}
+		else{
+	$('.right_border select.selectclass').not(this).find('option[value="'+prevValue+'"]').show();    
+		}
+	var value = $(this).val();
+	$(this).data('previous',value);
+	if(value==''){}
+	else
+	$('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
 	})
 	
 }
@@ -1296,17 +1376,19 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 	  var up_val=upchargeval,
 	      serv_val=servingval,
 	      this_obj=thisobj,
-	      total_ingredient=parseInt($('.form_check_table table tr').length)-2,
+	      total_ingredient=parseInt($('.form_check_table table tr').length)-1,
 	      total_ingcost=$('#TotalPrice').val(),
 		  total_min_prc=0,
 		  recom_price=0;
+		  //alert(total_ingredient);
 		  
 	  //alert('up_val:'+up_val+'//serv_val:'+serv_val+'//total_ingredient:'+total_ingredient+'//total_ingcost:'+total_ingcost)	  
 		   
 	  total_min_prc=(((parseFloat(total_ingredient))*parseFloat(up_val))+parseFloat(total_ingcost))*parseFloat(serv_val);
+	  //alert(((parseFloat(total_ingredient))*parseFloat(up_val)));
 	  recom_price=parseFloat(total_min_prc)*4; 	   	
-	  this_obj.parent().parent().find('.min_price').val(total_min_prc);
-	  this_obj.parent().parent().find('.recom_text').val(recom_price);   
+	  this_obj.parent().parent().find('.min_price').val(total_min_prc.toFixed(2));
+	  this_obj.parent().parent().find('.recom_text').val(recom_price.toFixed(2));   
   }
   
   $(document).on('blur','.actual_price',function(){
@@ -1317,6 +1399,7 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 		  $('.alert-danger').remove();
 		  
 	      minimum_prc=$this.parent().parent().find('.min_price').val();
+		  //alert(minimum_prc);
 		  if(minimum_prc=='')
 		  		minimum_prc=0;
 		  else
@@ -1326,8 +1409,6 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 		  
 		  actual_prc=$this.val();
 		  //alert(actual_prc);
-		  if(actual_prc=='')
-		  	actual_prc=0;
 		  
 		  if(parseFloat(actual_prc)<parseFloat(minimum_prc)){
 		  		priceflag=false;
@@ -1338,7 +1419,7 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 				
 			//alert(priceflag);	
 		   if(priceflag==false){ 		
-		  $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
+		  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
 		   }
 		   else{
 			$('.alert-danger').remove();   
@@ -1348,21 +1429,33 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 
   $(document).ready(function(){
 $(document).on('blur','.form_ingredient_group_panel .weightclass',function(){
-  var total=0;
-  var $this=$(this);
-
-  
-
-      $this.parent().parent().parent().parent().find( ".weightclass" ).each(function( index ) {
-          var this_val=$(this).val();
-          total=parseFloat(total)+parseFloat(this_val);
-      });
-      alert(total);
-    $this.parent().parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(total);
-})
+	var $this=$(this);
+    var tot_recv=calc_weight_ingred($this);
+	$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(tot_recv);
+});
     
 
-  })
+  });
+  function calc_weight_ingred(obj){
+	var total=0;
+	console.log(obj);
+    var $this=obj;
+	
+	//alert($this.attr('class'));
+	var class_check=$this.attr('class');
+	if(class_check=='remove_row'){
+	      $this.parent().parent().find('.weightclass').val('');
+	}
+    $this.parent().parent().parent().parent().find( ".weightclass" ).each(function( index ) {
+          var this_val=$(this).val();
+		  if(this_val=='')
+		  this_val=0;
+          total=parseFloat(total)+parseFloat(this_val);
+      });
+	  return total;
+    //$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(total);
+   
+ }
 
  </script>
 

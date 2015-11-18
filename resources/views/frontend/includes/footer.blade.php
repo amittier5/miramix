@@ -32,9 +32,9 @@ $about_us = $return_policy = $terms = $privacy ='';
 		<div class="row top_footer">
         	<h2>Join Us</h2>
             <ul class="social-icons">
-            	<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            	<li><a href="<?php echo  $all_sitesetting['facebook_link']; ?>" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="<?php echo  $all_sitesetting['twitter_link']; ?>" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="<?php echo  $all_sitesetting['instagram_link']; ?>" target="_blank"><i class="fa fa-instagram"></i></a></li>
             </ul>
         </div>
         <div class="row bottom_footer">
@@ -45,7 +45,7 @@ $about_us = $return_policy = $terms = $privacy ='';
                 <li><a href="<?php echo url().($about_us!='')?$about_us:'#'?>">About Us</a></li>
                 <li><a href="<?php echo url().($return_policy!='')?$return_policy:'#'?>">Return Policy</a></li> 
                 <li><a href="<?php echo url()?>/contact-us">Contact Us</a></li>
-                <li><a href="<?php echo url().($terms!='')?$terms:'#'?>">Terns And Conditions </a></li>
+                <li><a href="<?php echo url().($terms!='')?$terms:'#'?>">Terms And Conditions </a></li>
                 <li><a href="<?php echo url().($privacy!='')?$privacy:'#'?>">Privacy Policy</a></li>
             </ul>
             <ul>

@@ -4491,13 +4491,11 @@ a.btn.btn-success.add_vitamin.normal_vitamin, a.btn.btn-danger.remove_vitamin.no
     font-family: 'Source Sans Pro', sans-serif;
 }
 .add_product_panel .product_name {
-    width: auto;
     display: block;
     clear: both;
     margin: 0 0 15px;
     overflow: hidden;
     margin-top: 15px;
-    margin-left: 6px;
 }
 .add_product_panel .product_name label {
     font-size: 22px;
@@ -4915,5 +4913,73 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 }
 table#formfactortable {
     margin-top: 20px;
+}
+span.weight_span {
+    display: block;
+    font-weight: 400;
+    line-height: 22px;
+    margin-top: 4px;
+    position: relative;
+    margin-left: 0;
+    text-align: center;
+    width: 100%;
+}
+.toll_tipfor_red {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 15px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #afc149;
+    margin: 10px 0 0;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    bottom: 26px;
+    display: none;
+}
+.form_check_table .table>thead>tr>th.red_selc .toll_tipfor_red {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+}
+.form_check_table .tooltip.bottom {
+    margin-top: 3px;
+    width: 200px;
+    left: auto !important;
+    right: -10px;
+}
+.form_check_table .tooltip.bottom .tooltip-arrow{
+    right: 14px;
+	left:auto;	
+}
+.bottom_img_define .upload_image{
+	position: absolute;
+    min-height: 91px;
+    float: left;
+    margin: 0 10px 10px 0;
+    min-width: 120px;	
+}
+.bottom_img_define .files_label{
+    font-size: 0;
+    line-height: 0;
+    width: 120px;
+    height: 91px;
+    position: absolute;
+    left: 0;
+    z-index: 999;
+    display: block;
+    opacity: 0;
+    cursor: pointer;	
+}
+.bottom_img_define.img_modify {
+    width: 120px;
+    height: 91px;
+    float: left;
+    margin-right: 15px;
+    border: 1px solid #ccc;
+    overflow: hidden;
 }
 

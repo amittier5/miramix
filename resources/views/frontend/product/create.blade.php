@@ -122,7 +122,7 @@
                                
                                 @if (!empty($formfac))
                                   @foreach ($formfac as $key => $value) 
-                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}">{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm)<a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Exceeds the Weight range">i</a></span></th>
+                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}">{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm)<a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Not Within Available Weight Range">i</a></span></th>
                                   @endforeach
                                 @endif
                               </tr>
@@ -282,9 +282,16 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 	
 	
 	var prevValue = $(this).data('previous');
+	if(prevValue==''){}
+	else{
 	$('.right_border select.selectclass').not(this).find('option[value="'+prevValue+'"]').show();    
+	}
 	var value = $(this).val();
-	$(this).data('previous',value); $('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
+	//alert(value);
+	$(this).data('previous',value);
+	if(value==''){}
+	else
+	$('.right_border select.selectclass').not(this).find('option[value="'+value+'"]').hide();
 	
 	//alert(this_selcval);
     if($this.val()!=""){
@@ -716,7 +723,11 @@ function checktable_val(){
       // Individual ingredient
       $(document).on('click','.remove_row',function(){		
         var $this=$(this);
-		calc_weight_ingred($this);
+		console.log($this);
+		//calc_weight_ingred($this);
+		var tot_recieve=calc_weight_ingred($this);
+		//alert(tot_recieve);
+		$(this).parent().parent().parent().parent().parent().parent().parent().children('.top_panel').find('.back_bg').val(tot_recieve);
 		
 		$(this).closest('tr').remove();
 		var this_sle_id=$(this).parent().parent().find('.selectclass').attr('id');
@@ -750,6 +761,8 @@ function checktable_val(){
 		//check_addrow();
 		
       });
+	  
+	  
 	  
 	  //remove row for formfactortable
 	  $(document).on('click','.remove_row_formfactortable',function(){
@@ -832,7 +845,7 @@ function checktable_val(){
 		$('.form_check_table th').each(function(index, element) {
              if($(this).hasClass('all_selec')){
 					//alert($(this).text()); 
-				var this_text=$(this).text();
+				var this_text=$(this).clone().children().remove().end().text();
 				var this_val=$(this).attr('data-rel');
 					
 				total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
@@ -999,7 +1012,7 @@ function checktable_val(){
 		
 		/**from tomorrow***/
 		
-		check_weight_empty=false;
+		check_weight_empty=true;
 		$('.weightclass').each(function(index, element) {
             var $this=$(this);
 			var this_val=$this.val();
@@ -1147,13 +1160,15 @@ function checktable_val(){
   $(document).ready(function(){
   $(document).on('blur','.form_ingredient_group_panel .weightclass',function(){
   	var $this=$(this);
-    calc_weight_ingred($this);
-
+    var tot_recv=calc_weight_ingred($this);
+	$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(tot_recv);
    });
   });
  function calc_weight_ingred(obj){
 	var total=0;
+	console.log(obj);
     var $this=obj;
+	
 	//alert($this.attr('class'));
 	var class_check=$this.attr('class');
 	if(class_check=='remove_row'){
@@ -1165,7 +1180,8 @@ function checktable_val(){
 		  this_val=0;
           total=parseFloat(total)+parseFloat(this_val);
       });
-    $this.parentsUntil('.form_ingredient_group_panel').find('.back_bg').val(total);
+	  return total;
+    //$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(total);
    
  }
   

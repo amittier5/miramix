@@ -7,6 +7,7 @@ use App\Model\ProductIngredient;      /* Model name*/
 use App\Model\ProductFormfactor;      /* Model name*/
 use App\Model\Ingredient;             /* Model name*/
 use App\Model\FormFactor;             /* Model name*/
+use App\Model\Searchtag;             /* Model name*/
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
@@ -179,7 +180,37 @@ class ProductController extends BaseController {
       $product_row = Product::create($product);
       $lastinsertedId = $product_row->id;
 
+  // ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
 
+      $allTags = array();
+      if($product['tags']!=""){
+        $allTags = explode(",", $product['tags']);
+
+        $ii=0;
+        foreach ($allTags as $key => $value) {
+          $all_data_arr[$ii]['value'] = $value;
+          $all_data_arr[$ii]['type'] = 'tags';
+          $ii++;
+        }
+      }
+
+      // get Brand Name from brand id
+      $ii = $ii + 1;
+      $brand_dtls = Brandmember::find(Session::get('brand_userid'));
+      $brand_name = $brand_dtls['fname'].' '.$brand_dtls['lname'];
+      $all_data_arr[$ii]['value'] = $brand_name;
+      $all_data_arr[$ii]['type'] = 'brand_name';
+
+      //Insert Into searchtags table
+      foreach ($all_data_arr as $key => $value) {
+        $arr = array('product_id'=>$lastinsertedId,'type'=>$value['type'],'name'=>$value['value']);
+        Searchtag::create($arr);
+      }
+
+
+
+  // ++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+      
       // Create Product Ingredient group 
       if(NULL!=Request::input('ingredient_group')){
 
@@ -291,11 +322,10 @@ class ProductController extends BaseController {
             $str .= '<option value='.$each_form_factor->id.'>'.$each_form_factor->name.'</option>';                        
           }
           $str .= '</select></td><td><input class="form-control upcharge" type="text" name="formfactor[0][upcharge]" placeholder="Upcharge" readonly></td>
-                        <td><input class="form-control serv_text" type="text" name="formfactor[0][servings]" placeholder="Servings" ></td>
-                        <td><input class="form-control min_price" type="text" class="min_price" name="formfactor[0][min_price]" placeholder="Min Price" readonly></td>
-                        <td><input class="form-control recom_text" type="text" class="recommended_price" name="formfactor[0][recomended_price]" placeholder="Recomended Price" readonly></td>
-                        <td style="width:14%;"><input class="form-control actual_price" type="text" class="actual_price" name="formfactor[0][actual_price]" placeholder="Actual price" style="width: 66%;float: left;"><a href="javascript:void(0);" class="remove_row_formfactortable"><i class="fa fa-minus-square-o"></i></a></td>
-                        ';
+                  <td><input class="form-control serv_text" type="text" name="formfactor[0][servings]" placeholder="Servings" ></td>
+                  <td><input class="form-control min_price" type="text" class="min_price" name="formfactor[0][min_price]" placeholder="Min Price" readonly></td>
+                  <td><input class="form-control recom_text" type="text" class="recommended_price" name="formfactor[0][recomended_price]" placeholder="Recomended Price" readonly></td>
+                  <td style="width:14%;"><input class="form-control actual_price" type="text" class="actual_price" name="formfactor[0][actual_price]" placeholder="Actual price" style="width: 66%;float: left;"><a href="javascript:void(0);" class="remove_row_formfactortable"><i class="fa fa-minus-square-o"></i></a></td>';
         }
 
          
@@ -582,6 +612,34 @@ class ProductController extends BaseController {
       $product_row = Product::create($product);
       $lastinsertedId = $product_row->id;
 
+
+  // ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+
+      if($product['tags']!=""){
+        $allTags = explode(",", $product['tags']);
+
+        $ii=0;
+        foreach ($allTags as $key => $value) {
+          $all_data_arr[$ii]['value'] = $value;
+          $all_data_arr[$ii]['type'] = 'tags';
+          $ii++;
+        }
+      }
+
+      // get Brand Name from brand id
+      $ii = $ii + 1;
+      $brand_dtls = Brandmember::find(Session::get('brand_userid'));
+      $brand_name = $brand_dtls['fname'].' '.$brand_dtls['lname'];
+      $all_data_arr[$ii]['value'] = $brand_name;
+      $all_data_arr[$ii]['type'] = 'brand_name';
+
+      //Insert Into searchtags table
+      foreach ($all_data_arr as $key => $value) {
+        $arr = array('product_id'=>$lastinsertedId,'type'=>$value['type'],'name'=>$value['value']);
+        Searchtag::create($arr);
+      }
+
+  // ++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
 
       // Create Product Ingredient group 
       if(NULL!=Request::input('ingredient_group')){

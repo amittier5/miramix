@@ -12,7 +12,6 @@
                 <li><a href="<?php echo url();?>/brand-details/{!! ucwords($productdetails->product_slug) !!}">Brands</a></li>
                 <li>{!! ucwords($productdetails->product_name) !!}</li>
              </ul>
-             <!-- <span id="cart_det"></span> -->
             </div>
         </div>   
 <!-- Start Products panel -->
@@ -194,69 +193,48 @@
     <div class="bottom_panel_rev">
     <div class="row">
     <div class="col-sm-6 review_block">
-    <h6>Reviews</h6>
-      <div class="avrating_box">
-    <p class="pull-left">Average rating</p>
-      <?php
-      $rval=0;
-      foreach($rating as $prate){
-      $rval +=$prate->rating_value;
-      }
-      if($rval>0){
-      $avg=$rval/count($rating);
-      }else{
-      $avg=0;
-      }
-      ?>
-      <div id="avgrate"></div>
-            <script>
+        <h6>Reviews</h6>
+          <div class="avrating_box">
+          <p class="pull-left">Average rating</p>
+          <?php
+          $rval=0;
+          foreach($rating as $prate){
+          $rval +=$prate->rating_value;
+          }
+          if($rval>0){
+          $avg=$rval/count($rating);
+          }else{
+          $avg=0;
+          }
+          ?>
+          <div id="avgrate"></div>
+           <script>
              $(document).ready(function(){
-    
-                  $('#avgrate').raty({
-                  readOnly: true,
-                  score: <?php echo $avg?>,
-                  starHalf    : '<?php echo url();?>/public/frontend/css/images/star-half.png',
-                  starOff     : '<?php echo url();?>/public/frontend/css/images/star-off.png',
-                  starOn      : '<?php echo url();?>/public/frontend/css/images/star-on.png'  , 
-                  });
-                  
-                  });
-        </script>
-    
-    <small>(Based on 50  Reviews)</small>
+                $('#avgrate').raty({
+                readOnly: true,
+                score: <?php echo $avg?>,
+                starHalf    : '<?php echo url();?>/public/frontend/css/images/star-half.png',
+                starOff     : '<?php echo url();?>/public/frontend/css/images/star-off.png',
+                starOn      : '<?php echo url();?>/public/frontend/css/images/star-on.png'  , 
+                });
+                
+                });
+          </script>
+        
+        <small>(Based on <?php echo count($rating);?>  Reviews)</small>
     </div>
-    <?php foreach($rating as $prate){?>
-      <!--rating_block-->
-        <div class="rating_block clearfix">
-        <h5 class="text-capitalize"><?php echo $prate->rating_title?></h5>
-            <div class="total_rev"><p> &ldquo; <?php echo $prate->comment?>  &rdquo;</p>
-                <div class="ratn_box">
-            <div id="rate<?php echo $prate->rating_id?>"></div>
-            </div>
-            </div>
-            <div class="bot_rev"><p class="author pull-left">Authored by <a href=""><?php echo $prate->username?></a> </p>
-            <p class="date pull-left"><?php echo $obj->time_elapsed_string(strtotime($prate->created_on))?></p></div>
-        </div>
-        <!--rating_block-->
-        <script>
-             $(document).ready(function(){
-    
-                  $('#rate<?php echo $prate->rating_id?>').raty({
-                  readOnly: true,
-                  score: <?php echo $prate->rating_value?>,
-                  starHalf    : '<?php echo url();?>/public/frontend/css/images/star-half.png',
-                  starOff     : '<?php echo url();?>/public/frontend/css/images/star-off.png',
-                  starOn      : '<?php echo url();?>/public/frontend/css/images/star-on.png'  , 
-                  });
-                  
-                  });
-        </script>
-     <?php }?> 
-        <a href="javascript:void(0);" class="btn btn-special">View More Reviews</a>
+    <?php if(count($rating)>0) {?>
+    <div class="news_list">
+        <a href="javascript:void(0);" class="btn btn-special loadmore" data-page="0">View More Reviews</a>
     </div>
+   <?php } ?> 
+     
+    </div>
+
+
     <div class="col-sm-6 suppl_facts">
       <h6>Supplement Facts</h6>
-        <!--supp_box-->
+        <!--supp_box--0
       <div class="supp_box">
       <?php if(($productdetails->label !='') && (file_exists('uploads/product/'.$productdetails->label))) {?>
        <img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->label !!}" alt="">
@@ -375,6 +353,36 @@
 </div>
 <!-- End Products panel --> 
  </div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.loadmore').trigger('click');
+  });
+
+  $( document ).on( 'click', '.loadmore', function () {
+       $(this).text('Loading...');
+      var ele = $(this);
+
+       $.ajax({
+        url: '<?php echo url();?>/getallrate',
+        type: "POST",
+        data: { page:$(this).data('page'),'product_id':'<?php echo $product_id;?>',_token: '{!! csrf_token() !!}'},
+        success:function(response)
+        {
+          if(response){
+            ele.hide();
+            $(".news_list").append(response);
+          }          
+        }
+    
+      });
+
+        
+  });
+  </script>
+
+
 
  <script>
   jQuery(document).ready(function(e) {

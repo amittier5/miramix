@@ -38,23 +38,69 @@ class CronController extends BaseController {
     {
          $all_brand_member = DB::table('brandmembers')->where('role', 1)->where('status', 1)->where('admin_status', 1)->get();
         
-         
+	foreach($all_brand_member as $brand){
+	    $product = DB::table('products')
+                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
+                 ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+                 ->where('products.brandmember_id', '=', $brand->id)
+                 ->where('products.active', 1)
+                 ->where('products.is_deleted', 0)
+                 ->where('product_formfactors.servings', '!=',0)
+                 ->where('products.discountinue', 0)
+		
+                 ->groupBy('product_formfactors.product_id');
+	    $count=$product->count();
+	    
+	    $setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
+	    $setting2 = DB::table('sitesettings')->where('name', 'brand_perproduct_fee')->first();
+	    
+	    if($count==1){
+		$fee=$setting->value;
+	    }elseif($count>1){
+		$fee=$setting->value;
+		$perproduct_fee=$setting2->value;
+		
+		$fee=$fee+($perproduct_fee*$count);
+	    }else{
+		$fee=0;
+	    }
+	   //echo $brand->id;
+	   //echo '<br />';
+	   $br=array('member_fee'=> $fee);
+	   //print_r($br);
+	   
+	   
+	    DB::table('brandmembers')
+            ->where('id', $brand->id)
+            ->update(array('member_fee' => $fee));
+	}
+	
+        
          foreach($all_brand_member as $brand){
             //echo $brand->fname;
 	   
 	
             $subscription = DB::table('subscription_history')->where('payment_status', 'pending')->where('member_id', $brand->id)->first();
            if(count($subscription)<=0){
-            $end_date=date("Y-m-d",strtotime($brand->created_at .' + 30 days'));
+	    $paidsub = DB::table('subscription_history')->where('payment_status', 'paid')->where('member_id', $brand->id)->orderBy('end_date','DESC')->first();
+	    
+	    if(count($paidsub)>0){
+	    $start_date=$paidsub->end_date;
+	    $end_date=date("Y-m-d",strtotime($start_date .' + 30 days'));	
+	    }else{
+	    $start_date=$brand->created_at;
+            $end_date=date("Y-m-d",strtotime($start_date .' + 30 days'));
+	    
+	    }
             $setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
             
-            $subdata=array("member_id"=>$brand->id,"start_date"=>$brand->created_at,"end_date"=>$end_date,"subscription_fee"=>$setting->value);
+            $subdata=array("member_id"=>$brand->id,"start_date"=>$start_date,"end_date"=>$end_date,"subscription_fee"=>$brand->member_fee);
             Subscription::create($subdata);
            }else{
 	    
-	    $paidsubscription = DB::table('subscription_history')->where('payment_status', 'paid')->where('member_id', $brand->id)->orderBy('end_date','DESC')->first();
+	    $paidsubscription = DB::table('subscription_history')->where('member_id', $brand->id)->orderBy('end_date','DESC')->first();
 	    
-	    if(is_object($paidsubscription) && $paidsubscription->end_date<=date("Y-m-d")){
+	    if(is_object($paidsubscription) && $paidsubscription->end_date<=date("Y-m-d") && $paidsubscription->payment_status=='paid'){
 	    
             echo 'subid-'.$paidsubscription->subscription_id.'- paid in prev month <br />';
 	    
@@ -62,7 +108,7 @@ class CronController extends BaseController {
 		
 	    $today=Date('Y-m-d');
             $enddate=date("Y-m-d",strtotime($subscription->end_date." + 1 day"));
-             if($enddate==$today){
+             if($enddate<=$today){
                 //charge here
 		 if(empty($brand->auth_profile_id))
 		continue;
@@ -73,7 +119,7 @@ class CronController extends BaseController {
 		$request = new AuthorizeNetCIM;
 		
 		$transaction = new AuthorizeNetTransaction;
-		$transaction->amount =$subscription->subscription_fee;
+		$transaction->amount =$brand->member_fee;
 		$transaction->customerProfileId = $brand->auth_profile_id;
 		$transaction->customerPaymentProfileId = $brand->auth_payment_profile_id;
 		$transaction->customerShippingAddressId = $brand->auth_address_id;
@@ -83,7 +129,7 @@ class CronController extends BaseController {
 		$lineItem->name        = $brand->fname;
 		$lineItem->description = $brand->fname. " charged for subscription of " .$subscription->start_date;
 		$lineItem->quantity    = "1";
-		$lineItem->unitPrice   = $subscription->subscription_fee;
+		$lineItem->unitPrice   = $brand->member_fee;
 		$lineItem->taxable     = "false";
 		
 		$transaction->lineItems[] = $lineItem;
@@ -100,6 +146,9 @@ class CronController extends BaseController {
 		$sub = DB::table('subscription_history')
                                     ->where('subscription_id', $subscription->subscription_id)
                                     ->update($subdata);
+		}else{
+		   print_r($response); 
+		    
 		}
                 
              }

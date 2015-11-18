@@ -36,7 +36,7 @@
 				 {!! Form::password('old_password',array('class'=>'form-control','id'=>'old_password','placeholder'=>'Old Password')) !!}
 			    </div>
 			    <div class="form-group col-sm-12">
-				 {!! Form::password('password',array('class'=>'form-control','id'=>'password','placeholder'=>'Current Password')) !!}
+				 {!! Form::password('password',array('class'=>'form-control','id'=>'password','placeholder'=>'New Password')) !!}
 			    </div>
 				
 			    <div class="form-group col-sm-12">

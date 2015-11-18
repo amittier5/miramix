@@ -1,22 +1,34 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+<?php 
+	if($all_sitesetting['payment_mode'] == 'test')
+	{
+		$paypal_url = $all_sitesetting['paypal_url_test'];
+		$business_account = $all_sitesetting['business_account_test'];
+	}
+	else if($all_sitesetting['payment_mode'] == 'live')
+	{
+		$paypal_url = $all_sitesetting['paypal_url_live'];
+		$business_account = $all_sitesetting['business_account_live'];
+	}
+?>
 <div><img src="<?php echo url();?>/public/frontend/images/load_genearted.GIF"><div>
 <?php
 $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 //$custom_data_serialize = serialize($custom_data);
 ?>
 <div id="paypal_form"> 
-<form  action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="_xcart" id="payment_form">
+<form  action="<?php echo $paypal_url; ?>" method="post" name="_xcart" id="payment_form">
 
         <input type=hidden name=cmd value="_cart" />
 		<input type=hidden name=upload value="1">
                 
         <input type="hidden" name="rm" value="2">
-        <input type="hidden" name="business" value="amit.unified@gmail.com">
+        <input type="hidden" name="business" value="<?php echo $business_account;?>">
         <input type="hidden" name="return" value="<?php echo url();?>/checkout-success">
         <input type="hidden" name="cancel_return" value="<?php echo url();?>/checkout-cancel">
-        <!--<input type="hidden" name="notify_url" value="<?php echo url();?>/paypal-notify">-->
-        <input type="hidden" name="notify_url" value="http://www.phppowerhousedemo.com/webroot/team13/test/test.php">
+        <input type="hidden" name="notify_url" value="<?php echo url();?>/paypal-notify">
+        <!-- <input type="hidden" name="notify_url" value="http://www.phppowerhousedemo.com/webroot/team13/test/test.php"> -->
         <input type="hidden" name="currency_code" value="USD" />
 
 		<?php 

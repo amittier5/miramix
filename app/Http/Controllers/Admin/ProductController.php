@@ -7,6 +7,7 @@ use App\Model\ProductIngredient;      /* Model name*/
 use App\Model\ProductFormfactor;      /* Model name*/
 use App\Model\Ingredient;             /* Model name*/
 use App\Model\FormFactor;             /* Model name*/
+use App\Model\Searchtag;             /* Model name*/
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
@@ -51,14 +52,14 @@ class ProductController extends BaseController {
         $condition_arr = array('is_deleted'=>0,'discountinue'=>$discountinue);
         $products = Product::with('GetBrandDetails','AllProductFormfactors')->where($condition_arr)->where('product_name', 'LIKE', '%' . $param . '%')->orderBy('id','DESC')->paginate($limit);
 
-        $products->setPath('product-list');
+        $products->setPath('product-list/'.$discountinue.'/'.$param);
       }
       else{
 
           $condition_arr = array('is_deleted'=>0,'discountinue'=>$discountinue);
           $products = Product::with('GetBrandDetails','AllProductFormfactors')->where($condition_arr)->orderBy('id','DESC')->paginate($limit);
 
-          $products->setPath('product-list');
+          //$products->setPath('product-list/'.$discountinue);
       }
 
 
@@ -356,6 +357,41 @@ class ProductController extends BaseController {
       $product['created_at'] = date("Y-m-d H:i:s");
 
       $product->save();
+
+      // ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+
+      // Delete Search tags
+      Searchtag::where('product_id', '=', $id)->delete();
+
+      $allTags = array();
+      if($product['tags']!=""){
+        $allTags = explode(",", $product['tags']);
+
+        $ii=0;
+        foreach ($allTags as $key => $value) {
+          $all_data_arr[$ii]['value'] = $value;
+          $all_data_arr[$ii]['type'] = 'tags';
+          $ii++;
+        }
+      }
+
+      // get Brand Name from brand id 
+      $ii = $ii + 1;
+      $brand_dtls = Brandmember::find($product['brandmember_id']);
+
+      $brand_name = $brand_dtls['fname'].' '.$brand_dtls['lname'];
+      $all_data_arr[$ii]['value'] = $brand_name;
+      $all_data_arr[$ii]['type'] = 'brand_name';
+
+      //Insert Into searchtags table
+      foreach ($all_data_arr as $key => $value) {
+        $arr = array('product_id'=>$id,'type'=>$value['type'],'name'=>$value['value']);
+        Searchtag::create($arr);
+      }
+      
+
+
+  // ++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
 
 
       // Delete all ingredient before save new

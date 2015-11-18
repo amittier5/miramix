@@ -204,7 +204,7 @@
         {!! Form::open(['url' => 'brandregister','method'=>'POST', 'files'=>true, 'onsubmit'=>'return validatebrand()', 'id'=>'member_form']) !!}
 	<input type="hidden" name="callvalid" id="callvalid" value="invalid"/>
 	
-	<div class="brand_login_panel">
+	<div class="brand_login_panel regis_formvalidmsg">
                     <div class="row">
                         <div class="col-sm-2">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Business or Personal Account</h2></div>
@@ -298,7 +298,7 @@
 		<div class="row">
 		<div class="col-sm-2">&nbsp;</div>
 		    <div class="col-sm-8">
-		    <p>Either wire transfer, check, or Paypal will be used for payment distributions from revenue generated on the Miramix platform. Complete Information for at least one deposit location. Thank you</p>
+		    <p class="col-sm-12">Either wire transfer, check, or Paypal will be used for payment distributions from revenue generated on the Miramix platform. Complete Information for at least one deposit location. Thank you</p>
 		    </div>
 		    <div class="col-sm-2">&nbsp;</div>
 		    
@@ -487,7 +487,7 @@
                           
                             <div class="col-sm-6">
                               <div class="row">
-                                <div class="col-xs-6">
+                                <div class="col-xs-6 no_padright">
                                 <div class="input-group wow slideInRight md15">
                                   <select class="form-control col-sm-2" name="expiry_month" id="expiry_month">
                                     <option value="">Month</option>

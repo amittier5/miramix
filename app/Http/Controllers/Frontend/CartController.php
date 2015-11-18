@@ -53,9 +53,11 @@ class CartController extends BaseController {
             //Cart::remove("76c580d3655de904428445212b864688");
             //echo 1; //exit;
            
-		   // Cart::destroy(); 
-             $content = Cart::content();
-            echo "<pre>";print_r($content);
+		    // Cart::destroy(); 
+
+      //   echo Cart::count();
+      //         $content = Cart::content();
+      //        echo "<pre>";print_r($content);
     }
 
     public function cart()
@@ -107,13 +109,67 @@ class CartController extends BaseController {
 		echo $str; 
     }
 
-    
+   function reorder()
+   {
+        $obj = new helpers();
+        if((!$obj->checkMemberLogin()) && ($obj->checkBrandLogin()))
+        {
+            return redirect('home');
+        }
+
+        $order_id = Input::get('order_id');
+
+        /* Order details for perticular order id */
+        $order_list = DB::table('orders')
+                    ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
+                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name', 'order_items.duration', 'order_items.no_of_days')
+                    ->where('orders.id','=',$order_id)
+                    ->get();
+
+        //echo "<pre>";print_r($order_list); exit;
+        foreach($order_list as $eachorder)
+        {
+            Cart::add($eachorder->product_id, $eachorder->product_name, $eachorder->quantity, $eachorder->price, array('duration' => $eachorder->duration,'no_of_days'=>$eachorder->no_of_days,'form_factor'=>$eachorder->form_factor_id)); 
+
+        }
+
+        DB::table('carts')->where("user_id",Session::get('member_userid'))->delete();   // delete All cart of logged in member.
+        $content = Cart::content(); 
+        //print_r($content);
+        
+        foreach($content as $eachcontentCart)
+        {
+            $cartContent = DB::table('carts')
+                                ->where('user_id',Session::get('member_userid'))
+                                ->where('product_id',$eachcontentCart->id)
+                                ->where('no_of_days',$eachcontentCart->options->no_of_days)
+                                ->where('form_factor',$eachcontentCart->options->form_factor)
+                                ->first();
+            
+
+            if(count($cartContent)<1)
+            {
+                $insert_cart = DB::table('carts')->insert(['user_id' => Session::get('member_userid'), 'row_id' => $eachcontentCart->rowid, 'product_id' => $eachcontentCart->id , 'product_name' => $eachcontentCart->name, 'quantity' => $eachcontentCart->qty, 'amount' => $eachcontentCart->price, 'duration' => $eachcontentCart->options->duration, 'no_of_days' => $eachcontentCart->options->no_of_days, 'form_factor' => $eachcontentCart->options->form_factor,'sub_total' => $eachcontentCart->subtotal, 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
+            }
+            else
+            {
+                $new_quantity = ($cartContent->quantity)+$eachcontentCart->qty;
+                $new_sub_total = $new_quantity * $eachcontentCart->price;
+                $update_cart = DB::table('carts')
+                                    ->where('cart_id', $cartContent->cart_id)
+                                    ->update(['quantity' => $new_quantity,'sub_total'=>$new_sub_total]);
+            }
+            
+        }
+        $str = Cart::count();
+        echo $str; 
+   } 
 
     public function showAllCart()
     {
         /*----- Only Member Will Access This Page ----*/
         $obj = new helpers();
-        if(!$obj->checkMemberLogin())
+        if((!$obj->checkMemberLogin()) && ($obj->checkBrandLogin()))
         {
             return redirect('home');
         }

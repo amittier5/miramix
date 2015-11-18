@@ -202,7 +202,7 @@ body,html{
     width: 100%;
 }
 .brand_login_panel h2 {
-    font-size: 30px;
+    font-size: 26px;
     margin-bottom: 20px;
     color: #024552;
     border-bottom: 1px solid #024552;
@@ -275,3 +275,7 @@ label.error {
 .form_check_table .table>tbody>tr>td.all_selec{
 	background: #EEF3D5;	
 }
+.no_padright{
+	padding-right:0;	
+}
+

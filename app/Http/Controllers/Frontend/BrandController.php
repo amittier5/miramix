@@ -16,6 +16,7 @@ use DB;
 use Hash;
 use Auth;
 use Cookie;
+use Mail;
 use App\Helper\helpers;
 use Authorizenet;
 use App\libraries\auth\AuthorizeNetCIM;
@@ -156,6 +157,13 @@ class BrandController extends BaseController {
 			{
 				$fileName = '';
 			}
+            $email=Request::input('email');
+            
+            $branduser = DB::table('brandmembers')
+                   
+		    ->where('id', '=', Session::get('brand_userid'))
+                    ->first();
+            
             
             $brand=array('fname'=> Request::input('fname'),
 			 'lname'=> Request::input('lname'),
@@ -164,14 +172,52 @@ class BrandController extends BaseController {
                          'youtube_link'=> Request::input('youtube_link'),
                          'brand_details'=> Request::input('brand_details'),
                          'brand_sitelink'=> Request::input('brand_sitelink'),
+                         'facebook_url'=> Request::input('facebook_url'),
+                         'twitter_url'=> Request::input('twitter_url'),
+                         'linkedin_url'=> Request::input('linkedin_url'),
                                 );
+             if($branduser->email!=$email){
+                $brand['email']=$email;
+                $brand['status']=0;
+             }
+             
             if(!empty($fileName)){
                 $brand['pro_image']=$fileName;
             }
            
             $brandresult=Brandmember::find(Session::get('brand_userid') );
-            $brandresult->update($brand);
+            
+        //    echo ($branduser->email);
+          //  echo ($email);
+           // exit;
+            if($branduser->email!=$email){
+                $brandresult->update($brand);
+                
+                $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+                $admin_users_email=$sitesettings->value;
+                                $user_name = Request::input('fname').' '.Request::input('lname');
+				$user_email = Request::input('email');
+				$activateLink = url().'/activateLink/'.base64_encode(Request::input('email')).'/brand';
+				$sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink), 
+				function($message) use ($admin_users_email, $user_email,$user_name)
+				{
+					$message->from($admin_users_email);
+					$message->to($user_email, $user_name)->subject('Activate Profile Mail');
+				});
+                                
+                                
+				if( ! $sent) 
+				{
+					Session::flash('error', 'something went wrong!! Mail not sent.'); 
+					return redirect('userLogout');
+				}else{
+                                Session::flash('success', 'Your profile and email address is successfully updated. Please activate your account with activation link sent to your email.');
+                                return redirect('userLogout');
+                                }   
+            }else{
+                $brandresult->update($brand);
             Session::flash('success', 'Your profile is successfully updated.');
+            }
             return redirect('brand-account');
             
         }

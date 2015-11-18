@@ -29,22 +29,26 @@
                   <tr>
                     <th>Order ID</th>
                     <th>No. of Products</th>
-                    <th>Date Added</th>
+                    <th>Date Purchased</th>
                     <th>Total</th>
                     <th>Order Status</th>
                     <th>Tracking</th>
+                    <th>Reorder</th>
                   </tr>
                 </thead>
                 <tbody>
+
                 @if(!empty($order_list))
                   @foreach($order_list as $each_order_list)
+
                   <tr>
-                    <td>#{!! $each_order_list->id; !!}</td>
+                    <td>#{!! $each_order_list->order_number; !!}</td>
                     <td>{!! count($each_order_list->AllOrderItems); !!}</td>
                     <td>{!! date("M d, Y",strtotime($each_order_list->created_at)); !!}</td>
                     <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
                     <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
                     <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
+                    <td><a href="javascript:void(0)" class="btn btn-white" onclick="reorderProduct('<?php echo $each_order_list->id;?>')">Reorder</a></td>
                   </tr>
                   @endforeach
                 @else
@@ -69,4 +73,26 @@
    </div>
    <!--my_acct_sec ends-->
  </div>
+
+ <script>
+
+ function reorderProduct(order_id)
+ {
+    $.ajax({
+    url: '<?php echo url();?>/reorder',
+    type: "post",
+    data: { order_id : order_id ,_token: '{!! csrf_token() !!}'},
+    success:function(data)
+        {
+          //alert(data);
+          if(data !='' ) // email exist already
+          {
+            $("#cart_det").html(data);
+            $("#cart_det").fadeIn(2000);
+          }
+          
+        }
+  });
+ }
+ </script>
 @stop

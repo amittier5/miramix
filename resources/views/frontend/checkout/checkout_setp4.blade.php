@@ -96,8 +96,8 @@
             foreach($cart_result as $eachcart)
             {
               $all_sub_total = $all_sub_total+$eachcart['subtotal'];
-              $all_total = number_format((int)$all_sub_total,2);
-              $total = (int)$all_sub_total;                     // Without Adding Shipping Price
+              $all_total = number_format((float)$all_sub_total,2);
+              $total = (float)$all_sub_total;                     // Without Adding Shipping Price
         ?>
           
           <tr>

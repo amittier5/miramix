@@ -7600,7 +7600,8 @@ p#result,.bordered_panel p.price_pan{
 	color:#fff;
 	text-transform:capitalize;
 	padding-left:15px;
-	margin-bottom:15px;	
+	margin-bottom:15px;
+	clear: both;	
 }
 .my_acct_sec .bottom_dash .form-control{
 	font-size:16px;
@@ -9105,5 +9106,143 @@ span.inputed_weight {
 	color:red;
 	clear: left;
 	font-size: 16px;	
+}
+input[name="agree"]{
+	height: 20px;
+    width: 20px;
+    position: relative;
+    top: 5px;
+	-moz-transform: scale(2); /* FF */	
+}
+.brand_login_panel label.error {
+    bottom: -27px;
+    color: #ab0000;
+    font-size: 12px;
+    font-weight: 600;
+    left: 0;
+    padding-left: 0;
+    position: absolute;
+}
+.brand_login_panel label.error#agree-error{
+	padding-left:15px;	
+}
+.brand_login_panel p{
+	color:#fff;
+	font-weight:700;	
+}
+.brand_login_panel .checkbox label{
+	color:#fff;	
+}
+.signup_form_panel label.error {
+    bottom: -27px;
+    color: #ab0000;
+    font-size: 12px;
+    font-weight: 600;
+    left: 0;
+    padding-left: 0;
+    position: absolute;
+}
+.signup_form_panel input[name="agree"] {
+	height: 20px;
+    left: -6px;
+    margin: 0;
+    position: relative;
+    top: 5px;
+    -moz-transform: scale(1.3);
+    width: 20px;
+}
+.signup_form_panel .radio label.error, .signup_form_panel .checkbox label.error{
+	bottom: -27px;
+    color: #ab0000;
+    font-size: 12px;
+    font-weight: 600;
+    left: 0;
+    padding-left: 30px;
+    position: absolute;
+}
+.left_acct_img .upload_button_panel.img_modify p.upload_image{
+	font-size:12px;	
+}
+.tot_formlog .checkbox{
+	padding-top:0;	
+}
+#button_err{
+	bottom:-33px;	
+}
+.form_bottom_panel .green_btn{
+	margin-right:10px;	
+}
+.bottom_dash .check_box_tab input[type="radio"]:checked + label:before,.bottom_dash .check_box_tab input[type="radio"] + label:before{
+	top:4px;	
+}
+.bottom_dash .check_box_tab input[type="checkbox"] + label, .bottom_dash .check_box_tab input[type="radio"] + label{
+	line-height:26px;	
+}
+select.selectclass option:hidden{
+	display:none !important;	
+}
+.inn_owl-item {
+    position: relative;
+    margin: 0;
+    padding: 3px 1em 3px .4em;
+    cursor: pointer;
+    min-height: 0;
+    /* support: IE7; */
+    /* support: IE10, see #8844; */
+    list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid #d9d9d9;
+    background-color: #ededed;
+    white-space: nowrap;
+    margin: -1px 5px 5px 0;
+    height: 22px;
+    vertical-align: top;
+    cursor: default;
+    width: auto;
+    float: left;
+    margin: 5px 0px 0px 5px;
+    height: 42px;
+    border: 1px solid #62B0BD;
+    border-radius: 19px;
+    line-height: 42px;
+    font-size: 17px;
+    color: #367984;
+    font-weight: 300;
+    position: relative;
+    background: #81ddec;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #81ddec 0%, #6ec5d4 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#81ddec), color-stop(100%,#6ec5d4));
+    background: -webkit-linear-gradient(top, #81ddec 0%,#6ec5d4 100%);
+    background: -o-linear-gradient(top, #81ddec 0%,#6ec5d4 100%);
+    background: -ms-linear-gradient(top, #81ddec 0%,#6ec5d4 100%);
+    background: linear-gradient(to bottom, #81ddec 0%,#6ec5d4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81ddec', endColorstr='#6ec5d4',GradientType=0 );
+    padding: 0px 15px 0px 15px;
+}
+#for_slider{
+	width: 65%;	
+	margin:0 auto;
+}
+.ui-widget-content.ui-autocomplete{
+	opacity:0 !important;	
+}
+#for_slider .owl-carousel{
+	display:block;	
+}
+.bx-wrapper .bx-viewport{
+	background:transparent !important;
+	box-shadow:none !important;
+	border:none !important;	
+}
+.form_dashboardacct .table.special_height th:nth-child(4){
+	min-width:150px;	
 }
 

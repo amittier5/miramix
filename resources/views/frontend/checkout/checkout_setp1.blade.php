@@ -85,7 +85,8 @@
     
     <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
     
-    <a href="" class="full_green_btn pull-left text-uppercase">Continue</a>
+    <button class="full_green_btn pull-left text-uppercase"  id="go_register">Continue</button>
+    <label style="display:none" class="error" id="button_err">Please choose the register option.</label>
     
     </div>
     <div class="col-sm-6 spec_padleft">
@@ -132,6 +133,38 @@
 </div>
 <!-- End Products panel --> 
  </div>
+<script>
+    $( document ).ready(function(){
+        $('#radio-1').on('change',function(){
+            checkRedayState();
+        });
+        
+        $("#go_register").click(function(){
+            
+            if($('#radio-1').is(':checked'))
+            {
+               
+                $("#button_err").hide();
+                window.location = "<?php echo url();?>/register";
+            }
+            else
+            {
+                $("#button_err").show();
+            }
+        });
+    });
 
+    function checkRedayState()
+    {
+         if($('#radio-1').is(':checked'))
+            {
+                $("#button_err").hide();
+            }
+            else
+            {
+                $("#button_err").show();
+            }
+    }
+</script>
 
 @stop

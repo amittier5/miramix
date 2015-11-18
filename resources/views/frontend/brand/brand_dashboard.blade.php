@@ -105,8 +105,26 @@
                         </div>                    	
                     </div>
                 </div>
+		    
+		<div class="acct_box org_org_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+                        <a href="#">Subscription History <span>Coming Soon</span></a>
+                        </div>                    	
+                    </div>
+                </div>
+		    
+		<div class="acct_box blue_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="#"><i class="fa fa-credit-card fa-2x"></i></a>
+                        <a href="#">Wholesale <span>Coming Soon</span></a>
+                        </div>                    	
+                    </div>
+                </div>
                 
-                <div class="btn-block text-center"><a href="" class="btn btn-white">Subscription History</a></div>
+            
                </div>
                </div>           
            </div>

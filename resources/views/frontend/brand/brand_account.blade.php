@@ -62,17 +62,40 @@
                             {!! Form::text('fname',$brand_details['fname'],['class'=>'form-control','id'=>'fname','placeholder'=>'Executive in Charge First Name', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
 			    
-			    <div class="form-group">
+			 <div class="form-group">
                              {!! Form::text('lname',$brand_details['lname'],['class'=>'form-control','id'=>'lname','placeholder'=>'Executive in Charge Last Name', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
 			    
-			     <div class="form-group">
+			<div class="form-group">
+                             {!! Form::text('email',$brand_details['email'],['class'=>'form-control','id'=>'email','placeholder'=>'Email','onblur' =>'emailChecking(this.value)', 'aria-describedby'=>'basic-addon2'])!!}
+			     <label id="email_error" class="error" style="display:none;">Email-Id is already exist.</label>
+                          </div>
+			    
+			  <div class="form-group">
                              {!! Form::text('youtube_link',$brand_details['youtube_link'],['class'=>'form-control','id'=>'youtube_link','placeholder'=>'Youtube Url', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
 			    
 			  <div class="form-group">
-                             {!! Form::text('brand_sitelink',$brand_details['brand_sitelink'],['class'=>'form-control','id'=>'brand_sitelink','placeholder'=>'Site Url', 'aria-describedby'=>'basic-addon2'])!!}
+                             {!! Form::text('brand_sitelink',$brand_details['brand_sitelink'],['class'=>'form-control','id'=>'brand_sitelink','placeholder'=>'Your Website Url', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
+			    
+			    
+			    
+			    
+			    
+			    <div class="form-group">
+                             {!! Form::text('facebook_url',$brand_details['facebook_url'],['class'=>'form-control','id'=>'facebook_url','placeholder'=>'Facebook Url', 'aria-describedby'=>'basic-addon2'])!!}
+                          </div>
+			    
+			    <div class="form-group">
+                             {!! Form::text('twitter_url',$brand_details['twitter_url'],['class'=>'form-control','id'=>'twitter_url','placeholder'=>'Twitter Url', 'aria-describedby'=>'basic-addon2'])!!}
+                          </div>
+			    
+			    <div class="form-group">
+                             {!! Form::text('linkedin_url',$brand_details['linkedin_url'],['class'=>'form-control','id'=>'linkedin_url','placeholder'=>'Linkedin Url', 'aria-describedby'=>'basic-addon2'])!!}
+                          </div>
+			    
+			    
 			    
 			    <div class="form-group">
                              {!! Form::textarea('brand_details',$brand_details['brand_details'],['class'=>'form-control', 'rows'=>5, 'cols'=>80,'id'=>'brand_details','placeholder'=>'Short Description About Brand', 'aria-describedby'=>'basic-addon2'])!!}
@@ -117,6 +140,9 @@
  </div>
 <script>
 $.validator.addMethod("youtube", function(value, element) {
+if (value=='') {
+    return true;
+}
      var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
      return (value.match(p)) ? RegExp.$1 : false;
     }, "Enter correct Youtube Url");
@@ -145,7 +171,11 @@ $.validator.addMethod("complete_url", function(val, elem) {
 			business_name:"required",
       fname: "required",
       lname: "required",
-     
+     email: 
+                {
+                    
+                    email: true
+                },
 			phone_no :
                 {
                     required : true,
@@ -169,7 +199,31 @@ $.validator.addMethod("complete_url", function(val, elem) {
 
   });
   
-  
+
+ function emailChecking(email_id)
+ {
+    if(email_id !='')
+    {
+        $.ajax({
+          url: '<?php echo url();?>/emailChecking2',
+          method: "POST",
+          data: { email : email_id ,_token: '{!! csrf_token() !!}'},
+          success:function(data)
+          {
+            //alert(data);
+            if(data == 1 ) // email exist already
+            {
+                $("#email").val('');
+                $("#email_error").show();
+            }
+            else
+            {
+                $("#email_error").hide();
+            }
+          }
+        });
+    }
+ }  
     
 </script>
 @stop

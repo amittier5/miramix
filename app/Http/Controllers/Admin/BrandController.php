@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Request;
 use Input; /* For input */
 use Validator;
 use Session;
+use Hash;
 use Imagine\Image\Box;
 use Image\Image\ImageInterface;
 use Illuminate\Pagination\Paginator;
 use DB;
+use App\Helper\helpers;
+
 
 class BrandController extends Controller {
 
@@ -79,6 +82,7 @@ class BrandController extends Controller {
     public function edit($id)
     {
         $brand=Brandmember::find($id);
+        $brand->password='';
         return view('admin.brands.edit',compact('brand'),array('title'=>'Edit Brand','module_head'=>'Edit Brand'));
     }
 
@@ -90,9 +94,42 @@ class BrandController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { 
+    {
+        $obj = new helpers();
        $brandUpdate=Request::all();
        $brand=Brandmember::find($id);
+       
+       if($brandUpdate['password']==''){
+	unset($brandUpdate['password']);
+       }else{
+	$brandUpdate['password']=Hash::make(Request::input('password'));
+	
+       }
+       
+       if(isset($_FILES['pro_image']['name']) && $_FILES['pro_image']['name']!="")
+			{
+				$destinationPath = 'uploads/brandmember/'; // upload path
+                $thumb_path = 'uploads/brandmember/thumb/';
+                $medium = 'uploads/brandmember/thumb/';
+				$extension = Input::file('pro_image')->getClientOriginalExtension(); // getting image extension
+				$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
+				Input::file('pro_image')->move($destinationPath, $fileName); // uploading file to given path
+				
+                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
+                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
+			}
+			else
+			{
+				$fileName = '';
+			}
+                        
+       
+       if($fileName ==''){
+	unset($brandUpdate['pro_image']);
+       }else{
+	$brandUpdate['pro_image']=$fileName;
+	
+       }
        $brand->update($brandUpdate);
 
        Session::flash('success', 'Brand updated successfully'); 

@@ -72,7 +72,7 @@ $( "#dob" ).datepicker({
   
   </script>
     
-   {!! Form::model($member,array('method' => 'PATCH','id'=>'form_member','name'=>'form_member','class'=>'form-horizontal row-fluid','route'=>array('admin.member.update',$member->id))) !!}
+   {!! Form::model($member,array('method' => 'PATCH','id'=>'form_member','files'=>true,'name'=>'form_member','class'=>'form-horizontal row-fluid','route'=>array('admin.member.update',$member->id))) !!}
 
     <div class="control-group">
           <label class="control-label" for="basicinput">First Name *</label>
@@ -86,15 +86,35 @@ $( "#dob" ).datepicker({
                {!! Form::text('lname',null,['class'=>'span8','id'=>'lname']) !!}
           </div>
         </div>
-
+      <div class="control-group">
+            <label class="control-label" for="basicinput">User Name *</label>
+            <div class="controls">
+                 {!! Form::text('username',null,['class'=>'span8','id'=>'username']) !!}
+            </div>
+        </div>
+	    
+      <div class="control-group">
+            <label class="control-label" for="basicinput">Password</label>
+            <div class="controls">
+                 {!! Form::text('password',null,['class'=>'span8','id'=>'password']) !!}
+            </div>
+        </div>
+	    
         <div class="control-group">
             <label class="control-label" for="basicinput">Email *</label>
             <div class="controls">
                  {!! Form::text('email',null,['class'=>'span8','id'=>'email']) !!}
             </div>
         </div>
+	    
+      <div class="control-group">
+            <label class="control-label" for="basicinput">Slug *</label>
+            <div class="controls">
+                 {!! Form::text('slug',null,['class'=>'span8','id'=>'slug']) !!}
+            </div>
+        </div>
 
-        <div class="control-group">
+       <!-- <div class="control-group">
             <label class="control-label" for="basicinput">Gender</label>
             <div class="controls">
              {!! Form::radio('gender','Male') !!} Male
@@ -107,7 +127,9 @@ $( "#dob" ).datepicker({
             <div class="controls">
              {!! Form::text('dob',null,['class'=>'span8','id'=>'dob']) !!}
             </div>
-        </div>
+        </div>-->
+	
+	
         <div class="control-group">
             <label class="control-label" for="basicinput">Phone</label>
             <div class="controls">
@@ -115,7 +137,15 @@ $( "#dob" ).datepicker({
             </div>
         </div>
 
-
+<div class="control-group">
+            <label class="control-label" for="basicinput">Profile Image</label>
+            <div class="controls">
+             {!! Form::file('pro_image',null,['class'=>'btn','id'=>'pro_image','placeholder'=>'Profile Image'])!!}
+              <?php if(!empty($member->pro_image)){?>
+		<img src="<?php echo url();?>/uploads/member/<?php echo $member->pro_image?>" class="img-responsive" alt="" width="150">
+              <?php }?>
+            </div>
+        </div>
     
     <div class="form-group">
         {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}

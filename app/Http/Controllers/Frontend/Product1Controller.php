@@ -47,9 +47,7 @@ class Product1Controller extends BaseController {
     */
     public function index()
     {
-        //return view('frontend.product.index',compact('body_class'),array('title'=>'MIRAMIX | Home'));
-       //return Redirect::to('brandregister')->with('reg_brand_id', 1);
-        //return redirect('product-details');
+        
     }
 
 
@@ -91,28 +89,14 @@ class Product1Controller extends BaseController {
                             ->where('product_rating.status',1)
                             ->where('product_rating.product_id',$productdetails->id)
                             ->get();
+        $product_id = $productdetails->id;
+
         //echo "<pre/>";print_r($timeduration); exit;
-        return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating'),array('title'=>'Product Details'));
+        return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating','product_id'),array('title'=>'Product Details'));
         //return redirect('product-details');
     }
 
-    public function create()
-    {
-
-        if(!Session::has('brand_userid')){
-            //return redirect('brandLogin');
-        }
-
-        //$ingredients = DB::table('ingredients')->orderBy('id','DESC')->limit(2)->offset(0);
-
-         $ingredients = DB::table('ingredients')->get();
-
-        //echo "<pre>";print_r($ingredients);exit;
-
-
-
-        return view('frontend.product.create',compact('ingredients'),array('title'=>'Add product'));
-    }
+   
 
     public function getIngDtls()
     {
@@ -121,6 +105,84 @@ class Product1Controller extends BaseController {
          
         echo $ingredients_details->price_per_gram;
         exit;
+    }
+
+
+    public function getallrate(){
+    	$obj = new helpers();
+
+    	$resultsPerPage = 3;
+
+    	$paged = Input::get('page');
+    	$product_id = Input::get('product_id');
+
+    	if($paged>0){
+    		$page_limit=$resultsPerPage*($paged-1);
+    		$next_check_page = $page_limit+3;
+    	}
+    	else{
+    		$page_limit = 0;
+    		$next_check_page = 1;
+    	}
+
+    	$rating = DB::table('product_rating')
+                        ->leftJoin('brandmembers', 'brandmembers.id', '=', 'product_rating.user_id')
+                        ->select('product_rating.*','brandmembers.username')
+                        ->where('product_rating.status',1)
+                        ->where('product_rating.product_id',$product_id)
+                        ->skip($page_limit)
+                        ->take($resultsPerPage)
+                        ->get();
+
+        // For Next load more
+ 		$rating_count_arr = DB::table('product_rating')
+                        ->leftJoin('brandmembers', 'brandmembers.id', '=', 'product_rating.user_id')
+                        ->select('product_rating.*','brandmembers.username')
+                        ->where('product_rating.status',1)
+                        ->where('product_rating.product_id',$product_id)
+                        ->skip($next_check_page)
+                        ->take($resultsPerPage)
+                        ->get();                  
+        foreach($rating as $prate){
+        ?>
+        <div class="rating_block clearfix">
+          <h5 class="text-capitalize"><?php echo $prate->rating_title?></h5>
+              <div class="total_rev"><p> &ldquo; <?php echo $prate->comment?>  &rdquo;</p>
+                <div class="ratn_box">
+                  <div id="rate<?php echo $prate->rating_id?>"></div>
+                </div>
+              </div>
+              <div class="bot_rev">
+                <p class="author pull-left">Authored by <a href=""><?php echo $prate->username?></a> </p>
+                <p class="date pull-left"><?php echo $obj->time_elapsed_string(strtotime($prate->created_on))?></p>
+              </div>
+         </div>
+          <script>
+            $(document).ready(function(){
+              $('#rate<?php echo $prate->rating_id?>').raty({
+              readOnly: true,
+              score: <?php echo $prate->rating_value?>,
+              starHalf    : '<?php echo url();?>/public/frontend/css/images/star-half.png',
+              starOff     : '<?php echo url();?>/public/frontend/css/images/star-off.png',
+              starOn      : '<?php echo url();?>/public/frontend/css/images/star-on.png'  , 
+              });
+            });
+          </script>
+        <?php
+        }
+       
+         // if(count($rating) == $resultsPerPage){
+        	if(count($rating_count_arr)>0){
+        ?>
+
+		 	<!-- <button class="loadmore" data-page="<?php echo  $paged+1 ;?>">Load More</button> -->
+		 	<a href="javascript:void(0);" class="btn btn-special loadmore" data-page="<?php echo  $paged+1 ;?>">View More Reviews</a>
+		 <?php 
+		  }else{
+		  	echo "<h3>No More Rating</h3>";
+		 }
+
+
     }
 
               

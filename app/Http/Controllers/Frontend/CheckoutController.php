@@ -62,7 +62,7 @@ class CheckoutController extends BaseController {
             $login_arr = array('email' => $email, 'password' => $encrypt_pass);
 
 
-            $users = DB::table('brandmembers')->where('email', $email)->where('role', 0)->first();            
+            $users = DB::table('brandmembers')->where('email', $email)->where('role', 0)->first();    // Only member Can Login here        
            // print_r($_POST);exit;
             
             if($users!="")
@@ -92,13 +92,15 @@ class CheckoutController extends BaseController {
                         return redirect('/checkout-step1');
                     }
                 }
-                else{
+                else
+                {
                         Session::flash('error', 'Email and password does not match.'); 
                         return redirect('/checkout-step1');
                 }
             }
-            else{
-                    Session::flash('error', 'Email and password does not match.'); 
+            else
+            {
+                    Session::flash('error', 'This email-id is not register as a member.'); 
                     return redirect('/checkout-step1');
             }
         }
@@ -227,9 +229,9 @@ class CheckoutController extends BaseController {
                                 ->where('mem_brand_id',Session::get('member_userid'))
 								->where('id',Session::get('selected_address_id'))
 								->first();
-								// echo "memid = ". Session::get('member_userid');
-								// echo "addid = ". Session::get('selected_address_id');
-//echo "<pre>";print_r($shp_address); exit;
+								//echo "memid = ". Session::get('member_userid');
+								//echo "addid = ". Session::get('selected_address_id');
+								//echo "<pre>";print_r($shp_address); exit;
 				// Serialize the Shipping Address because If user delete there address from "addresses" table,After that the address also store in the "order" table for  getting order history//
 				$shiping_address = array('address_title' 			=> $shp_address->address_title,
 										'mem_brand_id'				=> $shp_address->mem_brand_id,
@@ -351,10 +353,7 @@ class CheckoutController extends BaseController {
 	                'brand_name'=>$brand_name,
 	                'brand_slug'=>$brandmember->slug,
 	                'subtotal'=>$each_content->sub_total);
-
 	        }
-
-	        
             //echo "sph= ".$shipping_rate; exit;
 			return view('frontend.checkout.checkout_setp4',compact('body_class','cart_result','shipping_rate'),array('title'=>'MIRAMIX | Checkout-Step4'));
 		}
@@ -416,89 +415,199 @@ class CheckoutController extends BaseController {
 			$data['receiver_email'] 	= $_POST['receiver_email'];
 			$data['payer_email'] 		= $_POST['payer_email'];
 			$cnt		 				= explode(",",$_POST['custom']);
+		@mail("sumitra.unified@gmail.com", "notify1 ", "Invalid Response<br />data = <pre>".print_r($data, true)."</pre>");
 
-@mail("sumitra.unified@gmail.com", "notify1 ", "Invalid Response<br />data = <pre>".print_r($data, true)."</pre>");
+		if($data['payment_status'] =='Completed')
+		{
+			@mail("sumitra.unified@gmail.com", "notify1 ", "Invalid Response<br />data = <pre>".print_r($data, true)."</pre>");
+			$order_id= $cnt[1];
+			$user_id= $cnt[0];
 
-if($data['payment_status'] =='Completed')
-{
-	@mail("sumitra.unified@gmail.com", "notify1 ", "Invalid Response<br />data = <pre>".print_r($data, true)."</pre>");
-	$order_id= $cnt[1];
-						$user_id= $cnt[0];
+			$update_order = DB::table('orders')
+					            ->where('id', $order_id)
+					            ->update(['order_status' => 'complete']);
 
-						$update_order = DB::table('orders')
-			                                    ->where('id', $order_id)
-			                                    ->update(['order_status' => 'complete']);
+		}
 
-}
+					$pay_date=date('l jS \of F Y h:i:s A');
 
-			$pay_date=date('l jS \of F Y h:i:s A');
+					// post back to PayPal system to validate
+					$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 
-			// post back to PayPal system to validate
-			$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+					$header .= "Host: www.sandbox.paypal.com\r\n";
+					//$header .= "Host: www.paypal.com:443\r\n";
 
-			$header .= "Host: www.sandbox.paypal.com\r\n";
-			//$header .= "Host: www.paypal.com:443\r\n";
+					$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+					$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
 
-			$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-			$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-
-			$fp = fsockopen ('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);	
-			//$fp = fsockopen ('ssl://www.paypal.com', 443, $errno, $errstr, 30);
-			if (!$fp) 
-			{
-				// HTTP ERROR
-				@mail("sumitra.unified@gmail.com", "fshok error", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
-			} 
-			else 
-			{
-				@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING1", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
-				fputs ($fp, $header . $req);
-				 
-
-				while (!feof($fp)) {
-					$res = fgets ($fp, 1024);
-
-					if (strcmp($res, "VERIFIED") == 0) 
+					$fp = fsockopen ('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);	
+					//$fp = fsockopen ('ssl://www.paypal.com', 443, $errno, $errstr, 30);
+					if (!$fp) 
 					{
-						
-						$order_id= $cnt[1];
-						$user_id= $cnt[0];
+						// HTTP ERROR
+						@mail("sumitra.unified@gmail.com", "fshok error", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
+					} 
+					else 
+					{
+						@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING1", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
+						fputs ($fp, $header . $req);
+						 
 
-						$update_order = DB::table('orders')
-			                                    ->where('id', $order_id)
-			                                    ->update(['order_status' => 'complete']);
-									
+						while (!feof($fp)) {
+							$res = fgets ($fp, 1024);
+
+							if (strcmp($res, "VERIFIED") == 0) 
+							{
+								
+								$order_id= $cnt[1];
+								$user_id= $cnt[0];
+
+								$update_order = DB::table('orders')
+					                                    ->where('id', $order_id)
+					                                    ->update(['order_status' => 'complete']);
+											
+							}
+							if (strcmp ($res, "INVALID") == 0) {
+							// PAYMENT INVALID & INVESTIGATE MANUALY! 
+							// E-mail admin or alert user
+							//$message = '
+							//	Dear Administrator,
+							//	A payment has been made but is flagged as INVALID.
+							//	Please verify the payment manualy and contact the buyer.
+							//	Buyer Email: '.$data['payer_email'].'
+							//	';
+							// Used for debugging
+
+							@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING2", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
+					    	
+						}
+					}	
+					fclose ($fp);
 					}
-					if (strcmp ($res, "INVALID") == 0) {
-					// PAYMENT INVALID & INVESTIGATE MANUALY! 
-					// E-mail admin or alert user
-					//$message = '
-					//	Dear Administrator,
-					//	A payment has been made but is flagged as INVALID.
-					//	Please verify the payment manualy and contact the buyer.
-					//	Buyer Email: '.$data['payer_email'].'
-					//	';
-					// Used for debugging
-
-					@mail("sumitra.unified@gmail.com", "Me PAYPAL DEBUGGING2", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
-			    	
-				}
-			}	
-			fclose ($fp);
-			}
-
-		
-
     }
+
     public function success()
     {
+    	@mail("sumitra.unified@gmail.com", "notify152 ", "Invalid Response<br />data = <pre>".print_r($_POST, true)."</pre>");
     	//SuccessFull payment View
-    	// For Paypal Payment Only //
-    	
+    	$xsrfToken = app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token());  
 
-    	$xsrfToken = app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token());    	
+    	// For Paypal Payment Only //
+    	$sitesettings = DB::table('sitesettings')->get();
+    	$all_sitesetting = array();
+    	foreach($sitesettings as $each_sitesetting)
+	    {
+	    	$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+    	}
+    	
+    	$admin_users_email = $all_sitesetting['email']; // Admin Support Email
+    	$payment_method =  $all_sitesetting['payment_mode'];
+
+    	if(Session::get('payment_method')=='paypal')
+    	{
+    		if(Request::isMethod('post'))
+        	{
+        		
+        	$custom = explode(',',$_POST['custom']); //Return From Paypal
+        	$user_id =  $custom[0];					//User_id
+        	$order_id = $custom[1];					//Order_id
+
+			$transaction_status =$_POST['payment_status'];
+			$update_order = DB::table('orders')
+							->where('id', $order_id)
+							->update(['order_status'=>'processing','transaction_id' => $_POST['txn_id'],'transaction_status'=>$transaction_status]);
+
+			/* Order details for perticular order id */
+			$order_list = DB::table('orders')
+	                    ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
+	                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
+	                    ->where('orders.id','=',$order_id)
+	                    ->get();
+
+			$user_details = DB::table('brandmembers')->where('id', Session::get('member_userid'))->first();
+			// echo "dddd<pre>";print_r($user_details);
+			// exit;
+			$name = $user_details->fname.' '.$user_details->lname;
+			$username = $user_details->username;
+			if($name!='')
+				$mailing_name = $name;
+			else
+				$mailing_name = $username;
+
+            $user_email = $user_details->email; //"sumitra.unified@gmail.com";
+            
+            //echo $resetpassword_link; exit;
+
+            /* Mail For Member  */
+            $sent = Mail::send('frontend.checkout.order_details_mail', array('admin_users_email'=>$admin_users_email,'receiver_name'=>$mailing_name,'email'=>$user_email,'order_list'=>$order_list), 
+            function($message) use ($admin_users_email, $user_email,$mailing_name)
+            {
+                $message->from($admin_users_email);  //support mail
+                $message->to($user_email, $mailing_name)->subject('Miramix Order Details');
+            });
+
+            /* Mail For Brand */
+            $branduser = array();
+            foreach($order_list as $each_order_list)
+            {
+
+            	$branduser[$each_order_list->brand_email]=$each_order_list->brand_name;
+
+            }
+            foreach($branduser as $brand_email=>$brand_name)
+            {
+            	$items=array();
+            	foreach($order_list as $each_order_list)
+            	{
+            			if($each_order_list->brand_email!=$brand_email) continue;
+
+            			$items[]=$each_order_list;
+            	}
+
+            	$sent_brand = Mail::send('frontend.checkout.brand_order_details_mail', array('admin_users_email'=>$admin_users_email,'brand_name'=>$brand_name,'brand_email'=>$brand_email,'order_list'=>$items), 
+		            function($message) use ($admin_users_email, $brand_email,$brand_name)
+		            {
+		                $message->from($admin_users_email); //support mail
+		                $message->to($brand_email, $brand_name)->subject('Miramix Order Details For Brand');
+		            });
+            }
+
+            /* Mail For Admin */
+            $admin_user = DB::table('users')->first();
+
+            $admin_email = $admin_user->email;
+
+            if(($admin_user->name)!='')
+            	$admin_name = $admin_user->name;
+            else
+            	$admin_name = 'Admin';
+
+            $sent_admin = Mail::send('frontend.checkout.admin_order_details_mail', array('admin_users_email'=>$admin_users_email,'receiver_name'=>$admin_name,'admin_email'=>$admin_email,'order_list'=>$order_list), 
+            function($message) use ($admin_users_email, $admin_email,$admin_name)
+            {
+                $message->from($admin_users_email);  //support mail
+                $message->to($admin_email, $admin_name)->subject('Miramix Order Details For Admin');
+            });
+
+
+            if( ! $sent) 
+            {
+              Session::flash('error', 'something went wrong!! Mail not sent.'); 
+              //return redirect('member-forgot-password');
+            }
+            else
+            {
+              Session::flash('success', 'Your order successfully placed.'); 
+              //return redirect('memberLogin');
+            }
+            Session::put('order_number',$order_list[0]->order_number);
+            Session::put('order_id',$order_id);
+        	}
+    	}
+
     	return view('frontend.checkout.pyament_success',array('title'=>'MIRAMIX | Checkout-Success'))->with('xsrf_token', $xsrfToken);
     }
+
     public function cancel()
     {
     	//Cancel payment View
@@ -513,7 +622,6 @@ if($data['payment_status'] =='Completed')
 	    {
 	    	$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
     	}
-    	//echo "<pre>";print_r($all_sitesetting); exit;
     	
     	$admin_users_email = $all_sitesetting['email']; // Admin Support Email
     	$payment_method =  $all_sitesetting['payment_mode'];
@@ -542,17 +650,14 @@ if($data['payment_status'] =='Completed')
 			// the API Login ID and Transaction Key must be replaced with valid values
 			"x_login"			=> $authorize_login_key, 		//"2BPuf2X4wmn",
 			"x_tran_key"		=> $authorize_transaction_key, //"7kR5A9k8xa8F9ztz",
-
 			"x_version"			=> "3.1",
 			"x_delim_data"		=> "TRUE",
 			"x_delim_char"		=> "|",
 			"x_relay_response"	=> "FALSE",
-
 			"x_type"			=> "AUTH_CAPTURE",
 			"x_method"			=> "CC",
 			"x_card_num"		=> Session::get('card_number'), //"4042760173301988", $card_number
-			"x_exp_date"		=> Session::get('card_exp_month').Session::get('card_exp_year'),				//$card_exp_month.$card_exp_year
-
+			"x_exp_date"		=> Session::get('card_exp_month').Session::get('card_exp_year'),				//$card_exp_month.$card_exp_year 
 			"x_amount"			=> $order_details->order_total,
 			"x_description"		=> "Miramix Transaction"
 			
@@ -580,10 +685,10 @@ if($data['payment_status'] =='Completed')
 		if($response_array[0] == 1)
 		{ 
 			//echo "ss= ".$admin_users_email; exit;
-			$transaction_status ="success";
+			$transaction_status ="Completed";
 			$update_order = DB::table('orders')
 							->where('id', $order_id)
-							->update(['order_status'=>'completed','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status,'response_code'=>$response_array[0]]);
+							->update(['order_status'=>'processing','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status,'response_code'=>$response_array[0]]);
 
 			/* Order details for perticular order id */
 			$order_list = DB::table('orders')

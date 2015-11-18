@@ -17,6 +17,8 @@ use Auth;
 use Cookie;
 use App\Helper\helpers;
 use Cart;
+use App\Model\Subscription;
+
 
 class HomeController extends BaseController {
 
@@ -58,17 +60,22 @@ class HomeController extends BaseController {
                 
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
-	    $tag=str_replace(",","','",$tags);
-	    $tag=str_replace(" ","",$tag);
-	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$tag."')")->get();
+	    $tag=explode(",",$tags);
+	    $ptags='';
+	    foreach($tag as $t){
+		$ptags .=trim($t)."','";
+	    }
+	    $ptags=rtrim($ptags,",'");
+	    
+	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$ptags."')")->get();
 	    
 	    $pids='';
 	    foreach($tagpro as $tagp){
 		 $pids .=$tagp->product_id.",";
 	    }
 	   
-	    $pids=rtrim($pids,",");
-	   
+	   $pids=rtrim($pids,",");
+	  
 	    $i=1;
 	   /* foreach($tag as $t){
 		if($i==1){
@@ -109,16 +116,7 @@ class HomeController extends BaseController {
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
 	    
-	     $tag=str_replace(",","','",$tags);
-	    $tag=str_replace(" ","",$tag);
-	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$tag."')")->get();
 	    
-	    $pids='';
-	    foreach($tagpro as $tagp){
-		 $pids .=$tagp->product_id.",";
-	    }
-	   
-	    $pids=rtrim($pids,",");
 	    
 	    /*$tag=explode(",",$tags);
 	    $i=1;
@@ -168,6 +166,8 @@ class HomeController extends BaseController {
     
     public function userLogout() /* For All user logout */
     {
+    	
+
         if(Session::has('member_userid'))
         {
             Session::forget('member_userid');
@@ -189,7 +189,10 @@ class HomeController extends BaseController {
             Session::forget('brand_user_email');
             Session::flash('success', 'You are successfully logged out.'); 
             return redirect('brandLogin');
-        }       
+        } 
+        else{
+        	 return redirect('home');
+        }      
     }
 
 
@@ -531,7 +534,37 @@ class HomeController extends BaseController {
                     $user_cnt = DB::table('brandmembers')->where('email', $email)->where('status', 1)->count();
 
                     if($user_cnt){
-
+		    
+		    
+		    /******************  check subscription **************************/
+		    
+		    
+		    $subscription = DB::table('subscription_history')->where('member_id', $users->id)->orderBy('subscription_id','DESC')->first();
+		    if(count($subscription)<=0){
+			
+			$end_date=date("Y-m-d",strtotime($users->created_at .' + 30 days'));
+			$setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
+			
+			$subdata=array("member_id"=>$users->id,"start_date"=>$users->created_at,"end_date"=>$end_date,"subscription_fee"=>$brand->member_fee);
+			Subscription::create($subdata);
+			
+		    }else{
+			
+			$today=Date('Y-m-d');
+			$enddate=date("Y-m-d",strtotime($subscription->end_date." + 1 day"));
+			
+			if($today>$enddate && $subscription->payment_status=='pending'){
+			    
+			    Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
+			    return redirect('brandLogin');
+			}
+			
+			
+		    }
+		    
+		    /******************  check subscription **************************/
+		    
+		    
                          // Check for remember me
                         if(Request::input('remember_me')==1){
                             Cookie::queue(Cookie::make('brand_email', Request::input('email'), 60 * 24 * 30));
@@ -690,7 +723,7 @@ class HomeController extends BaseController {
    public function searchtags(){
     $tags=array();
     $terms=Request::input('term');
-     $tags = DB::table('searchtags')->where('name', 'LIKE', Request::input('term').'%')->get();
+     $tags = DB::table('searchtags')->where('name', 'LIKE', Request::input('term').'%')->groupBy('name')->get();
      $product_id='';
      foreach($tags as $tag){
 	//$tag=preg_replace( "/\r|\n/", "", $tag->name );

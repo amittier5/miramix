@@ -33,7 +33,7 @@
                         
 				<div class="upload_button_panel img_modify">
 				<p class="upload_image">
-				<input class="upload_button filesbrand" type="file" name="image" id="image" accept="image/*" style="cursor:pointer;"><span>Upload Image</span></p>
+				<input class="upload_button filesbrand" type="file" name="image" id="image" accept="image/*" style="cursor:pointer;"><span>Upload Profile Avatar</span></p>
 				<div class="selectedFiles">
 				 <?php if(!empty($member['pro_image'])){?>
 				   <img src="<?php echo url();?>/uploads/member/<?php echo $member['pro_image']?>" class="img-responsive" alt="" width="150">
@@ -49,14 +49,14 @@
                         <div class="col-sm-9">
                         
 			<div class="form-group">
-                            {!! Form::text('username',$member['username'],['class'=>'form-control','id'=>'fname','readonly'=>'readonly','placeholder'=>'Executive in Charge First Name', 'aria-describedby'=>'basic-addon2'])!!}
+                            {!! Form::text('username',$member['username'],['class'=>'form-control','id'=>'username','placeholder'=>'Username (Warning: Cannot be changed once created)', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
                           <div class="form-group">
-                            {!! Form::text('fname',$member['fname'],['class'=>'form-control','id'=>'fname','placeholder'=>'Executive in Charge First Name', 'aria-describedby'=>'basic-addon2'])!!}
+                            {!! Form::text('fname',$member['fname'],['class'=>'form-control','id'=>'fname','placeholder'=>'First Name', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
 			    
 			    <div class="form-group">
-                             {!! Form::text('lname',$member['lname'],['class'=>'form-control','id'=>'lname','placeholder'=>'Executive in Charge Last Name', 'aria-describedby'=>'basic-addon2'])!!}
+                             {!! Form::text('lname',$member['lname'],['class'=>'form-control','id'=>'lname','placeholder'=>'Last Name', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
 			    
 			    

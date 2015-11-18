@@ -357,6 +357,29 @@ class RegisterController extends BaseController {
         }
     }
     
+    public function emailChecking2()
+    {
+        $email_id = Input::get('email');
+        
+        $email_count = DB::table('brandmembers')
+                    ->where('email', '=', $email_id)
+		    ->where('id', '<>', Session::get('brand_userid'))
+                    ->count();
+	$email_count2 = DB::table('brandmembers')
+                    ->where('email', '=', $email_id)
+		    ->where('id', '=', Session::get('brand_userid'))
+                    ->count();
+		    
+        if($email_count >0)
+        {
+            echo  1; // Email already exist.
+        }
+        else
+        {
+            echo 0 ; // New email for registration.
+        }
+    }
+    
     public function usernameChecking()
     {
         $user_name = Input::get('user_name');

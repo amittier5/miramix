@@ -100,7 +100,9 @@ $(document).ready(function(){
       </table>
     </div>
 
-  <div><?php echo $products->render(); ?></div>
+  <div>
+    {!! str_replace('/?', '?', $products->render()) !!}
+  </div>
 
   <script>
 

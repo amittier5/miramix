@@ -46,6 +46,9 @@ class Brandmember extends Model
         'auth_payment_profile_id',
         'auth_address_id',
         'youtube_link',
+        'facebook_url',
+        'twitter_url',
+        'linkedin_url',
         'updated_at',
         'created_at'
        ];

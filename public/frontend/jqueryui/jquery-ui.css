@@ -1278,7 +1278,6 @@ body .ui-tooltip {
     /* background: #79c9ec url("images/ui-bg_glass_75_79c9ec_1x400.png") 50% 50% repeat-x; */
     /* font-weight: normal; */
     /* color: #026890; */
-	border:none;
 	background: #81ddec;
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
     background: -moz-linear-gradient(top, #81ddec 0%, #6ec5d4 100%);

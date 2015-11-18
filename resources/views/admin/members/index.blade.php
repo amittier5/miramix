@@ -19,8 +19,8 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Gender</th>
-                    <th>DOB</th>
+                    <th>Username</th>
+                    
                     <th>Status</th>
                     <th>Admin Status</th>
                     <th>Edit</th>
@@ -37,8 +37,8 @@
                     <td class="">{!! $member->fname.' '.$member->lname !!}</td>
                     <td class="">{!! $member->email !!}</td>
                     <td class="">{!! $member->phone_no !!}</td>
-                    <td class="">{!! $member->gender !!}</td>
-                    <td class="">{!! date('m/d/Y',strtotime($member->dob)) !!}</td>
+                    <td class="">{!! $member->username !!}</td>
+                    
                     <td class="">
                         @if ($member->status == 1)
                             Active 

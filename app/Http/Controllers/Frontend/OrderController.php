@@ -54,7 +54,7 @@ class OrderController extends BaseController {
 
         $limit = 10;
         //$order_list = Order::with('AllOrderItems')->paginate($limit);
-        $order_list = Order::with('AllOrderItems')->where('user_id','=',Session::get('member_userid'))->paginate($limit);
+        $order_list = Order::with('AllOrderItems')->where('user_id','=',Session::get('member_userid'))->orderBy('id', 'desc')->paginate($limit);
 
         
         $order_list->setPath('order-history');

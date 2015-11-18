@@ -7,16 +7,20 @@ use Illuminate\Support\Facades\Request;
 use Input; /* For input */
 use Validator;
 use Session;
+use Hash;
 use Imagine\Image\Box;
 use Image\Image\ImageInterface;
 use Illuminate\Pagination\Paginator;
 use DB;
+use App\Helper\helpers;
+
 
 class MemberController extends Controller {
 
     public function __construct() 
     {
         view()->share('member_class','active');
+	
     }
 
    /**
@@ -37,6 +41,7 @@ class MemberController extends Controller {
     public function edit($id)
     {
         $member=Brandmember::find($id);
+	$member->password='';
         return view('admin.members.edit',compact('member'),array('title'=>'Edit Member','module_head'=>'Edit Member'));
     }
 
@@ -48,8 +53,44 @@ class MemberController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { 
+    {
+	$obj = new helpers();
+	
        $memberUpdate=Request::all();
+       
+       if($memberUpdate['password']==''){
+	unset($memberUpdate['password']);
+       }else{
+	$memberUpdate['password']=Hash::make(Request::input('password'));
+	
+       }
+       
+       if(isset($_FILES['pro_image']['name']) && $_FILES['pro_image']['name']!="")
+			{
+				$destinationPath = 'uploads/member/'; // upload path
+				$thumb_path = 'uploads/member/thumb/';
+				$medium = 'uploads/member/thumb/';
+				$extension = Input::file('pro_image')->getClientOriginalExtension(); // getting image extension
+				$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
+				Input::file('pro_image')->move($destinationPath, $fileName); // uploading file to given path
+				
+                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
+                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
+			}
+			else
+			{
+				$fileName = '';
+			}
+                        
+       
+       if($fileName ==''){
+	unset($memberUpdate['pro_image']);
+       }else{
+	$memberUpdate['pro_image']=$fileName;
+	
+       }
+       
+       
        $member=Brandmember::find($id);
        $member->update($memberUpdate);
 
