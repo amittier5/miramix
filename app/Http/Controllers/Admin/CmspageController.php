@@ -26,7 +26,7 @@ class CmspageController extends Controller {
    public function index()
    {
         $limit = 10;
-		$cms = DB::table('cmspages')->orderBy('id','DESC')->paginate($limit);
+		$cms = DB::table('cmspages')->orderBy('title','ASC')->paginate($limit);
         //echo '<pre>';print_r($vitamins); exit;
 	    $cms->setPath('cms');
         return view('admin.cms.index',compact('cms'),array('title'=>'Content Management','module_head'=>'Contents'));

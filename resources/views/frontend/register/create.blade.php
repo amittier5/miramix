@@ -63,11 +63,11 @@
                         <strong>{!! Session::get('success') !!}</strong>
                     </div>
                 @endif
-                <div class="log_btnblock md15">
+                <!-- <div class="log_btnblock md15">
                     <a href=""><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>
                     <a href=""><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
                 </div>
-                <img src="<?php echo url();?>/public/frontend/images/or.png" alt="">
+                <img src="<?php echo url();?>/public/frontend/images/or.png" alt=""> -->
                 {!! Form::open(['url' => 'register','method'=>'POST', 'files'=>true, 'id'=>'member_form', 'autocomplete'=>'off']) !!}
                 <div class="row signup_form_panel">
                 	<div class="col-sm-2">&nbsp;</div>
@@ -101,7 +101,7 @@
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="wow fadeInLeft checkbox col-sm-offset-2 col-sm-8">
                         <!-- <label><input type="checkbox">I agree to the terms and conditions of miramix.com</label> -->
-                         <label>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!}I agree to the terms and conditions of miramix.com</label>
+                         <label>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!}I agree to the <a href="<?php echo url();?>/terms-condition" target="_blank">terms and conditions</a> of miramix.com</label>
                     </div>
                 </div>
                 <div class="row  signup_form_panel text-center md30">

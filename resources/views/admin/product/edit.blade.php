@@ -7,7 +7,7 @@
 <!-- Start Add Products panel -->
      
     <!-- {!! Form::open(['url' => 'productPost','method'=>'POST', 'files'=>true, 'id'=>'product_form']) !!} -->
-   {!! Form::model($products,['method' => 'PATCH', 'files'=>true,'route'=>['admin.product.update',$products->id]]) !!}
+   {!! Form::model($products,['method' => 'PATCH', 'files'=>true,'route'=>['admin.product.update',$products->id],'id'=>'product_form']) !!}
     <input class="form-control" type="hidden" value="<?php echo $products->id;?>" name="product_id">
     <div class="add_product_panel">
           <h2 class="text-center">Edit Product</h2>
@@ -931,7 +931,10 @@ function onlyLoadChecktable(){
         }
         
         $('.form_check_table table').css({'opacity':1});
-        $('#load_table').hide(); 
+        $('#load_table').hide();
+		
+		$('.form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red').tooltip('hide').attr('data-original-title', 'Does not have all the ingredients').tooltip('fixTitle'); 
+		$('.form_check_table .table>thead>tr>th.red_selc .toll_tipfor_red').tooltip('hide').attr('data-original-title', 'Not Within Available Weight Range').tooltip('fixTitle');
         
 
 }
@@ -1169,21 +1172,22 @@ function checktable_val(){
         
         submitHandler: function(form, event) {
 			//alert(arr_dupvals.length);
+			//alert(flag);
 			if(flag==false || priceflag==false || (arr_dupvals.length)!=0 || check_weight_empty==false){
 			//alert(priceflag);
 			$('.alert-danger').remove();
 			if(flag==false){
 				
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
 			}
 			else if(check_weight_empty==false){
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
 			}
 			else if((arr_dupvals.length)!=0){
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 			}
 			else{
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
 			}
 			
 				return false;	
@@ -1304,7 +1308,8 @@ function checktable_val(){
 			 	this_val=0;
 			if(min_price=='')
 			 	min_price=0;
-			if(parseFloat(this_val)<parseFloat(min_price) || min_price==0)
+			//if(parseFloat(this_val)<parseFloat(min_price) || min_price==parseFloat(0))
+			if(parseFloat(this_val)<parseFloat(min_price))
 				priceflag=false;
 			else
 				priceflag=true;
@@ -1419,7 +1424,7 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 				
 			//alert(priceflag);	
 		   if(priceflag==false){ 		
-		  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
+		  $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
 		   }
 		   else{
 			$('.alert-danger').remove();   

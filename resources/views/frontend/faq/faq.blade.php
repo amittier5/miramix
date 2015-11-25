@@ -45,4 +45,16 @@
 </div></div></div>
 <!-- End Products panel --> 
  </div>
+ <script>
+ $(document).ready(function(e) {
+    $(document).on('show.bs.collapse','.faq_cnt .panel-collapse',function(){
+		var $this=$(this);
+		$this.parent().find('.panel-heading .panel-title i').removeClass('fa fa-plus-square-o').addClass('fa fa-minus-square');	
+	});
+	$(document).on('hide.bs.collapse','.faq_cnt .panel-collapse',function(){
+		var $this=$(this);
+		$this.parent().find('.panel-heading .panel-title i').removeClass('fa fa-minus-square').addClass('fa fa-plus-square-o');	
+	});
+});
+ </script> 
 @stop

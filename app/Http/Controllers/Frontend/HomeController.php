@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend; /* path of this controller*/
 
 use App\Model\Brandmember; /* Model name*/
+use App\Model\Newsletter;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
 use Illuminate\Support\Facades\Request;
@@ -35,7 +36,8 @@ class HomeController extends BaseController {
     * @return Response
     */
     public function index()
-    { 
+    {
+	
         $body_class = 'home';
 	$page=Request::input('page');
 	if(!empty($page)){
@@ -48,11 +50,14 @@ class HomeController extends BaseController {
 	
 	
 
-	$item_per_page=3;
+	$item_per_page=6;
 	
-	$products = DB::table('products')
+	$products =DB::table('products')
                  ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+                 ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
+                 ->where('subscription_status', "active")
+                 ->where('brandmembers.admin_status', 1)
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
 		 ->where('product_formfactors.actual_price','!=', 0)
@@ -86,7 +91,10 @@ class HomeController extends BaseController {
 		$products->orWhereRaw('INSTR(tags,"'.trim($t).'")');
 		$i++;
 	    }*/
+	  if(!empty($pids)){ 
 	   $products->whereRaw('products.id IN('.$pids.')');
+	  }
+	  
 	  }
 	$sortby=Request::input('sortby');
 	 if(!empty($sortby)){
@@ -107,12 +115,21 @@ class HomeController extends BaseController {
 	
 	 
 	 
-	 $products2 = DB::table('products')
+	 /*$products2 = DB::table('products')
                  
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
-                 ;
-                
+                 ;*/
+      $products2 = DB::table('products')
+                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
+                 ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+                 ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
+                 ->where('subscription_status', "active")
+                 ->where('brandmembers.admin_status', 1)
+                 ->where('is_deleted', 0)
+                 ->whereRaw('products.active="1"')
+         ->where('product_formfactors.actual_price','!=', 0)
+                 ->groupBy('product_formfactors.product_id');          
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
 	    
@@ -129,10 +146,13 @@ class HomeController extends BaseController {
 		$products2->orWhereRaw('INSTR(tags,"'.trim($t).'")');
 		$i++;
 	    }*/
+	   
+	    if(!empty($pids)){ 
 	    $products2->whereRaw('products.id IN('.$pids.')');
+	   }
 	  }
-	  
-	 $total_records=$products2->count();
+	  $p2=$products2->get();
+	  $total_records=count($p2);
 	
 	
 	$total_pages=ceil($total_records/$item_per_page);
@@ -142,7 +162,9 @@ class HomeController extends BaseController {
 	    // Some information to display to the user
 	    $from = $offset + 1;
 	    $to = min(($offset + $item_per_page), $total_records);
-	
+	    if($to==0){
+		$from=0;
+	    }
 	if($current_page==1 && (!Request::isMethod('post'))){
         return view('frontend.home.index',compact('body_class','products','item_per_page','current_page','total_records','total_pages','from','to'),array('title'=>'MIRAMIX | Home'));
 	}else{
@@ -390,7 +412,7 @@ class HomeController extends BaseController {
                 $user_email = $brandmembers->email;
                 $resetpassword_link = url().'/member-reset-password/'.base64_encode($user_email).'-'.base64_encode($random_code);
                 //echo $resetpassword_link; exit;
-                $sent = Mail::send('frontend.home.reset_password_link', array('name'=>$user_name,'email'=>$user_email,'reset_password_link'=>$resetpassword_link), 
+ 				$sent = Mail::send('frontend.home.reset_password_link', array('name'=>$user_name,'email'=>$user_email,'reset_password_link'=>$resetpassword_link,'admin_users_email'=>$admin_users_email), 
                 function($message) use ($admin_users_email, $user_email,$user_name)
                 {
                     $message->from($admin_users_email);
@@ -545,7 +567,7 @@ class HomeController extends BaseController {
 			$end_date=date("Y-m-d",strtotime($users->created_at .' + 30 days'));
 			$setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
 			
-			$subdata=array("member_id"=>$users->id,"start_date"=>$users->created_at,"end_date"=>$end_date,"subscription_fee"=>$brand->member_fee);
+			$subdata=array("member_id"=>$users->id,"start_date"=>$users->created_at,"end_date"=>$end_date,"subscription_fee"=>$setting->value);
 			Subscription::create($subdata);
 			
 		    }else{
@@ -555,8 +577,13 @@ class HomeController extends BaseController {
 			
 			if($today>$enddate && $subscription->payment_status=='pending'){
 			    
-			    Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
-			    return redirect('brandLogin');
+			    //Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
+			    //return redirect('brandLogin');
+			     $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'expired'));
+			    
+			}else{
+			   $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'active'));  
+			    
 			}
 			
 			
@@ -591,7 +618,10 @@ class HomeController extends BaseController {
         // check for remenber me cookie
         $brand_email = '';
         $brand_email = Cookie::get('brand_email');
-        return view('frontend.home.brand_login',compact('brand_email'),array('title'=>'MIRAMIX | Brand Login'));
+	$subfee = DB::table('sitesettings')->where('name','brand_fee')->first();
+	$subprofee = DB::table('sitesettings')->where('name','brand_perproduct_fee')->first();
+	
+        return view('frontend.home.brand_login',compact('brand_email','subfee','subprofee'),array('title'=>'MIRAMIX | Brand Login'));
     }   
 
     /**************************************  BRAND FORGOT PASSWORD START ************************************/
@@ -721,14 +751,17 @@ class HomeController extends BaseController {
 */
    
    public function searchtags(){
-    $tags=array();
+     $obj = new helpers();
+    $stags=array();
     $terms=Request::input('term');
-     $tags = DB::table('searchtags')->where('name', 'LIKE', Request::input('term').'%')->groupBy('name')->get();
+     $tags = DB::table('searchtags')->where('name', 'LIKE', '%'.Request::input('term').'%')->groupBy('name')->orderBy('popularity', 'DESC')->get();
+    // echo $obj->get_last_query();
+    //exit;
      $product_id='';
      foreach($tags as $tag){
 	//$tag=preg_replace( "/\r|\n/", "", $tag->name );
 	//$tag=str_replace(" ","",$tag);
-    $tags[]=array("id"=>$tag->product_id,"value"=>$tag->name,"tags"=>$tag->name);
+    $stags[]=array("id"=>$tag->product_id,"value"=>$tag->name,"tags"=>$tag->name);
     
     }
     
@@ -746,7 +779,80 @@ class HomeController extends BaseController {
     
     }*/
     
-    echo json_encode($tags);
+    echo json_encode($stags);
+   }
+   
+   public function newsletterajax(){
+    $email=Input::get('newsemail');
+   
+    
+     if(Session::has('member_userid'))
+        {
+            $member = Brandmember::find(Session::get('member_userid'));
+	   		$newsletter=array("email"=>$email,"fname"=>$member->fname,"lname"=>$member->lname,"created_on"=>date("Y-m-d H:s:i"),"status"=>1);
+	   		$subscriber = (($member->fname) =='')?$member->username:$member->fname;
+        }  
+        else if(Session::has('brand_userid'))
+        {
+          	$member = Brandmember::find(Session::get('brand_userid'));
+	   		$newsletter=array("email"=>$email,"fname"=>$member->fname,"lname"=>$member->lname,"created_on"=>date("Y-m-d H:s:i"),"status"=>1);
+	   		$subscriber = $member->fname;
+	   
+        }
+        else
+        {
+	  		$newsletter=array("email"=>$email,"fname"=>'guest',"lname"=>'guest',"created_on"=>date("Y-m-d H:s:i"),"status"=>1); 
+	  		$subscriber = 'subscriber';
+		}
+
+	$setting = DB::table('sitesettings')->where('name', 'email')->first();
+	$admin_users_email=$setting->value;
+
+    $countexists = DB::table('newsletter_subscription')->where('email', '=', $email)->count();
+    if($countexists>0){
+	    $result=array("message"=>"You have already subscribed.","status"=>"fail");
+	    
+	
+	}else{
+	    $newsletterres= Newsletter::create($newsletter);
+	    $result=array("message"=>"You have successfully subscribed.","status"=>"success");
+
+	    $sent = Mail::send('frontend.home.newsletter', array('admin_users_email'=>$admin_users_email,'subscriber'=>$subscriber), 
+            function($message) use ($admin_users_email,$email)
+            {
+                $message->from($admin_users_email);  //support mail
+                $message->to($email)->subject('Miramix Subscription Mail');
+            });
+	}
+    
+     echo json_encode($result);
+   }
+   
+   public function show404(){
+    
+    echo 'Page not found';
+   }
+
+   public function tagPopularity()
+   {
+        $tag_name = Input::get('tag');
+        $tagpopularity = DB::table('searchtags')
+                            ->where('name', 'like', '%'.$tag_name)->get();
+           //echo "<pre>";print_r($tagpopularity); exit;                 
+        if(!empty($tagpopularity))
+        {
+            foreach($tagpopularity as $eachtag)
+            {
+                //echo $eachtag->popularity; 
+                $popularity =$eachtag->popularity;
+                $popularity = $popularity+1;
+                $update_tagpopularity = DB::table('searchtags')
+                                            ->where('id', $eachtag->id)
+                                            ->update(['popularity' => $popularity]);
+            }
+        }
+        echo 1;
+        exit;
    }
 
 }

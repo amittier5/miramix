@@ -13,7 +13,8 @@ use Image\Image\ImageInterface;
 use Illuminate\Pagination\Paginator;
 use DB;
 use App\Helper\helpers;
-
+use App\Model\Address;
+use Mail; 
 
 class BrandController extends Controller {
 
@@ -28,7 +29,7 @@ class BrandController extends Controller {
     */
    public function index()
    {
-        $limit = 5;
+        $limit = 50;
         $brands = DB::table('brandmembers')->where('role',1)->orderBy('id','DESC')->paginate($limit);
         //echo '<pre>';print_r($brands); exit;
         $brands->setPath('brand');
@@ -83,7 +84,25 @@ class BrandController extends Controller {
     {
         $brand=Brandmember::find($id);
         $brand->password='';
-        return view('admin.brands.edit',compact('brand'),array('title'=>'Edit Brand','module_head'=>'Edit Brand'));
+         //$brand->slug='';
+        $baddress=Address::find($brand->address);
+       
+       $country = DB::table('countries')->orderBy('name','ASC')->get();
+        
+        $alldata = array();
+        foreach($country as $key=>$value)
+        {
+            $alldata[$value->country_id] = $value->name;
+        }
+        
+         $states = DB::table('zones')->where('country_id',  $baddress->country_id)->orderBy('name','ASC')->get();
+        
+        $allstates = array();
+        foreach($states as $key=>$value)
+        {
+            $allstates[$value->zone_id] = $value->name;
+        }
+        return view('admin.brands.edit',compact('brand','baddress','alldata','allstates'),array('title'=>'Edit Brand','module_head'=>'Edit Brand'));
     }
 
     /**
@@ -105,18 +124,45 @@ class BrandController extends Controller {
 	$brandUpdate['password']=Hash::make(Request::input('password'));
 	
        }
+     /*  
+       if($brandUpdate['slug']==''){
+	unset($brandUpdate['slug']);
+       }else{
+	$brandUpdate['slug']=$obj->edit_slug(Request::input('slug'),'brandmembers','slug',$id);
+	
+       }*/
+        $brandUpdate['slug']=$obj->edit_slug(Request::input('slug'),'brandmembers','slug',$id);
+       
+        $address['first_name'] = Request::input('first_name');
+    	$address['last_name']  = Request::input('last_name');
+    	$address['address']  = Request::input('address1');
+    	$address['address2']  = Request::input('address2');
+    	$address['country_id'] = Request::input('country_id');
+    	$address['zone_id'] =  Request::input('zone_id'); // State id
+    	$address['city'] =  Request::input('city');
+    	$address['postcode'] =  Request::input('postcode');
+                        
+       Address::where('id', '=', Request::input('address'))->update($address);
+        unset($brandUpdate['first_name']);
+	unset($brandUpdate['last_name']);
+        unset($brandUpdate['address1']);
+        unset($brandUpdate['address2']);
+        unset($brandUpdate['country_id']);
+        unset($brandUpdate['zone_id']);
+        unset($brandUpdate['city']);
+        unset($brandUpdate['postcode']);
        
        if(isset($_FILES['pro_image']['name']) && $_FILES['pro_image']['name']!="")
 			{
 				$destinationPath = 'uploads/brandmember/'; // upload path
-                $thumb_path = 'uploads/brandmember/thumb/';
-                $medium = 'uploads/brandmember/thumb/';
+                                $thumb_path = 'uploads/brandmember/thumb/';
+                                $medium = 'uploads/brandmember/thumb/';
 				$extension = Input::file('pro_image')->getClientOriginalExtension(); // getting image extension
 				$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
 				Input::file('pro_image')->move($destinationPath, $fileName); // uploading file to given path
 				
-                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
-                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
+                                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
+                                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
 			}
 			else
 			{
@@ -130,8 +176,52 @@ class BrandController extends Controller {
 	$brandUpdate['pro_image']=$fileName;
 	
        }
+       
+       
+       if(isset($_FILES['government_issue']['name']) && $_FILES['government_issue']['name']!="")
+			{
+				$destinationPath = 'uploads/brand_government_issue_id/'; // upload path
+				$extension = Input::file('government_issue')->getClientOriginalExtension(); 
+				$government_issue = rand(111111111,999999999).'.'.$extension; 
+				Input::file('government_issue')->move($destinationPath, $government_issue); // uploading file to given path
+				
+			}
+			else
+			{
+				$government_issue = '';
+			}
+	 if($government_issue ==''){
+            unset($brandUpdate['government_issue']);
+           }else{
+            $brandUpdate['government_issue']=$government_issue;
+            
+           }		
+			
+			if(isset($_FILES['business_doc']['name']) && $_FILES['business_doc']['name']!="")
+			{
+				$destinationPath = 'uploads/brandmember/business_doc/'; // upload path
+				$extension = Input::file('business_doc')->getClientOriginalExtension(); 
+				$business_doc = rand(111111111,999999999).'.'.$extension; 
+				Input::file('business_doc')->move($destinationPath, $business_doc); 
+				
+			}
+			else
+			{
+				$business_doc = '';
+			}
+			
+           if($business_doc ==''){
+            unset($brandUpdate['business_doc']);
+           }else{
+            $brandUpdate['business_doc']=$business_doc;
+            
+           }	             
        $brand->update($brandUpdate);
-
+       
+       
+       
+       
+        
        Session::flash('success', 'Brand updated successfully'); 
        return redirect('admin/brand');
     }
@@ -160,7 +250,7 @@ class BrandController extends Controller {
 
         Session::flash('success', 'Brand status updated successfully'); 
         return redirect('admin/brand');
-
+        
     }
 
     public function admin_active_status($id)
@@ -170,18 +260,74 @@ class BrandController extends Controller {
         $brandmember=Brandmember::find($id);
         $brandmember->admin_status = 1;
         $brandmember->update();
-        //dd($brandmember);exit;
+
+        $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+        $admin_users_email=$sitesettings->value;
         
-        Session::flash('success', 'Brand status updated successfully'); 
-        return redirect('admin/brand');
+        if($brandmember->fname !='')
+        $user_name = $brandmember->fname.' '.$brandmember->lname;
+        else
+        $user_name = $brandmember->username;
+
+        $user_email = $brandmember->email;
+
+        $msg ="Your account has been activated by admin.Please try to log in with your valid credentials.";
+
+        
+        $sent = Mail::send('admin.brands.activate_brand', array('name'=>$user_name,'email'=>$user_email,'admin_users_email'=>$admin_users_email,'msg'=>$msg), 
+        function($message) use ($admin_users_email, $user_email,$user_name,$msg)
+        {
+            $message->from($admin_users_email);
+            $message->to($user_email, $user_name)->subject('Miramix Brand Account Now Activated');
+        });
+                        
+        if(!$sent)
+        {
+            Session::flash('error', 'something went wrong!! Mail not sent.'); 
+            return redirect('admin/brand');
+        }
+        else
+        {
+            Session::flash('success', 'Brand status updated successfully'); 
+            return redirect('admin/brand');
+        }
+        
     }
     public function admin_inactive_status($id)
     {
         $brandmember=Brandmember::find($id);
         $brandmember->admin_status = 0;
         $brandmember->update();
+
+        $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+        $admin_users_email=$sitesettings->value;
         
-        Session::flash('success', 'Brand status updated successfully'); 
-        return redirect('admin/brand');
+        if($brandmember->fname !='')
+        $user_name = $brandmember->fname.' '.$brandmember->lname;
+        else
+        $user_name = $brandmember->username;
+
+        $user_email = $brandmember->email;
+
+        $msg = "Your account has been de-activated by admin.Please contact with miramix support.";
+        
+        $sent = Mail::send('admin.brands.activate_brand', array('name'=>$user_name,'email'=>$user_email,'admin_users_email'=>$admin_users_email,'msg'=>$msg), 
+        function($message) use ($admin_users_email, $user_email,$user_name,$msg)
+        {
+            $message->from($admin_users_email);
+            $message->to($user_email, $user_name)->subject('Miramix Brand Account Now Deactivated');
+        });
+                        
+        if(!$sent)
+        {
+            Session::flash('error', 'something went wrong!! Mail not sent.'); 
+            return redirect('admin/brand');
+        }
+        else
+        {
+            Session::flash('success', 'Brand status updated successfully'); 
+            return redirect('admin/brand');
+        }
+        
     }
 }

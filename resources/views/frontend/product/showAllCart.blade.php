@@ -62,7 +62,7 @@
               <tfoot>
               <tr>
               <td colspan="7">
-              <a href="<?php echo url();?>/brand" class="butt pull-left">Continue Shopping</a>
+              <a href="<?php echo url();?>" class="butt pull-left">Continue Shopping</a>
               </td>
               </tr>
               </tfoot>

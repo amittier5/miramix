@@ -19,7 +19,15 @@ class BaseController extends Controller {
 
 	public function __construct() 
     {
-	
+		/* All Site Settings List */
+        $sitesettings = DB::table('sitesettings')->get();
+        $all_sitesetting = array();
+        foreach($sitesettings as $each_sitesetting)
+        {
+            $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+        }
+        
+	    view()->share('all_sitesetting',$all_sitesetting);
 
     }
 

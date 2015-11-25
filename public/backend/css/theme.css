@@ -4982,4 +4982,21 @@ span.weight_span {
     border: 1px solid #ccc;
     overflow: hidden;
 }
+.label_siteadmin input[type="radio"] {
+    position: relative;
+    margin-right: 10px;
+    top: -3px;
+}
+.label_siteadmin.pull-left {
+    margin-right: 20px;
+}
+.label_siteadmin label {
+    line-height: 28px;
+}
+.form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red {
+    display: block;
+}
+.input_fields_wrap input[type="radio"]{
+	margin:0 10px 0 0;	
+}
 

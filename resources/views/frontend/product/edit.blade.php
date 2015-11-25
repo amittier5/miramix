@@ -9,11 +9,27 @@
   {!! Form::open(['url' => 'productPost','method'=>'POST', 'files'=>true, 'id'=>'product_form']) !!}
     <input class="form-control" type="hidden" value="<?php echo $products->id;?>" name="product_id">
     <div class="add_product_panel">
-          <h2 class="text-center">Add Your Product</h2>
+          <h2 class="text-center">Edit Your Product</h2>
+              
             <div class="product_name">
-              <div class="col-sm-6 text-right"><label>Product Name <span>i</span></label></div>
-                <div class="col-sm-3"><input type="text" name="product_name" id="product_name" value="{!! $products->product_name!!}"></div>
-            </div>   
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="col-sm-6 text-right"><label>Product Name </label></div>
+                        <div class="col-sm-6"><input type="text" name="product_name" id="product_name" maxlength="20" value="{!! $products->product_name!!}"></div>
+                    </div>
+                    <div class="col-sm-6">
+                    	<div class="check_box_tab green_color marg_left pull-left">                            
+                              <input type="radio" <?php if($products->own_product==0){?> checked="checked" <?php } ?> value="0" name="own_product" id="radio-4" class="regular-checkbox">
+                              <label for="radio-4">Miramix Product</label>
+                        </div>
+                        <div class="check_box_tab green_color marg_left pull-left">                            
+                              <input type="radio" <?php if($products->own_product==1){?> checked="checked" <?php } ?> value="1" name="own_product" id="radio-5" class="regular-checkbox">
+                              <label for="radio-5">Non Miramix product</label>
+                          </div>
+                        
+                    </div>
+                </div>
+            </div> 
             <div class="form_ingredient_panel">
               <div class="container">
                 <div class="row">
@@ -34,7 +50,7 @@
                                   <tr>
                                     <td width="5%"><a href="javascript:void(0);" class="btn collapsing_btn" data-toggle="collapse" data-target="#toggleDemo<?php echo $gr;?>"><i class="fa fa-plus-square"></i></a></td>
                                     <td align="right" width="30%"><label>Ingredient Group</label></td>
-                                    <td width="20%"><input class="form-control" type="text" value="<?php echo $each_gr_ing['group_name'];?>" name="ingredient_group[<?php echo $gr;?>][group_name]"></td>
+                                    <td width="20%"><input class="form-control grp_name_text" type="text" value="<?php echo $each_gr_ing['group_name'];?>" name="ingredient_group[<?php echo $gr;?>][group_name]"></td>
                                     <td align="right" width="20%"><label>Weight</label></td>
                                     <td width="20%"><input class="form-control back_bg" type="text" value="<?php echo $each_gr_ing['tot_weight'];?>" name="ingredient_group[<?php echo $gr;?>][group_weight]" readonly></td>
                                     <td width="5%"><a href="javascript:void(0);" class="btn del_btn"><i class="fa fa-trash"></i></a></td>
@@ -103,29 +119,50 @@
                                 </tr>
                        </thead>
                        <?php 
-                          if(!empty($individual_ingredient_lists)){
-                            $j=0;
+                        $j=0;
+                         if(empty($individual_ingredient_lists)){
+                       ?>
+                       <tr>
+                          <td width="40%">
+                            <select class="form-control selectclass loop_cls" name="ingredient[0][id]" id="select_<?php echo $conti_incr;?>">
+                            <option value="">Choose Ingredient</option>
+                              <?php foreach($ingredients as $each_ingredient){?>
+                              <option value="<?php echo $each_ingredient->id;?>"><?php echo $each_ingredient->name;?></option>
+                              <?php } ?>
+                            </select>
+                          </td>
+                          <td width="20%"><input class="form-control weightclass" type="text" value="" name="ingredient[0][weight]" placeholder="Weight(gm)" ></td>
+                          <td width="20%"><input class="form-control get_val" type="text" value="" name="ingredient0][ingredient_price_gm]" placeholder="Price/gm" id="ingredient_price_gm" readonly></td>
+                          <td width="15%"><input class="form-control tot_val" type="text" value="" name="ingredient[0][ingredient_price]" readonly placeholder="Total" ></td>
+                          
+                          <td align="left" valign="middle">&nbsp;</td>
+                        </tr>
+                       <?php 
+                        $j++;
+                        }
+                        else
+                        {
+                            
                             foreach($individual_ingredient_lists as $each_individual_ingredient){  
                        ?>
                        <tr>
-                            <td width="40%">
-                              <select class="form-control selectclass <?php if($j==0) echo "loop_cls"; ?>" name="ingredient[<?php echo $j?>][id]" id="select_<?php echo $conti_incr;?>">
-                              <option value="">Choose Ingredient</option>
-                                <?php foreach($ingredients as $each_ingredient){?>
-                                <option value="<?php echo $each_ingredient->id;?>" <?php if($each_ingredient->id==$each_individual_ingredient->ingredient_id){?> selected="selected" <?php } ?>><?php echo $each_ingredient->name;?></option>
-                                <?php } ?>
-                              </select>
-                            </td>
-                            <td width="20%"><input class="form-control weightclass" type="text" value="<?php echo $each_individual_ingredient->weight;?>" name="ingredient[<?php echo $j?>][weight]" placeholder="Weight(gm)" ></td>
-                            <td width="20%"><input class="form-control get_val" type="text" value="<?php echo $each_individual_ingredient->price_per_gram;?>" name="ingredient[<?php echo $j?>][ingredient_price_gm]" placeholder="Price/gm" id="ingredient_price_gm" readonly></td>
-                            <td width="15%"><input class="form-control tot_val" type="text" value="<?php echo $each_individual_ingredient->ingredient_price;?>" name="ingredient[<?php echo $j?>][ingredient_price]" readonly placeholder="Total" ></td>
-                            
-                            <td align="left" valign="middle"><?php if($j==0) {?>&nbsp; <?php } else {?><a href="javascript:void(0);" class="remove_row"><i class="fa fa-minus-square-o"></i></a> <?php } ?></td>
+                          <td width="40%">
+                            <select class="form-control selectclass <?php if($j==0) echo "loop_cls"; ?>" name="ingredient[<?php echo $j?>][id]" id="select_<?php echo $conti_incr;?>">
+                            <option value="">Choose Ingredient</option>
+                              <?php foreach($ingredients as $each_ingredient){?>
+                              <option value="<?php echo $each_ingredient->id;?>" <?php if($each_ingredient->id==$each_individual_ingredient->ingredient_id){?> selected="selected" <?php } ?>><?php echo $each_ingredient->name;?></option>
+                              <?php } ?>
+                            </select>
+                          </td>
+                          <td width="20%"><input class="form-control weightclass" type="text" value="<?php echo $each_individual_ingredient->weight;?>" name="ingredient[<?php echo $j?>][weight]" placeholder="Weight(gm)" ></td>
+                          <td width="20%"><input class="form-control get_val" type="text" value="<?php echo $each_individual_ingredient->price_per_gram;?>" name="ingredient[<?php echo $j?>][ingredient_price_gm]" placeholder="Price/gm" id="ingredient_price_gm" readonly></td>
+                          <td width="15%"><input class="form-control tot_val" type="text" value="<?php echo $each_individual_ingredient->ingredient_price;?>" name="ingredient[<?php echo $j?>][ingredient_price]" readonly placeholder="Total" ></td>                            
+                          <td align="left" valign="middle"><?php if($j==0) {?>&nbsp; <?php } else {?><a href="javascript:void(0);" class="remove_row"><i class="fa fa-minus-square-o"></i></a> <?php } ?></td>
                             
                             
                         </tr>
                         <?php
-								$j++;$conti_incr++;
+								              $j++;$conti_incr++;
                               }
                             }
                         ?>  
@@ -152,7 +189,7 @@
                               <?php } ?>
                             </div>
                            </div> 
-                           <textarea rows="" cols="" name="description1" id="description1">{!! $products->description1;!!}</textarea>
+                           <textarea rows="" cols="" maxlength="255" name="description1" id="description1">{!! $products->description1;!!}</textarea>
                       </div>
                       <div class="image_upload_panel" id="2">
                         	<div class="upload_button_panel">
@@ -167,7 +204,7 @@
                               <?php } ?>                            
                             </div>
                           </div> 
-                          <textarea rows="" cols="" name="description2" id="description2">{!! $products->description2;!!}</textarea>
+                          <textarea rows="" cols="" maxlength="255" name="description2" id="description2">{!! $products->description2;!!}</textarea>
                       </div>
                       <div class="image_upload_panel" id="3">
                         	<div class="upload_button_panel">
@@ -182,7 +219,7 @@
                               <?php } ?>     
                               </div>
                             </div>
-                          <textarea rows="" cols="" name="description3" id="description3">{!! $products->description3;!!}</textarea>
+                          <textarea rows="" cols="" maxlength="255" name="description3" id="description3">{!! $products->description3;!!}</textarea>
                       </div>
                       <div class="upload_button_panel img_modify">
                         	<p class="upload_image">
@@ -235,7 +272,7 @@
                               <input type="hidden" id="TotalPrice" name="TotalPrice">
                             </p>
                             <p class="text-right">Total Weight : 
-                              <span><strong id="showTotalWeight"></strong><?php echo $tot_weight;?>(gm)</span>
+                              <span><strong id="showTotalWeight"><?php echo $tot_weight;?></strong>(gm)</span>
                               <input type="hidden" id="TotalWeight" name="TotalWeight">
                             </p>
                           </div>
@@ -367,6 +404,15 @@
  
 <script type="text/javascript">
   var z=0;
+  var checkradiostate_var=true;
+  var emptyweight_checkfornonmiramix=true;
+  var sele_id=[];
+  var arr_dupvals=[];
+  var flag=false;
+  var serv_textflag=true;
+  var groupnameflag=true;
+  var msg='';
+  
   function check_addrow(){
 			var total_opt=$("#formfactortable tr:nth-child(2) select.form-control option").size();
 			total_opt=parseInt(total_opt)-1;
@@ -386,19 +432,30 @@
 function selec_option(){
 		var opt=[];
 		var total_opt='<option value="">Choose Form Factor</option>';
-		$('.form_check_table th').each(function(index, element) {
-             if($(this).hasClass('all_selec')){
-					//alert($(this).text()); 
-				var this_text=$(this).clone().children().remove().end().text();
-				var this_val=$(this).attr('data-rel');
-					
-				total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
+		//alert(checkradiostate_var);
+		$('.form_check_table th:gt(0)').each(function(index, element) {
+			if(checkradiostate_var==true){
+				 if($(this).hasClass('all_selec')){
+						//alert($(this).text()); 
+					var this_text=$(this).clone().children().remove().end().text();
+					var this_val=$(this).attr('data-rel');
+						
+					total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
+				}
+			}
+			else{
+					var this_text=$(this).clone().children().remove().end().text();
+					var this_val=$(this).attr('data-rel');						
+					total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>';
 			}
         });
 			  //alert(total_opt);
         //$("#formfactortable").find("tr:gt(2)").find("tr:gt(1)").remove();
+		
 		$('#formfactortable tr:nth-child(2) td select.form-control').empty().append(total_opt);
+		$('#formfactortable tr:nth-child(2) td .upcharge.form-control,#formfactortable tr:nth-child(2) td .serv_text.form-control,#formfactortable tr:nth-child(2) td .min_price.form-control,#formfactortable tr:nth-child(2) td .actual_price.form-control').val(''); 
 		check_addrow();	
+		clearall();
 }
 
 function total_weight(obj){
@@ -591,7 +648,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			  	var this_weightclass=$('select#'+id_tr).parent().parent().find('.weightclass');
      
      			total_weight(this_weightclass);
-			 checktable_val(); 
+			 	checktable_val(); 
 			  
 			  
             }
@@ -614,7 +671,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
   }
 
 
-  $(".weightclass").keyup(function() {      
+  $(document).on('keyup','.weightclass', function() { 
         this.value = this.value.match(/[0-9]*\.?[0-9]*/);
   });
 
@@ -869,7 +926,11 @@ function onlyLoadChecktable(){
 			  
 			  $('.form_check_table table').css({'opacity':1});
 			  $('#load_table').hide(); 
-        
+			  
+			  
+			  $('.form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red').tooltip("option", "content", "Does not have all the ingredients");
+			  $('.form_check_table .table>thead>tr>th.red_selc .toll_tipfor_red').tooltip("option", "content", "Not Within Available Weight Range");
+              
 
 }
 
@@ -881,6 +942,9 @@ function checktable_val(){
 			  
 			  selec_option();
 			  
+			  
+			  
+			  
 			  },1000);
 		}
 
@@ -888,7 +952,7 @@ function checktable_val(){
     //for adding new ingredient
     var x='<?php echo ($individual_total_count);?>'; var z=0;
     var y = '<?php echo ($total_group_count-1);?>';
-	var no_count=1;
+	var no_count='<?php echo count($pro_form_factor);?>';
 	var for_selc='<?php echo ($total_count);?>';
 	var selected_val;
 	var selected_text;
@@ -972,7 +1036,7 @@ function checktable_val(){
 	   checkandadd_sel();
 	   
 	   
-      $('.total_ingre').append('<div class="form_ingredient_group_panel tt35 pull-left"><div class="form_ingredient_group"><div class="top_panel"><table width="95%" align="center" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td width="5%"><a href="javascript:void(0);" class="btn collapsing_btn" data-toggle="collapse" data-target="#toggleDemo'+y+'"><i class="fa fa-plus-square"></i></a></td><td align="right" width="30%"><label>Ingredient Group</label></td><td width="20%"><input class="form-control" type="text" name="ingredient_group['+y+'][group_name]"></td><td align="right" width="20%"><label>Weight</label></td><td width="20%"><input class="form-control back_bg" type="text" name="ingredient_group['+y+'][group_weight]"></td><td width="5%"><a href="javascript:void(0);" class="btn del_btn"><i class="fa fa-trash"></i></a></td></tr></tbody></table></div><div class="collapse_pan collapse in" id="toggleDemo'+y+'"><div class="bottom_panel"><table class="ingredient_new_form" align="center" width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td width="35%"><label>Ingredients</label></td><td width="25%"><label>Weight <small>(gm)</small></label></td><td width="17%"><label>Price / <small>gm</small></label></td><td width="18%"><label>Total</label></td><td align="left" valign="middle">&nbsp;</td></tr><tr class="ingredient_new_form_info"><td><select class="form-control selectclass" id="select_'+for_selc+'" name="ingredient_group['+y+'][ingredient][0][ingredient_id]"><option value="">Choose Ingredient</option>'+select_ophtml+'</select></td><td><input class="form-control weightclass" type="text" Placeholder="Weight" name="ingredient_group['+y+'][ingredient][0][weight]"></td><td><input class="form-control get_val" name="ingredient_group['+y+'][ingredient][0][price_per_gm]" placeholder="Price/Gm" readonly type="text"></td><td><input class="form-control tot_val" placeholder="Total" readonly name="ingredient_group['+y+'][ingredient][0][ingredient_price]" type="text"></td><td align="left" valign="middle" width="10%"><a href="javascript:void(0);" class="remove_row"><i class="fa fa-minus-square-o"></i></a></td></tr></tbody></table><a href="javascript:void(0);" class="add_row pull-left"><i class="fa fa-plus-square"></i> Add Another Ingredient</a></div></div></div></div>');
+      $('.total_ingre').append('<div class="form_ingredient_group_panel tt35 pull-left"><div class="form_ingredient_group"><div class="top_panel"><table width="95%" align="center" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td width="5%"><a href="javascript:void(0);" class="btn collapsing_btn" data-toggle="collapse" data-target="#toggleDemo'+y+'"><i class="fa fa-plus-square"></i></a></td><td align="right" width="30%"><label>Ingredient Group</label></td><td width="20%"><input class="form-control grp_name_text" type="text" name="ingredient_group['+y+'][group_name]"></td><td align="right" width="20%"><label>Weight</label></td><td width="20%"><input class="form-control back_bg" type="text" name="ingredient_group['+y+'][group_weight]"></td><td width="5%"><a href="javascript:void(0);" class="btn del_btn"><i class="fa fa-trash"></i></a></td></tr></tbody></table></div><div class="collapse_pan collapse in" id="toggleDemo'+y+'"><div class="bottom_panel"><table class="ingredient_new_form" align="center" width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td width="35%"><label>Ingredients</label></td><td width="25%"><label>Weight <small>(gm)</small></label></td><td width="17%"><label>Price / <small>gm</small></label></td><td width="18%"><label>Total</label></td><td align="left" valign="middle">&nbsp;</td></tr><tr class="ingredient_new_form_info"><td><select class="form-control selectclass" id="select_'+for_selc+'" name="ingredient_group['+y+'][ingredient][0][ingredient_id]"><option value="">Choose Ingredient</option>'+select_ophtml+'</select></td><td><input class="form-control weightclass" type="text" Placeholder="Weight" name="ingredient_group['+y+'][ingredient][0][weight]"></td><td><input class="form-control get_val" name="ingredient_group['+y+'][ingredient][0][price_per_gm]" placeholder="Price/Gm" readonly type="text"></td><td><input class="form-control tot_val" placeholder="Total" readonly name="ingredient_group['+y+'][ingredient][0][ingredient_price]" type="text"></td><td align="left" valign="middle" width="10%"><a href="javascript:void(0);" class="remove_row"><i class="fa fa-minus-square-o"></i></a></td></tr></tbody></table><a href="javascript:void(0);" class="add_row pull-left"><i class="fa fa-plus-square"></i> Add Another Ingredient</a></div></div></div></div>');
      
         //console.log('click='+y);
       });
@@ -991,7 +1055,10 @@ function checktable_val(){
 			
 			$('.form_check_table table tr#tr_'+this_selec_p_id).remove();
 			 selec_option();
+			 clearall();
         });
+		
+		
 		
 		
 		
@@ -1001,6 +1068,11 @@ function checktable_val(){
 		
         $this.parents('.form_ingredient_group_panel').remove();
 		total_weight($this);
+		//$('#formfactortable').remove();
+		
+		$("#formfactortable").find("tr:gt(1)").remove();
+		$('.recom_text').val('');
+		
       }); 
 	  
 	  
@@ -1025,13 +1097,20 @@ function checktable_val(){
 		
 		var opt=[];
 		var total_opt='<option value="">Choose Form Factor</option>';
-		$('.form_check_table th').each(function(index, element) {
-             if($(this).hasClass('all_selec')){
-					//alert($(this).text()); 
-				var this_text=$(this).clone().children().remove().end().text();
-				var this_val=$(this).attr('data-rel');
-					
-				total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
+		$('.form_check_table th:gt(0)').each(function(index, element) {
+			if(checkradiostate_var==true){	
+				 if($(this).hasClass('all_selec')){
+						//alert($(this).text()); 
+					var this_text=$(this).clone().children().remove().end().text();
+					var this_val=$(this).attr('data-rel');
+						
+					total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
+				}
+			}
+			else{
+				    var this_text=$(this).clone().children().remove().end().text();
+					var this_val=$(this).attr('data-rel');						
+					total_opt=total_opt+'<option value="'+this_val+'">'+this_text+'</option>'; 
 			}
         });
 			  //alert(total_opt);
@@ -1081,10 +1160,11 @@ function checktable_val(){
   });
   
   $(function() {
-	var flag=false;
+	flag=false;
 	var check_duplicate=false;
 	var check_weight_empty=false;
-	var arr_dupvals;
+	
+	
   $("#product_form").validate({
     
         // Specify the validation rules
@@ -1097,7 +1177,7 @@ function checktable_val(){
         
         // Specify the validation error messages
         messages: {
-            product_name: "Please enter form factor name",
+            product_name: "Please enter Product Name",
 			description1: "Please Enter Value",
 			description2: "Please Enter Value",
 			description3: "Please Enter Value"
@@ -1105,7 +1185,8 @@ function checktable_val(){
         
         submitHandler: function(form, event) {
 			//alert(arr_dupvals.length);
-			if(flag==false || priceflag==false || (arr_dupvals.length)!=0 || check_weight_empty==false){
+		if(checkradiostate_var==true){	
+			if(flag==false || priceflag==false || (arr_dupvals.length)!=0 || check_weight_empty==false || groupnameflag==false || serv_textflag==false){
 			//alert(priceflag);
 			$('.alert-danger').remove();
 			if(flag==false){
@@ -1118,8 +1199,19 @@ function checktable_val(){
 			else if((arr_dupvals.length)!=0){
 				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 			}
+			else if(groupnameflag==false){
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+			}
+			else if(serv_textflag==false){
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+			}
 			else{
 				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
+			}
+			if($('.red_border').length>0){
+					$('html, body').animate({
+						scrollTop: $('.red_border').first().offset().top-200
+					}, 400);
 			}
 			
 				return false;	
@@ -1128,23 +1220,53 @@ function checktable_val(){
 			//alert('else:'+flag)	
             	form.submit();
 			}
+		}
+		else{
+				//alert(emptyweight_checkfornonmiramix);
+				$('.alert-danger').remove();
+				if(emptyweight_checkfornonmiramix==false || (arr_dupvals.length)!=0 || flag==false || serv_textflag==false || groupnameflag==false){	
+					if(emptyweight_checkfornonmiramix==false){			  
+				      $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Select A weight Value.</div>');
+					}
+					else if(flag==false){
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+					}
+					else if(serv_textflag==false){
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+					}
+					else if(groupnameflag==false){
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+					}
+					else{
+						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+					}
+					if($('.red_border').length>0){
+					$('html, body').animate({
+						scrollTop: $('.red_border').first().offset().top-200
+					}, 400);
+					}
+					return false;	
+				}
+				else{				
+					form.submit();	
+				}
+			}
+		
         }
     });
 	
 	$(document).on('click','.add_product_panel .submit_panel input[type="submit"]',function(){
+		$('.right_border select.selectclass.red_border, .weightclass.red_border').removeClass('red_border');
+		$('.error_p').remove();	
+		if(checkradiostate_var==true){
 		$('#excluded_val').val('');
 		var hid_vald='';
 		hid_vald=$('#excluded_val').val();
 		var tot_lastopt=[];
 		var index_val=0;
 		
-		var sele_id=[];
-		$('#formfactortable select.form-control').each(function(index, element) {
-			var $this=$(this);
-			var selec_val=$('option:selected',this).val();
-			
-			sele_id.push(selec_val);
-		});
+		sele_id=[];
+		allselected_opt();
 		
 		$('.add_product_panel .form_factore_panel tr:nth-child(2) select.form-control option').each(function(index, element) {
 			var $this=$(this); 
@@ -1170,16 +1292,14 @@ function checktable_val(){
 		
 		/**from tomorrow***/
 		check_duplicate=false;
-		arr_dupvals=[];
-		//var last=sele_id[0];
-		var recipientsArray = sele_id.sort(); 
-
 		
-		for (var i = 0; i < recipientsArray.length - 1; i++) {
-			if (recipientsArray[i + 1] == recipientsArray[i]) {
-				arr_dupvals.push(recipientsArray[i]);
-			}
-		}
+		blank_ingredientgroupname_check();
+		serv_textblankcheck('serv_text');		
+		if(serv_textflag==false){}
+		else
+		serv_textblankcheck('actual_price');
+		
+		checkDuplicateFormFactor();
 		//alert(arr_dupvals.length);
 		
 		/**from tomorrow***/
@@ -1195,16 +1315,16 @@ function checktable_val(){
 			var this_sel_val=$this.parent().parent().find('.selectclass option:selected').val();
 			if(this_sel_val=='' || this_val==''){
 				if(this_sel_val==''){
-					$('html, body').animate({
+					/*$('html, body').animate({
 						scrollTop: $this.offset().top-200
-					}, 400);
+					}, 400);*/
 					$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please Select A value from unselected Select options</p>');
 					$this.parent().parent().find('.selectclass').addClass('red_border');
 				}
 				else{
-					$('html, body').animate({
+					/*$('html, body').animate({
 						scrollTop: $this.offset().top-200
-					}, 400);
+					}, 400);*/
 					$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please Enter Weight</p>');
 					$this.addClass('red_border');
 				}
@@ -1213,24 +1333,7 @@ function checktable_val(){
 			}
         });
 		
-		flag=false;
-		//alert($('#formfactortable select.form-control').length);
-		if($('#formfactortable select.form-control').length>0){
-		$('#formfactortable select.form-control').each(function(index, element) {
-            var $this=$(this);
-			var sel_optval=$('option:selected',this).val();
-			if(sel_optval=='' || sel_optval==0){
-				flag=false;
-				return false;
-			}
-			else{
-				flag=true;	
-			}
-        });
-		}
-		else{
-			flag=false;	
-		}
+		check_formfactorselection();
 		
 		$('.actual_price').each(function(index, element) {
             var $this=$(this);
@@ -1245,7 +1348,43 @@ function checktable_val(){
 			else
 				priceflag=true;
         });
+	   }
+	   else{
+		$('.right_border select.selectclass.red_border, .weightclass.red_border').removeClass('red_border');
+		$('.error_p').remove();	
+		$('.right_border .selectclass').each(function(index, element) {
+            var $this=$(this);
+			var this_sel_val=$('option:selected',this).val();
+			if(this_sel_val==''){
+				emptyweight_checkfornonmiramix=true;	
+			}
+			else{
+				if($this.parent().parent().find('.weightclass').val()==''){
+					//alert($this.parent().parent().find('.weightclass').val());
+					$this.parent().parent().find('.weightclass').addClass('red_border');
+					$this.parent().parent().parent().parent().parent().append('<p class="error_p">Please  Enter A Weight</p>');
+					/*$('html, body').animate({
+						scrollTop: $this.offset().top-200
+					}, 400);*/
+					emptyweight_checkfornonmiramix=false;
+					return false;	
+				}
+				else{
+					emptyweight_checkfornonmiramix=true;
+				}
+			}
+        });
 		
+		allselected_opt();
+		checkDuplicateFormFactor();
+		check_formfactorselection();
+		serv_textblankcheck('serv_text');		
+		if(serv_textflag==false){}
+		else
+		serv_textblankcheck('actual_price');
+		blank_ingredientgroupname_check();
+		
+	}
 	});
 	
   });
@@ -1313,6 +1452,9 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 	      total_ingcost=$('#TotalPrice').val(),
 		  total_min_prc=0,
 		  recom_price=0;
+
+      if($('#TotalPrice').val()=='')
+        total_ingcost=0;
 		  //alert(total_ingredient);
 		  
 	  //alert('up_val:'+up_val+'//serv_val:'+serv_val+'//total_ingredient:'+total_ingredient+'//total_ingcost:'+total_ingcost)	  
@@ -1325,38 +1467,41 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
   }
   
   $(document).on('blur','.actual_price',function(){
-	  var actual_prc=0,
-	      minimum_prc=0,
-		  $this=$(this);
-		  
-		  $('.alert-danger').remove();
-		  
-	      minimum_prc=$this.parent().parent().find('.min_price').val();
-		  //alert(minimum_prc);
-		  if(minimum_prc=='')
-		  		minimum_prc=0;
-		  else
-		  		minimum_prc=$this.parent().parent().find('.min_price').val();
-				
-				
-		  
-		  actual_prc=$this.val();
-		  //alert(actual_prc);
-		  
-		  if(parseFloat(actual_prc)<parseFloat(minimum_prc)){
-		  		priceflag=false;
-				//alert();
-		  }
-		  else
-		  		priceflag=true;
-				
-			//alert(priceflag);	
-		   if(priceflag==false){ 		
-		  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
-		   }
-		   else{
-			$('.alert-danger').remove();   
-		   }
+	  if(checkradiostate_var==true){
+		  var actual_prc=0,
+			  minimum_prc=0,
+			  $this=$(this);
+			  
+			  $('.alert-danger').remove();
+			  
+			  minimum_prc=$this.parent().parent().find('.min_price').val();
+			  //alert(minimum_prc);
+			  if(minimum_prc=='')
+					minimum_prc=0;
+			  else
+					minimum_prc=$this.parent().parent().find('.min_price').val();
+					
+					
+			  
+			  actual_prc=$this.val();
+			  //alert(actual_prc);
+			  
+			  if(parseFloat(actual_prc)<parseFloat(minimum_prc)){
+					priceflag=false;
+					//alert();
+			  }
+			  else
+					priceflag=true;
+					
+				//alert(priceflag);	
+			   if(priceflag==false){ 		
+			  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
+			   }
+			   else{
+				$('.alert-danger').remove();   
+			   }
+	  }
+	  else{}
   });
 
 
@@ -1367,7 +1512,7 @@ $(document).on('blur','.form_ingredient_group_panel .weightclass',function(){
 	$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(tot_recv);
 });
     
-
+  onlyforradiostatecheck();
   });
 function calc_weight_ingred(obj){
 	var total=0;
@@ -1389,6 +1534,129 @@ function calc_weight_ingred(obj){
     //$this.parent().parent().parent().parent().parent().parent().parent().find('.back_bg').val(total);
    
  }
+ 
+function check_radio_state(){
+	onlyforradiostatecheck();	
+	selec_option();
+	$("#formfactortable").find("tr:gt(1)").remove();
+ }
+ function onlyforradiostatecheck(){
+	if($('#radio-4').is(':checked')){
+		checkradiostate_var=true;
+	}
+	else{
+		checkradiostate_var=false;
+	} 
+	//alert(checkradiostate_var);	
+ }
+ 
+ $(document).on('change','input[type=radio]',function(){
+	  check_radio_state();
+	  clearall();	  
+	  //selec_option();
+}); 
+function clearall(){
+	$('.recom_text,.upcharge,.min_price,.serv_text,.min_price,.recom_text,.actual_price').val('');
+	$('#formfactortable').find('select').val('');
+	$("#formfactortable").find("tr:gt(1)").remove();	
+}
+function allselected_opt(){
+	sele_id=[];
+	$('#formfactortable select.form-control').each(function(index, element) {
+		var $this=$(this);
+		var selec_val=$('option:selected',this).val();			
+	    sele_id.push(selec_val);
+	});
+	//alert(sele_id.length);
+}
+//for duplicate form factor array creation
+function checkDuplicateFormFactor(){
+		arr_dupvals=[];
+		var recipientsArray = sele_id.sort(); 
+
+		
+		for (var i = 0; i < recipientsArray.length - 1; i++) {
+			if (recipientsArray[i + 1] == recipientsArray[i]) {
+				arr_dupvals.push(recipientsArray[i]);
+			}
+		}
+		//alert(sele_id.length);
+			
+}
+
+function check_formfactorselection(){
+		flag=false;
+		$('#formfactortable select.form-control.red_border').removeClass('red_border');
+		//alert($('#formfactortable select.form-control').length);
+		if($('#formfactortable select.form-control').length>0){
+		$('#formfactortable select.form-control').each(function(index, element) {
+            var $this=$(this);
+			var sel_optval=$('option:selected',this).val();
+			if(sel_optval=='' || sel_optval==0){
+				$this.addClass('red_border');
+				/*$('html, body').animate({
+					scrollTop: $this.offset().top-200
+				}, 400);*/
+				flag=false;
+				return false;
+			}
+			else{
+				flag=true;	
+			}
+        });
+		}
+		else{
+			flag=false;	
+		}	
+}
+//blank check for servings and actual price
+function serv_textblankcheck(class_name){
+	serv_textflag=true;
+	msg=''
+	var x=class_name;
+	$('.serv_text,.actual_price').removeClass('red_border');
+	$('.'+x).each(function(index, element) {
+        var $this=$(this);
+		var this_val=$this.val();
+		if(this_val==''){
+			$this.addClass('red_border');
+			serv_textflag=false;
+			/*$('html, body').animate({
+					scrollTop: $this.offset().top-200
+				}, 400);*/
+			if(x=='actual_price')
+				msg='Please Enter Actual Price';
+			else
+				msg='Please Enter Servings Value';
+			return false;	
+		}
+		else{
+			serv_textflag=true;
+		}
+    });	
+}
+//for blank ingredient name textbox check
+function blank_ingredientgroupname_check(){
+	groupnameflag=true;
+	$('.top_panel').find('.error_p').remove();
+	$('.grp_name_text').removeClass('red_border');
+	$('.grp_name_text').each(function(index, element) {
+        var $this=$(this);
+		var this_val=$this.val();
+		if(this_val==''){
+			$this.addClass('red_border');
+			groupnameflag=false;
+			/*$('html, body').animate({
+					scrollTop: $this.offset().top-200
+				}, 400);*/
+			$this.parent().parent().parent().parent().parent('.top_panel').append('<p class="error_p">Please Select A Group Name</p>');	
+		}
+		else{
+			groupnameflag=true;
+		}
+    });
+}
+
 
  </script>
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Brandmember extends Model
 {
 	//public $timestamps = false;
-    protected $fillable=[
+  /*  protected $fillable=[
         'fname',
         'lname',
         'username',
@@ -42,6 +42,8 @@ class Brandmember extends Model
         'paypal_email',
         'mailing_address',
         'default_band_preference',
+        'brand_type',
+        'business_doc',
         'auth_profile_id',
         'auth_payment_profile_id',
         'auth_address_id',
@@ -51,5 +53,12 @@ class Brandmember extends Model
         'linkedin_url',
         'updated_at',
         'created_at'
-       ];
+       ];*/
+    
+    public $timestamps = true;
+    
+
+    protected $guarded = array();  // Important
+
+    protected $table = 'brandmembers';
 }

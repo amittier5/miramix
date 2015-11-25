@@ -1,4 +1,4 @@
-<?php 
+<?php
 $about_us = '';
 
   if($getHelper->getCmsLink(1) !='')
@@ -46,11 +46,11 @@ $about_us = '';
 <link href="<?php echo url();?>/public/frontend/jqueryui/jquery-ui.css" rel="stylesheet">
   <!-- Color CSS Styles  -->
   <!-- MIRAMIX JS  -->
-  <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/jquery-2.1.4.min.js"></script>
+  <script  type="text/javascript" src="<?php echo url();?>/public/frontend/js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/modernizrr.js"></script>
   <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/jquery.slicknav.js"></script>
-  <script type="text/javascript" src="<?php echo url();?>/public/frontend/jqueryui/jquery-ui.min.js"></script>
+  <script  type="text/javascript" src="<?php echo url();?>/public/frontend/js/jquery.slicknav.js"></script>
+  <script  type="text/javascript" src="<?php echo url();?>/public/frontend/jqueryui/jquery-ui.min.js"></script>
   
   <script src="<?php echo url();?>/resources/assets/js/jquery.validate-1.14.0.min.js"></script>
   <script src="<?php echo url();?>/resources/assets/js/additional-methods-1.14.0.js"></script>
@@ -61,8 +61,8 @@ $about_us = '';
   <script type="text/javascript" src="<?php echo url();?>/public/frontend/dist/sweetalert-dev.js"></script>
 
   
-  <!--[if IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!--[if IE 8]><script  src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!--[if lt IE 9]><script  src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body class="<?php echo (isset($body_class)?$body_class:'');?>">
@@ -73,7 +73,7 @@ $about_us = '';
 
     <!-- Start Header Section -->
     <header class="clearfix">
-      <div class="container">
+      <div class="container-fluid">
       <!-- Start  Logo & Naviagtion  -->
       <div class="navbar navbar-default navbar-top">
           <div class="navbar-header">
@@ -83,8 +83,11 @@ $about_us = '';
             </button>
             <!-- End Toggle Nav Link For Mobiles -->
             <a class="navbar-brand" href="<?php echo url();?>">&nbsp;</a>
+            
+            <a href="tel:18475555555" class="telP_top"><i class="fa fa-phone"></i><span>812 - 508 – 0674  (10AM ET – 8PM ET)</span></a>
           </div>
           <div class="navbar-collapse collapse">
+          
             <!-- Start Navigation List -->
             <ul class="nav navbar-nav navbar-right">
               <li><a href="<?php echo url();?>/inventory">Inventory</a></li>

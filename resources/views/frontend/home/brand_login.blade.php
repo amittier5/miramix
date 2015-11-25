@@ -89,9 +89,40 @@
                {!! Form::close() !!}
                 <p class="wow zoomInUp brand_p clearfix">Want a Brand Account? <a href="<?php echo url();?>/brandregister">Sign up now!</a></p>
             </div>
+            <div class="container">
+                <div class="total_mirslider"><div id="slider" class="miramix-slider" style="margin:50px"></div></div>
+            </div>
         </div>
         <!--login_cont-->
         
     </div>
     <!--for login page-->
+    <script src="<?php echo url();?>/public/frontend/js/jquery.ui.touch-punch.min.js"></script>
+    <script>
+  $(function() {
+    var initialValue =0;
+    var baseprice='<?php echo ($subfee->value)?>';
+    var perproduct='<?php echo ($subprofee->value)?>';
+
+var sliderTooltip = function(event, ui) {
+    var curValue = ui.value || initialValue;
+    var totalval=(parseInt(perproduct)*parseInt(curValue))+parseInt(baseprice);
+    var tooltip = '<div class="tooltip"><div class="tooltip-header"></div><div class="tooltip-content"><h3 id="employee-amount-header">' + curValue + ' product(s)</h3><ul><li class="enterprise-pricing hidden">Contact us for enterprise pricing</li><li class="small-pricing undefined">$<span id="base-cost">'+baseprice+'</span> base price</li><li class="small-pricing undefined">$<span id="person-cost">'+perproduct+'</span>/product x <span id="base-employees">' + curValue + ' product(s)</span>=$<span id="totalval">'+totalval+'</span></li></ul></div></div>';
+
+    $('.ui-slider-handle').html(tooltip);
+
+}
+
+$("#slider").slider({
+    value: initialValue,
+    min: 0,
+    max: 500,
+    step: 1,
+	range: "min",
+    create: sliderTooltip,
+    slide: sliderTooltip
+});
+  });
+  </script>
+    
 @stop

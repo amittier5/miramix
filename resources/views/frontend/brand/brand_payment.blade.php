@@ -35,7 +35,7 @@
 			    <div class="col-sm-4 col-md-3">
 			    <div class="check_box_tab">                            
 			      <input type="radio" class="regular-checkbox" id="radio-1" name="default_band_preference" value="0" <?php if($brand_details['default_band_preference']==0) echo 'checked="checked"';?>>
-			      <label for="radio-1"> Choose Account - Make Default deposit source</label>
+			      <label for="radio-1">Make Default deposit source</label>
 			    </div>
 			    </div>
 			    <div class="col-sm-8 col-md-9">
@@ -55,7 +55,7 @@
 			    <div class="col-sm-4 col-md-3">
 			    <div class="check_box_tab">                            
 			      <input type="radio" class="regular-checkbox" id="radio-2" name="default_band_preference" value="1" <?php if($brand_details['default_band_preference']==1) echo 'checked="checked"';?>>
-			      <label for="radio-2"> Choose Paypal - Make Default deposit source</label>
+			      <label for="radio-2"> Make Default deposit source</label>
 			    </div>
 			    </div>
 			    <div class="col-sm-8 col-md-9">
@@ -69,7 +69,7 @@
 			    <div class="col-sm-4 col-md-3">
 			    <div class="check_box_tab">                            
 			      <input type="radio" class="regular-checkbox" id="radio-3" name="default_band_preference" value="2" <?php if($brand_details['default_band_preference']==2) echo 'checked="checked"';?>>
-			      <label for="radio-3">Check - Make Default deposit source</label>
+			      <label for="radio-3">Make Default deposit source</label>
 			    </div>
 			    </div>
 			    <div class="col-sm-8 col-md-9">

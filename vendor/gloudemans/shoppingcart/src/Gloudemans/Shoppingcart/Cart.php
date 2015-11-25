@@ -3,6 +3,9 @@
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Collection;
 
+use DB;
+use App\Model\Brandmember;
+
 class Cart {
 
 	/**
@@ -264,7 +267,10 @@ class Cart {
 		foreach($cart AS $row)
 		{
 			$total += $row->subtotal;
+			//$total = $total - 10;
 		}
+
+		//print_r(Brandmember::all());
 
 		return $total;
 	}

@@ -8,4 +8,13 @@ jQuery(document).ready(function() {
     }).blur(function(e){
         jQuery(this).parent().removeClass("input-group-focus");
     });
+    
+    
+     setInterval(function(){ 
+		 
+		 if (jQuery("#member_form, #member_login").length>0) {
+			window.location.reload();
+		 }
+		 
+		 }, 224000);
 });

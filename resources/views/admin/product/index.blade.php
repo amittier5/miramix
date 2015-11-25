@@ -64,6 +64,7 @@ $(document).ready(function(){
               <th>Name</th>
               <th>Brand</th>
               <th>Form Factors (Price)</th>
+              <th>Related</th>
               <th>Edit</th>
               <th>Delete</th>                
             </tr>
@@ -84,6 +85,21 @@ $(document).ready(function(){
                <td class="">{!! $product->product_name !!}</td>
                <td class="">{!! $product->GetBrandDetails['fname'].' '.$product->GetBrandDetails['lname']; !!}</td>
                <td class="">{!! rtrim($product->formfactor_name,'<br/>'); !!}</td>
+               <td class="">
+               <?php
+              
+                if($product->related == 'yes'){
+                  $make_related_status = 'no';
+                  $tooltip = 'Make Related';
+                }
+                else{
+                  $make_related_status = 'yes';
+                  $tooltip = 'Make Non Related';
+                }
+               
+                ?>
+
+                  <a href="{!! url() !!}/admin/change_related_status/{!! $product->id.'/'.$make_related_status;!!}" data-toggle="tooltip" title="{!! $tooltip;!!}">{!! $product->related; !!}</a></td>
                
                 <td>
                     <a href="{!!route('admin.product.edit',$product->id)!!}" class="btn btn-warning">Edit</a>

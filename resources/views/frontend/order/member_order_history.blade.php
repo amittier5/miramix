@@ -5,7 +5,7 @@
    <!--my_acct_sec-->
    <div class="my_acct_sec">           
      <div class="container">
-       <div class="col-sm-10 col-sm-offset-1">
+       <div class="col-sm-12">
          <div class="row">
            <div class="form_dashboardacct">
               <h3>Order History</h3>
@@ -88,7 +88,7 @@
           if(data !='' ) // email exist already
           {
             $("#cart_det").html(data);
-            $("#cart_det").fadeIn(2000);
+            $("#cart_det").effect( "shake", {times:4}, 1000 );
           }
           
         }

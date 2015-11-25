@@ -65,10 +65,10 @@
                     </div>
                   @endif
                 <div class="log_btnblock md15">
-                <a href=""><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
-                <a href=""><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>
+                <!--<a href=""><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
+                <a href=""><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>-->
                 </div>
-                <img src="<?php echo url();?>/public/frontend/images/or.png" alt="">
+               <!--  <img src="<?php echo url();?>/public/frontend/images/or.png" alt=""> -->
               <form class="form-horizontal" role="form" id="member_login" name="member_login" method="POST" action="{{ url('memberLogin') }}">
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="tot_formlog clearfix">
@@ -89,9 +89,17 @@
               </form>
                 <p class="wow zoomInUp brand_p clearfix">Want a Brand Account? <a href="<?php url();?>register">Sign up now!</a></p>
             </div>
+            
+            
+            
         </div>
         <!--login_cont-->
         
+        
+        
     </div>
     <!--for login page-->
+    
+    
+    
 @stop

@@ -143,7 +143,7 @@
         <?php foreach($allcountry as $eachCountry)
         {
         ?>
-        <option value="{!! $eachCountry->country_id !!}">{!! $eachCountry->name !!}</option>
+        <option value="{!! $eachCountry->country_id !!}" <?php if($eachCountry->country_id==223){echo 'selected=selected';}?>>{!! $eachCountry->name !!}</option>
         <?php   
         }  
         ?>
@@ -151,10 +151,8 @@
 
     </div>
     <div class="form-group col-sm-6">
-    <select class="form-control" name="state" id="state">
-      <option value="">Please select state</option>
-      
-    </select>
+  
+      {!! Form::select('state', array('' => 'Please select state') +$allstates,'default', array('id' => 'state',"class"=>"form-control")); !!}
     </div>
     <div class="form-group col-sm-6">
     <input type="text" class="form-control" placeholder="City" name="city" id="city">

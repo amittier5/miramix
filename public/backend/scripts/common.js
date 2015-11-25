@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
     if($('.datatable-1').length>0){
-        $('.datatable-1').dataTable();
+        $('.datatable-1').dataTable({
+		  "iDisplayLength": 50
+		});
         $('.dataTables_paginate').addClass('btn-group datatable-pagination');
         $('.dataTables_paginate > a').wrapInner('<span />');
         $('.dataTables_paginate > a:first-child').append('<i class="icon-chevron-left shaded"></i>');
@@ -24,7 +26,7 @@
     var d1 = [ [0, 1], [1, 14], [2, 5], [3, 4], [4, 5], [5, 1], [6, 14], [7, 5],  [8, 5] ];
     var d2 = [ [0, 5], [1, 2], [2, 10], [3, 1], [4, 9],  [5, 5], [6, 2], [7, 10], [8, 8] ];
 
-		var plot = $.plot($('#placeholder2'),
+		/*var plot = $.plot($('#placeholder2'),
 			   [ { data: d1, label: 'Profits'}, { data: d2, label: 'Expenses' } ], {
 					lines: {
 						show: true,
@@ -48,7 +50,7 @@
 					colors: [ '#55f3c0', '#0db37e',  '#b4fae3', '#e0d1cb'],
 					shadowSize: 0
 				 });
-
+*/
 		function showTooltip(x, y, contents) {
 			$('<div id="gridtip">' + contents + '</div>').css( {
 				position: 'absolute',
@@ -87,7 +89,7 @@
         var d1 = [ [0, 1], [1, 14], [2, 5], [3, 4], [4, 5], [5, 1], [6, 14], [7, 5],  [8, 5] ];
 		var d2 = [ [0, 5], [1, 2], [2, 10], [3, 1], [4, 9],  [5, 5], [6, 2], [7, 10], [8, 8] ];
 
-		var plot = $.plot($("#placeholder"), 
+		/*var plot = $.plot($("#placeholder"), 
 		[ { data: d1, label: "Data A" }, { data: d2, label: "Data B" } ], {
 			lines: { 
 				show: true, 
@@ -110,16 +112,16 @@
 			},
 			colors: [ "#090", "#099",  "#609", "#900"],
 			shadowSize: 0
-		});
+		});*/
 
         var d1 = [ [0, 1], [1, 14], [2, 5], [3, 4], [4, 5], [5, 1], [6, 14], [7, 5],  [8, 5] ];
 		var d2 = [ [0, 5], [1, 2], [2, 10], [3, 1], [4, 9],  [5, 5], [6, 2], [7, 10], [8, 8] ];
 
-		var plot = $.plot($("#placeholder2"),
+		/*var plot = $.plot($("#placeholder2"),
 			   [ { data: d1, label: "Data Y"}, { data: d2, label: "Data X" } ], {
 					lines: { 
 						show: true, 
-						fill: true, /*SWITCHED*/
+						fill: true, 
 						lineWidth: 2 
 					},
 					points: { 
@@ -138,7 +140,7 @@
 					},
 					colors: [ "#090", "#099",  "#609", "#900"],
 					shadowSize: 0
-				 });
+				 });*/
 
 		function showTooltip(x, y, contents) {
 			$('<div id="gridtip">' + contents + '</div>').css( {
@@ -180,14 +182,14 @@
 					];
 
         // DEFAULT
-        $.plot($("#pie-default"), data,
+       /* $.plot($("#pie-default"), data,
 		{
 		    series: {
 		        pie: {
 		            show: true
 		        }
 		    }
-		});
+		});*/
 
         // DEFINE ACTIONS FOR pieHover & pieClick
         function pieHover(event, pos, obj) {
@@ -205,7 +207,7 @@
         }
 
         // DONUT
-        $.plot($("#pie-donut"), data,
+       /* $.plot($("#pie-donut"), data,
 		{
 		    series: {
 		        pie: {
@@ -229,7 +231,7 @@
 		        clickable: true
 		    }
 		});
-
+*/
         $("#pie-interactive").bind("plothover", pieHover);
         $("#pie-interactive").bind("plotclick", pieClick);
     }

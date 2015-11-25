@@ -210,7 +210,7 @@ class ProductController extends BaseController {
       }
 
       // Get only those form factor which is created for this particular prouct
-      $pro_form_factor = DB::table('product_formfactors as pff')->select(DB::raw('pff.*,ff.name,ff.price,ff.maximum_weight,ff.minimum_weight'))->Join('form_factors as ff','ff.id','=','pff.formfactor_id')->where('product_id',$products->id)->where('min_price','!=',0)->get();
+      $pro_form_factor = DB::table('product_formfactors as pff')->select(DB::raw('pff.*,ff.name,ff.price,ff.maximum_weight,ff.minimum_weight'))->Join('form_factors as ff','ff.id','=','pff.formfactor_id')->where('product_id',$products->id)->where('actual_price','!=',0)->get();
       
       $discountinue = $products->discountinue;
 
@@ -421,10 +421,12 @@ class ProductController extends BaseController {
       }
 
       // Create Product Ingredient 
-      foreach (Request::input('ingredient') as $key2 => $ing_value) {
-          $arr_next = array('product_id'=>$id,'ingredient_id'=>$ing_value['id'],'weight'=>$ing_value['weight'],'ingredient_price'=>$ing_value['ingredient_price'],'ingredient_group_id'=>0);
-          ProductIngredient::create($arr_next);
-      }
+	   if(NULL!=Request::input('ingredient')){
+		  foreach (Request::input('ingredient') as $key2 => $ing_value) {
+			  $arr_next = array('product_id'=>$id,'ingredient_id'=>$ing_value['id'],'weight'=>$ing_value['weight'],'ingredient_price'=>$ing_value['ingredient_price'],'ingredient_group_id'=>0);
+			  ProductIngredient::create($arr_next);
+		  }
+	  }
 
 
       // Delete all Formfactor before save new
@@ -469,6 +471,24 @@ class ProductController extends BaseController {
         Session::flash('success', 'Product deleted successfully'); 
         return redirect('admin/product-list/'.$pro['discountinue']);
     }
+
+    public function change_related_status()
+    {   
+        $product_id = Request::segment(3);
+        $related = Request::segment(4);
+
+
+
+        $pro = Product::find($product_id);
+        
+        $pro['related'] = $related;
+        
+        $pro->save();
+
+         Session::flash('success', 'Product updated successfully'); 
+         return redirect('admin/product-list/'.$pro['discountinue']);
+    }
+
 
     
 

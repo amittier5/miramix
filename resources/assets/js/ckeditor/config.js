@@ -32,6 +32,20 @@ config.wordcount = {
     // Maximum allowed Char Count, -1 is default for unlimited
     maxCharCount: -1
 };
+
+ config.toolbar_Full =
+     [
+          
+          { name: 'forms',       items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+          '/',
+          { name: 'basicstyles', items : [ 'Strike','Subscript','Superscript','-','RemoveFormat' ] },
+          { name: 'paragraph',   items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+          
+          { name: 'insert',      items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
+          '/',
+          { name: 'styles',      items : [ 'Styles','Format','Font','FontSize' ] }
+          
+     ];
 	//config.filebrowserUploadUrl = [global_path+'users/editor_file_upload'];
 };
 

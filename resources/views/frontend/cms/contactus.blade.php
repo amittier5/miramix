@@ -1,5 +1,6 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+<?php // print_r($all_sitesetting); exit;?>
 <div class="inner_page_container">
     	<div class="header_panel">
         	<div class="container">
@@ -29,9 +30,9 @@
 <div class="row">
 <div class="col-sm-6">
 
-<p class="common_cnt"><i class="fa fa-map-marker"></i>Miramax Lorem NY, LLC, located at 2540<br> Colorado Avenue, Suite 100E, Santa Monica,<br> California 90404.</p>
-<p class="common_cnt"><i class="fa fa-mobile"></i>Ph: +91 (80) 28440011</p>
-<p class="common_cnt"><i class="fa fa-envelope"></i>Email: <a href="mailto:traci@miramix.com">traci@miramix.com</a></p>
+<p class="common_cnt"><i class="fa fa-map-marker"></i>{!! strip_tags($all_sitesetting['address']); !!}</p>
+<p class="common_cnt"><i class="fa fa-mobile"></i>Ph: {!! $all_sitesetting['contact']; !!}</p>
+<p class="common_cnt"><i class="fa fa-envelope"></i>Email: <a href="mailto:{!! $all_sitesetting['email']; !!}">{!! $all_sitesetting['email']; !!}</a></p>
 </div>
 <div class="col-sm-6">
 <?php

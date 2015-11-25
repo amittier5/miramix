@@ -45,7 +45,7 @@
                                             </td>
 
                                             <td class=" ">
-                                                {!! $sitesetting->value !!}
+                                                {!! strip_tags($sitesetting->value) !!}
                                             </td>
 
                                             <td>

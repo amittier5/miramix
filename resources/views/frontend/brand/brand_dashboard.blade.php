@@ -110,7 +110,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
-                        <a href="#">Subscription History <span>Coming Soon</span></a>
+                        <a href="<?php echo url();?>/subscription-history">Subscription History</a>
                         </div>                    	
                     </div>
                 </div>

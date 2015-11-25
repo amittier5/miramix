@@ -69,7 +69,7 @@
                           </div>
                           
                           <div class="col-sm-12">
-                          <p class="pull-left">Default Address</p>
+                          <p class="pull-left for_lineheight">Default Address</p>
                           
                           <div class="check_box_tab marg_left pull-left">                            
                               <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1" <?php if($member_details->address==$address->id) {echo  'checked="checked"';} ?>>

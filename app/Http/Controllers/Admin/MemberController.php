@@ -13,7 +13,7 @@ use Image\Image\ImageInterface;
 use Illuminate\Pagination\Paginator;
 use DB;
 use App\Helper\helpers;
-
+use Mail;
 
 class MemberController extends Controller {
 
@@ -30,7 +30,7 @@ class MemberController extends Controller {
     */
    public function index()
    {
-        $limit = 5;
+        $limit = 50;
 		$members = DB::table('brandmembers')->where('role',0)->orderBy('id','DESC')->paginate($limit);
         //echo '<pre>';print_r($members); exit;
 	    $members->setPath('member');
@@ -103,37 +103,84 @@ class MemberController extends Controller {
         $brandmember=Brandmember::find($id);
         $brandmember->status = 1;
         $brandmember->update();
-        //dd($brandmember);exit;
         
         Session::flash('success', 'Member status updated successfully'); 
         return redirect('admin/member');
-
     }
 
     public function admin_active_status($id)
     {
-        //echo $id;exit;
-        
         $brandmember=Brandmember::find($id);
         $brandmember->admin_status = 1;
         $brandmember->update();
-        //dd($brandmember);exit;
         
-        Session::flash('success', 'Member status updated successfully'); 
-        return redirect('admin/member');
+        $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+        $admin_users_email=$sitesettings->value;
+        
+        if($brandmember->fname !='')
+        $user_name = $brandmember->fname.' '.$brandmember->lname;
+        else
+        $user_name = $brandmember->username;
+
+        $user_email = $brandmember->email;
+
+        $msg ="Your account has been activated by admin.Please try to log in with your valid credentials.";
+
+        $sent = Mail::send('admin.members.activate_member', array('name'=>$user_name,'email'=>$user_email,'admin_users_email'=>$admin_users_email,'msg'=>$msg), 
+        function($message) use ($admin_users_email, $user_email,$user_name,$msg)
+        {
+            $message->from($admin_users_email);
+            $message->to($user_email, $user_name)->subject('Account Activation Mail From Miramix Support');
+        });
+                        
+        if(!$sent)
+        {
+            Session::flash('error', 'something went wrong!! Mail not sent.'); 
+            return redirect('admin/member');
+        }
+        else
+        {
+            Session::flash('success', 'Member status updated successfully'); 
+            return redirect('admin/member');
+        }
     }
 
     public function admin_inactive_status($id)
     {
-        //echo $id;exit;
-        
         $brandmember=Brandmember::find($id);
         $brandmember->admin_status = 0;
         $brandmember->update();
-        //dd($brandmember);exit;
+
+        $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+        $admin_users_email=$sitesettings->value;
         
-        Session::flash('success', 'Member status updated successfully'); 
-        return redirect('admin/member');
+        if($brandmember->fname !='')
+        $user_name = $brandmember->fname.' '.$brandmember->lname;
+        else
+        $user_name = $brandmember->username;
+
+        $user_email = $brandmember->email;
+
+        $msg = "Your account has been de-activated by admin.Please contact with miramix support.";
+        
+        $sent = Mail::send('admin.members.activate_member', array('name'=>$user_name,'email'=>$user_email,'admin_users_email'=>$admin_users_email,'msg'=>$msg), 
+        function($message) use ($admin_users_email, $user_email,$user_name,$msg)
+        {
+            $message->from($admin_users_email);
+            $message->to($user_email, $user_name)->subject('Account Deactivation Mail From Miramix Support');
+        });
+                        
+        if(!$sent)
+        {
+            Session::flash('error', 'something went wrong!! Mail not sent.'); 
+            return redirect('admin/member');
+        }
+        else
+        {
+            Session::flash('success', 'Member status updated successfully'); 
+            return redirect('admin/member');
+        }
+       
     }
 
 

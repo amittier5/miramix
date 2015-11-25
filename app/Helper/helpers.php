@@ -94,7 +94,7 @@ class helpers {
     public function create_slug($page_title,$model,$col)
     {
         
-        $current_created_slug=$new_created_slug = preg_replace('/[^\da-z]/i', '-', $page_title);
+        $current_created_slug=$new_created_slug = preg_replace('/[^\da-z]/i', '-', strtolower($page_title));
         $new_created_slug=$current_created_slug=trim(preg_replace('/-+/', '-', $new_created_slug), '-');
         $stat=0;
         $cnt=1;
@@ -123,7 +123,7 @@ class helpers {
     public function edit_slug($page_title,$model,$col,$primary_value)
     {
         
-        $current_created_slug=$new_created_slug = preg_replace('/[^\da-z]/i', '-', $page_title);
+        $current_created_slug=$new_created_slug = preg_replace('/[^\da-z]/i', '-', strtolower($page_title));
         $new_created_slug=$current_created_slug=trim(preg_replace('/-+/', '-', $new_created_slug), '-');
         $stat=0;
         $cnt=1;
@@ -305,6 +305,25 @@ public function get_minprice($pid){
 	else
 	return 0;
 }
+
+public function get_last_query() {
+	DB::connection()->enableQueryLog();
+	$queries = DB::getQueryLog();
+	$sql = end($queries);
+	      
+	if( ! empty($sql['bindings']))
+	{
+	  $pdo = DB::getPdo();
+	  foreach($sql['bindings'] as $binding)
+	  {
+	    $sql['query'] =
+	      preg_replace('/\?/', $pdo->quote($binding),
+		$sql['query'], 1);
+	  }
+	}
+	      
+	return $sql['query'];
+      }
 
 }
 ?>

@@ -7,41 +7,41 @@
   <script>
   
   // When the browser is ready...
-  $(function() {
-    // Setup form validation on the #register-form element
-    $("#cms_form").validate({
+  // $(function() {
+  //   // Setup form validation on the #register-form element
+  //   $("#cms_form").validate({
         
-        ignore: [],
-        // Specify the validation rules
-        rules: {
-            name: "required",
-            address: {
-                        required: function() 
-                        {
-                        CKEDITOR.instances.address.updateElement();
-                        }
-                    },
-            value: 
-                    {
-                      required: true,
-                      phoneUS: true
-                    }
+  //       ignore: [],
+  //       // Specify the validation rules
+  //       rules: {
+  //           name: "required",
+  //           address: {
+  //                       required: function() 
+  //                       {
+  //                       CKEDITOR.instances.address.updateElement();
+  //                       }
+  //                   },
+  //           value: 
+  //                   {
+  //                     required: true,
+  //                     phoneUS: true
+  //                   }
             
-        },
+  //       },
         
-        // Specify the validation error messages
-        messages: {
-            title: "Please enter title.",
-            address: "Please enter address.",
-            value: "Please enter valid phone number."
-        },               
+  //       // Specify the validation error messages
+  //       messages: {
+  //           title: "Please enter title.",
+  //           address: "Please enter address.",
+  //           value: "Please enter valid phone number."
+  //       },               
 
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
+  //       submitHandler: function(form) {
+  //           form.submit();
+  //       }
+  //   });
 
-  });
+  // });
   
   </script>
 
@@ -61,16 +61,23 @@
 
         <div class="controls">
              <?php 
+             echo  Form::hidden('type',$sitesettings->type);
              //echo $sitesettings->type;
             if($sitesettings->type == 'textarea')
             {
-               echo  Form::textarea('value',null,['class'=>'span8 ckeditor','id'=>snake_case($sitesettings->name)]) ;
+               echo  Form::textarea('value',null,['class'=>'span8','id'=>snake_case($sitesettings->name)]) ;
+
             }
             else if($sitesettings->type == 'text')
             {
                 echo  Form::text('value',null,['class'=>'span8','id'=>snake_case($sitesettings->name)]) ;
             }
-
+            else if($sitesettings->type == 'radio')
+            {
+                echo "<div class='label_siteadmin pull-left'><label>". Form::radio('value', 'test',true,['id'=>snake_case($sitesettings->name)])."Test</label></div>";
+                echo "<div class='label_siteadmin pull-left'><label>". Form::radio('value', 'live',['id'=>snake_case($sitesettings->name)])."Live</label></div>";
+                
+            }
             ?>
         </div>
     </div>

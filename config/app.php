@@ -205,7 +205,9 @@ return [
         'HTML'=> 'Illuminate\Html\HtmlFacade',
         //'Cart' => 'Anam\Phpcart\Facades\Cart',
         'Cart'=> 'Gloudemans\Shoppingcart\Facades\Cart',
-        'Authorizenet'           => 'App\Libraries\Facades\Authorizenet'
+        'Authorizenet'           => 'App\Libraries\Facades\Authorizenet',
+        
+        
 
     ],
 

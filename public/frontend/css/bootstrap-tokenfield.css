@@ -250,10 +250,10 @@
     width: auto;
     float: left;
     margin: 5px 0px 0px 5px;
-    height: 42px;
+    height: 44px;
     border: 1px solid #62B0BD;
-    border-radius: 19px;
-    line-height: 42px;
+    border-radius: 22px;
+    line-height: 44px;
     font-size: 17px;
     color: #367984;
     font-weight: 300;
@@ -293,6 +293,9 @@
     border-radius: 50%;
     position: absolute;
     right: 5px;
-    top: 10px;
+    top: 12px;
     padding: 0;
+}
+.tokenfield .token-input{
+	color: #6DC4D3;	
 }

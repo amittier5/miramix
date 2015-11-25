@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers\Frontend;
 
-use App\Model\Brandmember;  /* Model name*/
+use App\Model\Brandmember;/* Model name*/
+use App\Model\MemberProfile;
 use App\Model\Subscription;
 use App\Model\Address;      /* Model name*/
 use App\Http\Requests;
@@ -37,7 +38,8 @@ class CronController extends BaseController {
      public function index()
     {
          $all_brand_member = DB::table('brandmembers')->where('role', 1)->where('status', 1)->where('admin_status', 1)->get();
-        
+        DB::connection()->enableQueryLog();
+
 	foreach($all_brand_member as $brand){
 	    $product = DB::table('products')
                  ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
@@ -49,8 +51,12 @@ class CronController extends BaseController {
                  ->where('products.discountinue', 0)
 		
                  ->groupBy('product_formfactors.product_id');
-	    $count=$product->count();
-	    
+	    $profile=MemberProfile::find($brand->id);
+	  if(isset($profile) && $profile->count){
+	    $count=(int)$profile->count;
+	  }else{
+	    $count=0;
+	  }
 	    $setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
 	    $setting2 = DB::table('sitesettings')->where('name', 'brand_perproduct_fee')->first();
 	    
@@ -113,7 +119,7 @@ class CronController extends BaseController {
 		 if(empty($brand->auth_profile_id))
 		continue;
 		
-		echo "will be charged ".$subscription->subscription_id .'<br />';
+		echo "will be charged ".$subscription->member_id .'<br />';
 		
 		// Create Auth & Capture Transaction
 		$request = new AuthorizeNetCIM;
@@ -135,7 +141,7 @@ class CronController extends BaseController {
 		$transaction->lineItems[] = $lineItem;
 		
 		$response = $request->createCustomerProfileTransaction("AuthCapture", $transaction);
-		
+		$updateWithCode = DB::table('brandmembers')->where('id', '=', $subscription->member_id)->update(array('subscription_status' => 'expired'));
 		if($response->isOk()){
 		    $transactionResponse = $response->getTransactionResponse();
 		   
@@ -146,6 +152,7 @@ class CronController extends BaseController {
 		$sub = DB::table('subscription_history')
                                     ->where('subscription_id', $subscription->subscription_id)
                                     ->update($subdata);
+		$updateWithCode = DB::table('brandmembers')->where('id', '=', $subscription->member_id)->update(array('subscription_status' => 'active'));
 		}else{
 		   print_r($response); 
 		    
@@ -163,6 +170,51 @@ class CronController extends BaseController {
            
          }
          
+    }
+    
+    public function sendpasswordmail(){
+	return false;
+	
+	$members=DB::table('brandmembers')->where('id', '>', 51)->get();
+	
+	foreach($members as $member){
+	   $brand=array();
+	    $fname=explode(" ",$member->fname);
+	   if(count($fname)>0){
+	   $brand=array("fname"=>trim($fname[0]),"lname"=>trim($fname[1]));
+	   }
+	    $brandresult=Brandmember::find($member->id );
+	    $orgpass=uniqid();
+	    $password= Hash::make($orgpass);
+	    $brand["password"]=$password;
+	   
+            $brandresult->update($brand);
+	    
+	    $sitesettings = DB::table('sitesettings')->where("name","email")->first();
+            $admin_users_email=$sitesettings->value;
+	    
+	    $user_name =$member->fname.' '.$member->lname;
+	    $user_email = $member->email;
+	  
+	    $activateLink = $orgpass;
+	    $userid=$member->username;
+	    $sent = Mail::send('frontend.register.newPassword', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink,'userid'=>$userid,'admin_users_email'=>$admin_users_email), 
+	    function($message) use ($admin_users_email, $user_email,$user_name)
+	    {
+		    $message->from($admin_users_email);
+		    $message->to($user_email, $user_name)->subject('New password generated for site migration');
+	    });
+
+	    if( ! $sent) 
+	    {
+		    echo 'Unable to send email'.$member->id.' <br />';
+	    }
+	   
+	    
+	    
+	}
+	
+	
     }
     
 }

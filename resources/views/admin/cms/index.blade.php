@@ -9,7 +9,7 @@
             <strong>{!! Session::get('success') !!}</strong>
         </div>
  @endif
- <a href="{!!url('admin/cms/create')!!}" class="btn btn-success pull-right">Create Content</a>
+ <!-- <a href="{!!url('admin/cms/create')!!}" class="btn btn-success pull-right">Create Content</a> -->
  <hr>
  
    <div class="module">

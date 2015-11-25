@@ -58,7 +58,7 @@
                         <a href="{!!route('admin.brand.edit',$brand->id)!!}" class="btn btn-warning">Edit</a>
                     </td>
                     <td>
-                        {!! Form::open(['method' => 'DELETE', 'route'=>['admin.brand.destroy', $brand->id]]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'route'=>['admin.brand.destroy', $brand->id],'onsubmit' => 'return ConfirmDelete()']) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
                     </td>
@@ -71,4 +71,16 @@
     </div>
 
   <div><?php echo $brands->render(); ?></div>
+  <script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("Are you sure you want to delete?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
 @endsection

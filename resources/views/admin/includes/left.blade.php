@@ -47,6 +47,7 @@ $open1 = "class='unstyled collapse'";
             </ul>
         </li>
             <li><a href="<?php echo url().'/admin/orders'?>"><i class="menu-icon icon-bullhorn"></i>Orders</a></li>
+             <li><a href="<?php echo url().'/admin/subscription'?>"><i class="menu-icon icon-bullhorn"></i>Subscriptions</a></li>
     </ul>
     
     <!-- <ul class="widget widget-menu unstyled">

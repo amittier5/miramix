@@ -9,7 +9,8 @@
 <!-- jQuery Form Validation code -->
   <script>
   
-  // When the browser is ready...
+  var govt=false;
+  var business=false;
   $(function() {
 
     $.validator.addMethod("email", function(value, element) 
@@ -19,9 +20,9 @@
     
     $.validator.addMethod("bankinginfo", function(value, element) {
 		
-		if($('#personal').is(':checked')){
+		/*if($('#personal').is(':checked')){
 			return true;	
-		}
+		}*/
       
       if($('#banking_address1').is(':checked')) { 
 	  
@@ -37,9 +38,9 @@
     }, 'Please enter either routing number or account number.');
     
     $.validator.addMethod("paypalinfo", function(value, element) {
-      if($('#personal').is(':checked')){
+     /* if($('#personal').is(':checked')){
 			return true;	
-	  }
+	  }*/
 	  
       if($('#paypal_email_radio').is(':checked')) { 
 	if ($("#paypal_email").val()==''){
@@ -53,10 +54,25 @@
       
     }, 'Please enter your paypal email address.');
     
-    $.validator.addMethod("mailinginfo", function(value, element) {
-      if($('#personal').is(':checked')){
+     $.validator.addMethod("accounttype", function(value, element) {
+     if($('#personal').is(':checked')){
 			return true;	
 	  }
+	  
+      if($('#business_doc').val()=='') { 
+	
+	  return false;
+	
+      }else{
+	  return true;
+	}
+      
+    }, 'Please enter your business document details.');
+    
+    $.validator.addMethod("mailinginfo", function(value, element) {
+      /*if($('#personal').is(':checked')){
+			return true;	
+	  }*/
 	  
       if($('#mailing_info').is(':checked')) { 
 	if ($("#mailing_name").val()=='' || $("#mailing_lastname").val()=='' || $("#mailing_address").val()=='' || $("#mailing_country_id").val()=='' || $("#mailing_state").val()=='' || $("#mailing_city").val()=='' || $("#mailing_postcode").val()==''){
@@ -116,10 +132,10 @@
       account_number: {
       bankinginfo: true
         },
-      
+      business_doc :{accounttype: true},
       paypal_email: {paypalinfo:true},
      
-           
+           /*
 			card_holder_fname: "required",
 			card_holder_lname: "required",
 			
@@ -136,7 +152,7 @@
 			{
                 required :true,
                 number: true,
-            },
+            },*/
 	    mailing_name: {mailinginfo: true},
 	     mailing_address: {mailinginfo: true},
 	    mailing_country_id: {mailinginfo: true},
@@ -219,9 +235,9 @@
                        
 			    
 			    <div class="checkbox check_now wow slideInRight md15">
-			    <label><input type="radio" name="account_type" id="personal" value="p" > Personal Brand Account</label>
+			    <label><input type="radio" name="brand_type" id="personal" value="personal" > Personal Brand Account</label>
 				
-			    <label><input type="radio" name="account_type" id="business" value="b" checked > Business Brand Account</label>
+			    <label><input type="radio" name="brand_type" id="business" value="business" checked > Business Brand Account</label>
 			    </div>
                     </div>
                     
@@ -242,7 +258,7 @@
                         
 			  <div class="col-sm-4">
 			    <div class="input-group wow slideInLeft md15">
-                                {!! Form::text('business_name',null,['class'=>'form-control','placeholder'=>'Name / Business Name', 'aria-describedby'=>'basic-addon2'])!!}
+                                {!! Form::text('business_name',null,['class'=>'form-control','id'=>'business_name','placeholder'=>'Name / Business Name', 'aria-describedby'=>'basic-addon2'])!!}
                             </div>
 			  </div>
 			  <div class="col-sm-4">
@@ -417,12 +433,12 @@
 			  
 			   <div class="col-sm-6">
 			    <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
-				    {!! Form::select('mailing_country_id', array('' => 'Please select country') +$alldata,'default', array('id' => 'mailing_country_id','class'=>'form-control address-group','onchange' => 'getState(this.value,"mail")')); !!}
+				    {!! Form::select('mailing_country_id', array('' => 'Please select country') +$alldata,223, array('id' => 'mailing_country_id','class'=>'form-control address-group','onchange' => 'getState(this.value,"mail")')); !!}
                                 </div>
 			   </div>
 			    <div class="col-sm-6">
 			      <div style="visibility: visible; animation-name: slideInRight;" class="input-group wow slideInRight md15 animated">
-                            		{!! Form::select('mailing_state', array('' => 'Please select state'),'default', array('id' => 'mailing_state','class'=>'form-control address-group')); !!}
+                            		{!! Form::select('mailing_state', array('' => 'Please select state') +$allstates,'default', array('id' => 'mailing_state','class'=>'form-control address-group')); !!}
                                 </div>
 			    </div>
 			   
@@ -564,12 +580,12 @@
 			   </div>
 			   <div class="col-sm-6">
 			    <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
-					        	{!! Form::select('card_country_id', array('' => 'Please select country') +$alldata,'default', array('id' => 'card_country_id','onchange' => 'getState(this.value,"card")')); !!}
+					        	{!! Form::select('card_country_id', array('' => 'Please select country') +$alldata,223, array('id' => 'card_country_id','onchange' => 'getState(this.value,"card")')); !!}
                                 </div>
 			   </div>
 			   <div class="col-sm-6">
 			    <div style="visibility: visible; animation-name: slideInRight;" class="input-group wow slideInRight md15 animated">
-                            		{!! Form::select('card_state', array('' => 'Please select state'),'default', array('id' => 'card_state')); !!}
+                            		{!! Form::select('card_state', array('' => 'Please select state') +$allstates,'default', array('id' => 'card_state')); !!}
                                 </div>
 			    </div>
 			   <div class="col-sm-6">
@@ -630,12 +646,12 @@
 		    
 		    <div class="col-sm-4 col-sm-offset-2">
 		      <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
-					        {!! Form::select('country', array('' => 'Please select country') +$alldata,'default', array('id' => 'country','onchange' => 'getState(this.value,"shipping")')); !!}
+					        {!! Form::select('country', array('' => 'Please select country') +$alldata,223, array('id' => 'country','onchange' => 'getState(this.value,"shipping")')); !!}
                         </div>
 		    </div>
 		    <div class="col-sm-4">
 		      <div style="visibility: visible; animation-name: slideInRight;" class="input-group wow slideInRight md15 animated">
-                            {!! Form::select('state', array('' => 'Please select state'),'default', array('id' => 'state')); !!}
+                            {!! Form::select('state', array('' => 'Please select state') +$allstates,'default', array('id' => 'state')); !!}
                         </div>
 		    </div>
 		    <div class="col-sm-4 col-sm-offset-2">
@@ -673,7 +689,31 @@
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-8">
                         <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
-                             {!! Form::file('government_issue',['class'=>'btn','id'=>'government_issue','placeholder'=>'Issue Id'])!!}
+                             {!! Form::file('government_issue',['class'=>'btn filesdoc','id'=>'government_issue','placeholder'=>'Issue Id'])!!}
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-2">&nbsp;</div>
+                </div>
+                    </div>
+                </div>
+		    
+		    
+		<div class="brand_login_panel regis_formvalidmsg">
+                    <div class="row">
+                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-8  wow fadeInDown"><h2 class="">Articles of Incorporation / Any other document proving business ownership</h2></div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    
+		    <div class="form_panel">
+		   
+                <div class="row signup_form_panel">
+                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-8">
+                       
+			<div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
+                             {!! Form::file('business_doc',['class'=>'btn filesdoc','id'=>'business_doc','placeholder'=>'Upload Document'])!!}
                         </div>
                     </div>
                     
@@ -846,6 +886,18 @@ function updateDate(brand_member_id)
   
 <script type="text/javascript">
 $( document ).ready(function() {
+$("#personal").click(function(){
+    $("#business_name").attr("placeholder","Name");
+    $("#fname").attr("placeholder","First Name");
+    $("#lname").attr("placeholder","Last Name");
+});
+
+$("#business").click(function(){
+    $("#business_name").attr("placeholder","Name / Business Name");
+    $("#fname").attr("placeholder","Executive in Charge First Name");
+    $("#lname").attr("placeholder","Executive in Charge Last Name");
+});
+
 
  $('#calldate').datetimepicker({
    format:'YYYY-M-D',
@@ -895,6 +947,35 @@ enabledHours: [8,9, 10, 11, 12, 13, 14, 15, 16,17,18,19,20]
   
     return true;
   }
+  
+   $(document).on('change','.filesdoc',function(e){
+		
+	},handleFileSelectBrand);
+
+function handleFileSelectBrand(e) {
+
+		
+		//var class_val=e.currentTarget.parentNode.parentNode.childNodes[3].className;
+		
+		if(!e.target.files || !window.FileReader) return;
+		
+		selDiv.innerHTML = "";
+		
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		filesArr.forEach(function(f) {
+			
+			//alert(f.size);
+			if(f.size>2 * 1024 * 1024){
+				sweetAlert("Oops...", "File size should be less than 2MB", "error");
+				e.currentTarget.value='';
+				return;
+			}
+	
+			
+			
+		});	
+	}	
 </script>
   
 <style>

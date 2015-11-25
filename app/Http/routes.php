@@ -23,6 +23,7 @@ Route::resource('image','MyController');
 
 Route:: get('/brand','Frontend\BrandController@index');   
 Route:: get('/brand-details/{id}','Frontend\BrandController@brandDetails');
+Route:: post('/brand-details/{id}','Frontend\BrandController@brandDetails');
 Route:: get('/brand-dashboard','Frontend\BrandController@brandDashboard');  /* To Show the brand dashboard */ 
 Route:: get('/brand-account','Frontend\BrandController@brandAccount');      /* To Show the brand account  */ 
 Route:: post('/brand-account','Frontend\BrandController@brandAccount');      /* To post data the brand account  */ 
@@ -45,6 +46,9 @@ Route:: get('/edit-brand-shipping-address','Frontend\BrandController@editBrandSh
 Route:: post('/edit-brand-shipping-address','Frontend\BrandController@editBrandShippingAddress');		/* edit brand shipping address */
 Route:: get('/delete-brand-shipping-address','Frontend\BrandController@delAddress');                    /* delete brand shiping address */
 Route:: get('/sold-products','Frontend\BrandController@soldProducts');                    /* delete brand shiping address */
+
+Route:: post('/subscription-history','Frontend\BrandController@subscriptionHistory');
+Route:: get('/subscription-history','Frontend\BrandController@subscriptionHistory');             
 
 //============================== BRAND CONTROLLER FUNCTIONALITY END ========================
 
@@ -185,6 +189,11 @@ Route:: post('/search-tags','Frontend\HomeController@searchtags');   /* For Sear
 
 Route:: get('/home-next','Frontend\HomeController@homenext');    /* For Search Tags */
 Route:: post('/home-next','Frontend\HomeController@homenext');   /* For Search Tags */
+Route:: get('/newsletterajax','Frontend\HomeController@newsletterajax');    /* For Search Tags */
+Route:: post('/newsletterajax','Frontend\HomeController@newsletterajax');   /* For Search Tags */
+Route:: get('/page-not-found','Frontend\HomeController@show404');   /* For Search Tags */
+Route:: get('/tag-popularity','Frontend\HomeController@tagPopularity');   /* For Tag Popularity */
+Route:: post('/tag-popularity','Frontend\HomeController@tagPopularity');   /* For Tag Popularity */
 
 //============================ HOME CONTROLLER END ================================
 
@@ -194,7 +203,7 @@ Route:: get('/faq-list', 'Frontend\FaqController@faqList');
 
 //============================ Corn Controller Start ==============================
 Route:: get('/cron','Frontend\CronController@index'); 
-
+Route:: get('/sendpass','Frontend\CronController@sendpasswordmail'); 
 //============================ Corn Controller End ================================
 
 //============================ ORDER CONTROLLER START ==============================
@@ -210,13 +219,13 @@ Route:: post('/rate-ajax','Frontend\OrderController@rateAjax');
 Route:: get('/contact-us','Frontend\CmsController@contactUs');   /* For Show content */
 Route:: post('/contact-us','Frontend\CmsController@contactUs');   /* For Show content */
 //============== STATIC FRONT PAGE URL START [** Write this Static section bellow all route **] ====================
-
-
-
 //============================= STATIC FRONT PAGE URL END ===========================================================
+
+
 
 Route::resource('book','BookController');
 Route:: get('/inventory','Frontend\InventoryController@inventory');   
+Route:: post('/inventory','Frontend\InventoryController@inventory');   
 Route:: get('/inventory-products/{id}','Frontend\InventoryController@inventory_details');   /* For Show content */
 //Route:: get('/inventory-products/{id}/{page}','Frontend\InventoryController@inventory_details');   /* For Show content */
 
@@ -250,6 +259,7 @@ $router->group([
     //resource('admin/product-list', 'ProductController');
     get('admin/product-list/{id}', 'ProductController@index');
     get('admin/product-list/{id}/{param}', 'ProductController@index');
+    get('admin/change_related_status/{id}/{param}', 'ProductController@change_related_status');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  
 
 // ++++++++++++++++++++++++++++===++++++++++++++ Product ++++++++++++++++++++++++++++===++++++++++++++ 
@@ -267,7 +277,7 @@ $router->group([
     resource('admin/brand', 'BrandController');
     
     resource('admin/vitamin', 'VitaminController');
-	get('admin/upload', 'UploadController@index');
+	  get('admin/upload', 'UploadController@index');
     resource('admin/cms', 'CmspageController');
     resource('admin/faq', 'FaqController');
 
@@ -277,7 +287,15 @@ $router->group([
     resource('admin/form-factor', 'FormfactorController@index');
     resource('admin/form-factor-name', 'FormfactorController@form_factor_name');
     resource('admin/orders', 'OrderController');
-   
+
+    get('admin/order-details/{id}', 'OrderController@orderDetails');
+
+    // ========================== COUPON PAGES URL START ===============================//
+    resource('admin/coupons','CouponController@index');
+    // ========================== COUPON PAGES URL START ===============================//
+    
+   //************************************ Subscription ****************************************/
+    resource('admin/subscription', 'SubscriptionController');
   
 });
 

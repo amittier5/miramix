@@ -30,9 +30,11 @@ if(isset($_REQUEST['page']))
                 <li>{!! $all_brand_member->fname.' '.$all_brand_member->lname;!!}</li>
              </ul>
             </div>
-        </div>   
+        </div>
+          <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/css/images/loader_productlist.GIF" alt=""></div>
 <!-- Start Products panel -->
 <div class="products_panel">
+
   <div class="container">
     <div class="brand_details_info">
       <p class="text-center">{!! $all_brand_member->brand_details;!!}</p>
@@ -62,22 +64,14 @@ if(isset($_REQUEST['page']))
     @else
     <div class="populer_panel" id="brand_show">
       <p class="pull-left">Showing 
-        <?php 
-            $showing_res = $limit*$pg;
-            if($showing_res>$total_brand_pro)
-              $showing_res = $total_brand_pro;
-          if($pg==1){
-
-            echo $pg.'–'.$showing_res.' of '.$total_brand_pro.' results';
-          }
-          else{
-            echo ((($pg-1)*$limit) + 1).'–'.$showing_res.' of '.$total_brand_pro.' results';
-          }
-        //echo 'total_brand_pro=='.$total_brand_pro;
-        ?></p>
+        Showing <span id="fromtorec"><?php echo $from?>–<?php echo $to?></span> of <span id="totalrec"><?php echo $total_brand_pro?></span> results</p>
         <div class="short_by">
-          <p>Short By:</p>
-            <select><option>Popularity</option><option>Price</option></select>
+          <p>Sort By:</p>
+            <select id="sortby" name="sortby" >
+            <option value="popularity">Popularity</option>
+                <option value="price">Price</option>
+                <option value="date">Date</option>
+            </select>
         </div>
     </div>
     <div class="product_list">
@@ -91,7 +85,7 @@ if(isset($_REQUEST['page']))
           <div class="product">
               <div class="head_section">
                   <h2>{!! $each_product->product_name !!}</h2>
-                  <p class="price"><?php echo '$'.$each_product->min_price;?> </p>
+                  <p class="price">Starting at <?php echo '$'.$each_product->min_price;?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
                   <!--<img src="<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}" alt=""/>-->
@@ -110,15 +104,50 @@ if(isset($_REQUEST['page']))
       else
       {
       ?>
-      <div>No Record Found.<div>
+      <div>No Record Found.</div>
       <?php 
       }
       ?>
+    <?php echo $obj->paginate_function($item_per_page, $current_page, $total_brand_pro, $total_pages)?>  
     </div>
     @endif
+    
   </div>
-  <?php echo $product->render(); ?>
+ 
+  
 </div>
 <!-- End Products panel --> 
  </div>
+  
+  <script>
+  $(document).ready(function(){
+    $(".products_panel").on( "click", ".pagination a", function (e){
+            e.preventDefault();
+            $(".loading-div").show(); //show loading element
+			
+            var page = $(this).attr("data-page"); //get page number from link
+           
+			setTimeout(function(){
+            $(".product_list").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":page,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
+            //get content from PHP page
+                $(".loading-div").hide(); //once done, hide loading element
+            });
+			},2500);
+           
+        });
+        
+        $("#sortby").on("change",function(){
+                var sort=$(this).val();
+                $(".loading-div").show();
+				
+				setTimeout(function(){
+					$(".product_list").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":1,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
+					//get content from PHP page
+						$(".loading-div").hide(); //once done, hide loading element
+					});
+				},2500);
+                
+        });
+});
+  </script>
 @stop

@@ -21,7 +21,7 @@
                     <th>Order Status</th>
                     <th>Ordered By</th>
                     <th>Order Date</th>
-                    
+                    <th>View Details</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -32,14 +32,16 @@
                 <?php $i=1;?>
                 @foreach ($order_list as $order)
                 <tr class="odd gradeX">
-                    <td class=""><?php echo $order->id; ?></td>
+                    <td class=""><?php echo $i; ?></td>
                     <td class="">{!! $order->order_number !!}</td>
-                    <td class="">{!! $order->order_total !!}</td>
+                    <td class="">{!! '$'.number_format($order->order_total,2); !!}</td>
                     <td class=""><a href="#" data-toggle="tooltip" title="Status" >{!! $order->order_status !!}</a></td>
                     <td class="">{!! $order->getOrderMembers->fname." ".$order->getOrderMembers->lname !!}</td>
                     <td class="">{!! date('m/d/Y',strtotime($order->created_at)) !!}</td>
                     
-               
+                    <td>
+                        <a href="<?php echo url();?>/admin/order-details/<?php echo $order->id;?>" class="btn btn-success">Details</a>
+                    </td>
                     <td>
                         <a href="{!!route('admin.orders.edit',$order->id)!!}" class="btn btn-warning">Edit</a>
                     </td>

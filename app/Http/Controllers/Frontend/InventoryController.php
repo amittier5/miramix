@@ -37,6 +37,50 @@ class InventoryController extends BaseController {
     */
    
     public function inventory(){
+
+
+      $member1=Session::get('brand_userid');
+     
+      if(!empty($member1)){
+      $memberdetail = Brandmember::find($member1);
+      }else{
+         $memberdetail=(object)array("email"=>"","fname"=>"","lname"=>""); 
+      }
+
+      if(Request::isMethod('post'))
+      {
+        $name = Request::input('name');
+        $brand_name = Request::input('brand_name');
+        $user_email = Request::input('contact_email');
+        $subject = 'Request for ingredient';
+        $cmessage = Request::input('request_ing');
+        
+        $setting = DB::table('sitesettings')->where('name', 'email')->first();
+        $admin_users_email=$setting->value;
+        
+        
+        $sent = Mail::send('frontend.inventory.ingredientemail', array('name'=>$name,'brand_name'=>$brand_name,'email'=>$user_email,'messages'=>$cmessage), 
+        
+        function($message) use ($admin_users_email, $user_email,$brand_name,$subject)
+        {
+          $message->from($admin_users_email);
+          $message->to($user_email, $brand_name)->cc($admin_users_email)->subject($subject);
+          
+        });
+  
+        if(!$sent) 
+        {
+          Session::flash('error', 'something went wrong!! Mail not sent.'); 
+          return redirect('inventory');
+        }
+        else
+        {
+            Session::flash('success', 'Message is sent to admin successfully. We will getback to you shortly'); 
+            return redirect('inventory');
+        }
+      }
+
+
       $start='a';
       $end='z'; 
       $pageindex=array();
@@ -50,7 +94,7 @@ class InventoryController extends BaseController {
                      ->orderBy('name', 'ASC')->get();
              $pageindex['z']=$inv;
       
-      return view('frontend.inventory.inventory',compact('pageindex'),array('title'=>'Miramix Inventory')); 
+      return view('frontend.inventory.inventory',compact('pageindex','memberdetail'),array('title'=>'Miramix Inventory')); 
     }
 
     public function inventory_details($inventory_id=false){

@@ -26,12 +26,16 @@ use Auth;
 use Cookie;
 use Redirect;
 use Mail;
+use App\Helper\helpers;
 
-class OrderController extends Controller {
+class OrderController extends BaseController {
 
     public function __construct() 
     {
+    	parent::__construct();
         view()->share('member_class','active');
+        $this->obj = new helpers();
+        view()->share('obj',$this->obj);
     }
 
    /**
@@ -42,7 +46,7 @@ class OrderController extends Controller {
    public function index()
    {
       
-	 $limit = 2;
+	 $limit = 10;
         
         $order_list = Order::with('getOrderMembers','AllOrderItems')->paginate($limit);
 	//print_r($order_list);exit;
@@ -61,10 +65,11 @@ class OrderController extends Controller {
     
 public function update(Request $request, $id)
     { 
+
        $orderUpdate=Request::all();
        
-       $order=Order::with('getOrderMembers','AllOrderItems')->where("id",$id)->first();
-	$order->update($orderUpdate);
+       	$order=Order::with('getOrderMembers','AllOrderItems')->where("id",$id)->first();
+		$order->update($orderUpdate);
 	
         	
 		
@@ -72,12 +77,14 @@ public function update(Request $request, $id)
 				$user_email = $order->getOrderMembers->email;
 				$subject = 'Order status change of : #'.$order->order_number;
 				$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
+				if($order->order_status=='shipped'){
+					$cmessage .= 'Tracking Number is : '.$order->tracking_number.'. Please visit your account for details.';
+				}
 				
 				$setting = DB::table('sitesettings')->where('name', 'email')->first();
 				$admin_users_email=$setting->value;
 				
-				
-				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage), 
+				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email), 
 				
 				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
 				{
@@ -96,15 +103,12 @@ public function update(Request $request, $id)
 				    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 				    return redirect('admin/orders');
 				}
-	    
-	
-       
 
        
     }
 
     
-     public function destroy($id)
+    public function destroy($id)
     { 
         Order::find($id)->delete();
         return redirect('admin/orders');
@@ -113,5 +117,14 @@ public function update(Request $request, $id)
         return redirect('admin/orders');
     }
    
+   	public function orderDetails($id)
+    { 
+        $order_list = Order::find($id);
+        if($order_list=='')
+            return redirect('order-history');
+        $order_items_list = $order_list->AllOrderItems;
+        return view('admin.order.order_details',compact('order_list','order_items_list'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+        
+    }
 
 }

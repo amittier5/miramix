@@ -189,8 +189,16 @@ class CheckoutController extends BaseController {
 				
 				return redirect('/checkout-step4');
 			}
+			
+			$states = DB::table('zones')->where('country_id',  223)->orderBy('name','ASC')->get();
+        
+			$allstates = array();
+			foreach($states as $key=>$value)
+			{
+			    $allstates[$value->zone_id] = $value->name;
+			}
 
-			return view('frontend.checkout.checkout_setp3',compact('body_class','shipAddress','allcountry'),array('title'=>'MIRAMIX | Checkout-Step3'));
+			return view('frontend.checkout.checkout_setp3',compact('body_class','shipAddress','allcountry','allstates'),array('title'=>'MIRAMIX | Checkout-Step3'));
 		}
 		else   //If logged in member
 		{
@@ -381,6 +389,8 @@ class CheckoutController extends BaseController {
                     ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
                     ->where('orders.id','=',$order_id)
                     ->get();
+
+        Session::put('miramix_order_id',$order_id); // use for paypal cancel
         // echo "<pre>";
         // print_r($order_list);
         // exit;
@@ -611,6 +621,63 @@ class CheckoutController extends BaseController {
     public function cancel()
     {
     	//Cancel payment View
+			//echo Session::get('miramix_order_id'); exit;
+    	//echo Session::get('payment_method'); exit;
+    	// For Paypal Payment Only //
+	    	$sitesettings = DB::table('sitesettings')->get();
+	    	$all_sitesetting = array();
+	    	foreach($sitesettings as $each_sitesetting)
+		    {
+		    	$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+	    	}
+	    	
+	    	$admin_users_email = $all_sitesetting['email']; // Admin Support Email
+	    	$payment_method =  $all_sitesetting['payment_mode'];
+
+	    	if(Session::get('payment_method')=='paypal')
+	    	{
+	    												
+		        	$order_id = Session::get('miramix_order_id');				//Order_id
+//echo $order_id;
+					$transaction_status ='Canceled';
+					$update_order = DB::table('orders')
+									->where('id', $order_id)
+									->update(['order_status'=>'cancel','transaction_status'=>$transaction_status]);
+
+					/* Order details for perticular order id */
+					$order_list = DB::table('orders')
+			                    ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
+			                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
+			                    ->where('orders.id','=',$order_id)
+			                    ->get();
+//print_r($order_list); exit;
+					$user_details = DB::table('brandmembers')->where('id', Session::get('member_userid'))->first();
+					// echo "dddd<pre>";print_r($user_details);
+					// exit;
+					$name = $user_details->fname.' '.$user_details->lname;
+					$username = $user_details->username;
+					if($name!='')
+						$mailing_name = $name;
+					else
+						$mailing_name = $username;
+
+		            $user_email = $user_details->email; //"sumitra.unified@gmail.com";
+		            
+		            //echo $resetpassword_link; exit;
+
+		            /* Mail For Member  */
+		            $sent = Mail::send('frontend.checkout.order_cancel_mail', array('admin_users_email'=>$admin_users_email,'receiver_name'=>$mailing_name,'email'=>$user_email,'order_list'=>$order_list), 
+		            function($message) use ($admin_users_email, $user_email,$mailing_name)
+		            {
+		                $message->from($admin_users_email);  //support mail
+		                $message->to($user_email, $mailing_name)->subject('Miramix Order Details');
+		            });
+
+
+		            Session::put('order_number',$order_list[0]->order_number);
+		            Session::put('order_id',$order_id);
+	        	
+	    	}
     	return view('frontend.checkout.payment_cancel',array('title'=>'MIRAMIX | Checkout-Cancel'));
     }
 
@@ -642,6 +709,13 @@ class CheckoutController extends BaseController {
 		//echo 'cn='.Session::get('card_number').' card_exp_month= '.Session::get('card_exp_month').'  pm= '.Session::get('payment_method'); exit;
     	$order_id = $id;
     	$order_details = DB::table('orders')->where('id',$order_id)->first();
+
+    	/* Order details for perticular order id */
+		$order_list = DB::table('orders')
+                    ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
+                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
+                    ->where('orders.id','=',$order_id)
+                    ->get();
 		
     	$post_url = $authorize_url; //"https://test.authorize.net/gateway/transact.dll";
 
@@ -656,13 +730,14 @@ class CheckoutController extends BaseController {
 			"x_relay_response"	=> "FALSE",
 			"x_type"			=> "AUTH_CAPTURE",
 			"x_method"			=> "CC",
+			"x_trans_id"		=> uniqid(),
 			"x_card_num"		=> Session::get('card_number'), //"4042760173301988", $card_number
 			"x_exp_date"		=> Session::get('card_exp_month').Session::get('card_exp_year'),				//$card_exp_month.$card_exp_year 
 			"x_amount"			=> $order_details->order_total,
 			"x_description"		=> "Miramix Transaction"
 			
 		);
-
+//echo "<pre>"; print_r($post_values); exit;
 		// This section takes the input fields and converts them to the proper format
 		// for an http post.  For example: "x_login=username&x_tran_key=a1B2c3D4"
 		$post_string = "";
@@ -681,7 +756,15 @@ class CheckoutController extends BaseController {
 
 		// This line takes the response and breaks it into an array using the specified delimiting character
 		$response_array = explode($post_values["x_delim_char"],$post_response);
-		
+
+		//echo "<pre>"; print_r($response_array); exit;
+		if($response_array[0] == ''){
+			Session::flash('error', 'Something is wrong here!!!');
+			Session::put('order_number',$order_list[0]->order_number);
+            Session::put('order_id',$order_id);
+            return redirect('/checkout-cancel'); 
+        }
+
 		if($response_array[0] == 1)
 		{ 
 			//echo "ss= ".$admin_users_email; exit;
@@ -690,12 +773,7 @@ class CheckoutController extends BaseController {
 							->where('id', $order_id)
 							->update(['order_status'=>'processing','card_type'=>$response_array[51],'card_number' => $response_array[50],'transaction_id' => $response_array[6],'transaction_status'=>$transaction_status,'response_code'=>$response_array[0]]);
 
-			/* Order details for perticular order id */
-			$order_list = DB::table('orders')
-	                    ->leftJoin('order_items', 'order_items.order_id', '=', 'orders.id')
-	                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
-	                    ->where('orders.id','=',$order_id)
-	                    ->get();
+			
 
 			$user_details = DB::table('brandmembers')->where('id', Session::get('member_userid'))->first();
 			// echo "dddd<pre>";print_r($user_details);
@@ -788,8 +866,7 @@ class CheckoutController extends BaseController {
 			Session::put('order_number',$order_list[0]->order_number);
             Session::put('order_id',$order_id);
             return redirect('/checkout-cancel'); 
-		}
-				
+		}	
     }
 
     /* update Cart Start */

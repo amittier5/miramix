@@ -20,15 +20,21 @@
                         <div class="row">
                         
                          <div class="col-sm-12">
-                         @if(Session::has('success'))
-                                    <div class="alert alert-success">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
-                                        <strong>{!! Session::get('success') !!}</strong>
-                                    </div>
-                           @endif
+                           @if(Session::has('error'))
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{!! Session::get('error') !!}</strong>
+                            </div>
+                            @endif
+                            @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{!! Session::get('success') !!}</strong>
+                            </div>
+                            @endif
                          
                           <div class="product_list">
-   	  <?php 
+   	  <?php //echo count($product);exit;
         if((count($product[0]))>0) 
         {
           foreach($product as $each_product)
@@ -62,8 +68,12 @@
 
                       <a href="{!! url() !!}/product-details/{!! $each_product->product_slug !!}" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> View Details </a>
                   
-                      <button class="button_hide butt inline-butt" id="hit_modal1" data-toggle="modal" data-target="#showscript{!! $each_product->id !!}">Script</button>
-                      <a href="{!! url() !!}/delete-product/{!! $each_product->id !!}" class="butt inline-butt danger-red" data-toggle="tooltip" data-placement="bottom" title="Delete Product"><i class="fa fa-trash"></i></a>
+                      <?php if($subscription_status=='inactive'){ ?>
+                      <button class="button_hide butt butt_script" id="inactive_modal" data-toggle="modal" data-target="#showinactive{!! $each_product->id !!}">Script</button>
+                      <?php } else { ?>
+                       <button class="button_hide butt butt_script" id="hit_modal1" data-toggle="modal" data-target="#showscript{!! $each_product->id !!}">Script</button>
+                      <?php } ?>
+                      <a href="javascript:delete_pro({!! $each_product->id !!})" class="butt inline-butt danger-red" data-toggle="tooltip" data-placement="bottom" title="Delete Product"><i class="fa fa-trash"></i></a>
                       </div>
                   </div>
                   @else
@@ -72,14 +82,42 @@
                       <a href="{!! url() !!}/edit-product/{!! $each_product->product_slug !!}" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Edit</a>
 
                       <a href="{!! url() !!}/product-details/{!! $each_product->product_slug !!}" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> View Details </a>
-                  
-                      <button class="button_hide butt" id="hit_modal1" data-toggle="modal" data-target="#showscript{!! $each_product->id !!}">Script</button>
-                      <a href="{!! url() !!}/delete-product/{!! $each_product->id !!}" class="butt inline-butt danger-red" data-toggle="tooltip" data-placement="bottom" title="Delete Product"><i class="fa fa-trash"></i></a>
+                      <?php if($subscription_status=='inactive'){ ?>
+                      <button class="button_hide butt butt_script" id="inactive_modal" data-toggle="modal" data-target="#showinactive{!! $each_product->id !!}">Script</button>
+                      <?php } else { ?>
+                       <button class="button_hide butt butt_script" id="hit_modal1" data-toggle="modal" data-target="#showscript{!! $each_product->id !!}">Script</button>
+                      <?php } ?>
+                      <a href="javascript:delete_pro({!! $each_product->id !!})" class="butt inline-butt danger-red" data-toggle="tooltip" data-placement="bottom" title="Delete Product"><i class="fa fa-trash"></i></a>
                     </div>
                   </div>
                   @endif
               </div> 
 
+           <!-- Modal -->
+          <div class="modal fade" id="showinactive{!! $each_product->id !!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                         <h4 class="modal-title" id="myModalLabel">Script Generated</h4>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group">
+                                  <div class="input-group demo_table">
+                                    Your subscription is over. Subscribe to add more products.
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>    
+          </div>
+          <!-- /.modal -->
           <!-- Modal -->
           <div class="modal fade" id="showscript{!! $each_product->id !!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -140,7 +178,24 @@
            
            <?php echo $product->render(); ?>
  </div>
+<script type="text/javascript">
+  function delete_pro(param){
 
+    swal({
+       title: 'Confirm',
+       text: 'Are you sure to delete this product?',
+       type: 'warning',
+       showCancelButton: true,
+       confirmButtonText: 'Yes, sir',
+       cancelButtonText: 'Not at all'
+    }, function() {
+           window.location = '{!! url() !!}/delete-product/'+param;
+        });
 
+   
+
+  }
+
+</script>
 
 @stop

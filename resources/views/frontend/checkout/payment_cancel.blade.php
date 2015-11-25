@@ -27,7 +27,7 @@
               @endif
         </p>
         <p>
-            Your Order Id #<a href="<?php url();?>/order-detail/{!! Session::get('order_id') !!}">{!! Session::get('order_number') !!}</a>  Is Canceled.
+            Your Order Id #<a href="<?php echo url();?>/order-detail/{!! Session::get('order_id') !!}">{!! Session::get('order_number') !!}</a>  Is Canceled.
         </p>
 	</div>
 	</div>

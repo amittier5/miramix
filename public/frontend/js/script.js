@@ -589,13 +589,8 @@ $(window).scroll(function() {
   // ++++++++++++++++++++++ For Brand Image +++++++++++++++++++++++++++++++
 
   $(document).on('change','.filesbrand',function(e){
-		alert('files');
-		var $this=$(this);
-		e.addClass('asdas');
-		//console.log(selDiv);	
-		//handleFileSelect;
-			
-	},handleFileSelect);
+		
+	},handleFileSelectUser);
 	/*function init() {
 		if ($('.files').length > 0) {
 		 document.querySelector('.files').addEventListener('change', handleFileSelect, false);
@@ -604,7 +599,7 @@ $(window).scroll(function() {
 		selDiv = document.querySelector(".selectedFiles");
 	}*/
 		
-	function handleFileSelect(e) {
+	function handleFileSelectUser(e) {
 
 		//console.log(e.currentTarget.parentNode.parentNode.childNodes[3]);	
 					   
@@ -638,14 +633,14 @@ $(window).scroll(function() {
 			       
 			        // access image size here 
 			        console.log(this.width);
-			        if(this.width<661){
-			        	sweetAlert("Oops...", "Image width should not be less than 661 px", "error");
+			        if(this.width<430){
+			        	sweetAlert("Oops...", "Image width should not be less than 430 px", "error");
 						//alert('image width should not be less than 771 px');
 						return;
 					}
-					if(this.height<440){
+					if(this.height<430){
 						
-						sweetAlert("Oops...", "Image height should not be less than 440 px", "error");
+						sweetAlert("Oops...", "Image height should not be less than 430 px", "error");
 						return;
 					}
 
@@ -673,11 +668,7 @@ $(window).scroll(function() {
 
 	//document.addEventListener("DOMContentLoaded", init, false);
 	$(document).on('change','.files',function(e){
-		alert('files');
-		var $this=$(this);
-		e.addClass('asdas');
-		//console.log(selDiv);	
-		//handleFileSelect;
+		
 			
 	},handleFileSelect);
 	/*function init() {
@@ -734,6 +725,7 @@ $(window).scroll(function() {
 					}
 
 					var html = "<span class=\"image_up\"><img src=\"" + g.target.result + "\"> <input class=\"edit_icon\" type=\"file\" name=\"files\" accept=\"image/*\"></span> <br clear=\"left\"/>";
+					//alert(g.target.result);
 					//e.currentTarget.parentNode.parentNode.childNodes[3].attr('id').append(html);
 					e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML='';	
 					e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML=html;	
@@ -806,6 +798,7 @@ $(window).scroll(function() {
 					var html = "<span class=\"image_up\"><img src=\"" + g.target.result + "\"> <input class=\"edit_icon\" type=\"file\" name=\"files\" accept=\"image/*\"></span> <br clear=\"left\"/>";
 					//e.currentTarget.parentNode.parentNode.childNodes[3].attr('id').append(html);
 					console.log(g.target);
+					//alert(g.target.result);
 					//e.currentTarget.parentNode.parentNode.innerHTML='';	
 					e.currentTarget.parentNode.parentNode.innerHTML=html;	
 

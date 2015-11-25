@@ -11,6 +11,10 @@ class Subscription extends Model
     protected $guarded = array();  // Important
 
     protected $table = 'subscription_history';
+    
+    public function getSubMembers(){
+    	return $this->belongsTo('App\Model\Brandmember','member_id');
+    }
 
    
 }

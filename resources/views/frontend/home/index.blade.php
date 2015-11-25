@@ -9,7 +9,7 @@
     <section class="header_section">
         <div class="overlay">
             <div class="content">
-      <h2>Miramix is a custom nutritional marketplace<span class="test1">search out platform to find your miracle mix.</span></h2>
+      <h2>Miramix is a custom nutritional marketplace,<span class="test1"> search our platform to find your miracle mix</span></h2>
       <!--<p>Think of us as a customized service provider who supports you in the fulfillment of your nutritional goals and conquests. Whether that is ensuring you get the right servings of fruits, vegetables, or other essential ingredients for creating the perfect protein shake or making a custom multivitamin that fits your specific needs.</p>-->
       
       
@@ -31,39 +31,23 @@
 <!-- End Home Page Slider -->       
 <!-- Start Filter Spanel -->
 <div class="filter_panel">
-    <!--<div class="container">
-        <div class="col-sm-9">
-            <h2>Showing <span id="fromtorec"><?php echo $from?>–<?php echo $to?></span> of <span id="totalrec"><?php echo $total_records?></span> results</h2>
-            <div class="listing_panel">
-           
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="filter_section"><span>Short By : </span>
-                <select name="sortby" id="sortby">
-                <option value="popularity">Popularity</option>
-                <option value="price">Price</option>
-                <option value="date">Date</option>
-                </select>
-            </div>
-        </div>
-    </div>-->
+    
     <div class="container">
-    <p>We’ll help you find whatever you need. Think of us as a holistic marketplace that supports you in your life goals and conquests. Just tell us what you want to do and we’ll try out darndest to help you find your unique mix.</p>
+    <p>We'll help you find whatever nutritient blend you can ever imagine. We currently have the capability to create over a googolplexian ( yes seriously!) products. Just ask and we’ll deliver.</p>
     </div>
 </div>
 <!-- End Filter Spanel -->  
 
 <div class="filter_panel for_nav_prod">
 <div class="container">
-        <div class="col-sm-9">
+        <div class="col-sm-9 formobile-col-sm-9">
             <h2>Showing <span id="fromtorec"><?php echo $from?>–<?php echo $to?></span> of <span id="totalrec"><?php echo $total_records?></span> results</h2>
             <div class="listing_panel">
            
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="filter_section"><span>Short By : </span>
+        <div class="col-sm-3 formobile-col-sm-3">
+            <div class="filter_section"><span>Sort By : </span>
                 <select name="sortby" id="sortby">
                 <option value="popularity">Popularity</option>
                 <option value="price">Price</option>
@@ -95,27 +79,22 @@
       </div>
       <?php  }?>
     </div>
-      <!--<ul class="pagination pagination-sm">
-        <li><a href="#"><</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li class="active"><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">></a></li>
-      </ul>-->
+      
       <?php echo $obj->paginate_function($item_per_page, $current_page, $total_records, $total_pages)?>
     </div>
 </div></div>
 <!-- End Products panel --> 
 <div class="subscribe_panel">
     <div class="container">
-        <div class="col-md-1">&nbsp;</div>
-        <div class="col-md-5"><h2>Join our community to receive offers on 
+        
+        <div class="col-sm-6 col-md-5 col-md-offset-1"><h2>Join our community to receive offers on 
 products invented by people like you.</h2></div>
-        <div class="col-md-6 subscribe_form">
-            <input type="text" class="textbox" placeholder="Enter your email address">
+        <div class="col-sm-6 col-md-6 subscribe_form">
+	    {!! Form::open(['url' => 'newsletterajax','method'=>'POST', 'id'=>'newsform', 'autocomplete'=>'off']) !!}
+            <input type="text" class="textbox" placeholder="Enter your email address" name="newsemail" id="newsemail">
+		<div id="nmsg"></div>
             <input type="submit" value="Subscribe" class="subscribe_button">
+	   {!! Form::close() !!}
         </div>
     </div>
 </div> 
@@ -127,7 +106,8 @@ products invented by people like you.</h2></div>
 	var slider;
 	 var config= {  
 	 	auto: false,
-		controls: false,
+		controls: true,
+		pager:false,
 		adaptiveHeight:true,
 		onSliderLoad: function(){
 			sliderActive = true;
@@ -135,6 +115,54 @@ products invented by people like you.</h2></div>
 	 };
 			  
    $(document).ready(function(){
+    
+     $.validator.addMethod("email", function(value, element) 
+    { 
+    return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value); 
+    }, "Please enter a valid email address.");
+
+    // Setup form validation  //
+    $("#newsform").validate({
+    
+        // Specify the validation rules
+        rules: {
+            newsemail: 
+            {
+                required : true,
+                email: true
+            },
+         
+            
+        },
+        
+	 submitHandler: function(form) {
+          $.ajax({
+			    url: "<?php echo url();?>/newsletterajax",
+			    data: {newsemail:$("#newsemail").val(),_token: '{!! csrf_token() !!}'},
+			    dataType: "json",
+			    type :"post",
+			    success: function( data ) {
+				if (data.status=='success'){
+				    $("#nmsg").removeClass("error");
+				    $("#nmsg").html(data.message);
+            $("#newsemail").val("");
+				}
+				if (data.status=='fail'){
+				    $("#nmsg").addClass("error");
+				    $("#nmsg").html(data.message);
+            $("#newsemail").val("");
+				}
+				
+			    }
+			});
+	
+          return false;
+      }
+    });
+    
+    
+    
+    
    $('#searchbox').on('tokenfield:createtoken', function (event) {
             var existingTokens = $(this).tokenfield('getTokens');
             $.each(existingTokens, function(index, token) {
@@ -143,7 +171,8 @@ products invented by people like you.</h2></div>
             });
         });
 	$('#searchbox').on('tokenfield:removedtoken', function (event) {
-		$(".search_button").trigger("click");
+		//$(".search_button").trigger("click");
+		search_product();
 	});
 var temp = new Array();
 var u=0;
@@ -265,8 +294,9 @@ var u=0;
 				  if(sliderActive === false) {
 					  
 					slider=$('#for_slider .owl-carousel').bxSlider({
-						auto: true,
+						auto: false,
 						controls: true,
+						pager:false,
 						adaptiveHeight:true,
 						onSliderLoad: function(){
 							sliderActive = true;
@@ -279,19 +309,30 @@ var u=0;
 				  
 			  
 	  }
-	  
-      $(document).on("click",'.tags', function(){
-        //$('#searchbox').tokenfield('createToken', $(this).attr("data"));
-        // $('#top_searvh_addhere').tokenfield('createToken', $(this).attr("data"));
+	function search_product(){
+		 $(".loading-div").show(); //show loading element
+           var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
+            $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){ 
+			
+                $(".loading-div").hide(); //once done, hide loading element
+			
+            });
+	}
+	
+      $(document).on("click",'.inn_owl-item', function(){
+        $('#searchbox').tokenfield('createToken', $(this).text());
+         //$('#top_searvh_addhere').tokenfield('createToken', $(this).attr("data"));
         //alert($('#searchbox').tokenfield('getTokensList', ';'));
+		search_product();
+        tagPopularity($(this).text());
       });
       
       $(".products_panel").on( "click", ".pagination a", function (e){
             e.preventDefault();
             $(".loading-div").show(); //show loading element
-			$('html, body').animate({
+			/*$('html, body').animate({
 				scrollTop: $(".loading-div").offset().top-200
-			}, 2000);
+			}, 2000);*/
             var page = $(this).attr("data-page"); //get page number from link
             var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
 			setTimeout(function(){
@@ -304,14 +345,20 @@ var u=0;
         });
         
         $(".search_button").click(function(){
+			//alert();
+			if($('.token').length>0){
                 $(".loading-div").show(); //show loading element
            var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
             $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){ //get content from PHP page
+			
 				$('html, body').animate({
 					scrollTop: $(".products_panel").offset().top-200
 				}, 400);
+			
                 $(".loading-div").hide(); //once done, hide loading element
+			
             });
+			}
         });
         $("#sortby").on("change",function(){
                 var sort=$(this).val();
@@ -331,20 +378,38 @@ var u=0;
         });
 		$(document).on("click",'.home .header_section .content p.alert.tags button.close',function(){
 			//alert();
-			var $this=$(this);
-			var this_val=$this.parent().find('.ui_span_val').text();
-			$('.tokenfield .token').each(function(index, element) {
+			//var $this=$(this);
+			//var this_val=$this.parent().find('.ui_span_val').text();
+			/*$('.tokenfield .token').each(function(index, element) {
                 var $this=$(this);
 				var this_text=$this.find('.token-label').text();
 				if(this_val==this_text){
 					$this.find('.close').trigger('click');	
 				}				
-            });
+            });*/
 		});
 		
    });
 
-   
+   /* On Selecting tag Popularity Start */
+
+   function tagPopularity(tag)
+   {
+    //alert(tag);
+    
+    $.ajax({
+        url: '<?php echo url();?>/tag-popularity',
+        type: "post",
+        data: {tag:tag,_token: '{!! csrf_token() !!}'},
+        success:function(data)
+        {
+          //alert(data);
+        }
+      });
+
+   }
+
+   /* On Selecting tag Popularity End */
 </script>
 
 <style>

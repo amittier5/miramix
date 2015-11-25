@@ -54,7 +54,7 @@
         
         <div class="bordered_panel clearfix">
         <div class="top_panel_border clearfix"><h3 class="pull-left">{!! ucwords($productdetails->product_name) !!}</h3>
-        <p class="spec_prc pull-right">$ {!! sprintf("%.2f",($productformfactor[0]->actual_price)*($timeduration[0]->no_of_days)) !!} <span>/ {!! $timeduration[0]->name !!}</span></p>
+        <p class="spec_prc pull-right">$ <small id="min_val">{!! sprintf("%.2f",($productformfactor[0]->actual_price)*($timeduration[0]->no_of_days)) !!} </small><span id="min_val2">/ {!! $timeduration[0]->name !!}</span></p>
         </div>
         
         <div class="bot_panel">
@@ -103,7 +103,7 @@
         <div class="col-sm-8 price_panel"><p class="pull-left price_pan" data-money="5.20">$5.20</p>
         <div id="incdec" class="col-sm-6">
           <a href="javascript:void(0);" id="down" class="pull-left incremt_a"><i class="fa fa-minus"></i></a>
-            <div class="col-sm-10" id="increment_input"><input type="text" class="form-control text-center" value="1"  id="qty"/></div>
+            <div class="col-sm-10" id="increment_input"><input type="text" class="form-control text-center" value="1"  id="qty" readonly/></div>
             <a href="javascript:void(0);" id="up" class="pull-left incremt_a"><i class="fa fa-plus"></i></a>
         </div>
         
@@ -225,7 +225,8 @@
     </div>
     <?php if(count($rating)>0) {?>
     <div class="news_list">
-        <a href="javascript:void(0);" class="btn btn-special loadmore" data-page="0">View More Reviews</a>
+        <div class="wrap_load"><a href="javascript:void(0);" class="btn btn-special loadmore" data-page="0">View More Reviews</a>
+        <span class="disable_click"></span></div>
     </div>
    <?php } ?> 
      
@@ -234,7 +235,7 @@
 
     <div class="col-sm-6 suppl_facts">
       <h6>Supplement Facts</h6>
-        <!--supp_box--0
+        <!--supp_box-->
       <div class="supp_box">
       <?php if(($productdetails->label !='') && (file_exists('uploads/product/'.$productdetails->label))) {?>
        <img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->label !!}" alt="">
@@ -362,21 +363,25 @@
 
   $( document ).on( 'click', '.loadmore', function () {
        $(this).text('Loading...');
+       $(this).next('span').show();
       var ele = $(this);
-
+	   setTimeout(function(){
        $.ajax({
         url: '<?php echo url();?>/getallrate',
         type: "POST",
-        data: { page:$(this).data('page'),'product_id':'<?php echo $product_id;?>',_token: '{!! csrf_token() !!}'},
+        data: { page:ele.attr('data-page'),'product_id':'<?php echo $product_id;?>',_token: '{!! csrf_token() !!}'},
         success:function(response)
         {
+		//alert(ele.attr('data-page'));	
           if(response){
-            ele.hide();
+            ele.parent('.wrap_load').hide();
+            ele.next('span').hide();
             $(".news_list").append(response);
           }          
         }
     
       });
+	  },4000);
 
         
   });
@@ -420,7 +425,7 @@
   
   //quantity_add
   
-    
+    <?php if((Session::has('member_userid')) || !(Session::has('brand_userid'))) { ?>
       $(document).on('click','.list-group-item',function(){
 
       var $this=$(this);
@@ -455,7 +460,8 @@
       //alert(flag);
     });
     
-  
+  <?php } ?>
+
   $('#add_cart').on('click',function(e){
     //alert("p="+flag);
     //e.preventDefault();   
@@ -558,7 +564,7 @@ function changeval(id,price,product_id,product_name,formfactor_id)
           if(data !='' ) // email exist already
           {
             $("#cart_det").html(data);
-            $("#cart_det").fadeIn(2000);
+            $("#cart_det").effect( "shake", {times:4}, 1000 );
              //window.location.href = "<?php echo url()?>/brandregister";
           }
           
@@ -569,7 +575,17 @@ function changeval(id,price,product_id,product_name,formfactor_id)
 
   }
   
-   
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  var target = $(e.target).attr("href") // activated tab
+  var first_price_val = $(target).find('ul li:first-child span.pull-right').attr('data-money');
+  var first_duration_val = $(target).find('ul li:first-child span.pull-right').attr('data-duration');
+  //alert(first_val);
+  $("#min_val").html(first_price_val);
+  $("#min_val2").html(' / '+first_duration_val);
+
+
+  });
+
   </script>
 
  @stop

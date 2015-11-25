@@ -202,3 +202,17 @@
 	font-size: .85em;
 	padding: 10px;
 }
+
+#for_slider .bx-wrapper .bx-pager{
+	bottom:-50px;
+}
+#for_slider .bx-wrapper .bx-prev{
+	left:-56px;	
+}
+#for_slider .bx-wrapper .bx-next{
+	right:-56px;	
+}
+#for_slider .bx-wrapper .bx-next,#for_slider .bx-wrapper .bx-prev{
+	background:none;
+}
+

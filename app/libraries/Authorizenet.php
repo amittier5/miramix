@@ -26,9 +26,9 @@ class Authorizenet {
         
 
 
-        $this->AUTHORIZENET_API_LOGIN_ID="32px8XM76GZg";
-        $this->AUTHORIZENET_TRANSACTION_KEY="9PLV89n5LPD9dx55";
-        $this->AUTHORIZENET_SANDBOX=true;
+        //$this->AUTHORIZENET_API_LOGIN_ID="32px8XM76GZg";
+       // $this->AUTHORIZENET_TRANSACTION_KEY="9PLV89n5LPD9dx55";
+       // $this->AUTHORIZENET_SANDBOX=true;
     }
 
    

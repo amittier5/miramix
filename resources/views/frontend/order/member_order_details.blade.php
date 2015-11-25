@@ -1,9 +1,6 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-<?php 
-  //echo $obj->somethingOrOther();exit;
-  
-?>
+
 
   <div class="inner_page_container nomar_bottom">
      <!--my_acct_sec-->
@@ -22,7 +19,7 @@
                   	<div class="col-sm-6">
                       <div class="order_box">
                   <h6>Order Information</h6>
-                   <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->id; !!}<br>
+                   <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
                       Date Added: {!! date("M d, Y",strtotime($order_list->created_at)); !!}<br>
                       Payment Method: {!! $order_list->payment_method; !!}<br>
                       Shipping Type: {!! $order_list->shipping_type; !!}<br>
@@ -67,8 +64,11 @@
                                   <tr>
                                     <td>
                                       @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
-                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt="">
+                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt="" style="max-width:100px"">
+                                      @else
+                                      <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
                                       @endif
+
 				      
 				      
                                     </td>

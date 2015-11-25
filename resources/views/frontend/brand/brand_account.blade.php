@@ -17,13 +17,13 @@
                     <div class="bottom_dash clearfix">
                     	<div class="row">
 			 @if(Session::has('error'))
-			    <div class="alert alert-error container">
+			    <div class="alert alert-error container-fluid">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<strong>{!! Session::get('error') !!}</strong>
 			    </div>
 			  @endif
 			  @if(Session::has('success'))
-			    <div class="alert alert-success container">
+			    <div class="alert alert-success container-fluid">
 			    <button type="button" class="close" data-dismiss="alert">×</button>
 			    <strong>{!! Session::get('success') !!}</strong>
 			    </div>
@@ -46,7 +46,7 @@
 				     <input type="hidden" name="hidden_image" id="hidden_image" value="<?php echo $brand_details['pro_image']?>">
 				  <?php } else {?>
 				    <img src="<?php echo url();?>/public/frontend/images/newdashimages/acct_imgd.png" class="img-responsive" alt="">
-				    <a href="javascript:void(0);" class="text-center">Upload Image</a>
+				    <!--<a href="javascript:void(0);" class="text-center">Upload Image</a>-->
 				  <?php } ?>                                
 				</div>
 			      </div> 
@@ -69,6 +69,10 @@
 			<div class="form-group">
                              {!! Form::text('email',$brand_details['email'],['class'=>'form-control','id'=>'email','placeholder'=>'Email','onblur' =>'emailChecking(this.value)', 'aria-describedby'=>'basic-addon2'])!!}
 			     <label id="email_error" class="error" style="display:none;">Email-Id is already exist.</label>
+                          </div>
+			<div class="form-group">
+                             {!! Form::text('slug',$brand_details['slug'],['class'=>'form-control','id'=>'slug','placeholder'=>'Slug', 'aria-describedby'=>'basic-addon2'])!!}
+			    
                           </div>
 			    
 			  <div class="form-group">
@@ -171,6 +175,7 @@ $.validator.addMethod("complete_url", function(val, elem) {
 			business_name:"required",
       fname: "required",
       lname: "required",
+      slug: "required",
      email: 
                 {
                     

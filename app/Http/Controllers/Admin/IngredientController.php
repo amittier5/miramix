@@ -136,16 +136,20 @@ class IngredientController extends Controller {
       }
       
       // Add Component and vitamins
+     // print_r(Request::input('component_name'));
+     // exit;
       foreach (Request::input('component_name') as $key => $each_component) {
 
-          $new_arr = array('ingredient_id'=>$lastinsertedId,'component_name'=>$each_component['name'],'percentage'=>$each_component['percentage']);
+          $new_arr = array('ingredient_id'=>$lastinsertedId,'component_name'=>$each_component['name'],
+			   'percentage'=>$each_component['percentage']);
           $component_row = Component::create($new_arr);
           $lastComponentId = $component_row->id;
           $new_vitamin_arr = array();
-		 // echo '<pre>';print_r($each_component['vitamin']); 
+		// echo '<pre>';print_r($each_component['vitamin']);
+		 //exit;
            //foreach ($each_component['vitamin'] as $key => $each_vitamin) {
            	for($i=0;$i<count($each_component['vitamin']);$i++){
-              $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$each_component['weight'][$i]);
+              $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$each_component['weight'][$i],'vitamin_weight'=>$each_component['vitamin_weight_'.$i][0]);
 //echo "<pre>";print_r($new_vitamin_arr).'<br/>';
               $component_row = ComponentVitamin::create($new_vitamin_arr);
            }
@@ -181,7 +185,7 @@ class IngredientController extends Controller {
       $tmp['vitamins'] = array();
       $tmp['component_details']=$each_component;
       $vitamins = DB:: table('component_vitamins')
-                        ->select('vitamin','weight')
+                        ->select('vitamin','weight','vitamin_weight')
                         ->where('component_id','=',$each_component->id)
                         ->get();
 
@@ -190,6 +194,7 @@ class IngredientController extends Controller {
       {
         $tmp['vitamins'][$m]=$each_vitamin->vitamin;
         $tmp['weights'][$m]=$each_vitamin->weight;
+	$tmp['vitamin_weight'][$m]=$each_vitamin->vitamin_weight;
         $m++;
       }
       $all_components[]=$tmp;
@@ -215,7 +220,7 @@ class IngredientController extends Controller {
 		$ingredient['antibiotic_free']  = Request::input('antibiotic_free');
 		$ingredient['gmo']              = Request::input('gmo');
     $ingredient['status']           = Request::input('status');
-    $ingredient['weight_measurement']= Request::input('weight_measurement');
+   // $ingredient['weight_measurement']= Request::input('weight_measurement');
 
 		if(Input::hasFile('image')){
 			$destinationPath = 'uploads/ingredient/'; 	// upload path
@@ -270,6 +275,8 @@ class IngredientController extends Controller {
 			//foreach ($each_component['vitamin'] as $key => $each_vitamin) {
 			for($i=0;$i<count($each_component['vitamin']);$i++) {
              $weight_vitamin = $each_component['weight'][$i];
+	    // echo 'vitamin_weight_'.$i;
+//print_r($each_component['vitamin_weight_'.$i]);
 
             // if(Request::input('weight_measurement')==0){
             //     $weight_vitamin = $each_component['weight'][$i];
@@ -278,8 +285,8 @@ class IngredientController extends Controller {
             //     $weight_vitamin = ($each_component['weight'][$i] / 1000);
             // }
 
-			  $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$weight_vitamin);
-			  $component_row = ComponentVitamin::create($new_vitamin_arr);
+			 $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$weight_vitamin,'vitamin_weight'=>$each_component['vitamin_weight_'.$i][0]);
+			 $component_row = ComponentVitamin::create($new_vitamin_arr);
 			}
 		}
 

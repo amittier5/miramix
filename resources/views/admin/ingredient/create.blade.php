@@ -21,26 +21,40 @@
 <!-- jQuery Form Validation code -->
 <script>
 var keyup_vit_weight=0;
+$(document).on('change','.new_panel_section input[type="radio"]',function(){
+	vit_weightval();
+});
   function vit_weightval(){
 	  keyup_vit_weight=0;
 	$('.input_fields_wrap').each(function(index, element) {
 		 
 			var ind_weight=0; 
-			var $this=$(this); 
+			var $this=$(this); 			
             $this.find('.vit_text').each(function(index, element) {
 				var this_uniq_elm=$(this);
-                var this_uniqval=this_uniq_elm.val();
+				var this_uniqval=this_uniq_elm.val();
+				this_uniq_elm.parent().parent().parent().find('input[type="radio"]').each(function(){
+					var $this=$(this);
+					if($this.is(':checked')){
+						//alert($this.val());
+						var this_selecetedradio=$this.val();
+						if(this_selecetedradio==1)
+						this_uniqval=parseFloat(this_uniqval/1000);	
+					}
+				});
+                
 				if(this_uniqval=='')
 				this_uniqval=0;
-				keyup_vit_weight=parseInt(keyup_vit_weight)+parseInt(this_uniqval);
-				ind_weight=parseInt(ind_weight)+parseInt(this_uniqval);
+				keyup_vit_weight=parseFloat(keyup_vit_weight)+parseFloat(this_uniqval);
+				ind_weight=parseFloat(ind_weight)+parseFloat(this_uniqval);
             });
 			$this.find('.tot_vitval').html('Total Vitamin Value is:'+ind_weight);	
         });
 			
-		 $('.tot_vit_weight').html('<p>Total Weight is:'+keyup_vit_weight+'</p>');  
+		 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+keyup_vit_weight.toFixed(3)+'mg');  
   }
   var intRegex = /^\d+$/;
+  var floatRegex= /\d+|\d*\.\d{2,}/;
   // When the browser is ready...
   $(document).ready(function(e) {
 	  var vit_car=0;
@@ -53,7 +67,7 @@ var keyup_vit_weight=0;
 	  $(document).on('keyup','.vit_text',function(){
 		 var $this=$(this);
 		 var this_val=$this.val();
-		if(!intRegex.test(this_val)){
+		if(!floatRegex.test(this_val)){
 			$this.val('');
 			$this.addClass('error_red');
 			if($this.parent().find('.appended_error').length>0){
@@ -164,21 +178,23 @@ var keyup_vit_weight=0;
 				//console.log(total);
 				//console.log(100);
 				//alert('submithandler');
-				console.log('vit_car:'+vit_car);
-				console.log('total:'+total);
-				console.log('com_namevar:'+com_namevar);
-				console.log('com_valvar:'+com_valvar);
-				console.log('total_weight:'+total_weight);
-				
-    			if((total!=100) || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){
-					//alert();
-						/*if($('.module-head').find('.appended_error').length>0){					
-								$('.module-head').find('.appended_error').html('Total Amount For all The component(%) should be equal to 100');
-							}
-							else{
-								$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
-						}*/
-						if(vit_car==1 || total_weight>1000){
+				//console.log('vit_car:'+vit_car);
+//				console.log('total:'+total);
+//				console.log('com_namevar:'+com_namevar);
+//				console.log('com_valvar:'+com_valvar);
+//				console.log('total_weight:'+total_weight);
+				total_weight=parseFloat(total_weight);
+				$('.comp_value').removeClass('error_red');
+				$('.module-head .appended_error').remove();
+    			if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight<1000){
+					
+						if(total!=100){
+							$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
+							$('.comp_value').each(function(index, element) {
+                              $(this).addClass('error_red');  
+                            });
+						}
+						else if(vit_car==1 || total_weight<1000){
 							if(vit_car==1){
 								if($('.vit_text.error_red').parent().find('.appended_error').length>0){
 									
@@ -189,7 +205,7 @@ var keyup_vit_weight=0;
 							}
 							else{
 								$('.vit_text').addClass('error_red');	 
-							 $('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'<br><label style="color:red;">Total Weight Should be less than 1000mg</label></p>');
+							 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'<br><label style="color:red;">Total Weight Should be less than 1000mg</label></p>');
 							}
 						}
 						else if(comp_name==1){
@@ -207,7 +223,7 @@ var keyup_vit_weight=0;
 						return false;
 				}
 				else{
-					$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');
+					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'mg');
 					//alert('else');
 					form.submit();
 				}
@@ -247,7 +263,7 @@ var keyup_vit_weight=0;
 				if($this.val()==''){
 				$this.addClass('error_red');
 					if($this.val()==''){
-					total_weight=parseInt(total_weight)+0;	
+					total_weight=parseFloat(total_weight)+0;	
 					//$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');	
 					if($this.parent().find('.appended_error').length>0){
 					
@@ -276,8 +292,8 @@ var keyup_vit_weight=0;
 					//$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');
 					$this.parent().find('.appended_error').remove();
 					$this.removeClass('error_red');
-					total_weight=parseInt(total_weight)+parseInt($this.val());
-					$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');	
+					total_weight=parseFloat(total_weight)+parseFloat($this.val());
+					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'mg');	
 					vit_car=0;	
 				}
          });
@@ -301,50 +317,47 @@ var keyup_vit_weight=0;
 				}
          });
 		 
-		 $('.comp_value').each(function(index, element) {
-                var $this=$(this);
-				total=parseInt(total)+parseInt($this.val());
-				//alert(total);
-				//console.log(total);
-				
-				if($this.val()==''){
-					$this.parent().find('.appended_error').remove();
-					//alert(total);
-					$this.addClass('error_red');
-				if($this.parent().find('.appended_error').length>0){
-				
-					}
-					else{
-						if($this.val()==''){
-							$this.parent().append('<label class="appended_error">Please Enter A Value</label>');	
-						}
-						
-					}
-					com_valvar=1;
-				}
-				else{
-					//alert($this.val());	
-					if(total!=100){
-						$('.comp_value').addClass('error_red');	
-					}
-					else{
-					$('.module-head').parent().find('.appended_error').remove();
-					$this.parent().find('.appended_error').remove();	
-					$('.comp_value').removeClass('error_red');
-					}
-					com_valvar=0;
-				}
-         });
+		 comp_value_calc();
 		 
 		  
 		
 	  });
-    
+		function comp_value_calc(){
+			$('.comp_value').each(function(index, element) {
+						var $this=$(this);
+						total=parseInt(total)+parseInt($this.val());				
+						if($this.val()==''){
+							$this.parent().find('.appended_error').remove();
+							//alert(total);
+							$this.addClass('error_red');
+						if($this.parent().find('.appended_error').length>0){}
+						else{
+								if($this.val()==''){
+									$this.parent().append('<label class="appended_error">Please Enter A Value</label>');	
+								}
+						}
+							com_valvar=1;
+						}
+						else{
+							//alert($this.val());	
+							if(total!=100){
+								$('.comp_value').addClass('error_red');	
+							}
+							else{
+							$('.module-head').parent().find('.appended_error').remove();
+							$this.parent().find('.appended_error').remove();	
+							$('.comp_value').removeClass('error_red');
+							}
+							com_valvar=0;
+						}
+				 });
+				 $('#comp_val span').html(total);
+		}
 
   });
 </script>
 
-<div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p>Total Weight is:0</p></div>
+<div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p id="forwt_calc">Total Weight is:0</p><p id="comp_val">Total Component(%) Value:<span>0</span></div>
         {!! Form::open(['url' => 'admin/ingredient','method'=>'POST', 'files'=>true,'class'=>'form-horizontal row-fluid','id'=>'ingredient_frm']) !!}
             <div class="control-group">
                 <label class="control-label" for="basicinput">Ingredient Name *</label>
@@ -448,13 +461,7 @@ var keyup_vit_weight=0;
                              <input class="span8 comp_value" type="text" name="component_name[0][percentage]">
                         </div>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="basicinput">Vitamins Weight Measurement</label>
-                        <div class="controls">
-                             <input class="comp_value" type="radio" name="weight_measurement" id="weight_measurement1" value="0" checked>Miligram<br/>
-                             <input class="comp_value" type="radio" name="weight_measurement" id="weight_measurement2" value="1">Microgram
-                        </div>
-                    </div>
+                    
                     <div class="new_panel_section">
                     <div class="control-group">
                         <label class="control-label" for="basicinput">Vitamin</label>
@@ -467,6 +474,13 @@ var keyup_vit_weight=0;
                         <label class="control-label" for="basicinput">Vitamin Weight</label>
                         <div class="controls">
                              <input class="span8 tags_auto vit_text" type="text" name="component_name[0][weight][]">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                    	<label class="control-label" for="basicinput">Vitamins Weight Measurement</label>
+                        <div class="controls">
+                            <label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_0][]" id="weight_measurement1_0" value="0">Miligram</label>
+                            <label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_0][]" id="weight_measurement2_0" value="1">Microgram</label>
                         </div>
                     </div>
                     </div>
@@ -500,13 +514,13 @@ var keyup_vit_weight=0;
     var max_fields      = 10; //maximum input boxes allowed
     var wrapper         = $(".tot_wrap"); //Fields wrapper
     var add_button      = $(".spec_btn"); //Add button ID
-    var a=0;
+    var a=1;
     var x = 0; //initlal text box count
     $(document).on('click','.spec_btn',function(e){ //on add input button click
         e.preventDefault();
         
             x++; //text box increment
-            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div></div></div>'); //add input box
+            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div></div>'); //add input box
 		setTimeout(function(){
 			$('html, body').animate({
 				scrollTop: $("div#"+x+".input_fields_wrap").offset().top
@@ -526,7 +540,7 @@ var keyup_vit_weight=0;
      $( ".comp_name" ).autocomplete({
         source: "{!!url('admin/component-search')!!}"
       });
-        
+      a++;  
     });
     
     $(wrapper).on("click",".remove_btn", function(e){ //user click on remove text
@@ -539,7 +553,7 @@ var keyup_vit_weight=0;
 		var $this=$(this);
 		var this_id=$(this).parent().parent().parent().parent('div.input_fields_wrap').attr('id');
 		//alert(this_id);
-		$this.parent().parent().parent().parent('div.input_fields_wrap').append('<div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+this_id+'][vitamin][]" id="vitamin'+a+'"><a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+this_id+'][weight][]" id="weight'+a+'"></div></div></div>');
+		$this.parent().parent().parent().parent('div.input_fields_wrap').append('<div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+this_id+'][vitamin][]" id="vitamin'+a+'"><a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+this_id+'][weight][]" id="weight'+a+'"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div>');
 		//alert('#vitamin'+a);	
 
       $( "#vitamin"+a ).autocomplete({

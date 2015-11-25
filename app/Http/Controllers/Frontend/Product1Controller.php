@@ -54,6 +54,25 @@ class Product1Controller extends BaseController {
     public function productDetails($slug)
     {
 
+        // Check if brand subscription expires show message 
+        $pro_dtls = DB::table('products')->where('product_slug',$slug)->first();
+        if(!empty($pro_dtls)){
+
+            $pro_brand_memid = $pro_dtls->brandmember_id;
+
+            $brand_details = Brandmember::find($pro_brand_memid);
+
+            if($brand_details->subscription_status!="active"){
+
+                Session::flash('error', 'Subscription is over of this brand.'); 
+                if(Session::has('brand_userid'))
+                return redirect('my-products');
+                else
+                return redirect('brand');
+
+            }
+        }
+           // echo $brand_details->subscription_status;exit;
         //$content = Cart::content();echo "<pre>";print_r($content);exit;
 
         $productdetails = DB::table('products')
@@ -76,7 +95,9 @@ class Product1Controller extends BaseController {
                                 ->join('products', 'products.id', '=', 'product_formfactors.product_id')
                                 ->select('product_formfactors.*', 'form_factors.name', 'form_factors.image', 'form_factors.price', 'form_factors.maximum_weight', 'form_factors.minimum_weight', 'products.product_name')
                                 ->where('product_formfactors.product_id','=',$productdetails->id)
+                                ->where('product_formfactors.actual_price','!=',0)
                                 ->where('products.active',1)
+                                ->orderBy('form_factors.name', 'asc')
                                 ->get();
         // echo print_r(DB::enableQueryLog()); exit;
         //echo "<pre/>";print_r($productformfactor);exit;                                            
@@ -91,9 +112,23 @@ class Product1Controller extends BaseController {
                             ->get();
         $product_id = $productdetails->id;
 
+
+    // Get Related Product
+    // $related_product = DB::table('products')
+    //              ->select(DB::raw('products.id,products.brandmember_id,products.script_generated,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
+    //              ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+    //              ->where('products.brandmember_id', '=', Session::get('brand_userid'))
+    //              ->where('products.active', 1)
+    //              ->where('product_formfactors.actual_price','!=', 0)
+    //              ->where('products.is_deleted', 0)
+    //              ->where('products.discountinue', 0)
+    //             ->get(); 
+
+    
+
+
         //echo "<pre/>";print_r($timeduration); exit;
         return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating','product_id'),array('title'=>'Product Details'));
-        //return redirect('product-details');
     }
 
    
@@ -117,7 +152,7 @@ class Product1Controller extends BaseController {
     	$product_id = Input::get('product_id');
 
     	if($paged>0){
-    		$page_limit=$resultsPerPage*($paged-1);
+    		$page_limit=$resultsPerPage*($paged);
     		$next_check_page = $page_limit+3;
     	}
     	else{
@@ -176,11 +211,14 @@ class Product1Controller extends BaseController {
         ?>
 
 		 	<!-- <button class="loadmore" data-page="<?php echo  $paged+1 ;?>">Load More</button> -->
-		 	<a href="javascript:void(0);" class="btn btn-special loadmore" data-page="<?php echo  $paged+1 ;?>">View More Reviews</a>
+            <div class="wrap_load">
+		 	<a href="javascript:void(0);" class="btn btn-special loadmore" data-page="<?php echo  $paged+1 ;?>">View More Reviews</a><span class="disable_click"></span>
+            </div>
 		 <?php 
-		  }else{
-		  	echo "<h3>No More Rating</h3>";
-		 }
+		  }
+   //        else{
+		 //  	echo "<h3>No More Rating</h3>";
+		 // }
 
 
     }

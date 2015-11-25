@@ -56,8 +56,9 @@ class CartController extends BaseController {
 		    // Cart::destroy(); 
 
       //   echo Cart::count();
-      //         $content = Cart::content();
-      //        echo "<pre>";print_r($content);
+              $content = Cart::content();
+              echo Cart::total();
+             echo "<pre>";print_r($content);
     }
 
     public function cart()

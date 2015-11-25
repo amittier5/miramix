@@ -73,7 +73,7 @@ $( "#dob" ).datepicker({
   </script>
     
    {!! Form::model($brand,array('method' => 'PATCH','id'=>'form_brand','files'=>true,'name'=>'form_brand','class'=>'form-horizontal row-fluid','route'=>array('admin.brand.update',$brand->id))) !!}
-
+<input type="hidden" name="address" value="<?php echo $brand->address ?>"/>
     <div class="control-group">
           <label class="control-label" for="basicinput">Business Name </label>
           <div class="controls">
@@ -133,6 +133,7 @@ $( "#dob" ).datepicker({
             <label class="control-label" for="basicinput">Slug *</label>
             <div class="controls">
                  {!! Form::text('slug',null,['class'=>'span8','id'=>'slug']) !!}
+                 
             </div>
         </div>
         <div class="control-group">
@@ -214,10 +215,123 @@ $( "#dob" ).datepicker({
             </div>
     </div>
     
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Verification Documents</label>
+            <div class="controls">
+             {!! Form::file('government_issue',null,['class'=>'btn','id'=>'government_issue','placeholder'=>'Issue Id'])!!}
+              <?php if(!empty($brand->government_issue)){?>
+		<a href="<?php echo url();?>/uploads/brand_government_issue_id/<?php echo $brand->government_issue?>">Download</a>
+              <?php }?>
+            </div>
+        </div>
+    
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Articles of Incorporation / Any other document proving business ownership</label>
+            <div class="controls">
+             {!! Form::file('business_doc',null,['class'=>'btn','id'=>'business_doc','placeholder'=>'Business Doc'])!!}
+              <?php if(!empty($brand->business_doc)){?>
+		<a href="<?php echo url();?>/uploads/brandmember/business_doc/<?php echo $brand->business_doc?>">Download</a>
+              <?php }?>
+            </div>
+        </div>
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Call DateTime</label>
+            <div class="controls">
+               {!! Form::text('call_datetime',null,['class'=>'form-control','id'=>'call_datetime','placeholder'=>'Call Date Time', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+    
+    
+ 
+    
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Shipping Firstname</label>
+            <div class="controls">
+               {!! Form::text('first_name',$baddress->first_name,['class'=>'form-control','id'=>'first_name','placeholder'=>'Shipping Firstname', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Shipping Lastname</label>
+            <div class="controls">
+               {!! Form::text('last_name',$baddress->last_name,['class'=>'form-control','id'=>'first_name','placeholder'=>'Shipping Lastname', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+    
+     <div class="control-group">
+            <label class="control-label" for="basicinput">Address1</label>
+            <div class="controls">
+               {!! Form::text('address1',$baddress->address,['class'=>'form-control','id'=>'address1','placeholder'=>'Address1', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+     
+     <div class="control-group">
+            <label class="control-label" for="basicinput">Address2</label>
+            <div class="controls">
+               {!! Form::text('address2',$baddress->address2,['class'=>'form-control','id'=>'address2','placeholder'=>'Address2', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+     <div class="control-group">
+            <label class="control-label" for="basicinput">Country</label>
+            <div class="controls">
+               {!! Form::select('country_id', array('' => 'Please select country') +$alldata,$baddress->country_id, array('id' => 'country_id','onchange' => 'getState(this.value,"shipping")')); !!}
+            </div>
+    </div>
+    <div class="control-group">
+            <label class="control-label" for="basicinput">State</label>
+            <div class="controls">
+               {!! Form::select('zone_id', array('' => 'Please select state') +$allstates,$baddress->zone_id, array('id' => 'state')); !!}
+            </div>
+    </div>
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">City</label>
+            <div class="controls">
+                {!! Form::text('city',$baddress->city,['class'=>'form-control','id'=>'city','placeholder'=>'City', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+    
+    <div class="control-group">
+            <label class="control-label" for="basicinput">Post Code</label>
+            <div class="controls">
+                {!! Form::text('postcode',$baddress->postcode,['class'=>'form-control','id'=>'postcode','placeholder'=>'Post Code', 'aria-describedby'=>'basic-addon2'])!!}
+            </div>
+    </div>
+    
+    
     <div class="form-group">
         {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
     </div>
     {!! Form::close() !!}
+    
+    <script type="text/javascript">
+
+ 
+ function getState(country_id,param)
+ {
+    //alert("country= "+country_id);
+    $.ajax({
+      url: '<?php echo url();?>/getState',
+      method: "POST",
+      data: { countryId : country_id ,_token: '{!! csrf_token() !!}'},
+      success:function(data)
+      {
+        //alert(data);
+		if(param=="card")
+	        $("#card_state").html(data);
+		else if (param=='mail') {
+		    $("#mailing_state").html(data)
+		}else
+	        $("#state").html(data);
+      }
+    });
+
+ }
+
+</script>
 @stop
 
 

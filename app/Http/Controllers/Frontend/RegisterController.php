@@ -16,7 +16,7 @@ use Hash;
 use Mail;
 use Authorizenet;
 use App\Helper\helpers;
-
+use App\Model\Subscription;
 
 
 class RegisterController extends BaseController {
@@ -64,9 +64,31 @@ class RegisterController extends BaseController {
         }
 		//echo "<pre>";print_r($alldata); exit;
 		$reg_brand_id =''; // No register brand id for first time.
-		
-		if(Request::isMethod('post'))
+	 $states = DB::table('zones')->where('country_id',  223)->orderBy('name','ASC')->get();
+        
+        $allstates = array();
+        foreach($states as $key=>$value)
         {
+            $allstates[$value->zone_id] = $value->name;
+        }
+		
+    if(Request::isMethod('post'))
+        {
+	    $email_count = DB::table('brandmembers')
+                    ->where('email', '=', Request::input('email'))->count();
+	    if($email_count>0){
+		Session::flash('error', 'Email already exists.'); 
+		return redirect('brandregister');
+	    }
+
+
+	        /*if(Request::input('email')=='' || Request::input('fname')=='' || Request::input('lname') || Request::input('password')==''){
+		Session::flash('error', 'Please fill form again.'); 
+		return redirect('brandregister');
+	    }*/
+		    
+	    
+	     if(Request::input('expiry_month') !='' && Request::input('expiry_year')!='' && Request::input('card_number')!=''){
 	    $country = DB::table('countries') ->where('country_id', '=',Request::input('card_country_id'))->first();
 	    
 	    
@@ -88,24 +110,21 @@ class RegisterController extends BaseController {
 					'card_number'=>Request::input('card_number'),
 					'country'=>$country->name
 					);
-	    
-	    $res=Authorizenet::createprofile($shipping_card_addr);
-	   // echo $res['status'];
-	  // echo $res['customer']['payment_profile_id'];
-	  //print_r($res);exit;
-	    if($res['status']=='fail'){
-	    Session::flash('error', 'something went wrong with creditcard details!!'.$res[message].' Please try again.'); 
-	    return redirect('brandregister');
+	   
+		$res=Authorizenet::createprofile($shipping_card_addr);
+	       
+		if($res['status']=='fail'){
+		Session::flash('error', 'something went wrong with creditcard details!!'.$res[message].' Please try again.'); 
+		return redirect('brandregister');
+		}
 	    }
 	    
-			//echo $_FILES['image']['name']."<pre>";print_r($_FILES);exit;
-
-			//if(Input::hasFile('government_issue'))
+			
 			if(isset($_FILES['government_issue']['name']) && $_FILES['government_issue']['name']!="")
 			{
 				$destinationPath = 'uploads/brand_government_issue_id/'; // upload path
-				$extension = Input::file('government_issue')->getClientOriginalExtension(); // getting image extension
-				$government_issue = rand(111111111,999999999).'.'.$extension; // renameing image
+				$extension = Input::file('government_issue')->getClientOriginalExtension(); 
+				$government_issue = rand(111111111,999999999).'.'.$extension; 
 				Input::file('government_issue')->move($destinationPath, $government_issue); // uploading file to given path
 				
 			}
@@ -113,6 +132,24 @@ class RegisterController extends BaseController {
 			{
 				$government_issue = '';
 			}
+			
+			
+			if(isset($_FILES['business_doc']['name']) && $_FILES['business_doc']['name']!="")
+			{
+				$destinationPath = 'uploads/brandmember/business_doc/'; // upload path
+				$extension = Input::file('business_doc')->getClientOriginalExtension(); 
+				$business_doc = rand(111111111,999999999).'.'.$extension; 
+				Input::file('business_doc')->move($destinationPath, $business_doc); 
+				
+			}
+			else
+			{
+				$business_doc = '';
+			}
+			
+			
+			
+			
 			//if(Input::hasFile('image'))
 			if(isset($_FILES['image']['name']) && $_FILES['image']['name']!="")
 			{
@@ -131,24 +168,27 @@ class RegisterController extends BaseController {
 				$fileName = '';
 			}
 			
-			$slug=$obj->create_slug(Request::input('fname')." ". Request::input('lname'),'brandmembers','slug');
+			$slug=$obj->create_slug(Request::input('business_name'),'brandmembers','slug');
 			
 
 			$hashpassword = Hash::make(Request::input('password'));
-			$address = New Address;
+			
 			$time=Request::input('calltime');
 			$date=Request::input('calldate');
 			$given_date=strtotime($date." ".$time);
 			$given_date= date("Y-m-d H:s:i",$given_date);
-			
-			
+			$setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
+			$fee=$setting->value;
 			$brandmember= Brandmember::create([
+				'business_name'     => Request::input('business_name'),
+				'brand_type'        => Request::input('brand_type'),
 				'fname'             => Request::input('fname'),
 				'lname'             => Request::input('lname'),
 				'email'             => Request::input('email'),
 				'username'          => strtolower(Request::input('fname')),
 				'password'          => $hashpassword,
 				'government_issue'  => $government_issue,
+				'business_doc'      => $business_doc,
 				'phone_no'          => Request::input('phone_no'),
 				'routing_number'    => Request::input('routing_number'),
 				'account_number'    => Request::input('account_number'),
@@ -167,10 +207,12 @@ class RegisterController extends BaseController {
 				'pro_image'         => $fileName,
 				'role'              => 1,                   // for member role is "0"
 				'admin_status'      => 0,                   // Admin status
-				'auth_profile_id'  =>$res['customer']['profile_id'],
-				'auth_payment_profile_id'  =>$res['customer']['payment_profile_id'],
-				'auth_address_id'  =>$res['customer']['address_id'],
-				'slug'		=>$slug,
+				'auth_profile_id'  =>isset($res['customer']['profile_id'])?($res['customer']['profile_id']):'',
+				'auth_payment_profile_id'  =>isset($res['customer']['payment_profile_id'])?($res['customer']['payment_profile_id']):'',
+				'auth_address_id'  =>isset($res['customer']['address_id'])?($res['customer']['address_id']):'',
+				'slug'		=>strtolower($slug),
+				'member_fee'=>$fee,
+				'subscription_status' => 'active'
 				
 			]);
 			
@@ -179,9 +221,14 @@ class RegisterController extends BaseController {
 			$shipping_card_addr_serial = serialize($shipping_card_addr);
 	
 			$lastInsertedId = $brandmember->id;
+			$start_date=date("Y-m-d");
+			$end_date=date("Y-m-d",strtotime($start_date .' + 30 days'));
+			$subdata=array("member_id"=>$lastInsertedId,"start_date"=>$start_date,"end_date"=>$end_date,"subscription_fee"=>$fee,"payment_status"=>'paid',"transaction_id"=>'free');
+			Subscription::create($subdata);
+			
 			
 			$reg_brand_id = $lastInsertedId; //base64_encode ($lastInsertedId); // encrypted last register brand member id
-			
+			$address = New Address;
 			$address->mem_brand_id = $lastInsertedId;
 			$address->first_name = Request::input('shiping_fname');
 			$address->last_name = Request::input('shiping_lname');
@@ -219,7 +266,7 @@ class RegisterController extends BaseController {
 				$user_name = Request::input('fname').' '.Request::input('lname');
 				$user_email = Request::input('email');
 				$activateLink = url().'/activateLink/'.base64_encode(Request::input('email')).'/brand';
-				$sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink), 
+				$sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink ,'admin_users_email'=>$admin_users_email), 
 				function($message) use ($admin_users_email, $user_email,$user_name)
 				{
 					$message->from($admin_users_email);
@@ -233,15 +280,15 @@ class RegisterController extends BaseController {
 				}
 				else
 				{
-                    Session::flash('success', 'Registration completed successfully.Please check your email to activate your account.'); 
-					Session::flash('flush_reg_brand_id','open_modal'); 
-                    Session::put('reg_brand_id',$reg_brand_id);
-                    return redirect('brandregister');
+				    Session::flash('success', 'Registration completed successfully.Please check your email to activate your account.'); 
+							Session::flash('flush_reg_brand_id','open_modal'); 
+				    Session::put('reg_brand_id',$reg_brand_id);
+				    return redirect('brandLogin');
 				}
 			}
 		}
 				
-        return view('frontend.register.registerbrand',compact('alldata'),array('reg_brand_id'=>$reg_brand_id));
+        return view('frontend.register.registerbrand',compact('alldata','allstates'),array('reg_brand_id'=>$reg_brand_id));
     }
    
 	public function updateDate()
@@ -299,7 +346,7 @@ class RegisterController extends BaseController {
         $user_name = $register['user_name'];
         $user_email = $register['email'];
         $activateLink = url().'/activateLink/'.base64_encode($register['email']).'/member';
-        $sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink), 
+        $sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink, 'admin_users_email'=>$admin_users_email), 
         function($message) use ($admin_users_email, $user_email,$user_name)
         {
             $message->from($admin_users_email);
@@ -314,7 +361,7 @@ class RegisterController extends BaseController {
         else
         {
             Session::flash('success', 'Registration completed successfully.Please check your email to activate your account.'); 
-            return redirect('register');
+            return redirect('memberLogin');
         }
        
         

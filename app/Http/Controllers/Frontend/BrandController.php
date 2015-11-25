@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend; /* path of this controller*/
 
 use App\Model\Brandmember; /* Model name*/
+use App\Model\Subscription;
 use App\Model\Product; /* Model name*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
@@ -48,7 +49,7 @@ class BrandController extends BaseController {
     {
         
         
-        $whereClause = array('role'=>1,'status'=>1,'admin_status'=>1);
+        $whereClause = array('role'=>1,'status'=>1,'admin_status'=>1,'subscription_status'=>'active');
         $all_brand_member = DB::table('brandmembers')->where($whereClause)->get();
 
        // echo "<pre>";print_r($all_brand_member);exit;
@@ -59,9 +60,26 @@ class BrandController extends BaseController {
     public function brandDetails($brand_slug)
     {
         $all_brand_member = DB::table('brandmembers')->where('slug', $brand_slug)->first();
-
+        
+        $whereClause = array('role'=>1,'status'=>1,'admin_status'=>1,'subscription_status'=>'active','id'=>$all_brand_member->id);
+        $brand = DB::table('brandmembers')->where($whereClause)->first();
+        if(!isset($brand)){
+           return redirect('brand'); 
+        }
+        
+        $page=Request::input('page');
+	if(!empty($page)){
+	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
+	    if(!is_numeric($current_page)){die('Invalid page number!');} //incase of invalid page number
+	    if($current_page<1){$current_page=1;}
+	}else{
+	    $current_page = 1; //if there's no page number, set it to 1
+	}
+        
+        
+        
         //$total_brand_pro = 0;
-        $limit = 9;
+        $item_per_page=3;
         $product = DB::table('products')
                  ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
@@ -71,25 +89,61 @@ class BrandController extends BaseController {
                  ->where('product_formfactors.servings', '!=',0)
                  ->where('products.discountinue', 0)
                  ->groupBy('product_formfactors.product_id')
-                 ->paginate($limit);
+                ;
 
-        $total_brand_pro = DB::table('products')
+       $sortby=Request::input('sortby');
+	 if(!empty($sortby)){
+	    
+	    if($sortby=='popularity'){
+		$product->orderBy('popularity', 'DESC');
+	    }elseif($sortby=='price'){
+		$product->orderBy('min_price', 'ASC');
+	    }elseif($sortby=='date'){
+		$product->orderBy('created_at', 'DESC');
+	    }else{
+		$product->orderBy('id', 'DESC');
+	    }
+	    
+	 }
+          $product=$product->paginate($item_per_page);
+          
+        $total_brand_product = DB::table('products')
+                ->select(DB::raw('products.id'))
+                 ->Join('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
                  ->where('products.brandmember_id', '=', $all_brand_member->id)
+                 ->where('product_formfactors.servings', '!=',0)
                  ->where('products.active', 1)
                  ->where('products.is_deleted', 0)
                  ->where('products.discountinue', 0)
-                 ->count();
+                 ->groupBy('product_formfactors.product_id')
+                 ->get();
 
-        // DB::enableQueryLog();
-        // $queries = DB::getQueryLog();
-        // $last_query = end($queries);
-        // echo "<pre/>";print_r($queries); exit;
-       // 
+
+
+          // $obj = new helpers();
+          // echo $obj->get_last_query();
 
        // echo "<pre/>";print_r($product); exit;
-        //$total_brand_pro = count($product);
+        
+        $total_brand_pro = count($total_brand_product);
+        
+        
+        $total_pages=ceil($total_brand_pro/$item_per_page);
+	
+	$offset = ($current_page - 1)  * $item_per_page;
+
+	
+        $from = $offset + 1;
+        $to = min(($offset + $item_per_page), $total_brand_pro);
+            
+            
+
         $product->setPath($brand_slug);
-        return view('frontend.brand.brand_details',compact('all_brand_member','total_brand_pro','product','limit'),array('title'=>'MIRAMIX | Brand Listing','brand_active'=>'active'));
+        if($current_page==1 && (!Request::isMethod('post'))){
+        return view('frontend.brand.brand_details',compact('all_brand_member','total_brand_pro','product','item_per_page','current_page','total_pages','from','to','brand_slug'),array('title'=>'MIRAMIX | Brand Listing','brand_active'=>'active'));
+        }else{
+        return view('frontend.brand.brand_details_next',compact('all_brand_member','total_brand_pro','product','item_per_page','current_page','total_pages','from','to','brand_slug'),array('title'=>'MIRAMIX | Brand Listing','brand_active'=>'active'));            
+        }
     }
 
 
@@ -164,11 +218,13 @@ class BrandController extends BaseController {
 		    ->where('id', '=', Session::get('brand_userid'))
                     ->first();
             
+            $slug=$obj->edit_slug(Request::input('slug'),'brandmembers','slug',Session::get('brand_userid'));
             
             $brand=array('fname'=> Request::input('fname'),
 			 'lname'=> Request::input('lname'),
                          'business_name'=> Request::input('business_name'),
                          'phone_no'=> Request::input('phone_no'),
+                         'slug'=> $slug,
                          'youtube_link'=> Request::input('youtube_link'),
                          'brand_details'=> Request::input('brand_details'),
                          'brand_sitelink'=> Request::input('brand_sitelink'),
@@ -731,5 +787,19 @@ public function brand_paydetails(){
                 
         $products->setPath('sold-products');
         return view('frontend.brand.sold_product_history',compact('products','brand_details'),array('title' => 'Sold Product History'));
+     }
+     
+     public function subscriptionHistory(){
+        $obj = new helpers();
+        if(!$obj->checkBrandLogin())
+        {
+           return redirect('brandLogin');
+        }
+        $limit=5;
+       // $subscription = DB::table('subscription_history')->where('member_id', Session::get('brand_userid'))->orderBy('end_date','DESC')->get();
+        $subscription=Subscription::with('getSubMembers')->where("member_id",Session::get('brand_userid'))->orderBy('end_date','DESC')->paginate($limit);;
+        $brand = Brandmember::find(Session::get('brand_userid'));
+       return view('frontend.brand.subscription_history',compact('brand','subscription'),array('title' => 'Subscription History'));
+        
      }
 }
