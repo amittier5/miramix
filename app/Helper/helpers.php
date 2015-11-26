@@ -1,8 +1,9 @@
 <?php
 namespace App\Helper;
 use Session;use DB;
+use Cart;
 
-class helpers {
+class helpers extends Cart {
 
 	function somethingOrOther()
 	{
@@ -324,6 +325,46 @@ public function get_last_query() {
 	      
 	return $sql['query'];
       }
+
+
+
+    // public function update($rowId, $attribute){
+    //     $cart = Cart::content();
+
+    //     //echo "<pre>";print_r($this->session->get($this->getInstance()));
+
+    //     //$instance = Cart::instance($cart);
+
+    //     //array_push($cart,"blue","yellow");
+
+
+    //     //Session::put($instance, $cart);
+
+    //     echo "overwrite";
+    //     $cart = $this->content();
+    //    echo "<pre>";print_r($cart);
+
+
+
+    //     exit;
+    // }
+
+    public function content()
+    {
+
+        $cart_content = parent::content();
+        if(Session::has('coupon_type') && Session::has('coupon_discount')){
+
+            $cart_content->coupon_type = Session::get('coupon_type');
+            $cart_content->coupon_discount = Session::get('coupon_discount');
+        }
+
+
+       
+        return $cart_content;
+    }
+
+
 
 }
 ?>

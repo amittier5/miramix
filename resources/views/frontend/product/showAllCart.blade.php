@@ -2,7 +2,8 @@
 @section('content')
 
 
-<?php //echo "cart_result=======";echo "<pre/>";print_r($cart_result); exit;?>
+<?php //echo "cart_result=======";echo "<pre/>";print_r($cart_result); exit; 
+?>
   <div class="inner_page_container">
     <div class="header_panel">
         <div class="container">
@@ -13,6 +14,12 @@
     <div class="products_panel">
       <div class="container">
         <div class="product_list shop_cart">
+         @if(Session::has('success'))
+          <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{!! Session::get('success') !!}</strong>
+          </div>
+        @endif
          <div class="row"> 
           <div class="col-sm-9">
           <div class="table-responsive shad_tabres">
@@ -38,7 +45,7 @@
                   foreach($cart_result as $eachcart)
                   {
                     $all_sub_total = $all_sub_total+$eachcart['subtotal'];
-                    $all_total = number_format($all_sub_total,2);
+                   // $all_sub_total = number_format($all_sub_total,2);
                 ?>
                 <tr>
                   <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}"><img src="<?php echo url();?>/uploads/product/{!! $eachcart['product_image'] !!}" width="116" alt=""></a></td>
@@ -55,6 +62,15 @@
                 <?php 
                  $i++;
                  }
+                
+
+                 if(Session::has('coupon_discount')){
+                  
+                  $all_total = $all_sub_total - Session::get('coupon_discount');
+                 }
+                 else
+                  $all_total = $all_sub_total;
+
                 }
                 ?>
                 
@@ -71,28 +87,46 @@
 
           </div>
           <div class="col-sm-3">
-          <div class="row">
-          <div class="right_table">
-          <div class="table-responsive">
-          <table class="table">
-              <tbody>
-                <tr>
-                  <td>Sub Total:</td>
-                  <td>{!! ($all_total!='')?'$':'' !!} {!! $all_total !!}</td>
-                </tr>
-                <tr>
-                  <td>Total:</td>
-                  <td>{!! ($all_total!='')?'$':'' !!}  {!! $all_total !!}</td>
-                </tr>
-              </tbody>
-          </table>
-          </div>
-           
-          </div>
-          <?php if(Cart::count()>0){?>
-          <a class="butt full-disp" href="<?php echo url();?>/checkout-step1">Proceed to Checkout</a>
-          <?php } ?>
-          </div>
+            <div class="row">
+              <div class="right_table">
+                <div class="table-responsive">
+                 {!! Form::open(['url' => 'coupon-cart','method'=>'POST', 'files'=>true, 'id'=>'coupon_form']) !!}
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>Sub Total:</td>
+                        <td>{!! ($all_sub_total!='')?'$':'' !!}{!! number_format($all_sub_total,2); !!}</td>
+                      </tr>
+
+                      <?php if(Session::has('coupon_discount') && Cart::count() > 0 ){ ?>
+                      <tr>
+                        <td>Coupon:</td>
+                        <td><?php echo '- $'.Session::get('coupon_discount');?></td>
+                      </tr>
+                      <?php } ?>
+
+                      <tr>
+                        <td>Total:</td>
+                        <td>{!! ($all_total!='')?'$':'' !!} {!! number_format($all_total,2); !!}</td>
+                      </tr>
+
+                       <tr>
+                        <td>Coupon: </td>
+                        <td><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"></td>
+                      </tr>
+                       <tr>
+                        <td>Submit:</td>
+                        <td><input type="submit" name="sub" value="Submit"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {!! Form::close() !!}
+                </div>
+              </div>
+            <?php if(Cart::count()>0){?>
+            <a class="butt full-disp" href="<?php echo url();?>/checkout-step1">Proceed to Checkout</a>
+            <?php } ?>
+            </div>
           </div>
          </div> 
         </div>

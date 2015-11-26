@@ -19,6 +19,8 @@ use Cookie;
 use App\Helper\helpers;
 use Cart;
 use App\Model\Subscription;
+use Redirect;
+use Socialize;
 
 
 class HomeController extends BaseController {
@@ -227,7 +229,7 @@ class HomeController extends BaseController {
 	if($obj->checkBrandLogin()){
             return redirect('brand-dashboard');
         }
-
+    Session::put('member_type', 0);
         if(Request::isMethod('post'))
         {
             $email = Request::input('email');
@@ -252,7 +254,7 @@ class HomeController extends BaseController {
                     //echo DB::enableQueryLog();exit;
                     if($user_cnt){
                         Session::put('member_userid', $users->id);
-						Session::put('member_user_email', $users->email);
+			Session::put('member_user_email', $users->email);
 
                         // Check for remember me
                         if(Request::input('remember_me')==1){
@@ -540,6 +542,8 @@ class HomeController extends BaseController {
 	if($obj->checkBrandLogin()){
             return redirect('brand-dashboard');
         }
+	Session::put('member_type', 1);
+	
         if(Request::isMethod('post'))
         {
             $email = Request::input('email');
@@ -558,38 +562,7 @@ class HomeController extends BaseController {
                     if($user_cnt){
 		    
 		    
-		    /******************  check subscription **************************/
-		    
-		    
-		    $subscription = DB::table('subscription_history')->where('member_id', $users->id)->orderBy('subscription_id','DESC')->first();
-		    if(count($subscription)<=0){
-			
-			$end_date=date("Y-m-d",strtotime($users->created_at .' + 30 days'));
-			$setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
-			
-			$subdata=array("member_id"=>$users->id,"start_date"=>$users->created_at,"end_date"=>$end_date,"subscription_fee"=>$setting->value);
-			Subscription::create($subdata);
-			
-		    }else{
-			
-			$today=Date('Y-m-d');
-			$enddate=date("Y-m-d",strtotime($subscription->end_date." + 1 day"));
-			
-			if($today>$enddate && $subscription->payment_status=='pending'){
-			    
-			    //Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
-			    //return redirect('brandLogin');
-			     $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'expired'));
-			    
-			}else{
-			   $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'active'));  
-			    
-			}
-			
-			
-		    }
-		    
-		    /******************  check subscription **************************/
+		   $this->check_subscription($users);
 		    
 		    
                          // Check for remember me
@@ -597,7 +570,7 @@ class HomeController extends BaseController {
                             Cookie::queue(Cookie::make('brand_email', Request::input('email'), 60 * 24 * 30));
                         }
                         Session::put('brand_userid', $users->id);
-						Session::put('brand_user_email', $users->email);
+			Session::put('brand_user_email', $users->email);
                         return redirect('brand-dashboard');
                     }
                     else{
@@ -791,13 +764,14 @@ class HomeController extends BaseController {
             $member = Brandmember::find(Session::get('member_userid'));
 	   		$newsletter=array("email"=>$email,"fname"=>$member->fname,"lname"=>$member->lname,"created_on"=>date("Y-m-d H:s:i"),"status"=>1);
 	   		$subscriber = (($member->fname) =='')?$member->username:$member->fname;
+	   		$lname = $member->lname;
         }  
         else if(Session::has('brand_userid'))
         {
           	$member = Brandmember::find(Session::get('brand_userid'));
 	   		$newsletter=array("email"=>$email,"fname"=>$member->fname,"lname"=>$member->lname,"created_on"=>date("Y-m-d H:s:i"),"status"=>1);
 	   		$subscriber = $member->fname;
-	   
+	   		$lname = $member->lname;	   
         }
         else
         {
@@ -813,16 +787,64 @@ class HomeController extends BaseController {
 	    $result=array("message"=>"You have already subscribed.","status"=>"fail");
 	    
 	
-	}else{
-	    $newsletterres= Newsletter::create($newsletter);
-	    $result=array("message"=>"You have successfully subscribed.","status"=>"success");
+	}
+	else
+	{
+	   	$sitesettings = DB::table('sitesettings')->get();
+        $all_sitesetting = array();
+        foreach($sitesettings as $each_sitesetting)
+        {
+            $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+        }
+		    //print_r($all_sitesetting); exit;
+		    $merge_vars=array(
+		    'OPTIN_IP'=>$_SERVER['REMOTE_ADDR'], // Use their IP (if avail)
+		    'OPTIN-TIME'=>"now", // Must be something readable by strtotime...
+		    'FNAME'=>ucwords(strtolower(trim($subscriber))),
+		    'LNAME'=>ucwords(strtolower(trim($lname))),
+		    'COMPANY'=>ucwords(strtolower(trim(""))),
+		    'ORGTYPE'=>ucwords(strtolower(trim(""))),
+		    'PLANNING'=>strtolower(trim("Unknown")),
+		    );
 
-	    $sent = Mail::send('frontend.home.newsletter', array('admin_users_email'=>$admin_users_email,'subscriber'=>$subscriber), 
-            function($message) use ($admin_users_email,$email)
-            {
-                $message->from($admin_users_email);  //support mail
-                $message->to($email)->subject('Miramix Subscription Mail');
-            });
+		$send_data=array(
+		    'email'=>array('email'=>$email),
+		    'apikey'=>$all_sitesetting['mailchimp_api_key'],	//"aec02fd1bae4d9acb046576e1983a945-us8", // Your Key
+		    'id'=>$all_sitesetting['mailchimp_list_id'],		//"5c949c1384", // Your proper List ID
+		    'merge_vars'=>$merge_vars,
+		    'double_optin'=>false,
+		    //'update_existing'=>true,
+		    //'replace_interests'=>false,
+		    'send_welcome'=>false,
+		    'email_type'=>"html",
+		);
+
+		$payload=json_encode($send_data);
+		//$submit_url="https://api.mailchimp.com/2.0/lists/subscribe.json";
+		$submit_url=$all_sitesetting['mailchimp_url']; //"https://us8.api.mailchimp.com/2.0/lists/subscribe.json";
+		$ch=curl_init();
+		curl_setopt($ch,CURLOPT_URL,$submit_url);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($ch,CURLOPT_POST,true);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$payload);
+		$result=curl_exec($ch);
+		curl_close($ch);
+		$mcdata=json_decode($result);
+
+		if (empty($mcdata->error)) {
+		     $newsletterres= Newsletter::create($newsletter);
+		    $result=array("message"=>"You have successfully subscribed.","status"=>"success");
+		}else{
+			echo $mcdata->error;
+			$result=array("message"=>"Newsletter subscription fails.","status"=>"fail");
+		}
+		
+	    // $sent = Mail::send('frontend.home.newsletter', array('admin_users_email'=>$admin_users_email,'subscriber'=>$subscriber), 
+     //        function($message) use ($admin_users_email,$email)
+     //        {
+     //            $message->from($admin_users_email);  //support mail
+     //            $message->to($email)->subject('Miramix Subscription Mail');
+     //        });
 	}
     
      echo json_encode($result);
@@ -854,5 +876,201 @@ class HomeController extends BaseController {
         echo 1;
         exit;
    }
+public function errorpage(){
+    
+  return view('frontend.home.error',array('title'=>'Something went wrong'));   
+}
+
+
+public function facebook_redirect(){
+   
+    return Socialize::with('facebook')->redirect();
+}
+
+public function facebook(){
+    $user = Socialize::with('facebook')->user();
+  
+    $email=($user->email);
+    
+    $name=explode(" ",$user->name);
+    if(count($name)>0){
+	$fname=$name[0];
+	$lname=end($name);
+    }else{
+	$fname=$user->name; 
+	$lname=$user->name;
+    }
+    $username=strtolower($fname);
+    $count = DB::table('brandmembers')->where('email', $email)->count();
+    
+    if($count>0){
+	$member=DB::table('brandmembers')->where('email', $email)->first();
+	//brand member
+	if($member->role==1){
+	    $this->check_subscription($member);
+	    
+	    Session::put('brand_userid', $member->id);
+	    Session::put('brand_user_email', $member->email);
+            return redirect('brand-dashboard');
+	}else{
+	    Session::put('member_userid', $member->id);
+	    Session::put('member_user_email', $member->email);
+	    $this->update_cart($member->id);
+	    return redirect('member-dashboard');
+	    
+	}
+	
+    }else{
+	
+	//create social users
+	
+	$hashpassword = Hash::make(uniqid());
+
+        $brandmember= Brandmember::create([
+            'email'             => $email,
+	    'fname'             => $fname,
+	    'lname'             => $lname,
+            'username'          => $username,
+            'password'          => $hashpassword,
+            'role'              => Session::get('member_type'),                   // for member role is "0"
+            'admin_status'      => 1,                   // Admin status
+            'updated_at'        => date('Y-m-d H:i:s'),
+            'created_at'        => date('Y-m-d H:i:s')
+        ]);
+	
+	$member=DB::table('brandmembers')->where('email', $email)->first();
+	
+	if($member->role==1){
+	    $this->check_subscription($member);
+	    
+	    Session::put('brand_userid', $member->id);
+	    Session::put('brand_user_email', $member->email);
+            return redirect('brand-dashboard');
+	}else{
+	    Session::put('member_userid', $member->id);
+	    Session::put('member_user_email', $member->email);
+	    $this->update_cart($member->id);
+	    return redirect('member-dashboard');
+	    
+	}
+	
+    }
+    
+}
+
+
+public function google_redirect(){
+   
+    return Socialize::with('google')->redirect();
+}
+
+public function google(){
+    $user = Socialize::with('google')->user();
+   
+    $email=($user->email);
+    
+    $name=explode(" ",$user->name);
+    if(count($name)>0){
+	$fname=$name[0];
+	$lname=end($name);
+    }else{
+	$fname=$user->name; 
+	$lname=$user->name;
+    }
+    $username=strtolower($fname);
+    $count = DB::table('brandmembers')->where('email', $email)->count();
+    
+    if($count>0){
+	$member=DB::table('brandmembers')->where('email', $email)->first();
+	//brand member
+	if($member->role==1){
+	    $this->check_subscription($member);
+	    
+	    Session::put('brand_userid', $member->id);
+	    Session::put('brand_user_email', $member->email);
+            return redirect('brand-dashboard');
+	}else{
+	    Session::put('member_userid', $member->id);
+	    Session::put('member_user_email', $member->email);
+	    $this->update_cart($member->id);
+	    return redirect('member-dashboard');
+	    
+	}
+	
+    }else{
+	
+	//create social users
+	
+	$hashpassword = Hash::make(uniqid());
+
+        $brandmember= Brandmember::create([
+            'email'             => $email,
+	    'fname'             => $fname,
+	    'lname'             => $lname,
+            'username'          => $username,
+            'password'          => $hashpassword,
+            'role'              => Session::get('member_type'),                   // for member role is "0"
+            'admin_status'      => 1,                   // Admin status
+            'updated_at'        => date('Y-m-d H:i:s'),
+            'created_at'        => date('Y-m-d H:i:s')
+        ]);
+	
+	$member=DB::table('brandmembers')->where('email', $email)->first();
+	
+	if($member->role==1){
+	    $this->check_subscription($member);
+	    
+	    Session::put('brand_userid', $member->id);
+	    Session::put('brand_user_email', $member->email);
+            return redirect('brand-dashboard');
+	}else{
+	    Session::put('member_userid', $member->id);
+	    Session::put('member_user_email', $member->email);
+	    $this->update_cart($member->id);
+	    return redirect('member-dashboard');
+	    
+	}
+	
+    }
+   
+    
+}
+
+
+private function check_subscription($users){
+    
+     /******************  check subscription **************************/
+		    
+		    
+		    $subscription = DB::table('subscription_history')->where('member_id', $users->id)->orderBy('subscription_id','DESC')->first();
+		    if(count($subscription)<=0){
+			
+			$end_date=date("Y-m-d",strtotime($users->created_at .' + 30 days'));
+			$setting = DB::table('sitesettings')->where('name', 'brand_fee')->first();
+			
+			$subdata=array("member_id"=>$users->id,"start_date"=>$users->created_at,"end_date"=>$end_date,"subscription_fee"=>$setting->value);
+			Subscription::create($subdata);
+			
+		    }else{
+			
+			$today=Date('Y-m-d');
+			$enddate=date("Y-m-d",strtotime($subscription->end_date." + 1 day"));
+			
+			if($today>$enddate && $subscription->payment_status=='pending'){
+			    
+			    //Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
+			    //return redirect('brandLogin');
+			     $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'expired'));
+			    
+			}else{
+			   $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'active'));  
+			    
+			}
+			
+			
+		    }
+		    
+		    /******************  check subscription **************************/
+}
 
 }

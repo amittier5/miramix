@@ -114,21 +114,18 @@ class Product1Controller extends BaseController {
 
 
     // Get Related Product
-    // $related_product = DB::table('products')
-    //              ->select(DB::raw('products.id,products.brandmember_id,products.script_generated,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
-    //              ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
-    //              ->where('products.brandmember_id', '=', Session::get('brand_userid'))
-    //              ->where('products.active', 1)
-    //              ->where('product_formfactors.actual_price','!=', 0)
-    //              ->where('products.is_deleted', 0)
-    //              ->where('products.discountinue', 0)
-    //             ->get(); 
+    $related_product = DB::table('products')
+                 ->select(DB::raw('products.id,products.brandmember_id,products.script_generated,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
+                 ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')             
+                 ->where('products.active', 1)
+                 ->where('product_formfactors.actual_price','!=', 0)
+                 ->where('products.is_deleted', 0)
+                 ->where('products.related','yes')
+                 ->groupBy('product_formfactors.product_id')
+                 ->get(); 
 
-    
-
-
-        //echo "<pre/>";print_r($timeduration); exit;
-        return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating','product_id'),array('title'=>'Product Details'));
+        //echo "<pre/>";print_r($related_product); exit;
+        return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating','product_id','related_product'),array('title'=>'Product Details'));
     }
 
    

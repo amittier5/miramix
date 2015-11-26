@@ -11,7 +11,7 @@ $about_us = $return_policy = $terms = $privacy ='';
     $getcms_ret_policy = $getHelper->getCmsLink(2);
     $return_policy = $getcms_ret_policy->slug;
   }
-  if($getHelper->getCmsLink(3) !='')
+  if($getHelper->getCmsLink(3) !='' && (!Session::has('brand_userid')))
   {
     $getcms_terms = $getHelper->getCmsLink(3);
     $terms = $getcms_terms->slug;
@@ -20,6 +20,11 @@ $about_us = $return_policy = $terms = $privacy ='';
   {
     $getcms_privacy = $getHelper->getCmsLink(4);
     $privacy = $getcms_privacy->slug;
+  }
+  
+  if(Session::has('brand_userid'))
+  {
+    $terms = url().'/miramixTc.pdf';
   }
 
 ?>
@@ -45,7 +50,20 @@ $about_us = $return_policy = $terms = $privacy ='';
                 <li><a href="<?php echo url().($about_us!='')?$about_us:'#'?>">About Us</a></li>
                 <li><a href="<?php echo url().($return_policy!='')?$return_policy:'#'?>">Return Policy</a></li> 
                 <li><a href="<?php echo url()?>/contact-us">Contact Us</a></li>
+		<?php if(!(Session::has('brand_userid')))
+		{
+		?>
                 <li><a href="<?php echo url().($terms!='')?$terms:'#'?>">Terms And Conditions </a></li>
+		<?php
+		}
+		else
+		{
+		
+		?>
+		<li><a href="<?php echo ($terms!='')?$terms:'#'?>" target="_blank">Terms And Conditions </a></li>
+		<?php
+		}
+		?>
                 <li><a href="<?php echo url().($privacy!='')?$privacy:'#'?>">Privacy Policy</a></li>
             </ul>
             <ul>
@@ -79,3 +97,4 @@ $about_us = $return_policy = $terms = $privacy ='';
 </body>
 
 </html>
+

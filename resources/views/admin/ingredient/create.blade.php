@@ -174,19 +174,10 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             },               
 
             submitHandler: function(form, event) {
-				//event.preventDefault();
-				//console.log(total);
-				//console.log(100);
-				//alert('submithandler');
-				//console.log('vit_car:'+vit_car);
-//				console.log('total:'+total);
-//				console.log('com_namevar:'+com_namevar);
-//				console.log('com_valvar:'+com_valvar);
-//				console.log('total_weight:'+total_weight);
 				total_weight=parseFloat(total_weight);
 				$('.comp_value').removeClass('error_red');
 				$('.module-head .appended_error').remove();
-    			if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight<1000){
+    			if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){
 					
 						if(total!=100){
 							$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
@@ -194,7 +185,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
                               $(this).addClass('error_red');  
                             });
 						}
-						else if(vit_car==1 || total_weight<1000){
+						else if(vit_car==1 || total_weight>1000){
 							if(vit_car==1){
 								if($('.vit_text.error_red').parent().find('.appended_error').length>0){
 									
@@ -205,7 +196,8 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 							}
 							else{
 								$('.vit_text').addClass('error_red');	 
-							 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'<br><label style="color:red;">Total Weight Should be less than 1000mg</label></p>');
+							 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'<br><label style="color:red;">Total Weight Should be Less than 1000mg</label></p>');
+							 $('.module-head').append('<label class="appended_error">Total Weight Should be at Less than 1000mg</label>');
 							}
 						}
 						else if(comp_name==1){
@@ -216,8 +208,11 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 							$('.comp_name.error_red').parent().append('<label class="appended_error">Enter A Component Name</label>');	
 							}	
 						}
-						
-							
+						if($('.module-head .appended_error').length>0){
+							$('html,body').animate({
+								scrollTop: $('.module-head').offset().top},
+							'slow');	
+						}
 						
 						
 						return false;
@@ -260,6 +255,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
         });
 		$('.vit_text').each(function(index, element) {
                 var $this=$(this);
+				var this_uniqval=$this.val();
 				if($this.val()==''){
 				$this.addClass('error_red');
 					if($this.val()==''){
@@ -292,7 +288,16 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 					//$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');
 					$this.parent().find('.appended_error').remove();
 					$this.removeClass('error_red');
-					total_weight=parseFloat(total_weight)+parseFloat($this.val());
+					$this.parent().parent().parent().find('input[type="radio"]').each(function(index, element) {                        
+                    var $this=$(this);
+					if($this.is(':checked')){
+						//alert($this.val());
+						var this_selecetedradio=$this.val();
+						if(this_selecetedradio==1)
+						this_uniqval=parseFloat(this_uniqval/1000);	
+					}
+					});
+					total_weight=parseFloat(total_weight)+parseFloat(this_uniqval);
 					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'mg');	
 					vit_car=0;	
 				}

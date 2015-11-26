@@ -15,8 +15,9 @@
                 <div class="oops_div">Oops!</div>
                 <div class="semititle">This page cannot be found</div>
                 <p class="top_p">Make sure the URL is entered correctly.</p>
-                <a class="return_btn" href="#">Return to homepage</a>
+                <a class="return_btn" href="<?php echo url();?>">Return to homepage</a>
                 <p>or try searching what you are looking for</p>
+			
                 </div>
             </div>
             <div class="col-sm-6 right_four"><img alt="" src="<?php echo url();?>/public/frontend/images/404page/404img.png"></div>

@@ -62,8 +62,8 @@
                     </div>
                   @endif
                 <div class="log_btnblock md15">
-               <!-- <a href=""><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
-                <a href=""><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>-->
+               <a href="{!!URL::to('facebook')!!}"><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
+               <a href="{!!URL::to('google')!!}"><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>
                 </div>
                 <!--<img src="<?php echo url();?>/public/frontend/images/or.png" alt="">-->
 

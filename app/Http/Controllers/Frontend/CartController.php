@@ -2,6 +2,7 @@
 
 use App\Model\Brandmember; /* Model name*/
 use App\Model\Ingredient; /* Model name*/
+use App\Model\Coupon; /* Model name*/
 use Illuminate\Support\Collection;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
@@ -175,8 +176,9 @@ class CartController extends BaseController {
             return redirect('home');
         }
 
-        $content = Cart::content();
-        //echo "<pre>";print_r($content);
+        //$content = Cart::content();
+        $content = $obj->content();
+        //echo "<pre>";print_r($content);exit;
         
         foreach($content as $each_content)
         {
@@ -251,5 +253,26 @@ class CartController extends BaseController {
         }
         echo 1; // Remove from  cart
     }
+
+
+    public function coupon_cart()
+    {
+        $obj = new helpers();
+       
+        $counpon_res = Coupon::where('code',Request::input('coupon_code'))->get();
+        if(!empty($counpon_res[0])){
+            Session::put('coupon_code',Request::input('coupon_code'));
+            Session::put('coupon_type',$counpon_res[0]->type);
+            Session::put('coupon_discount',$counpon_res[0]->discount);
+        }
+        Session::flash('success', 'Your coupon code is active.'); 
+        return redirect('show-cart');
+        //echo Session::get('coupon_type');
+       
+       // echo "<pre>";print_r(Session::all());
+        //echo "<pre>";print_r($obj->content());exit;
+       
+    }
+
               
 }

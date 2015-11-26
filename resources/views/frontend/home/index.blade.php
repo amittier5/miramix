@@ -145,6 +145,8 @@ products invented by people like you.</h2></div>
 				if (data.status=='success'){
 				    $("#nmsg").removeClass("error");
 				    $("#nmsg").html(data.message);
+           // $("#mce-EMAIL").val($("#newsemail").val());
+           // $("#mc-embedded-subscribe-form").submit();
             $("#newsemail").val("");
 				}
 				if (data.status=='fail'){
@@ -440,4 +442,6 @@ var u=0;
         align-items: center;
     }
 </style>
+
+
 @stop

@@ -148,6 +148,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        'Laravel\Socialite\SocialiteServiceProvider',       // For Social Login
         //Orchestra\Imagine\ImagineServiceProvider::class,
 
     ],
@@ -206,9 +207,8 @@ return [
         //'Cart' => 'Anam\Phpcart\Facades\Cart',
         'Cart'=> 'Gloudemans\Shoppingcart\Facades\Cart',
         'Authorizenet'           => 'App\Libraries\Facades\Authorizenet',
-        
-        
-
+        'Socialize' => 'Laravel\Socialite\Facades\Socialite'
+      
     ],
 
 	

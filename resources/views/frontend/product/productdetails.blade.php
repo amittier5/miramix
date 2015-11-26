@@ -301,53 +301,40 @@
     <!--bottom_panel_rev-->
     
     <!--related_prod-->
-    <div class="related_prod">
-    <h3>Related Products</h3>
-    <div class="product_list">
-      <div class="product">
-          <div class="head_section">
-              <h2>Fat Blaster</h2>
-              <p class="price">$99.99 </p>
-              </div>
-            <div class="image_section">
-              <img src="<?php echo url();?>/public/frontend/images/portfolio/1.png" alt=""/>
+      <div class="related_prod">
+      <?php 
+          if(!empty($related_product)){
+      ?>
+      <h3>Related Products</h3>
+      <div class="product_list">
+        <?php 
+         
+            foreach ($related_product as $key => $value) {
+        ?>
+        <div class="product">
+            <div class="head_section">
+                <h2><?php echo $value->product_name;?></h2>
+                <p class="price"><?php echo '$'.number_format($value->min_price,2);?></p>
+            </div>
+
+            <div class="image_section" <?php if(($value->image1 !='') && (file_exists('uploads/product/thumb/'.$value->image1))) {?>
+                style="background:url(<?php echo url();?>/uploads/product/thumb/{!! $value->image1 !!}) no-repeat center center; background-size:cover;height:240px;" <?php } else {?> style="background:url(<?php echo url();?>/uploads/brandmember/noimage.png) no-repeat center center;background-size:cover;height:240px;" <?php } ?>>
+
+
+        
                 <div class="image_info">
-                  <a href="#" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                    <a href="#" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a>
+                  <a href="<?php echo url().'/product-details/'.$value->product_slug;?>" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
+                  <a href="<?php echo url().'/product-details/'.$value->product_slug;?>" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a>
                 </div>
-          </div> 
+            </div> 
+        </div>
+        <?php
+            }
+        ?>
+        
+        </div>
+      <?php } ?>
       </div>
-      <div class="product">
-          <div class="head_section">
-              <h2>Fat Blaster</h2>
-              <p class="price">$99.99 </p>
-              </div>
-            <div class="image_section">
-              <img src="<?php echo url();?>/public/frontend/images/portfolio/2.png" alt=""/>
-                <div class="image_info">
-                  <a href="#" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                    <a href="#" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a>
-                </div>
-          </div> 
-      </div>
-      <div class="product">
-          <div class="head_section">
-              <h2>Fat Blaster</h2>  
-              <p class="price">$99.99 </p>
-              </div>
-            <div class="image_section">
-              <img src="<?php echo url();?>/public/frontend/images/portfolio/3.png" alt=""/>
-                <div class="image_info">
-                  <a href="#" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                    <a href="#" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a>
-                </div>
-          </div> 
-      </div>  
-      
-      
-      
-      </div>
-    </div>
     <!--related_prod-->
     </div>
     

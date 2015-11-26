@@ -964,9 +964,19 @@ function handleFileSelectBrand(e) {
 		var files = e.target.files;
 		var filesArr = Array.prototype.slice.call(files);
 		filesArr.forEach(function(f) {
-			
+			var ext=e.currentTarget.value;
+      ext=ext.split(".");
+
+      if(ext[1]=='txt' || ext[1]=='jpg' || ext[1]=='gif' || ext[1]=='png' || ext[1]=='doc' || ext[1]=='docx' || ext[1]=='pdf' || ext[1]=='odt'){
+
+      }else{
+          sweetAlert("Oops...", "File type should be txt , jpg, gif, png, doc, docx, pdf, odt", "error");
+          e.currentTarget.value='';
+          return;        
+      }
 			//alert(f.size);
 			if(f.size>2 * 1024 * 1024){
+
 				sweetAlert("Oops...", "File size should be less than 2MB", "error");
 				e.currentTarget.value='';
 				return;

@@ -17,13 +17,13 @@
                     <div class="bottom_dash clearfix">
                     	<div class="row">
 			 @if(Session::has('error'))
-			    <div class="alert alert-error container">
+			    <div class="alert alert-error container-fluid">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<strong>{!! Session::get('error') !!}</strong>
 			    </div>
 			  @endif
 			  @if(Session::has('success'))
-			    <div class="alert alert-success container">
+			    <div class="alert alert-success container-fluid">
 			    <button type="button" class="close" data-dismiss="alert">×</button>
 			    <strong>{!! Session::get('success') !!}</strong>
 			    </div>
@@ -72,7 +72,7 @@
 			      <label for="radio-3">Make Default deposit source</label>
 			    </div>
 			    </div>
-			    <div class="col-sm-8 col-md-9">
+			    <div class="col-sm-8 col-md-9 last_group">
 			    <div class="row">
 			    <div class="form-group col-sm-6">
 				{!! Form::text('mailing_name',$brand_details['mailing_name'],['class'=>'form-control','id'=>'mailing_name','placeholder'=>'First Name'])!!}
@@ -151,41 +151,63 @@
   
   // When the browser is ready...
   $(function() {
-
-   
-
-    // Setup form validation  //
+	  
+	  $.validator.addMethod("bankinginfo", function(value, element) {
+		  if($('#radio-1').is(':checked')){
+			if ($("#routing_number").val()==''){
+			  return false;
+			}else{
+			  return true;
+			}
+			  }else{
+			  return true;
+			}
+		  }, "Please enter routing number.");
+	  
+	  $.validator.addMethod("paypalemail", function(value, element) {
+		  if($('#radio-2').is(':checked')){
+			if ($("#paypal_email").val()==''){
+			  return false;
+			}else{
+			  return true;
+			}
+			  }else{
+			  return true;
+			}
+		  }, "Please enter Paypal Email.");
+	  
+	  $.validator.addMethod("mailinginfo", function(value, element) {
+		  if($('#radio-3').is(':checked')){
+			if ($("#mailing_address").val()=='' || $('#mailing_name').val()=='' || $('#mailing_country_id').val()=='' || $('#mailing_city').val()=='' || $('#mailing_state').val()=='' || $('#mailing_postcode').val()==''){
+			  return false;
+			}else{
+			  return true;
+			}
+			  }else{
+			  return true;
+			}
+		  }, "This Field Is Required.");
+	
+	// Setup form validation  //
     $("#member_form").validate({
     
         // Specify the validation rules
         rules: {
 	
-		routing_number: {
-	      require_from_group: [1, ".address-group"]
-		},
-	      paypal_email: "required",
-	      mailing_address: {
-		require_from_group: [1, ".address-group"]
-	      },
-	      
-	    mailing_name: "required",
-	    mailing_address: "required",
-	    mailing_country_id: "required",
-	    mailing_city: "required",
-	  
-	    mailing_state: "required",
-	    mailing_postcode: "required",
-      
-      
-      
-            
+		routing_number: {bankinginfo: true},
+	      paypal_email: {paypalemail: true},
+	      mailing_address: {mailinginfo: true},	      
+	    mailing_name: {mailinginfo: true},
+	    mailing_country_id: {mailinginfo: true},
+	    mailing_city: {mailinginfo: true},	  
+	    mailing_state: {mailinginfo: true},
+	    mailing_postcode: {mailinginfo: true}       
      },
 		
         submitHandler: function(form) {
-            form.submit();
+            //form.submit();
         }
     });
-
 
   });
   

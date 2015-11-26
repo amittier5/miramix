@@ -64,7 +64,7 @@ class BrandController extends BaseController {
         $whereClause = array('role'=>1,'status'=>1,'admin_status'=>1,'subscription_status'=>'active','id'=>$all_brand_member->id);
         $brand = DB::table('brandmembers')->where($whereClause)->first();
         if(!isset($brand)){
-           return redirect('brand'); 
+           return redirect('brands'); 
         }
         
         $page=Request::input('page');

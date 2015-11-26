@@ -84,14 +84,14 @@ $about_us = '';
             <!-- End Toggle Nav Link For Mobiles -->
             <a class="navbar-brand" href="<?php echo url();?>">&nbsp;</a>
             
-            <a href="tel:18475555555" class="telP_top"><i class="fa fa-phone"></i><span>812 - 508 – 0674  (10AM ET – 8PM ET)</span></a>
+            <a href="tel:8125080674" class="telP_top"><i class="fa fa-phone"></i><span>812 - 508 – 0674  (10AM ET – 8PM ET)</span></a>
           </div>
           <div class="navbar-collapse collapse">
           
             <!-- Start Navigation List -->
             <ul class="nav navbar-nav navbar-right">
               <li><a href="<?php echo url();?>/inventory">Inventory</a></li>
-              <li class="<?php echo (isset($brand_active)?$brand_active:'');?>"><a href="<?php echo url();?>/brand">Brands</a></li>
+              <li class="<?php echo (isset($brand_active)?$brand_active:'');?>"><a href="<?php echo url();?>/brands">Brands</a></li>
               <li><a href="<?php echo url();?>/faq-list">FAQs</a></li>
               <li><a href="<?php echo url().($about_us!='')?$about_us:'#'?>">About Us</a></li>
               <?php 

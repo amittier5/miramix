@@ -14,6 +14,7 @@
 Route:: get('/','Frontend\HomeController@index');
 Route:: post('/','Frontend\HomeController@index');
 Route::resource('home','Frontend\HomeController');
+//Route::get('/error','Frontend\HomeController@errorpage');
 
 Route::resource('basecon','Frontend\BaseController');
 Route::resource('image','MyController');
@@ -21,7 +22,7 @@ Route::resource('image','MyController');
 
 // ======================= BRAND CONTROLLER FUNCTIONALITY START  ============================
 
-Route:: get('/brand','Frontend\BrandController@index');   
+Route:: get('/brands','Frontend\BrandController@index');   
 Route:: get('/brand-details/{id}','Frontend\BrandController@brandDetails');
 Route:: post('/brand-details/{id}','Frontend\BrandController@brandDetails');
 Route:: get('/brand-dashboard','Frontend\BrandController@brandDashboard');  /* To Show the brand dashboard */ 
@@ -69,6 +70,9 @@ Route:: post('/deleteCart','Frontend\CartController@deleteCart');   // runnng...
 Route:: get('/show-cart','Frontend\CartController@showAllCart');
 Route:: get('/reorder','Frontend\CartController@reorder');           // runnng...
 Route:: post('/reorder','Frontend\CartController@reorder');          // runnng...
+
+Route:: get('/coupon-cart','Frontend\CartController@coupon_cart');          // runnng...
+Route:: post('/coupon-cart','Frontend\CartController@coupon_cart');          // runnng...
 
 
 Route:: get('/allmycard1','Frontend\Product1Controller@cart1');  
@@ -191,9 +195,15 @@ Route:: get('/home-next','Frontend\HomeController@homenext');    /* For Search T
 Route:: post('/home-next','Frontend\HomeController@homenext');   /* For Search Tags */
 Route:: get('/newsletterajax','Frontend\HomeController@newsletterajax');    /* For Search Tags */
 Route:: post('/newsletterajax','Frontend\HomeController@newsletterajax');   /* For Search Tags */
-Route:: get('/page-not-found','Frontend\HomeController@show404');   /* For Search Tags */
+//Route:: get('/page-not-found','Frontend\HomeController@show404');   /* For Search Tags */
 Route:: get('/tag-popularity','Frontend\HomeController@tagPopularity');   /* For Tag Popularity */
 Route:: post('/tag-popularity','Frontend\HomeController@tagPopularity');   /* For Tag Popularity */
+
+Route::get('/facebook', 'Frontend\HomeController@facebook_redirect');
+Route::get('/account/facebook', 'Frontend\HomeController@facebook');
+
+Route::get('/google', 'Frontend\HomeController@google_redirect');
+Route::get('/account/google', 'Frontend\HomeController@google');
 
 //============================ HOME CONTROLLER END ================================
 

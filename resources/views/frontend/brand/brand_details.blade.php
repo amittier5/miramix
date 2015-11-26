@@ -26,7 +26,7 @@ if(isset($_REQUEST['page']))
            <h2>Brands</h2>
              <ul class="breadcrumb">
                 <li><a href="{!! url()!!}">Home</a></li>
-                <li><a href="{!! url()!!}/brand">Brands</a></li>
+                <li><a href="{!! url()!!}/brands">Brands</a></li>
                 <li>{!! $all_brand_member->fname.' '.$all_brand_member->lname;!!}</li>
              </ul>
             </div>

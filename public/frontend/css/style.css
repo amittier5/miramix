@@ -9681,6 +9681,36 @@ h5.subs_head{
 .form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red {
     display: block;
 }
+.error_cell{
+	min-height:200px;
+	display:table-cell;
+	vertical-align:middle;
+	width:100%;
+	padding: 50px;	
+}
+.error_cell .fa-exclamation-triangle{
+	font-size: 100px;
+    color: red;	
+}
+.error_cell .oops_div {
+    font-weight: 400;
+    line-height: 86px;
+    text-transform: uppercase;
+    color: red;
+    font-size: 28px;
+    margin-top: 0px;
+}
+.last_group .form-group:nth-child(2n+1){
+	clear:left;	
+}
+#mailchimp {
+    height: 0 !important;
+    overflow: hidden;
+}
+#avgrate{
+	float:left;	
+}
+
 
 
 

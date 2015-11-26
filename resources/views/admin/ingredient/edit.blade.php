@@ -21,16 +21,28 @@
 <!-- jQuery Form Validation code -->
   <script>
   var keyup_vit_weight=0;
+  $(document).on('change','.new_panel_section input[type="radio"]',function(){
+	  vit_weightval();
+  });
   function vit_weightval(){
 	  keyup_vit_weight=0;
-	  //alert();
 	$('.input_fields_wrap').each(function(index, element) {
 		 
 			var ind_weight=0; 
-			var $this=$(this); 
+			var $this=$(this); 			
             $this.find('.vit_text').each(function(index, element) {
 				var this_uniq_elm=$(this);
-                var this_uniqval=this_uniq_elm.val();
+				var this_uniqval=this_uniq_elm.val();
+				this_uniq_elm.parent().parent().parent().find('input[type="radio"]').each(function(){
+					var $this=$(this);
+					if($this.is(':checked')){
+						//alert($this.val());
+						var this_selecetedradio=$this.val();
+						if(this_selecetedradio==1)
+						this_uniqval=parseFloat(this_uniqval/1000);	
+					}
+				});
+                
 				if(this_uniqval=='')
 				this_uniqval=0;
 				keyup_vit_weight=parseFloat(keyup_vit_weight)+parseFloat(this_uniqval);
@@ -39,7 +51,7 @@
 			$this.find('.tot_vitval').html('Total Vitamin Value is:'+ind_weight);	
         });
 			
-		 $('.tot_vit_weight p#forwt_calc').html('Total Weight is:'+keyup_vit_weight);  
+		 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+keyup_vit_weight.toFixed(3)+'mg');  
   }
   var intRegex = /^\d+$/;
   form_notsubmit_vitamin = 0;
@@ -176,7 +188,7 @@ var vit_car=0;
 				total_weight=parseFloat(total_weight);	
 				$('.comp_value').removeClass('error_red');
 				$('.module-head .appended_error').remove();
-				if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight<1000){					
+				if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){					
 						if(total!=100){
 							$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
 							$('.comp_value').each(function(index, element) {
@@ -184,7 +196,7 @@ var vit_car=0;
                             });
 						}
 						
-						else if(vit_car==1 || total_weight<1000){	
+						else if(vit_car==1 || total_weight>1000){	
 												
 							if(vit_car==1){
 								//alert('submitvit1');
@@ -197,8 +209,8 @@ var vit_car=0;
 							}
 							else{
 							 $('.vit_text').addClass('error_red');	 
-							 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight+'<br><label style="color:red;">Total Weight Should be at least 1000mg</label>');
-							 $('.module-head').append('<label class="appended_error">Total Weight Should be at least 1000mg</label>');
+							 $('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight+'<br><label style="color:red;">Total Weight Should be at less than 1000mg</label>');
+							 $('.module-head').append('<label class="appended_error">Total Weight Should be less than 1000mg</label>');
 							}
 							
 						}
@@ -218,7 +230,7 @@ var vit_car=0;
 				}
 				else{
 					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight);
-					//alert('else');
+					//alert(total_weight);
 					form.submit();
 				}
        
@@ -249,33 +261,29 @@ var vit_car=0;
         
 			$('.vit_text').each(function(index, element) {
                 var $this=$(this);
+				var this_uniqval=$this.val();
 				if($this.val()==''){
 				$this.addClass('error_red');
 					//alert();
 					total_weight=parseFloat(total_weight)+0;	
-					//$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');	
-
-					
-					
-					//alert(total_weight);
-					
-					
-					
-						
-						$this.parent().append('<label class="appended_error">Enter A Vitamin Value</label>');
-						
-						
-					
-				vit_car=1;
+					$this.parent().append('<label class="appended_error">Enter A Vitamin Value</label>');
+					vit_car=1;
 				}
-				else{
-					//alert('totalweightelse');
-					//total_weight=parseInt(total_weight)+parseInt($this.val());
-					//$('.tot_vit_weight').html('<p>Total Weight is:'+total_weight+'</p>');
+				else{					
 					$this.parent().find('.appended_error').remove();
 					$this.removeClass('error_red');
-					total_weight=parseFloat(total_weight)+parseFloat($this.val());
-					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight);	
+					$this.parent().parent().parent().find('input[type="radio"]').each(function(index, element) {                        
+                    var $this=$(this);
+					if($this.is(':checked')){
+						//alert($this.val());
+						var this_selecetedradio=$this.val();
+						if(this_selecetedradio==1)
+						this_uniqval=parseFloat(this_uniqval/1000);	
+					}
+					});
+					total_weight=parseFloat(total_weight)+parseFloat(this_uniqval);
+					//alert(total_weight);
+					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'mg');	
 					vit_car=0;	
 				}
          });
