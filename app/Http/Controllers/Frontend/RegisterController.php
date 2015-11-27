@@ -265,6 +265,7 @@ class RegisterController extends BaseController {
 	
 				$user_name = Request::input('fname').' '.Request::input('lname');
 				$user_email = Request::input('email');
+				
 				$activateLink = url().'/activateLink/'.base64_encode(Request::input('email')).'/brand';
 				$sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink ,'admin_users_email'=>$admin_users_email), 
 				function($message) use ($admin_users_email, $user_email,$user_name)

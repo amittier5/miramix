@@ -258,7 +258,7 @@
                         
 			  <div class="col-sm-4">
 			    <div class="input-group wow slideInLeft md15">
-                                {!! Form::text('business_name',null,['class'=>'form-control','id'=>'business_name','placeholder'=>'Name / Business Name', 'aria-describedby'=>'basic-addon2'])!!}
+                                {!! Form::text('business_name',null,['class'=>'form-control','id'=>'business_name','placeholder'=>'Brand Name', 'aria-describedby'=>'basic-addon2'])!!}
                             </div>
 			  </div>
 			  <div class="col-sm-4">

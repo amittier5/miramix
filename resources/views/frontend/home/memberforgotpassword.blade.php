@@ -62,7 +62,7 @@
                         {!! Form::text('email',NULL,array('class'=>'form-control','id'=>'email','placeholder'=>'Email')) !!}
                           <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon2"></span>
                         </div>
-                          {!! Form::submit('Save', ['class' => 'wow fadeInUp btn btn-default sub_btn']) !!}     
+                          {!! Form::submit('Send', ['class' => 'wow fadeInUp btn btn-default sub_btn']) !!}     
                     </div>
                 {!! Form::close() !!}     
             </div>

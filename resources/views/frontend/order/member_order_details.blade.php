@@ -94,6 +94,12 @@
                                     <td colspan="3">&nbsp;</td>
                                     <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
                                 </tr>
+                                <?php if($order_list->discount!=0){?>
+                                 <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                    <td class="text-right">Discount</td><td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
+                                </tr>
+                                <?php } ?>
                                 <tr>
                                     <td colspan="3">&nbsp;</td>
                                     <td class="text-right">Flat Shipping Rate</td>

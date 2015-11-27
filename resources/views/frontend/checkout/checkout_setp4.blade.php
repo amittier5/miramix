@@ -76,6 +76,7 @@
     <table class="table">
     <thead>
     <tr>
+    <th>Product Image</th>
     <th>Product Name</th>
     <th>Brand</th>
     <th>Form Factor Name</th>
@@ -90,6 +91,8 @@
           $all_sub_total =0.00;
           $all_total =0.00;
           $total =0.00;
+          $grand_total=0.00;
+          $total_discount = 0.00;
           if(!empty($cart_result))
           { 
             $i=1;
@@ -101,6 +104,7 @@
         ?>
           
           <tr>
+          <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}"><img src="<?php echo url();?>/uploads/product/{!! $eachcart['product_image'] !!}" width="116" alt=""></a></td>
             <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}">{!! ucwords($eachcart['product_name']) !!}</a></td>
             <td>{!! $eachcart['brand_name'] !!}</td>
             <td>{!! $eachcart['formfactor_name'] !!}</td>
@@ -114,10 +118,31 @@
          }
         }
 
+        if(Session::has('coupon_type') && Session::has('coupon_discount'))
+        {
+          $coupon_type = Session::get('coupon_type');
+          $coupon_discount = Session::get('coupon_discount');
+            if($coupon_type == 'F')
+            {
+              $grand_total = ($total - $coupon_discount);
+              $total_discount = $coupon_discount;
+            }
+            elseif($coupon_type == 'P')
+            {
+              $grand_total = ($total - (($total) * ($coupon_discount)/100));
+              $total_discount = (($total)* ($coupon_discount)/100);
+            }
+          
+        }
+        else
+        {
+          $grand_total = $total;
+        }
+
         ?>
       
       <tr>
-      <td colspan="5"></td>
+      <td colspan="6"></td>
       <td class="text-left">
       <span>Sub-Total:</span>
       </td>
@@ -125,8 +150,26 @@
       <span>{!! ($all_total!='')?'$':'' !!}{!!  $all_total !!}</span>
       </td>
       </tr>
+      <?php 
+      if(Session::has('coupon_type') && Session::has('coupon_discount'))
+        {
+      ?>
+
       <tr>
-      <td colspan="5"></td>
+      <td colspan="6"></td>
+      <td class="text-left">
+      <span>Discount(coupon code  {!! Session::get('coupon_code') !!}):</span>
+      </td>
+      <td class="text-right">
+      <span> -${!! number_format($total_discount,2) !!}</span>
+      </td>
+      </tr>
+
+      <?php 
+        }
+      ?>
+      <tr>
+      <td colspan="6"></td>
       <td class="text-left">
       <span>Shipping Rate:</span>
       </td>
@@ -135,12 +178,12 @@
       </td>
       </tr>
       <tr>
-      <td colspan="5"></td>
+      <td colspan="6"></td>
       <td class="text-left">
       <span>Total:</span>
       </td>
       <td class="text-right">
-      <span>{!! ($total!='')?'$':'' !!}{!! number_format(($total+$shipping_rate),2) !!}</span>
+      <span>{!! ($grand_total!='')?'$':'' !!}{!! number_format(($grand_total+$shipping_rate),2) !!}</span>
       </td>
       </tr>
     </tbody>
@@ -217,8 +260,9 @@
     }
     ?>
     <!--###################### HIDDEN FIELD TO INSERT ORDER TABLE START ###############################-->
-    <input name="grand_total" type="hidden" value="{!! ($total+$shipping_rate) !!}">
+    <input name="grand_total" type="hidden" value="{!! ($grand_total+$shipping_rate) !!}">
     <input name="sub_total" type="hidden" value="{!! ($total) !!}">
+    <input name="discount" type="hidden" value="{!! ($total_discount) !!}">
     <!--##################### HIDDEN FIELD TO INSERT ORDER TABLE END ##################################-->
     </div>
 

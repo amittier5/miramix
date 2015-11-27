@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    public $timestamps = true;
+    public $timestamps = false;
     protected $guarded = array();  // Important
     protected $table = 'coupons';
 }

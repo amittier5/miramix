@@ -20,7 +20,6 @@ use Auth;
 use Cookie;
 use Redirect;
 use App\Helper\helpers;
-//use Anam\Phpcart\Cart;
 use Cart;
 use Mail;
 
@@ -29,7 +28,10 @@ class CheckoutController extends BaseController {
     public function __construct() 
     {
     	parent::__construct();
-        
+
+    	$obj = new helpers();
+        view()->share('obj',$obj);
+      	//echo "<pre>"; print_r($obj->content()); exit;
     }
    /**
     * Display a listing of the resource.
@@ -260,6 +262,7 @@ class CheckoutController extends BaseController {
 				$order= Order::create([
 										'order_total'            	=> Request::input('grand_total'),
 										'sub_total'					=> Request::input('sub_total'),
+										'discount'					=> Request::input('discount'),
 										'order_status'           	=> 'pending',
 										'shipping_address_id'    	=> Session::get('selected_address_id'),
 										'shipping_cost'    			=> $shipping_rate,
@@ -361,6 +364,7 @@ class CheckoutController extends BaseController {
 	                'brand_name'=>$brand_name,
 	                'brand_slug'=>$brandmember->slug,
 	                'subtotal'=>$each_content->sub_total);
+
 	        }
             //echo "sph= ".$shipping_rate; exit;
 			return view('frontend.checkout.checkout_setp4',compact('body_class','cart_result','shipping_rate'),array('title'=>'MIRAMIX | Checkout-Step4'));
@@ -612,6 +616,10 @@ class CheckoutController extends BaseController {
             }
             Session::put('order_number',$order_list[0]->order_number);
             Session::put('order_id',$order_id);
+
+            Session::forget('coupon_code');
+            Session::forget('coupon_type');
+            Session::forget('coupon_discount');
         	}
     	}
 
@@ -676,6 +684,10 @@ class CheckoutController extends BaseController {
 
 		            Session::put('order_number',$order_list[0]->order_number);
 		            Session::put('order_id',$order_id);
+
+		            Session::forget('coupon_code');
+		            Session::forget('coupon_type');
+		            Session::forget('coupon_discount');
 	        	
 	    	}
     	return view('frontend.checkout.payment_cancel',array('title'=>'MIRAMIX | Checkout-Cancel'));

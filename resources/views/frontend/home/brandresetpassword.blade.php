@@ -20,10 +20,10 @@
             },
             messages: {
                 password: {
-                        required:"Please enter current password",
+                        required:"Please enter new password",
                         minlength:"Please enter minimum 6 character"
                 },
-               con_password: "Please enter the same value again"
+               con_password: "Please enter same password again"
       }
 
         
@@ -72,7 +72,7 @@
                   <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon2"></span>
                 </div>
              
-                  <button type="submit" class="wow fadeInUp btn btn-default sub_btn">Save</button>
+                  <button type="submit" class="wow fadeInUp btn btn-default sub_btn">Update</button>
                 </div>
             </form>   
             </div>

@@ -261,12 +261,32 @@ class CartController extends BaseController {
        
         $counpon_res = Coupon::where('code',Request::input('coupon_code'))->get();
         if(!empty($counpon_res[0])){
+
+            $total_amount = Cart::total();
+
+            if($counpon_res[0]->type=='F'){
+
+               if($total_amount<$counpon_res[0]->discount){
+
+                Session::flash('error', 'Discount price is greater than Total Price. To get discount purchase more!!!'); 
+                return redirect('show-cart');
+               }
+            }
+
             Session::put('coupon_code',Request::input('coupon_code'));
             Session::put('coupon_type',$counpon_res[0]->type);
             Session::put('coupon_discount',$counpon_res[0]->discount);
+     
+            Session::flash('success', 'Your coupon code is active.'); 
+            return redirect('show-cart');
+
         }
-        Session::flash('success', 'Your coupon code is active.'); 
+        Session::forget('coupon_code');
+        Session::forget('coupon_type');
+        Session::forget('coupon_discount');
+        Session::flash('error', 'Coupon is not valid.'); 
         return redirect('show-cart');
+
         //echo Session::get('coupon_type');
        
        // echo "<pre>";print_r(Session::all());

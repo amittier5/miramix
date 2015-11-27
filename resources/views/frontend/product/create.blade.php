@@ -3,16 +3,130 @@
 
 <?php //print_r($ingredients);exit;?>
 
-<div class="inner_page_container">         
+<div class="inner_page_container nomar_bottom add_prod_new">  
+<div class="top_menu_port">
+    	<div class="acct_box yellow_act">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
+                        <a href="<?php echo url();?>/sold-products">Sold Products History</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+                <div class="acct_box red_acct">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/product/create"><img src="<?php echo url();?>/public/frontend/images/account/add_products.png" alt=""></a>
+                        <a href="<?php echo url();?>/product/create">Add Products</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+                <div class="acct_box org_org_acct no_marg">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/my-products"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+                        <a href="<?php echo url();?>/my-products">Product List</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+                <div class="acct_box new_green_acct no_marg">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                         <a href=""><img src="<?php echo url();?>/public/frontend/images/account/order_hist.png" alt=""></a>
+                        <a href="javascript:void(0);">Order History</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+                <div class="acct_box blue_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/brand-account"><img src="<?php echo url();?>/public/frontend/images/account/pers_info.png" alt=""></a>
+                        <a href="<?php echo url();?>/brand-account">Brand Information</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+                <!--<div class="acct_box green_acct">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/change-password"><img src="<?php echo url();?>/public/frontend/images/account/changepassword.png" alt=""></a>
+                        <a href="<?php echo url();?>/change-password">Change Password</a>
+                        </div>                    	
+                    </div>
+                </div>-->
+                
+                <div class="acct_box violet_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
+                        <a href="<?php echo url();?>/brand-shipping-address">My Address</a>
+                        </div>                    	
+                    </div>
+                </div>
+                
+               <!-- <div class="acct_box orange_acct no_marg pull-right">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <img src="<?php echo url();?>/public/frontend/images/account/store.png" alt="">
+                        <a href="javascript:void(0);">Store Font<span>Coming Soon</span></a>
+                        </div>                    	
+                    </div>
+                </div>-->
+		    
+		    
+		<div class="acct_box blue_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/brand-creditcards"><i class="fa fa-credit-card"></i></a>
+                        <a href="<?php echo url();?>/brand-creditcards">Credit Card Details</a>
+                        </div>                    	
+                    </div>
+                </div>
+		    
+		    
+		<div class="acct_box blue_acct no_marg">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="<?php echo url();?>/brand-paydetails"><i class="fa fa-cc-paypal"></i></a>
+                        <a href="<?php echo url();?>/brand-paydetails">Payment Details</a>
+                        </div>                    	
+                    </div>
+                </div>
+		    
+		<div class="acct_box org_org_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+                        <a href="<?php echo url();?>/subscription-history">Subscription History</a>
+                        </div>                    	
+                    </div>
+                </div>
+		    
+		<div class="acct_box blue_acct front">
+                	<div class="acct_box_inn">
+                    	<div class="acct_box_inn_inn">
+                        <a href="#"><i class="fa fa-credit-card"></i></a>
+                        <a href="#">Wholesale</a>
+                        </div>                    	
+                    </div>
+                </div>
+    </div>       
 <!-- Start Add Products panel -->
      {!! Form::open(['url' => 'product','method'=>'POST', 'files'=>true, 'id'=>'product_form']) !!}
+    <div class="container">
+    <div class="row">
     <div class="add_product_panel">
+    <div class="prod_panel">
           <h2 class="text-center">Add Your Product</h2>
             <div class="product_name">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="col-sm-6 text-right"><label>Product Name </label></div>
-                        <div class="col-sm-6"><input type="text" name="product_name" maxlength="20" id="product_name" ></div>
+                        <div class="col-sm-6"><input type="text" name="product_name" maxlength="100" id="product_name" ></div>
                     </div>
                     <div class="col-sm-6">
                     	<div class="check_box_tab green_color marg_left pull-left">                            
@@ -27,7 +141,7 @@
                 </div> 
             </div>   
             <div class="form_ingredient_panel">
-              <div class="container">
+              <div class="container-fluid">
                     <div class="row spec_rowtab">
                         <div class="col-sm-12 col-md-6 right_border">
                         	<div class="total_ingre"></div>
@@ -71,7 +185,7 @@
                                  	  <input class="upload_button files" type="file" name="image1" id="image1" accept="image/*"></p>
                                     <div class="selectedFiles"><img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/></div>
                                    </div> 
-                                   <textarea rows="" cols="" name="description1" maxlength="255" id="description1"></textarea>
+                                   <textarea rows="" cols="" name="description1" maxlength="10000" id="description1"></textarea>
                               </div>
                               <div class="image_upload_panel" id="2">
                                 	<div class="upload_button_panel">
@@ -79,7 +193,7 @@
                                     <input class="upload_button files" type="file" name="image2" id="image2" accept="image/*"></p>
                                     <div class="selectedFiles"><img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/></div>
                                   </div> 
-                                  <textarea rows="" cols="" maxlength="255" name="description2" id="description2"></textarea>
+                                  <textarea rows="" cols="" maxlength="10000" name="description2" id="description2"></textarea>
                               </div>
                               <div class="image_upload_panel" id="3">
                                 	<div class="upload_button_panel">
@@ -87,7 +201,7 @@
                                  	  <input class="upload_button files" type="file" name="image3" id="image3" accept="image/*"></p>
                                     <div class="selectedFiles"><img src="<?php echo url();?>/public/frontend/images/upload-image-btn.png" alt=""/></div>
                                   </div> 
-                                  <textarea rows="" cols="" maxlength="255" name="description3" id="description3"></textarea>
+                                  <textarea rows="" cols="" maxlength="10000" name="description3" id="description3"></textarea>
                               </div>
                               <div class="upload_button_panel img_modify">
                                 	<p class="upload_image">
@@ -110,7 +224,7 @@
                 </div>    
             </div>
             <div class="form_ingredient_price_panel">
-              <div class="container">
+              <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                           <div class=" total_price">
@@ -150,7 +264,7 @@
                 </div>    
             </div>
             <div class="form_factore_panel">
-              <div class="container">
+              <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-12">
                       <div class="table-responsive"><table width="100%" border="0" cellspacing="0" cellpadding="0" id="formfactortable">
@@ -173,7 +287,7 @@
                 </div>
             </div>
             <div class="submit_panel">
-              <div class="container">
+              <div class="container-fluid">
                     <div class="row">
                       <div class="col-sm-12">
                             <a href="<?php echo url();?>/my-products" class="backbtn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>
@@ -185,7 +299,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div></div></div>
+     </div>
      {!! Form::close() !!}
 <!-- End Add Products panel --> 
  </div>
@@ -984,22 +1099,22 @@ function checktable_val(){
 				if(flag==false || priceflag==false || (arr_dupvals.length)!=0 || check_weight_empty==false  || groupnameflag==false || serv_textflag==false){				
 					$('.alert-danger').remove();
 					if(flag==false){						
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
 					}
 					else if(check_weight_empty==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
 					}
 					else if((arr_dupvals.length)!=0){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 					}
 					else if(serv_textflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
 					}
 					else if(groupnameflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
 					}
 					else{
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
 					}	
 					if($('.red_border').length>0){
 					$('html, body').animate({
@@ -1019,19 +1134,19 @@ function checktable_val(){
 					
 						
 					if(emptyweight_checkfornonmiramix==false){			  
-				      $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Select A weight Value.</div>');
+				      $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Select A weight Value.</div>');
 					}
 					else if(flag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
 					}
 					else if(serv_textflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
 					}
 					else if(groupnameflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
 					}
 					else{
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 					}
 					
 					//alert($('.red_border').length);
@@ -1267,7 +1382,7 @@ function checktable_val(){
 				//alert(priceflag);	
 			   if(priceflag==false){
 			  $this.addClass('red-border');	    		
-			  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
+			  $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
 			   }
 			   else{
 				$('.alert-danger').remove();   

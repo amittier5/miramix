@@ -45,6 +45,11 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 		?>
 
         <input type="hidden" name="handling_cart" id="handling_cart" value="{!! $order_list[0]->shipping_cost !!}" >
+        <?php 
+        	if($order_list[0]->discount!=0){
+        ?>
+         <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $order_list[0]->discount; !!}" >
+         <?php } ?>
         <input type="hidden" name="custom" id="custom" value="{!! $custom_data !!}" >
         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit">
 </form>

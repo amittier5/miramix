@@ -7,7 +7,7 @@
                <div class="container">
                <h3 class="text-center"><?php
 	       if (is_object($brand_details)){
-	       echo ($brand_details->fname !='')?ucfirst($brand_details->fname):$brand_details->username?> 's account
+	       echo ($brand_details->business_name !='')?ucfirst($brand_details->business_name):$brand_details->username?> 's account
 	       <?php }?>
 	       </h3>
                <h5 class="text-center">WELCOME TO YOUR ACCOUNT</h5>
@@ -17,7 +17,9 @@
                 <div class="acct_box yellow_act">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
-                        <img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
+                        <a href="<?php echo url();?>/sold-products">
+			<img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
+			</a>
                         <a href="<?php echo url();?>/sold-products">Sold Products History</a>
                         </div>                    	
                     </div>
@@ -71,7 +73,9 @@
                 <div class="acct_box violet_acct front">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
-                        <img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
+                        <a href="<?php echo url();?>/brand-shipping-address">
+			<img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
+			</a>
                         <a href="<?php echo url();?>/brand-shipping-address">My Address</a>
                         </div>                    	
                     </div>
@@ -109,7 +113,7 @@
 		<div class="acct_box org_org_acct front">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
-                        <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+                        <a href="<?php echo url();?>/subscription-history"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
                         <a href="<?php echo url();?>/subscription-history">Subscription History</a>
                         </div>                    	
                     </div>

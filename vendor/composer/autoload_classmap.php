@@ -68,7 +68,7 @@ return array(
     'App\\Model\\ComponentVitamin' => $baseDir . '/app/Model/ComponentVitamin.php',
     'App\\Model\\Coupon' => $baseDir . '/app/Model/Coupon.php',
     'App\\Model\\Faq' => $baseDir . '/app/Model/Faq.php',
-    'App\\Model\\FormFactor' => $baseDir . '/app/Model/FormFactor_07_10_2015.php',
+    'App\\Model\\FormFactor' => $baseDir . '/app/Model/FormFactor.php',
     'App\\Model\\Ingredient' => $baseDir . '/app/Model/Ingredient.php',
     'App\\Model\\IngredientFormfactor' => $baseDir . '/app/Model/IngredientFormfactor.php',
     'App\\Model\\MemberProfile' => $baseDir . '/app/Model/MemberProfile.php',

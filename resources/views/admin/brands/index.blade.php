@@ -19,7 +19,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Username</th>
+                    <th>Slug</th>
                     
                     <th>Status</th>
                     <th>Admin Status</th>
@@ -34,10 +34,10 @@
                 @foreach ($brands as $brand)
                 <tr class="odd gradeX">
                     <td class=""><?php echo $i; ?></td>
-                    <td class="">{!! $brand->fname.' '.$brand->lname !!}</td>
+                    <td class="">{!! $brand->business_name !!}</td>
                     <td class="">{!! $brand->email !!}</td>
                     <td class="">{!! $brand->phone_no !!}</td>
-                    <td class="">{!! $brand->username !!}</td>
+                    <td class="">{!! $brand->slug !!}</td>
                  
                     <td class="">
                         @if ($brand->status == 1)

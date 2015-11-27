@@ -21,7 +21,7 @@ use Cart;
 use App\Model\Subscription;
 use Redirect;
 use Socialize;
-
+use App\Model\Address; 
 
 class HomeController extends BaseController {
 
@@ -888,6 +888,7 @@ public function facebook_redirect(){
 }
 
 public function facebook(){
+     $obj = new helpers();
     $user = Socialize::with('facebook')->user();
   
     $email=($user->email);
@@ -925,7 +926,8 @@ public function facebook(){
 	//create social users
 	
 	$hashpassword = Hash::make(uniqid());
-
+	$slug=$obj->create_slug($fname."-".$lname,'brandmembers','slug');
+	
         $brandmember= Brandmember::create([
             'email'             => $email,
 	    'fname'             => $fname,
@@ -933,13 +935,37 @@ public function facebook(){
             'username'          => $username,
             'password'          => $hashpassword,
             'role'              => Session::get('member_type'),                   // for member role is "0"
-            'admin_status'      => 1,                   // Admin status
+            'admin_status'      => 1,
+	    'facebook_id'	=>$user->id,// Admin status
+	    'slug'		=>$slug,
+	    'business_name'	=>$fname." ".$lname,
             'updated_at'        => date('Y-m-d H:i:s'),
             'created_at'        => date('Y-m-d H:i:s')
         ]);
 	
 	$member=DB::table('brandmembers')->where('email', $email)->first();
 	
+			$reg_brand_id = $member->id; 
+			$address = New Address;
+			$address->mem_brand_id = $reg_brand_id;
+			$address->first_name = $fname;
+			$address->last_name = $lname;
+			$address->address = '';
+			$address->address2 = '';
+			$address->country_id = '';
+			$address->zone_id =  ''; // State id
+			$address->city = '';
+			$address->postcode =  '';
+			$address->serialize_val =  '';
+			
+			if($address->save()) 
+			{
+				$addressId = $address->id;
+				$dataUpdateAddress = DB::table('brandmembers')
+					->where('id', $reg_brand_id)
+					->update(['address' => $addressId]);
+			}
+			
 	if($member->role==1){
 	    $this->check_subscription($member);
 	    
@@ -965,8 +991,9 @@ public function google_redirect(){
 }
 
 public function google(){
+     $obj = new helpers();
     $user = Socialize::with('google')->user();
-   
+    
     $email=($user->email);
     
     $name=explode(" ",$user->name);
@@ -1002,7 +1029,7 @@ public function google(){
 	//create social users
 	
 	$hashpassword = Hash::make(uniqid());
-
+	$slug=$obj->create_slug($fname."-".$lname,'brandmembers','slug');
         $brandmember= Brandmember::create([
             'email'             => $email,
 	    'fname'             => $fname,
@@ -1011,11 +1038,36 @@ public function google(){
             'password'          => $hashpassword,
             'role'              => Session::get('member_type'),                   // for member role is "0"
             'admin_status'      => 1,                   // Admin status
+	    'google_id'		=>$user->id,
+	    'slug'		=>$slug,
+	    'business_name'	=>$fname." ".$lname,
             'updated_at'        => date('Y-m-d H:i:s'),
             'created_at'        => date('Y-m-d H:i:s')
         ]);
 	
 	$member=DB::table('brandmembers')->where('email', $email)->first();
+	
+	
+	$reg_brand_id = $member->id; 
+			$address = New Address;
+			$address->mem_brand_id = $reg_brand_id;
+			$address->first_name = $fname;
+			$address->last_name = $lname;
+			$address->address = '';
+			$address->address2 = '';
+			$address->country_id = '';
+			$address->zone_id =  ''; // State id
+			$address->city = '';
+			$address->postcode =  '';
+			$address->serialize_val =  '';
+			
+			if($address->save()) 
+			{
+				$addressId = $address->id;
+				$dataUpdateAddress = DB::table('brandmembers')
+					->where('id', $reg_brand_id)
+					->update(['address' => $addressId]);
+			}
 	
 	if($member->role==1){
 	    $this->check_subscription($member);

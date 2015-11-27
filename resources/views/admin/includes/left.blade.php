@@ -15,6 +15,8 @@ $open1 = "class='unstyled collapse'";
         $sitesetting_class = '';
     if(!isset($product_class))
         $product_class = '';
+    if(!isset($coupon_class))
+        $coupon_class = '';
     //echo "rr= ".$member_class;
     if($member_class == 'active' || $brand_class =='active')
     {
@@ -47,7 +49,8 @@ $open1 = "class='unstyled collapse'";
             </ul>
         </li>
             <li><a href="<?php echo url().'/admin/orders'?>"><i class="menu-icon icon-bullhorn"></i>Orders</a></li>
-             <li><a href="<?php echo url().'/admin/subscription'?>"><i class="menu-icon icon-bullhorn"></i>Subscriptions</a></li>
+            <li><a href="<?php echo url().'/admin/subscription'?>"><i class="menu-icon icon-bullhorn"></i>Subscriptions</a></li>
+            <li class="{!! $coupon_class !!}"><a href="<?php echo url().'/admin/coupon'?>"><i class="menu-icon icon-bullhorn"></i>Coupon</a></li>
     </ul>
     
     <!-- <ul class="widget widget-menu unstyled">

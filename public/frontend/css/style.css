@@ -6597,7 +6597,7 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 	padding-right:0;
 }
 .add_product_panel .form_factore_panel label{
-	font-size:20px;
+	font-size:16px;
 	line-height:30px;
 	color:#777777;
 	font-weight:400;
@@ -6619,7 +6619,7 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 }
 .total_price p{
 	font-size:20px;
-	line-height:30px;
+	line-height:38px;
 	color:#777777;
 	padding:0;
 	margin:0 0 0 15px;
@@ -6947,6 +6947,7 @@ a.pull-left.img_bord {
     margin-left: 2%;
     padding: 5px;
     border: 1px solid #ddd;
+	background: #fff;
 }
 a.pull-left.img_bord:first-child{
 	margin-left:0;	
@@ -6961,7 +6962,8 @@ a.pull-left.img_bord:first-child{
 	margin-bottom:15px;	
 }
 .lefted_img img{
-	border:1px solid #d1d1d1;	
+	border:1px solid #d1d1d1;
+	padding: 20px;	
 }
 .total_block {
     margin-top: 70px;
@@ -7314,7 +7316,7 @@ p#result,.bordered_panel p.price_pan{
 }
 .right_table .table>tbody>tr>td {
     padding: 15px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 24px;
     color: #808080;
     font-weight: 400;
@@ -7342,7 +7344,8 @@ p#result,.bordered_panel p.price_pan{
 	width:100%;
 	background:url(../images/account/acct_back.jpg) no-repeat 0 0;
 	background-size:cover;
-	padding:150px 0 90px;	
+	padding:150px 0 90px;
+	min-height: 580px;	
 }
 .nomar_bottom{
 	margin-bottom:0;	
@@ -7992,7 +7995,7 @@ hr {
     line-height: 40px !important;
 }
 .checkout_cont .form-control.spec_width{
-	width:40px;
+	width:50px;
 	text-align:center;
 	display:inline-block;
 	line-height:30px;
@@ -9710,6 +9713,157 @@ h5.subs_head{
 #avgrate{
 	float:left;	
 }
+
+/*************...........dashboard new styles...........**************/
+
+
+.top_menu_port .no_marg{
+	float:right;	
+}
+
+.top_menu_port .acct_box {
+    width: 100%;
+    margin: 0;
+	clear: both;
+	transition:all .3s ease-in-out;
+	overflow:hidden;
+}
+.top_menu_port .acct_box_inn {
+    height: 50px;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.top_menu_port .acct_box_inn_inn img {
+    max-height: 20px;
+    float: left;
+    margin-left: 15px;
+}
+.top_menu_port .acct_box_inn_inn{
+	position:relative;	
+}
+
+.top_menu_port {
+    position: absolute;
+    left: 0;
+    width: 50px;
+    height: 100%;
+    background: rgba(0,0,0,0.30);
+    overflow: visible;
+    z-index: 3;
+}
+.top_menu_port .acct_box:hover{
+    width: 255px;
+    transform: translate(0,0);
+    opacity: 1;	
+}
+.inner_page_container.nomar_bottom{
+	position:relative;	
+}
+.top_menu_port .acct_box_inn_inn a:last-child {
+    /* display: none; */
+    position: absolute;
+    width: 200px;
+    /* background: #6ED1E3; */
+    color: #fff;
+    line-height: 29px;
+    border-radius: 2px;
+    left: 61px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    font-size: 17px;
+    opacity: 1;
+    bottom: 9px;
+    transition: all .3s ease-in-out;
+    float: left;
+    text-align: left;
+}
+.top_menu_port .no_marg {
+    float:none;
+}
+.top_menu_port .acct_box_inn_inn a:first-child .fa {
+    margin-left: 15px;
+    line-height: 26px;
+}
+.top_menu_port .acct_box_inn_inn a:first-child {
+    float: left;
+    line-height: 20px;
+}
+
+#coupon_code {
+    max-width: 65px;
+    border: 1px solid #ccc;
+    line-height: 26px;
+    border-radius: 2px 0 0 2px;
+	padding-left:10px;
+}
+#sub_coupon {
+	font-size: 16px;
+    color: #78D5E5;
+    background: transparent;
+    border: none;
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    border-left: none;
+    position: relative;
+     top: 1px; 
+    border-radius: 0 2px 2px 0;
+    width: 31px;
+    height: 30px;
+}
+#sub_coupon .fa-times{
+	color:red;	
+}
+.add_prod_new{
+    background: url(../images/account/acct_back.jpg) no-repeat 0 0;
+    background-size: cover;		
+}
+.prod_panel {
+    background: rgba(0,0,0,0.30);
+    padding: 30px 20px 50px;
+    box-sizing: border-box;
+}
+.add_product_panel .prod_panel h2,.prod_panel .check_box_tab input[type="checkbox"] + label, .prod_panel .check_box_tab input[type="radio"] + label,.ingredient_form th,.prod_panel a.click_more,.prod_panel a.remove_row,.prod_panel a.add_row,.prod_panel a.add_ingre,.prod_panel a.add_ingre,.prod_panel a.add_form,.prod_panel a.collapsing_btn,.prod_panel a.del_btn,.prod_panel a.remove_row_formfactortable,.prod_panel .form_check_table .table>thead>tr>th,.add_product_panel .prod_panel .form_factore_panel label,.prod_panel .total_price p,.prod_panel .tags_div label,.prod_panel .form_ingredient_group .top_panel label,.prod_panel .ingredient_new_form label{
+	color:#fff;	
+}
+.add_product_panel .prod_panel input[type="text"], .add_product_panel .prod_panel textarea, .add_product_panel .prod_panel select, .add_product_panel .prod_panel input[type="text"].form-control, .add_product_panel .prod_panel textarea.form-control, .add_product_panel .prod_panel select.form-control{
+	color: #60CDE0;
+}
+.add_product_panel .submit_panel{
+	margin-top:20px;	
+}
+.product .head_section h2{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	width:80%;		
+}
+.prod_panel .form_ingredient_group .bottom_panel,.prod_panel .form-control.back_bg{
+	background:transparent !important;	
+}
+.prod_panel .add_product_panel .product_name label {
+    font-size: 22px;
+    color: #6dc4d3;
+    margin: 0;
+    line-height: 38px;
+}
+.prod_panel .selectedFiles span.image_up{
+	background:#fff;	
+}
+.prod_panel .form_check_table .table>tbody>tr>td{
+	border-color:#fff;
+	color: #fff;	
+}
+.add_product_panel .prod_panel select option {
+    background: #000;
+}
+.products_panel .product .head_section h2{
+	width:55%;	
+}
+.product_list.shop_cart .alert{
+	margin-right:-15px;	
+}
+
 
 
 

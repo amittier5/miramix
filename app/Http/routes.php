@@ -307,6 +307,12 @@ $router->group([
    //************************************ Subscription ****************************************/
     resource('admin/subscription', 'SubscriptionController');
   
+   //************************************ Coupon ****************************************/
+    resource('admin/coupon', 'CouponController');
+    get('admin/change_status/{id}/{param}', 'CouponController@change_status');
+    get('admin/checkCouponCode', 'CouponController@checkCouponCode');
+    post('admin/checkCouponCode', 'CouponController@checkCouponCode');
+
 });
 
 // Logging in and out

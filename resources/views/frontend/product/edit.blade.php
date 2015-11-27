@@ -3,19 +3,20 @@
 
 <?php //echo "<pre>";print_r($total_count);exit; ?>
 
-<div class="inner_page_container">         
+<div class="inner_page_container nomar_bottom add_prod_new">         
 <!-- Start Add Products panel -->
      
   {!! Form::open(['url' => 'productPost','method'=>'POST', 'files'=>true, 'id'=>'product_form']) !!}
     <input class="form-control" type="hidden" value="<?php echo $products->id;?>" name="product_id">
-    <div class="add_product_panel">
-          <h2 class="text-center">Edit Your Product</h2>
+    <div class="container"><div class="row"><div class="add_product_panel">
+         <div class="prod_panel">
+         <h2 class="text-center">Edit Your Product</h2>
               
             <div class="product_name">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="col-sm-6 text-right"><label>Product Name </label></div>
-                        <div class="col-sm-6"><input type="text" name="product_name" id="product_name" maxlength="20" value="{!! $products->product_name!!}"></div>
+                        <div class="col-sm-6"><input type="text" name="product_name" id="product_name" maxlength="10000" value="{!! $products->product_name!!}"></div>
                     </div>
                     <div class="col-sm-6">
                     	<div class="check_box_tab green_color marg_left pull-left">                            
@@ -31,7 +32,7 @@
                 </div>
             </div> 
             <div class="form_ingredient_panel">
-              <div class="container">
+              <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-6 right_border">
                   	 <div class="total_ingre">
@@ -189,7 +190,7 @@
                               <?php } ?>
                             </div>
                            </div> 
-                           <textarea rows="" cols="" maxlength="255" name="description1" id="description1">{!! $products->description1;!!}</textarea>
+                           <textarea rows="" cols="" maxlength="10000" name="description1" id="description1">{!! $products->description1;!!}</textarea>
                       </div>
                       <div class="image_upload_panel" id="2">
                         	<div class="upload_button_panel">
@@ -204,7 +205,7 @@
                               <?php } ?>                            
                             </div>
                           </div> 
-                          <textarea rows="" cols="" maxlength="255" name="description2" id="description2">{!! $products->description2;!!}</textarea>
+                          <textarea rows="" cols="" maxlength="10000" name="description2" id="description2">{!! $products->description2;!!}</textarea>
                       </div>
                       <div class="image_upload_panel" id="3">
                         	<div class="upload_button_panel">
@@ -219,7 +220,7 @@
                               <?php } ?>     
                               </div>
                             </div>
-                          <textarea rows="" cols="" maxlength="255" name="description3" id="description3">{!! $products->description3;!!}</textarea>
+                          <textarea rows="" cols="" maxlength="10000" name="description3" id="description3">{!! $products->description3;!!}</textarea>
                       </div>
                       <div class="upload_button_panel img_modify">
                         	<p class="upload_image">
@@ -263,7 +264,7 @@
               </div>    
             </div>
             <div class="form_ingredient_price_panel">
-              <div class="container">
+              <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6">
                           <div class=" total_price">
@@ -328,7 +329,7 @@
                 </div>    
             </div>
             <div class="form_factore_panel">
-              <div class="container">
+              <div class="container-fluid">
                 <div class="row">
                   <div class="col-sm-12">
                       <table width="100%" border="0" cellspacing="0" cellpadding="0" id="formfactortable">
@@ -387,7 +388,7 @@
               </div>
             </div>
             <div class="submit_panel">
-              <div class="container">
+              <div class="container-fluid">
                     <div class="row">
                       <div class="col-sm-12">
                             <a href="<?php echo url();?>/my-products" class="backbtn pull-left"><i class="fa fa-angle-left"></i> Back to Product</a>
@@ -396,8 +397,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div></div>
+        </div></div></div>
      {!! Form::close() !!}
 <!-- End Add Products panel --> 
  </div>
@@ -1191,22 +1192,22 @@ function checktable_val(){
 			$('.alert-danger').remove();
 			if(flag==false){
 				
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
 			}
 			else if(check_weight_empty==false){
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Incomplete Selection</div>');	
 			}
 			else if((arr_dupvals.length)!=0){
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 			}
 			else if(groupnameflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
 			}
 			else if(serv_textflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
 			}
 			else{
-				$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
+				$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');	
 			}
 			if($('.red_border').length>0){
 					$('html, body').animate({
@@ -1226,19 +1227,19 @@ function checktable_val(){
 				$('.alert-danger').remove();
 				if(emptyweight_checkfornonmiramix==false || (arr_dupvals.length)!=0 || flag==false || serv_textflag==false || groupnameflag==false){	
 					if(emptyweight_checkfornonmiramix==false){			  
-				      $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Select A weight Value.</div>');
+				      $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Select A weight Value.</div>');
 					}
 					else if(flag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose A form Factor.</div>');
 					}
 					else if(serv_textflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>'+msg+'</div>');
 					}
 					else if(groupnameflag==false){
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong>Please Enter Group Name</div>');
 					}
 					else{
-						$('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
+						$('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please Choose Different Form Factors.</div>');
 					}
 					if($('.red_border').length>0){
 					$('html, body').animate({
@@ -1495,7 +1496,7 @@ $(document).on('keyup','.serv_text,.actual_price',function(){
 					
 				//alert(priceflag);	
 			   if(priceflag==false){ 		
-			  $('.form_factore_panel .container').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
+			  $('.form_factore_panel .container-fluid').append('<div class="alert alert-danger" style="margin-top:20px;margin-bottom:0;"><strong>Danger!</strong> Please make sure that actual price is at least equal to minimum price.</div>');
 			   }
 			   else{
 				$('.alert-danger').remove();   

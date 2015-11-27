@@ -19,7 +19,13 @@
           <button type="button" class="close" data-dismiss="alert">×</button>
           <strong>{!! Session::get('success') !!}</strong>
           </div>
-        @endif
+         @endif
+          @if(Session::has('error'))
+          <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{!! Session::get('error') !!}</strong>
+          </div>
+         @endif
          <div class="row"> 
           <div class="col-sm-9">
           <div class="table-responsive shad_tabres">
@@ -66,7 +72,24 @@
 
                  if(Session::has('coupon_discount')){
                   
-                  $all_total = $all_sub_total - Session::get('coupon_discount');
+                  if(Session::get('coupon_type')=='P'){
+                    $dis_percent = Session::get('coupon_discount');
+
+                    $dis_amnt = ($dis_percent/100) * $all_sub_total;
+                    $net_amnt = $all_sub_total - $dis_amnt;
+                    if($net_amnt<0)
+                      $all_total = $all_sub_total;
+                    else
+                      $all_total = $net_amnt;
+
+
+                    $coupon_amount = $dis_amnt;
+                  }
+                  else{
+
+                    $all_total = $all_sub_total - Session::get('coupon_discount');
+                    $coupon_amount = Session::get('coupon_discount');
+                  }
                  }
                  else
                   $all_total = $all_sub_total;
@@ -100,8 +123,8 @@
 
                       <?php if(Session::has('coupon_discount') && Cart::count() > 0 ){ ?>
                       <tr>
-                        <td>Coupon:</td>
-                        <td><?php echo '- $'.Session::get('coupon_discount');?></td>
+                        <td>Discount:</td>
+                        <td><?php echo '- $'.number_format($coupon_amount,2);?></td>
                       </tr>
                       <?php } ?>
 
@@ -111,13 +134,13 @@
                       </tr>
 
                        <tr>
-                        <td>Coupon: </td>
-                        <td><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"></td>
+                        <td>Coupon Code: </td>
+                        <td><div class="couponcode_apply"><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"><button type="submit" name="sub" id="sub_coupon"><i class="fa fa-paper-plane"></i></button></div></td>
                       </tr>
-                       <tr>
+                       <!--<tr>
                         <td>Submit:</td>
                         <td><input type="submit" name="sub" value="Submit"></td>
-                      </tr>
+                      </tr>-->
                     </tbody>
                   </table>
                   {!! Form::close() !!}
@@ -136,13 +159,15 @@
   <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/bootstrap.touchspin.js"></script>
   <script>
   $(document).ready(function(e) {
+  
   $(document).on('click','.refresh_btn',function(){
    // $(this).parent().find(".demo1").val(0);
   });
   $(document).on('click','.del_link',function(){
     var $this=$(this);
     $this.closest('tr').remove();
-  });  
+  }); 
+  
     $("input[name='demo1']").TouchSpin({
         min: 1,
         max: 100,
