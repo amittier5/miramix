@@ -6,33 +6,68 @@
   
   // When the browser is ready...
   $(function() {
-
+    //alert($('select[name="existing_address"] option:selected').val());
     $.validator.addMethod("email", function(value, element) 
     { 
     return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value); 
     }, "Please enter a valid email address.");
+    $.validator.addMethod("existing_address", function(value, element) 
+    { 
+        if($('#radio-1').is(':checked')){
+            if($('select[name="existing_address"] option').length<=0){
+                return false;
+            }
+            else if($('select[name="existing_address"] option:selected').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please enter a valid shipping address.");
+
+
+    $.validator.addMethod("new_address", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#fname').val()=='' || $('#lname').val()=='' || $('#email').val()=='' || $('#phone').val()=='' || $('#address').val()=='' || $('#country_id').val()=='' || $('#city').val()=='' || $('#zip_code').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please enter a valid shipping address.");
+
 
     // Setup form validation  //
     $("#checkout_form3").validate({
     
         // Specify the validation rules
         rules: {
-            fname: "required",
-            lname: "required",
+            fname: {new_address:true},
+            lname: {new_address:true},
             email: 
             {
-                required : true,
+                new_address:true,
                 email: true
             },
             phone :
             {
-                required : true,
+                new_address:true,
                 phoneUS: true
             },
-            address: "required",
-            country_id: "required",
-            city: "required",
-            zip_code: "required"
+            existing_address:{existing_address:true},
+            address:{new_address:true},
+            country_id: {new_address:true},
+            city:{new_address:true},
+            zip_code: {new_address:true}
             
         },
         
@@ -120,25 +155,25 @@
    
     <div class="row" id="new_address">
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="First Name" name="fname">
+    <input type="text" class="form-control" placeholder="First Name" name="fname"  id="fname">
     </div>
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="Last Name" name="lname">
+    <input type="text" class="form-control" placeholder="Last Name" name="lname"  id="lname">
     </div>
     <div class="form-group col-sm-6">
-    <input type="email" class="form-control" placeholder="Email" name="email">
+    <input type="email" class="form-control" placeholder="Email" name="email"  id="email">
     </div>
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="Phone" name="phone">
+    <input type="text" class="form-control" placeholder="Phone" name="phone"  id="phone">
     </div>
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="Address 1" name="address">
+    <input type="text" class="form-control" placeholder="Address 1" name="address"  id="address">
     </div>
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="Address 2" name="address2">
+    <input type="text" class="form-control" placeholder="Address 2" name="address2"  id="address2">
     </div>
     <div class="form-group col-sm-6">
-    <select  class="form-control" name="country_id" onchange ="getState(this.value)">
+    <select  class="form-control" name="country_id" onchange ="getState(this.value)" id="country_id">
         <option value="">Please select country</option>
         <?php foreach($allcountry as $eachCountry)
         {
@@ -155,7 +190,7 @@
       {!! Form::select('state', array('' => 'Please select state') +$allstates,'default', array('id' => 'state',"class"=>"form-control")); !!}
     </div>
     <div class="form-group col-sm-6">
-    <input type="text" class="form-control" placeholder="City" name="city" id="city">
+    <input type="text" class="form-control" placeholder="City" name="city" id="city" >
     </div>
     <div class="form-group col-sm-6">
     <input type="text" class="form-control" placeholder="Post Code"  name="zip_code"  id="zip_code">

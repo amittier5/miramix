@@ -94,7 +94,7 @@ class MemberController extends BaseController {
         
         
 
-        $body_class = 'home';
+        $body_class = '';
         return view('frontend.member.member_account',compact('body_class','member'),array('title'=>'Member Information'));
     }
     

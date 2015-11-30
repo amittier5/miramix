@@ -893,5 +893,13 @@ $(window).scroll(function() {
  $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+$(document).on('click','.acct_box',function(){
+	var $this=$(this);
+	var thishref=$this.find('.link_wholediv').attr('href');
+	if(thishref=='#' || thishref=='javascript:void(0);' || thishref=='javascript:void();' || thishref=='javascript:void(0)'){}
+	else
+	window.location.href=thishref;
+});
 	
 

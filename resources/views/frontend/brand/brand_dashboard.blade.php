@@ -20,7 +20,7 @@
                         <a href="<?php echo url();?>/sold-products">
 			<img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
 			</a>
-                        <a href="<?php echo url();?>/sold-products">Sold Products History</a>
+                        <a href="<?php echo url();?>/sold-products" class="link_wholediv">Sold Products History</a>
                         </div>                    	
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/product/create"><img src="<?php echo url();?>/public/frontend/images/account/add_products.png" alt=""></a>
-                        <a href="<?php echo url();?>/product/create">Add Products</a>
+                        <a href="<?php echo url();?>/product/create" class="link_wholediv">Add Products</a>
                         </div>                    	
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/my-products"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
-                        <a href="<?php echo url();?>/my-products">Product List</a>
+                        <a href="<?php echo url();?>/my-products" class="link_wholediv">Product List</a>
                         </div>                    	
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                          <a href=""><img src="<?php echo url();?>/public/frontend/images/account/order_hist.png" alt=""></a>
-                        <a href="javascript:void(0);">Order History<span>Coming Soon</span></a>
+                        <a href="javascript:void(0);" class="link_wholediv">Order History<span>Coming Soon</span></a>
                         </div>                    	
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/brand-account"><img src="<?php echo url();?>/public/frontend/images/account/pers_info.png" alt=""></a>
-                        <a href="<?php echo url();?>/brand-account">Brand Information</a>
+                        <a href="<?php echo url();?>/brand-account" class="link_wholediv">Brand Information</a>
                         </div>                    	
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         <a href="<?php echo url();?>/brand-shipping-address">
 			<img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
 			</a>
-                        <a href="<?php echo url();?>/brand-shipping-address">My Address</a>
+                        <a href="<?php echo url();?>/brand-shipping-address" class="link_wholediv">My Address</a>
                         </div>                    	
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/brand-creditcards"><i class="fa fa-credit-card fa-2x"></i></a>
-                        <a href="<?php echo url();?>/brand-creditcards">Credit Card Details</a>
+                        <a href="<?php echo url();?>/brand-creditcards" class="link_wholediv">Credit Card Details</a>
                         </div>                    	
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/brand-paydetails"><i class="fa fa-cc-paypal fa-2x"></i></a>
-                        <a href="<?php echo url();?>/brand-paydetails">Payment Details</a>
+                        <a href="<?php echo url();?>/brand-paydetails" class="link_wholediv">Payment Details</a>
                         </div>                    	
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/subscription-history"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
-                        <a href="<?php echo url();?>/subscription-history">Subscription History</a>
+                        <a href="<?php echo url();?>/subscription-history" class="link_wholediv">Subscription History</a>
                         </div>                    	
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="#"><i class="fa fa-credit-card fa-2x"></i></a>
-                        <a href="#">Wholesale <span>Coming Soon</span></a>
+                        <a href="#" class="link_wholediv">Wholesale <span>Coming Soon</span></a>
                         </div>                    	
                     </div>
                 </div>

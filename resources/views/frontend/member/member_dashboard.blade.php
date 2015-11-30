@@ -23,7 +23,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/member-account"><img src="<?php echo url();?>/public/frontend/images/account/pers_info.png" alt=""></a>
-                        <a href="<?php echo url();?>/member-account">Personal Information</a>
+                        <a href="<?php echo url();?>/member-account" class="link_wholediv">Personal Information</a>
                         </div>                    	
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/member-changepass"><img src="<?php echo url();?>/public/frontend/images/account/changepassword.png" alt=""></a>
-                        <a href="<?php echo url();?>/member-changepass">Change Password</a>
+                        <a href="<?php echo url();?>/member-changepass" class="link_wholediv">Change Password</a>
                         </div>                    	
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/member-shipping-address"><img src="<?php echo url();?>/public/frontend/images/account/address.png" alt=""></a>
-                        <a href="<?php echo url();?>/member-shipping-address">My Address</a>
+                        <a href="<?php echo url();?>/member-shipping-address" class="link_wholediv">My Address</a>
                         </div>                    	
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/order-history"><img src="<?php echo url();?>/public/frontend/images/account/order_hist.png" alt=""></a>
-                        <a href="<?php echo url();?>/order-history">Order History</a>
+                        <a href="<?php echo url();?>/order-history" class="link_wholediv">Order History</a>
                       </div>                    	
                     </div>
                 </div>

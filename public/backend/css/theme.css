@@ -4999,4 +4999,11 @@ span.weight_span {
 .input_fields_wrap input[type="radio"]{
 	margin:0 10px 0 0;	
 }
+.dataTables_wrapper{
+	overflow-x:scroll;	
+}
+#member_admin{
+	table-layout:fixed;
+	width:100%;	
+}
 

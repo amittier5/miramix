@@ -17,4 +17,5 @@
 </div>
 <!-- End Products panel --> 
  </div>
+ </div>
 @stop

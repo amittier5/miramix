@@ -14,7 +14,7 @@
       
       
       <div class="search_panel">
-        <input type="text" class="form-control textbox" placeholder="Enter your keywords" id="searchbox">
+        <input type="text" class="form-control textbox" placeholder="Enter any feeling, ingredient, or brand" id="searchbox">
         <input type="button" class="search_button">
       </div>
       
@@ -67,7 +67,7 @@
       <div class="product">
             <div class="head_section">
               <h2><?php echo $product->product_name?></h2>
-              <p class="price"><?php echo '$'.$product->min_price;?> </p>
+              <p class="price">Starting at <?php echo '$'.number_format($product->min_price,2);?> </p>
             </div>
             <div class="image_section" style="background:url('<?php echo url();?>/uploads/product/<?php echo $product->image1?>');background-size:cover;height:240px;">
                 

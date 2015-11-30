@@ -27,11 +27,11 @@ if(isset($_REQUEST['page']))
              <ul class="breadcrumb">
                 <li><a href="{!! url()!!}">Home</a></li>
                 <li><a href="{!! url()!!}/brands">Brands</a></li>
-                <li>{!! $all_brand_member->fname.' '.$all_brand_member->lname;!!}</li>
+                <li>{!! $all_brand_member->business_name;!!}</li>
              </ul>
             </div>
         </div>
-          <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/css/images/loader_productlist.GIF" alt=""></div>
+          
 <!-- Start Products panel -->
 <div class="products_panel">
 
@@ -75,6 +75,7 @@ if(isset($_REQUEST['page']))
         </div>
     </div>
     <div class="product_list">
+    <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/css/images/loader_productlist.GIF" alt=""></div>
       <?php 
       if((count($product[0]))>0) 
       {
@@ -85,7 +86,7 @@ if(isset($_REQUEST['page']))
           <div class="product">
               <div class="head_section">
                   <h2>{!! $each_product->product_name !!}</h2>
-                  <p class="price">Starting at <?php echo '$'.$each_product->min_price;?> </p>
+                  <p class="price">Starting at <?php echo '$'.number_format($each_product->min_price,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
                   <!--<img src="<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}" alt=""/>-->

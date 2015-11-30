@@ -1,6 +1,7 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-<?php //echo "<pre/>";print_r($productformfactor);  exit;?>
+<?php // echo "<pre/>"; print_r($productdetails); exit;
+//print_r($productformfactor);  exit;?>
 <script src="<?php echo url();?>/public/frontend/js/jquery.raty.js"></script>
 <link href="<?php echo url();?>/public/frontend/css/jquery.raty.css" rel="stylesheet">
 <div class="inner_page_container">
@@ -9,7 +10,7 @@
            <h2>Brands</h2>
              <ul class="breadcrumb">
                 <li><a href="<?php echo url();?>">Home</a></li>
-                <li><a href="<?php echo url();?>/brand-details/{!! ucwords($productdetails->product_slug) !!}">Brands</a></li>
+                <li><a href="<?php echo url();?>/{!! $productdetails->slug !!}">Brands</a></li>
                 <li>{!! ucwords($productdetails->product_name) !!}</li>
              </ul>
             </div>
@@ -84,9 +85,23 @@
         ?>
         <div id="section<?php echo $eachformfactor->id?>" class="tab-pane fade <?php echo $in_active;?>">
             <ul class="list-group" id="duration<?php echo $eachformfactor->id ?>">
-              <?php foreach($timeduration as $eachduration){?>
-              <li class="list-group-item clearfix"><span class="pull-left">{!! $eachduration->name !!}</span><span class="pull-right" data-duration="{!! ($eachduration->name)!!}" data-days="{!! ($eachduration->no_of_days) !!}" data-product-id="{!! ($eachformfactor->product_id)!!}" data-product="{!! ($eachformfactor->product_name)!!}" data-formfactor="{!! ($eachformfactor->formfactor_id)!!}" data-money="{!! sprintf("%.2f",($eachduration->no_of_days)*($productformfactor[0]->actual_price))!!}">
-                {!! '$'.sprintf("%.2f",($eachduration->no_of_days)*($productformfactor[0]->actual_price))!!}</span></li>
+              <?php 
+                foreach($timeduration as $eachduration){
+                  if($eachduration->no_of_days==90){
+                    $total_price = $eachduration->no_of_days*$productformfactor[0]->actual_price;
+
+                    $percen_amnt = 0.17*$total_price;
+
+                    $net_price = $total_price - $percen_amnt;
+
+                  }
+                  else{
+
+                      $net_price = $eachduration->no_of_days*$productformfactor[0]->actual_price;
+                  }
+              ?>
+              <li class="list-group-item clearfix"><span class="pull-left">{!! $eachduration->name !!}</span><span class="pull-right" data-duration="{!! ($eachduration->name)!!}" data-days="{!! ($eachduration->no_of_days) !!}" data-product-id="{!! ($eachformfactor->product_id)!!}" data-product="{!! ($eachformfactor->product_name)!!}" data-formfactor="{!! ($eachformfactor->formfactor_id)!!}" data-money="{!! sprintf("%.2f",$net_price)!!}">
+                {!! '$'.sprintf("%.2f",$net_price)!!}</span></li>
               
               <?php } ?>
             </ul>
@@ -181,7 +196,7 @@
     ?>
 
     <div class="acct_img" style="background:url(<?php echo url();?>/uploads/brandmember/{!! $brand_profile_image !!}) no-repeat 0 0;background-size:cover;"></div>
-    <h4>{!! ucwords($productdetails->fname.' '.$productdetails->lname) !!}</h4>
+    <h4>{!! ucwords($productdetails->business_name) !!}</h4>
      <p>{!! ucfirst($productdetails->brand_details) !!}</p>
     </div>
     </div>
@@ -352,14 +367,14 @@
        $(this).text('Loading...');
        $(this).next('span').show();
       var ele = $(this);
-	   setTimeout(function(){
+     setTimeout(function(){
        $.ajax({
         url: '<?php echo url();?>/getallrate',
         type: "POST",
         data: { page:ele.attr('data-page'),'product_id':'<?php echo $product_id;?>',_token: '{!! csrf_token() !!}'},
         success:function(response)
         {
-		//alert(ele.attr('data-page'));	
+    //alert(ele.attr('data-page')); 
           if(response){
             ele.parent('.wrap_load').hide();
             ele.next('span').hide();
@@ -368,7 +383,7 @@
         }
     
       });
-	  },4000);
+    },4000);
 
         
   });
@@ -502,12 +517,26 @@ function changeval(id,price,product_id,product_name,formfactor_id)
 
   var str = "<ul class='list-group' id='duration"+id+"'>";
   var formfactor_id = formfactor_id;
+  var net_price ;
 
-  <?php foreach($timeduration as $eachduration){?>
+  <?php foreach($timeduration as $eachduration){?> 
     var no_days = '<?php echo $eachduration->no_of_days;?>';
     var duration = '<?php echo  $eachduration->name; ?>';
 
-    str += "<li class='list-group-item clearfix'><span class='pull-left'><?php echo  $eachduration->name; ?></span><span class='pull-right' data-duration='<?php echo  $eachduration->name; ?>' data-days='<?php echo $eachduration->no_of_days; ?>' data-product-id='<?php echo  $eachformfactor->product_id; ?>' data-product='"+product_name+"' data-formfactor="+formfactor_id+" data-money="+(no_days*price).toFixed(2)+">$"+(no_days*price).toFixed(2)+"</span></li>";
+
+    <?php  if($eachduration->no_of_days==90){ ?>
+      var total_amnt = no_days * price;
+      var percen_amnt = 0.17 * total_amnt;
+          net_price = total_amnt - percen_amnt;
+
+    <?php } else{ ?>
+          
+          net_price = no_days * price;
+
+    <?php } ?>
+
+    str += "<li class='list-group-item clearfix'><span class='pull-left'><?php echo  $eachduration->name; ?></span><span class='pull-right' data-duration='<?php echo  $eachduration->name; ?>' data-days='<?php echo $eachduration->no_of_days; ?>' data-product-id='<?php echo  $eachformfactor->product_id; ?>' data-product='"+product_name+"' data-formfactor="+formfactor_id+" data-money="+(net_price).toFixed(2)+">$"+(net_price).toFixed(2)+"</span></li>"; 
+    // .toFixed(2)
 
    <?php } ?>   
 

@@ -299,3 +299,12 @@
 .tokenfield .token-input{
 	color: #6DC4D3;	
 }
+.tokenfield .token{
+	max-width: 121px	
+}
+.tokenfield .token .token-label{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100% !important;		
+}

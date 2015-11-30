@@ -72,7 +72,7 @@ class HomeController extends BaseController {
 	    foreach($tag as $t){
 		$ptags .=trim($t)."','";
 	    }
-	    $ptags=rtrim($ptags,",'");
+	   $ptags=rtrim($ptags,",'");
 	    
 	    $tagpro = DB::table('searchtags')->whereRaw("name IN('".$ptags."')")->get();
 	    
@@ -82,17 +82,9 @@ class HomeController extends BaseController {
 	    }
 	   
 	   $pids=rtrim($pids,",");
-	  
+	 
 	    $i=1;
-	   /* foreach($tag as $t){
-		if($i==1){
-		$products->whereRaw('product_name LIKE "%'.trim($t).'%"');
-		}else{
-		    $products->orWhereRaw('product_name LIKE "%'. trim($t).'%"');
-		}
-		$products->orWhereRaw('INSTR(tags,"'.trim($t).'")');
-		$i++;
-	    }*/
+	   
 	  if(!empty($pids)){ 
 	   $products->whereRaw('products.id IN('.$pids.')');
 	  }
@@ -108,20 +100,16 @@ class HomeController extends BaseController {
 	    }elseif($sortby=='date'){
 		$products->orderBy('created_at', 'DESC');
 	    }else{
-		$products->orderBy('id', 'DESC');
+		$products->orderBy('popularity', 'DESC');
 	    }
 	    
+	 }else{
+	    $products->orderBy('popularity', 'DESC');
 	 }
 	 $products=$products->paginate($item_per_page);
 	 
 	
-	 
-	 
-	 /*$products2 = DB::table('products')
-                 
-                 ->where('is_deleted', 0)
-                 ->whereRaw('products.active="1"')
-                 ;*/
+	
       $products2 = DB::table('products')
                  ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
@@ -135,20 +123,7 @@ class HomeController extends BaseController {
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
 	    
-	    
-	    
-	    /*$tag=explode(",",$tags);
-	    $i=1;
-	    foreach($tag as $t){
-		if($i==1){
-		$products2->whereRaw('product_name LIKE "%'.trim($t).'%"');
-		}else{
-		    $products2->orWhereRaw('product_name LIKE "%'.trim($t).'%"');
-		}
-		$products2->orWhereRaw('INSTR(tags,"'.trim($t).'")');
-		$i++;
-	    }*/
-	   
+	
 	    if(!empty($pids)){ 
 	    $products2->whereRaw('products.id IN('.$pids.')');
 	   }
@@ -176,9 +151,7 @@ class HomeController extends BaseController {
 	    
 	    
 	return view('frontend.home.indexnextpage',compact('body_class','products','item_per_page','current_page','total_records','total_pages','from','to'),array('title'=>'MIRAMIX | Home'));
-	   
-	   // echo $html = View::make('frontend.home.indexnextpage', compact('body_class','products','item_per_page','current_page','total_records','total_pages'))->render();
-	 //exit;
+	  
 	}
     }
     
@@ -631,7 +604,7 @@ class HomeController extends BaseController {
                 $user_email = $brandmembers->email;
                 $resetpassword_link = url().'/brand-reset-password/'.base64_encode($user_email).'-'.base64_encode($random_code);
                 //echo $resetpassword_link; exit;
-                $sent = Mail::send('frontend.home.reset_password_link', array('name'=>$user_name,'email'=>$user_email,'reset_password_link'=>$resetpassword_link), 
+                $sent = Mail::send('frontend.home.reset_password_link', array('name'=>$user_name,'email'=>$user_email,'reset_password_link'=>$resetpassword_link,'admin_users_email'=>$admin_users_email), 
                 function($message) use ($admin_users_email, $user_email,$user_name)
                 {
                     $message->from($admin_users_email);
@@ -703,54 +676,37 @@ class HomeController extends BaseController {
 
 /**************************************  MEMBER DASH-BOARD AND MEMBER ACCOUNT START ************************************/
 
-   /* public function memberDashboard()
-    { 
-        $body_class = 'home';
-        $member_details = Brandmember::find(Session::get('member_userid'));
-        return view('frontend.home.member_dashboard',compact('member_details','body_class'),array('title'=>'MIRAMIX | Member Dashboard'));
-    } 
 
-    public function memberAccount()
-    {
-        $obj = new helpers();
-        if(!$obj->checkMemberLogin())
-        {
-            return redirect('home');
-        }
-
-        $body_class = 'home';
-        return view('frontend.home.member_account',compact('body_class'),array('title'=>'Member Information'));
-    }
-*/
    
    public function searchtags(){
      $obj = new helpers();
     $stags=array();
     $terms=Request::input('term');
+    
+    $tagtable=DB::table('searchtags')->orderBy('popularity', 'DESC')->get();
+      foreach($tagtable as $tag){
+	
+	$whereArray = array('id'=>$tag->product_id,'is_deleted'=>1);
+	$count=DB::table('products')->where($whereArray)->count();
+	
+	if($count>0){
+	   DB::table('searchtags')->where("product_id","=",$tag->product_id)->delete();
+	}
+	
+    }
+    
      $tags = DB::table('searchtags')->where('name', 'LIKE', '%'.Request::input('term').'%')->groupBy('name')->orderBy('popularity', 'DESC')->get();
-    // echo $obj->get_last_query();
-    //exit;
+  
      $product_id='';
      foreach($tags as $tag){
-	//$tag=preg_replace( "/\r|\n/", "", $tag->name );
-	//$tag=str_replace(" ","",$tag);
+	
+	
+	
     $stags[]=array("id"=>$tag->product_id,"value"=>$tag->name,"tags"=>$tag->name);
     
     }
     
-    /* $products = DB::table('products')->where('active', 1)->where('is_deleted', 0);
-     if(!empty($terms)){
-	$products->where('product_name', 'LIKE', Request::input('term').'%');
-	$products->orwhereRaw('INSTR(tags,"'.Request::input('term').'")');
-     }
-     $products=$products->skip(0)->take(10)->get();
-     
-    foreach($products as $product){
-	$tag=preg_replace( "/\r|\n/", "", $product->tags );
-	$tag=str_replace(" ","",$tag);
-    $tags[]=array("id"=>$product->id,"value"=>$product->product_name,"tags"=>$tag);
-    
-    }*/
+
     
     echo json_encode($stags);
    }

@@ -89,6 +89,27 @@ $about_us = $return_policy = $terms = $privacy ='';
   </div>
 
 
+    <script type="text/javascript">
+                (function () {
+                    var head = document.getElementsByTagName("head").item(0);
+                    var script = document.createElement("script");
+                    var src = (document.location.protocol == 'https:' ?'https://www.formilla.com/scripts/feedback.js' : 'http://www.formilla.com/scripts/feedback.js');
+                    script.setAttribute("type", "text/javascript"); script.setAttribute("src", src); script.setAttribute("async", true);
+                    var complete = false;
+                    script.onload = script.onreadystatechange = function () {
+                        if (!complete && (!this.readyState || this.readyState == 'loaded' || 
+
+this.readyState == 'complete')) {
+                            complete = true;
+                            Formilla.guid = '8c4509df-5d68-498b-ac52-dca67dcc74c8';
+                            Formilla.loadFormillaChatButton();
+                        }
+                    };
+
+                    head.appendChild(script);
+                })();
+            </script>
+
 
   <script type="text/javascript" src="<?php echo url();?>/public/frontend/js/script.js"></script>
     <script src="<?php echo url();?>/public/frontend/js/wow.min.js"></script>

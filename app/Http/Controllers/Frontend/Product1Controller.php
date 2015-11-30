@@ -77,7 +77,7 @@ class Product1Controller extends BaseController {
 
         $productdetails = DB::table('products')
                                 ->leftJoin('brandmembers', 'brandmembers.id', '=', 'products.brandmember_id')
-                                ->select('products.*', 'brandmembers.fname', 'brandmembers.lname', 'brandmembers.pro_image', 'brandmembers.brand_details', 'brandmembers.brand_sitelink', 'brandmembers.status', 'brandmembers.admin_status')
+                                ->select('products.*', 'brandmembers.fname', 'brandmembers.lname', 'brandmembers.business_name','brandmembers.pro_image', 'brandmembers.brand_details', 'brandmembers.brand_sitelink', 'brandmembers.status', 'brandmembers.admin_status', 'brandmembers.slug')
                                 ->where('products.product_slug','=',$slug)
                                 ->where('products.active',1)
                                 ->where('products.is_deleted',0)

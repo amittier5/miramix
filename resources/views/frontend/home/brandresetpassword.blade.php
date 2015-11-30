@@ -63,12 +63,12 @@
 
               <div class="tot_formlog clearfix">
                 <div class="input-group wow slideInLeft md15">
-                    <input type="password" class="form-control" name="password" id="password" value="" autofocus> 
+                    <input type="password" class="form-control" name="password" id="password" value=""  placeholder="Password" autofocus> 
                     <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon2"></span>
                 </div>
              
                 <div class="input-group wow slideInLeft md15">
-                  <input type="password" class="form-control" name="con_password" id="con_password" value="" autofocus> 
+                  <input type="password" class="form-control" name="con_password" id="con_password" value=""  placeholder="Confirm Password"  autofocus> 
                   <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon2"></span>
                 </div>
              
