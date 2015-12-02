@@ -87,7 +87,7 @@
                     <button type="submit" class="wow fadeInUp btn btn-default sub_btn">Submit</button>                    
                 </div>
               </form>
-                <p class="wow zoomInUp brand_p clearfix">Want a Brand Account? <a href="<?php url();?>register">Sign up now!</a></p>
+                <p class="wow zoomInUp brand_p clearfix">Want a Member Account? <a href="<?php url();?>register">Sign up now!</a></p>
             </div>
             
             

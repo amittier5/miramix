@@ -87,8 +87,10 @@ class Product1Controller extends BaseController {
         //echo "<pre/>";print_r($productdetails); exit;
 
         // Return to home page if the product is not active or deleted
-        if(empty($productdetails))
-            return redirect('home');
+        if(empty($productdetails)){
+            //return redirect('home');
+            return view('frontend.product.restrictproductdetails',array('title'=>'Not Authorize Product Details'));
+        }
 
         $productformfactor = DB::table('product_formfactors')
                                 ->join('form_factors', 'form_factors.id', '=', 'product_formfactors.formfactor_id')

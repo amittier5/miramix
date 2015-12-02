@@ -169,6 +169,7 @@ class HomeController extends BaseController {
         {
             Session::forget('member_userid');
             Session::forget('member_user_email');
+            Session::forget('member_username');
             Session::forget('payment_method');
 
             /* Delete Checkout Session */
@@ -184,6 +185,7 @@ class HomeController extends BaseController {
         {
             Session::forget('brand_userid');
             Session::forget('brand_user_email');
+             Session::forget('brand_username');
             Session::flash('success', 'You are successfully logged out.'); 
             return redirect('brandLogin');
         } 
@@ -227,7 +229,8 @@ class HomeController extends BaseController {
                     //echo DB::enableQueryLog();exit;
                     if($user_cnt){
                         Session::put('member_userid', $users->id);
-			Session::put('member_user_email', $users->email);
+                        Session::put('member_user_email', $users->email);
+                        Session::put('member_username', ucfirst($users->username));
 
                         // Check for remember me
                         if(Request::input('remember_me')==1){
@@ -383,7 +386,11 @@ class HomeController extends BaseController {
 
             if(!(empty($brandmembers)))
             {
+                if($brandmembers->fname !='')
                 $user_name = $brandmembers->fname.' '.$brandmembers->lname;
+                else
+                $user_name = $brandmembers->username;
+
                 $user_email = $brandmembers->email;
                 $resetpassword_link = url().'/member-reset-password/'.base64_encode($user_email).'-'.base64_encode($random_code);
                 //echo $resetpassword_link; exit;
@@ -430,27 +437,37 @@ class HomeController extends BaseController {
           $user_email = base64_decode($user_email_en);
           $user_code = base64_decode($user_code_en);
 
-        if(Request::isMethod('post'))
+        $code_has = DB::table('brandmembers')->where('code_number',$user_code)->first();
+        if(count($code_has)>0)
         {
-            $password = Request::input('password');
-            $conf_pass = Request::input('con_password');
-           // echo $password." - ".$conf_pass. "email= ".$user_email; exit;
-            $update = DB::table('brandmembers')->where('email', $user_email)->update(array('password' => Hash::make($password)));
-            
-            if($update)
+
+            if(Request::isMethod('post'))
             {
-                Session::flash('success', 'Password successfully changed.'); 
-                return redirect('memberLogin');
+                $password = Request::input('password');
+                $conf_pass = Request::input('con_password');
+               // echo $password." - ".$conf_pass. "email= ".$user_email; exit;
+                $update = DB::table('brandmembers')->where('email', $user_email)->update(array('password' => Hash::make($password),'code_number'=>''));
+                
+                if($update)
+                {
+                    Session::flash('success', 'Password successfully changed.'); 
+                    return redirect('memberLogin');
+                }
+                else
+                {
+                    Session::flash('error', 'Password not changed.Somthing wrong!'); 
+                    return redirect('memberLogin');
+                }
+                
             }
-            else
-            {
-                Session::flash('error', 'Password not changed.Somthing wrong!'); 
-                return redirect('memberLogin');
-            }
-            
+            return view('frontend.home.memberresetpassword',array('title'=>'Reset Password','link'=>$link));
         }
-       
-        return view('frontend.home.memberresetpassword',array('title'=>'Reset Password','link'=>$link));
+        else
+        {
+            Session::flash('error', 'This link already been used.Please use valid link.'); 
+            return redirect('member-forgot-password');
+        }
+        
 
     }
 
@@ -515,7 +532,7 @@ class HomeController extends BaseController {
 	if($obj->checkBrandLogin()){
             return redirect('brand-dashboard');
         }
-	Session::put('member_type', 1);
+	   Session::put('member_type', 1);
 	
         if(Request::isMethod('post'))
         {
@@ -535,7 +552,7 @@ class HomeController extends BaseController {
                     if($user_cnt){
 		    
 		    
-		   $this->check_subscription($users);
+		                  $this->check_subscription($users);
 		    
 		    
                          // Check for remember me
@@ -543,7 +560,8 @@ class HomeController extends BaseController {
                             Cookie::queue(Cookie::make('brand_email', Request::input('email'), 60 * 24 * 30));
                         }
                         Session::put('brand_userid', $users->id);
-			Session::put('brand_user_email', $users->email);
+                        Session::put('brand_user_email', $users->email);
+                        Session::put('brand_username', ucfirst($users->username));
                         return redirect('brand-dashboard');
                     }
                     else{
@@ -600,7 +618,11 @@ class HomeController extends BaseController {
 
             if(!(empty($brandmembers)))
             {
+                if($brandmembers->fname !='')
                 $user_name = $brandmembers->fname.' '.$brandmembers->lname;
+                else
+                $user_name = $brandmembers->business_name;
+
                 $user_email = $brandmembers->email;
                 $resetpassword_link = url().'/brand-reset-password/'.base64_encode($user_email).'-'.base64_encode($random_code);
                 //echo $resetpassword_link; exit;
@@ -647,27 +669,38 @@ class HomeController extends BaseController {
           $user_email = base64_decode($user_email_en);
           $user_code = base64_decode($user_code_en);
 
-        if(Request::isMethod('post'))
+        $code_has = DB::table('brandmembers')->where('code_number',$user_code)->first();
+        if(count($code_has)>0)
         {
-            $password = Request::input('password');
-            $conf_pass = Request::input('con_password');
-           // echo $password." - ".$conf_pass. "email= ".$user_email; exit;
-            $update = DB::table('brandmembers')->where('email', $user_email)->update(array('password' => Hash::make($password)));
-            
-            if($update)
+
+            if(Request::isMethod('post'))
             {
-                Session::flash('success', 'Password successfully changed.'); 
-                return redirect('brandLogin');
+                $password = Request::input('password');
+                $conf_pass = Request::input('con_password');
+               // echo $password." - ".$conf_pass. "email= ".$user_email; exit;
+                $update = DB::table('brandmembers')->where('email', $user_email)->update(array('password' => Hash::make($password),'code_number'=>''));
+
+                
+                if($update)
+                {
+                    Session::flash('success', 'Password successfully changed.'); 
+                    return redirect('brandLogin');
+                }
+                else
+                {
+                    Session::flash('error', 'Password not changed.Somthing wrong!'); 
+                    return redirect('brandLogin');
+                }
             }
-            else
-            {
-                Session::flash('error', 'Password not changed.Somthing wrong!'); 
-                return redirect('brandLogin');
-            }
-            
+            return view('frontend.home.brandresetpassword',array('title'=>'Reset Password','link'=>$link));
+        }
+        else
+        {
+            Session::flash('error', 'This link already been used.Please use valid link.'); 
+            return redirect('member-forgot-password');
         }
        
-        return view('frontend.home.brandresetpassword',array('title'=>'Reset Password','link'=>$link));
+        
 
     }
 
@@ -733,6 +766,7 @@ class HomeController extends BaseController {
         {
 	  		$newsletter=array("email"=>$email,"fname"=>'guest',"lname"=>'guest',"created_on"=>date("Y-m-d H:s:i"),"status"=>1); 
 	  		$subscriber = 'subscriber';
+            $lname = '';
 		}
 
 	$setting = DB::table('sitesettings')->where('name', 'email')->first();
@@ -861,24 +895,31 @@ public function facebook(){
     $count = DB::table('brandmembers')->where('email', $email)->count();
     
     if($count>0){
+      
 	$member=DB::table('brandmembers')->where('email', $email)->first();
 	//brand member
+    //print_r($member); exit;
 	if($member->role==1){
+       // echo 't1'; exit;
 	    $this->check_subscription($member);
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-            return redirect('brand-dashboard');
+        Session::put('member_username', $member->username);
+        return Redirect::back()->withMessage('You are logged in successfully.');
 	}else{
+         // echo 't2'; exit;
+          //echo   $member->email; exit;
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
+        Session::put('member_username', $member->username);
 	    $this->update_cart($member->id);
-	    return redirect('member-dashboard');
+       // echo Session::get('member_user_email'); exit;
+	    return Redirect::back()->withMessage('You are logged in successfully.');
 	    
 	}
 	
     }else{
-	
 	//create social users
 	
 	$hashpassword = Hash::make(uniqid());
@@ -927,12 +968,14 @@ public function facebook(){
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-            return redirect('brand-dashboard');
+        Session::put('member_username', $member->username);
+        return Redirect::back()->withMessage('You are logged in successfully.');
 	}else{
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
+        Session::put('member_username', $member->username);
 	    $this->update_cart($member->id);
-	    return redirect('member-dashboard');
+	    return Redirect::back()->withMessage('You are logged in successfully.');
 	    
 	}
 	
@@ -971,12 +1014,14 @@ public function google(){
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-            return redirect('brand-dashboard');
+        Session::put('member_username', $member->username);
+        return Redirect::back()->withMessage('You are logged in successfully.');
 	}else{
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
+        Session::put('member_username', $member->username);
 	    $this->update_cart($member->id);
-	    return redirect('member-dashboard');
+	    return Redirect::back()->withMessage('You are logged in successfully.');
 	    
 	}
 	
@@ -1030,12 +1075,14 @@ public function google(){
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-            return redirect('brand-dashboard');
+        Session::put('member_username', $member->username);
+        return Redirect::back()->withMessage('You are logged in successfully.');
 	}else{
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
+        Session::put('member_username', $member->username);
 	    $this->update_cart($member->id);
-	    return redirect('member-dashboard');
+	    return Redirect::back()->withMessage('You are logged in successfully.');
 	    
 	}
 	

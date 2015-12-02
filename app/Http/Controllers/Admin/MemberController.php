@@ -40,9 +40,19 @@ class MemberController extends Controller {
 
     public function edit($id)
     {
-        $member=Brandmember::find($id);
-	$member->password='';
-        return view('admin.members.edit',compact('member'),array('title'=>'Edit Member','module_head'=>'Edit Member'));
+
+        if (Brandmember::where('id', '=', $id)->exists()) {
+          
+            $member=Brandmember::find($id);
+            $member->password='';
+            return view('admin.members.edit',compact('member'),array('title'=>'Edit Member','module_head'=>'Edit Member'));
+        }
+        else{
+            Session::flash('error', 'Member is not found.'); 
+            return redirect('admin/member');
+        }
+
+        
     }
 
     /**
@@ -181,6 +191,16 @@ class MemberController extends Controller {
             return redirect('admin/member');
         }
        
+    }
+
+    public function destroy($id)
+    {
+        
+
+        Brandmember::find($id)->delete();
+
+        Session::flash('success', 'Member deleted successfully'); 
+        return redirect('admin/member');
     }
 
 

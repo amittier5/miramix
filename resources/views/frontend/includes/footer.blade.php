@@ -45,7 +45,7 @@ $about_us = $return_policy = $terms = $privacy ='';
         <div class="row bottom_footer">
         	<ul>
             	<li><a href="<?php echo url()?>/inventory">Inventory </a></li>
-                <li><a href="<?php echo url();?>/brand">Brands</a></li>
+                <li><a href="<?php echo url();?>/brands">Brands</a></li>
                 <li><a href="<?php echo url();?>/faq-list">FAQs</a></li>
                 <li><a href="<?php echo url().($about_us!='')?$about_us:'#'?>">About Us</a></li>
                 <li><a href="<?php echo url().($return_policy!='')?$return_policy:'#'?>">Return Policy</a></li> 

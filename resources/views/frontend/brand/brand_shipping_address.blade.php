@@ -3,6 +3,16 @@
 
 <div class="inner_page_container nomar_bottom">
 
+<div id="nav-icon2">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="mob_topmenu_back"></div>
+
 <div class="top_menu_port">
     	<div class="acct_box yellow_act">
                 	<div class="acct_box_inn">
@@ -125,13 +135,13 @@
                   <h3>My Address</h3>
                     
                      @if(Session::has('error'))
-                    <div class="alert alert-error container">
+                    <div class="alert alert-error container-fluid">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{!! Session::get('error') !!}</strong>
                     </div>
                   @endif
                   @if(Session::has('success'))
-                    <div class="alert alert-success container">
+                    <div class="alert alert-success container-fluid">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     <strong>{!! Session::get('success') !!}</strong>
                     </div>

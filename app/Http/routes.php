@@ -19,6 +19,9 @@ Route::resource('home','Frontend\HomeController');
 Route::resource('basecon','Frontend\BaseController');
 Route::resource('image','MyController');
 
+Route::get('/refresh-token', function(){
+    return csrf_token();
+});
 
 // ======================= BRAND CONTROLLER FUNCTIONALITY START  ============================
 
@@ -156,6 +159,9 @@ Route:: post('/updateDate','Frontend\RegisterController@updateDate');           
 
 Route:: get('/brandLogin','Frontend\HomeController@brand_login');       /* For showing Brand login page*/
 Route:: post('/brandLogin','Frontend\HomeController@brand_login');    /* For Member login page, use for login */
+
+Route:: get('/brandlogin','Frontend\HomeController@brand_login');       /* For showing Brand login page*/
+Route:: post('/brandlogin','Frontend\HomeController@brand_login');    /* For Member login page, use for login */
 
 Route:: get('/member-dashboard','Frontend\MemberController@index');     /* To Show the memeber dashboard */ 
 Route:: get('/member-account','Frontend\MemberController@memberAccount');         /* To Show the memeber account */ 

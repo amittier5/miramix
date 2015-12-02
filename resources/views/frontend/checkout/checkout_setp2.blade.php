@@ -13,8 +13,8 @@
         },
         // Specify the validation rules
         rules: {
-            payment_type: "required",
-			      privacy:"required"
+            	payment_type: "required",
+			    //privacy:"required"
         },
         // Specify the validation error messages
         messages: {
@@ -73,7 +73,7 @@
          <?php echo (Session::get('payment_method') =='paypal')? "checked=checked":''  ?>>
          <label for="paypal">Paypal</label>
     </div>
-    <div class="normal_label"><input type="checkbox" id="privacy"  name="privacy"><label for="check-1">I have read and agree to the Privacy Policy</label></div>
+    <!-- <div class="normal_label"><input type="checkbox" id="privacy"  name="privacy"><label for="check-1">I have read and agree to the Privacy Policy</label></div> -->
     <input type="submit" class="full_green_btn text-uppercase" value="Continue">
 	{!! Form::close() !!}   
     

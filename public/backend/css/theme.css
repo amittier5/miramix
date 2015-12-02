@@ -396,7 +396,7 @@ body [class^="icon-"], body [class*=" icon-"] {
 
 	margin-right: 20px;
 
-	padding: 20px
+	padding: 15px 20px;
 
 }
 
@@ -474,9 +474,8 @@ body [class^="icon-"], body [class*=" icon-"] {
 
 .navbar .nav>li>.dropdown-menu li>a:hover {
 
-	background: #f9f9f9;
-
-	color: #555
+	background: #0088cc;
+	color: #fff;
 
 }
 
@@ -890,7 +889,11 @@ transition: all .2s ease-in-out;
 
 	-ms-user-select: none;
 
-	user-select: none
+	user-select: none;
+	background-color: #66afe9;
+    border-color: #66afe9;
+    color: #fff;
+    text-shadow: none;
 
 }
 
@@ -1814,6 +1817,11 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='@topColor', end
 
 transition: all .2s ease-in-out;
 
+}
+.widget-menu .menu-icon.fa{
+    display: inline-block;
+    width: 1.25em;
+    text-align: center;	
 }
 
 .widget-menu .label {
@@ -4619,7 +4627,7 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 	padding-right:0;
 }
 .add_product_panel .form_factore_panel label {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 30px;
     color: #777777;
     font-weight: 400;
@@ -4826,6 +4834,8 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 	border:0;
 	background:url(../images/edit-icon.png) no-repeat 0 0;
 	text-indent:-5000px;
+	opacity: 1;
+    left: auto;
 }
 
 .form_check_table .table>thead>tr>th.all_selec {
@@ -5000,10 +5010,71 @@ span.weight_span {
 	margin:0 10px 0 0;	
 }
 .dataTables_wrapper{
-	overflow-x:scroll;	
+	overflow-x:auto;	
 }
 #member_admin{
 	table-layout:fixed;
 	width:100%;	
 }
+#member_admin td{
+	word-break:break-all;	
+}
+.tot_vit_weight{
+	z-index:99;	
+}
+.form-horizontal .controls{
+	line-height:29px;	
+}
+.check_box_tab {
+    position: relative;
+}
+.check_box_tab input[type="checkbox"], .check_box_tab input[type="radio"] {
+    position: absolute;
+    left: -99em;
+}
+.check_box_tab input[type="checkbox"] + label, .check_box_tab input[type="radio"] + label {
+    padding-left: 27px;
+    font-size: 16px;
+    color: #777777;
+    line-height: 44px;
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: normal;
+}
+.check_box_tab input[type="radio"] + label:before {
+    content: '';
+    width: 17px;
+    height: 18px;
+    position: absolute;
+    left: 0px;
+    top: 13px;
+    font-size: 18px;
+    color: #a11518;
+    background: url(../images/newdashimages/brandaccount/radio_brand.png) no-repeat 0 0;
+}
+.check_box_tab.green_color input[type="radio"] + label:before {
+    background: url(../images/radio_brand_green.png) no-repeat 0 0;
+}
+.check_box_tab.green_color input[type="radio"]:checked + label:before {
+    background: url(../images/radio_brand_checked_green.png) no-repeat 0 0;
+}
+.marg_left {
+    margin-left: 30px;
+}
+.mar_top_bot{
+	margin:20px 0;	
+}
+.product_name.edit_prod{
+	margin:0;
+	clear:none;	
+}
+.right_border select.selectclass.red_border, .weightclass.red_border {
+    border-color: red !important;
+}
+.error_p {
+    color: red;
+    clear: left;
+    font-size: 16px;
+}
+
 

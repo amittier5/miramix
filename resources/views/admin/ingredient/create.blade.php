@@ -484,8 +484,8 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
                     <div class="control-group">
                     	<label class="control-label" for="basicinput">Vitamins Weight Measurement</label>
                         <div class="controls">
-                            <label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_0][]" id="weight_measurement1_0" value="0">Miligram</label>
-                            <label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_0][]" id="weight_measurement2_0" value="1">Microgram</label>
+                            <label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight][0]" id="weight_measurement1_0" value="0">Miligram</label>
+                            <label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight][0]" id="weight_measurement2_0" value="1">Microgram</label>
                         </div>
                     </div>
                     </div>
@@ -525,7 +525,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
         e.preventDefault();
         
             x++; //text box increment
-            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div></div>'); //add input box
+            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><input type="text" id="hid_'+x+'" class="hid_value" value="0" /><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div></div>'); //add input box
 		setTimeout(function(){
 			$('html, body').animate({
 				scrollTop: $("div#"+x+".input_fields_wrap").offset().top
@@ -557,9 +557,12 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 		
 		var $this=$(this);
 		var this_id=$(this).parent().parent().parent().parent('div.input_fields_wrap').attr('id');
-		//alert(this_id);
-		$this.parent().parent().parent().parent('div.input_fields_wrap').append('<div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+this_id+'][vitamin][]" id="vitamin'+a+'"><a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+this_id+'][weight][]" id="weight'+a+'"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name[0][vitamin_weight_'+a+'][]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div>');
+		var hidd_value = $this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val();
+		$this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val(++hidd_value);
+		alert(hidd_value);
+		$this.parent().parent().parent().parent('div.input_fields_wrap').append('<div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+this_id+'][vitamin][]" id="vitamin'+a+'"><a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+this_id+'][weight][]" id="weight'+a+'"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name['+this_id+'][vitamin_weight]['+hidd_value+']" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name['+this_id+'][vitamin_weight]['+hidd_value+']" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div>');
 		//alert('#vitamin'+a);	
+		
 
       $( "#vitamin"+a ).autocomplete({
         source: "{!!url('admin/vitamin-search')!!}"
@@ -568,8 +571,15 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 	   a++;
     });
 	$(document).on("click",".remove_vitamin", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent().parent().parent().remove();
+        e.preventDefault(); 
+        var $this=$(this);
+        var new_val = $this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val();
+        alert(new_val);
+        new_val=parseInt(new_val)-1;
+        $this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val(new_val);
+        $(this).parent().parent().parent().remove();
 		vit_weightval();
+
     });
 	
 	$(document).on('blur','.tags_auto',function(){

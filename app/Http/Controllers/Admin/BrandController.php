@@ -236,7 +236,6 @@ class BrandController extends Controller {
     {
         //
         Brandmember::find($id)->delete();
-        return redirect('admin/brand');
 
         Session::flash('success', 'Brand deleted successfully'); 
         return redirect('admin/brand');

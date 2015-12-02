@@ -29,9 +29,9 @@ $open1 = "class='unstyled collapse'";
 <div class="sidebar">
     <ul class="widget widget-menu unstyled">
         <li class="{!! $home_class !!}"><a href="<?php echo url().'/admin/home'?>"><i class="menu-icon icon-dashboard"></i>Dashboard</a></li>
-        <li class="{!! $cms_class !!}"><a href="<?php echo url().'/admin/cms'?>"><i class="menu-icon icon-bullhorn"></i>Content Management </a></li>
-        <li class=""><a href="<?php echo url().'/admin/faq'?>"><i class="menu-icon icon-bullhorn"></i>FAQ Management </a></li>
-        <li class="{!! $sitesetting_class !!}"><a href="<?php echo url().'/admin/sitesetting'?>"><i class="menu-icon icon-bullhorn"></i>Site Settings </a></li>
+        <li class="{!! $cms_class !!}"><a href="<?php echo url().'/admin/cms'?>"><i class="menu-icon icon-bolt"></i>Content Management </a></li>
+        <li class=""><a href="<?php echo url().'/admin/faq'?>"><i class="menu-icon fa fa-question"></i>FAQ Management </a></li>
+        <li class="{!! $sitesetting_class !!}"><a href="<?php echo url().'/admin/sitesetting'?>"><i class="menu-icon fa fa-code"></i>Site Settings </a></li>
         <!-- <li><a href="<?php echo url().'/admin/vitamin'?>"><i class="menu-icon icon-bullhorn"></i>Vitamins Management </a></li> -->
     </ul>
     <!--/.widget-nav-->

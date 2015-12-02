@@ -75,11 +75,11 @@ $( "#dob" ).datepicker({
    {!! Form::model($subscription,array('method' => 'PATCH','id'=>'form_subscription','files'=>true,'name'=>'form_subscription','class'=>'form-horizontal row-fluid','route'=>array('admin.subscription.update',$subscription->subscription_id))) !!}
 
     <div class="control-group">
-          <label class="control-label" for="basicinput">Member Id </label>
+          <label class="control-label" for="basicinput">Brand Name </label>
           <div class="controls">
-               {!! Form::text('member_id',null,['class'=>'span8','id'=>'member_id']) !!}
+               {!! $subscription->getSubMembers->business_name; !!}
           </div>
-        </div>
+    </div>
     
     <div class="control-group">
           <label class="control-label" for="basicinput">Subscription Start Date *</label>
@@ -106,7 +106,16 @@ $( "#dob" ).datepicker({
 	<div class="control-group">
             <label class="control-label" for="basicinput">Pay Status</label>
             <div class="controls">
-                {!! Form::text('payment_status',null,['class'=>'span8','id'=>'payment_status']) !!}
+            <?php if($subscription->payment_status == '' || $subscription->payment_status =='pending')
+            {
+              $payment_status ='pending';
+            }
+            else
+            {
+              $payment_status ='paid';
+            }
+            ?>
+                {!! Form::select('payment_status', array('' => 'select one') +$status,$payment_status, array('id' => 'payment_status','class'=>"form-control")); !!}
             </div>
         </div>
 	    

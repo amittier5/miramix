@@ -2,7 +2,15 @@
 @section('content')
 
 <div class="inner_page_container nomar_bottom">
-
+<div id="nav-icon2">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="mob_topmenu_back"></div>
 <div class="top_menu_port">
     	<div class="acct_box yellow_act">
                 	<div class="acct_box_inn">

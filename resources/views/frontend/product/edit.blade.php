@@ -3,7 +3,18 @@
 
 <?php //echo "<pre>";print_r($total_count);exit; ?>
 
-<div class="inner_page_container nomar_bottom add_prod_new">         
+<div class="inner_page_container nomar_bottom add_prod_new">  
+
+<div id="nav-icon2">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="mob_topmenu_back"></div>
+       
 <!-- Start Add Products panel -->
 <div class="top_menu_port">
     	<div class="acct_box yellow_act">
@@ -494,10 +505,7 @@
                   <div class="col-sm-12"><a href="javascript:void(0);" class="add_form"><i class="fa fa-plus-square"></i> Add Form Factor</a></div>
                 </div>
                 </div>
-              <div class="product_name">
-                <div class="col-sm-6 text-right"><label>Tags</label></div>
-                  <div class="col-sm-3"><input type="text" name="tags" id="tags" value="{!! $products->tags!!}"></div>
-              </div>
+              
             </div>
             <div class="submit_panel">
               <div class="container-fluid">
@@ -506,6 +514,10 @@
                             <!--<a href="<?php echo url();?>/my-products" class="backbtn pull-left"><i class="fa fa-angle-left"></i> Back to Product</a>-->
                               <input type="hidden" id="excluded_val" name="excluded_val">
                             <input type="submit" class="btn" value="Submit Your Product">
+                            <div class="product_name edit_prod col-xs-12 pull-right">
+                                <div class="row"><div class="row"><div class="col-sm-2 text-right"><label>Tags</label></div>
+                                <div class="col-sm-10"><input type="text" name="tags" id="tags" value="{!! $products->tags!!}"></div></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>

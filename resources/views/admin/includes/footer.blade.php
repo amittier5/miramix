@@ -1,5 +1,5 @@
 <div class="container">
-    <b class="copyright">&copy; 2014 Miramix - Miramix.com </b>All rights reserved.
+    <b class="copyright">&copy; <?php echo date('Y');?> Miramix - Miramix.com </b>All rights reserved.
 </div>
 
 

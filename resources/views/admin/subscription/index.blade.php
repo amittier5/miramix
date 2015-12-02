@@ -33,7 +33,7 @@
                 <?php $i=1;?>
                 @foreach ($subscriptions as $subscription)
                 <tr class="odd gradeX">
-                    <td class=""><?php echo $subscription->subscription_id; ?></td>
+                    <td class=""><?php echo $i; ?></td>
                     <td class="">{!! $subscription->getSubMembers->fname.' '.$subscription->getSubMembers->lname ." - ". $subscription->getSubMembers->business_name!!}</td>
                     <td class="">${!! $subscription->subscription_fee !!}</td>
                     <td class="">{!! $subscription->start_date !!}</td>

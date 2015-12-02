@@ -101,10 +101,12 @@ class BrandController extends BaseController {
 	    }elseif($sortby=='date'){
 		$product->orderBy('created_at', 'DESC');
 	    }else{
-		$product->orderBy('id', 'DESC');
+		$product->orderBy('popularity', 'DESC');
 	    }
 	    
-	 }
+	 }else{
+		$product->orderBy('popularity', 'DESC');
+	    }
           $product=$product->paginate($item_per_page);
           
         $total_brand_product = DB::table('products')
@@ -359,9 +361,28 @@ public function brand_creditcard_details(){
                     }
                 
             }else{
-            
-            
+             $country = DB::table('countries') ->where('country_id', '=',Request::input('card_country_id'))->first();
+             
+             $shipping_card_addr = array('card_holder_fname' => Request::input('card_holder_fname'),
+                                        'card_holder_lname' => Request::input('card_holder_lname'),
+                                        'expiry_month' => Request::input('expiry_month'),
+                                        'expiry_year' => Request::input('expiry_year'),
+                                        'card_shiping_address' => Request::input('card_shiping_address'),
+                                        'card_country_id' => Request::input('card_country_id'),
+                                        'card_shiping_city' => Request::input('card_shiping_city'),
+                                        'card_shipping_phone_no' => Request::input('card_shipping_phone_no'),
+                                       
+                                        'card_state' =>$obj->get_state(Request::input('card_state')),
+                                        'card_shipping_postcode' => Request::input('card_shipping_postcode'),
+                                        'country'=>$country->name
+                                        );
+             
             if(strstr(Request::input('card_number'),'XXXX')!=false)
+            $shipping_card_addr['card_number']=Request::input('card_number');
+             $shipping_card_addr['expirationDate']= Request::input('expiry_year')."-".Request::input('expiry_month');
+           $res=Authorizenet::updateprofile($shipping_card_addr,$brand_details);
+           
+           /*
            $paymentProfile->payment->creditCard->cardNumber = Request::input('card_number');
             
             $paymentProfile->payment->creditCard->expirationDate = Request::input('expiry_year')."-".Request::input('expiry_month');
@@ -391,22 +412,12 @@ public function brand_creditcard_details(){
            // exit;
             $response2 = $request->updateCustomerShippingAddress($brand_details->auth_profile_id, $brand_details->auth_address_id, $address);
             
+            */
             
             
-            
-                    if($response->isOk() && $response2->isOk()){
+           if($res['status']=='success'){
         
-            $shipping_card_addr = array('card_holder_fname' => Request::input('card_holder_fname'),
-                                        'card_holder_lname' => Request::input('card_holder_lname'),
-                                        'expiry_month' => Request::input('expiry_month'),
-                                        'expiry_year' => Request::input('expiry_year'),
-                                        'card_shiping_address' => Request::input('card_shiping_address'),
-                                        'card_country_id' => Request::input('card_country_id'),
-                                        'card_shiping_city' => Request::input('card_shiping_city'),
-                                        'card_shipping_phone_no' => Request::input('card_shipping_phone_no'),
-                                       
-                                        'card_state' => Request::input('card_state'),
-                                        'card_shipping_postcode' => Request::input('card_shipping_postcode'));
+           
 	    $shipping_card_addr_serial = serialize($shipping_card_addr);
             $brand['card_details']=$shipping_card_addr_serial;
             $brandresult=Brandmember::find(Session::get('brand_userid') );

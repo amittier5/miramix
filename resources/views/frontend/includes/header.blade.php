@@ -24,6 +24,7 @@ $about_us = '';
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <!-- Page Description and Author -->
   <meta name="description" content="MIRAMIX">
+  <link rel="shortcut icon" href="<?php echo url();?>/public/backend/images/favicon.ico" type="image/x-icon" />
   	<!--theme font-->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,600,400italic,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
   <!-- Bootstrap CSS  -->
@@ -97,18 +98,18 @@ $about_us = '';
               <?php 
                 if(Session::has('member_userid') || Session::has('brand_userid'))
                 { 
-                  if(Session::has('brand_user_email'))
+                  if(Session::has('brand_username'))
                   { 
               ?>
                   <li class="login_email"><a href="<?php echo url();?>/brand-dashboard">
-					         {!! Session::get('brand_user_email') !!} </a></li>
+					         {!! Session::get('brand_username') !!} </a></li>
 					  <?php 
                   }
-					        else if(Session::has('member_user_email'))
+					        else if(Session::has('member_username'))
 									{
 									?>
                   <li class="login_email"><a href="<?php echo url();?>/member-dashboard">
-                   {!! Session::get('member_user_email') !!} </a></li>
+                   {!! Session::get('member_username') !!} </a></li>
 						<?php 
                   }
             ?>
@@ -162,7 +163,7 @@ $about_us = '';
     function redirectToCart()
     {
       var cart = $("#cart_det").text();
-      if(cart)
+      //if(cart)
       {
          window.location = "<?php echo url();?>/show-cart";
       }

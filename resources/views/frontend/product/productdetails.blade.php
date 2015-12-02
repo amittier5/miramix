@@ -329,7 +329,7 @@
         <div class="product">
             <div class="head_section">
                 <h2><?php echo $value->product_name;?></h2>
-                <p class="price"><?php echo '$'.number_format($value->min_price,2);?></p>
+                <p class="price"><?php echo '$'.number_format($value->min_price*7,2);?></p>
             </div>
 
             <div class="image_section" <?php if(($value->image1 !='') && (file_exists('uploads/product/thumb/'.$value->image1))) {?>

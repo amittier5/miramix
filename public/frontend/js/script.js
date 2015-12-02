@@ -901,5 +901,27 @@ $(document).on('click','.acct_box',function(){
 	else
 	window.location.href=thishref;
 });
+
+/********for dashboard Menu**********/
+$(document).ready(function(e) {
+   
+   
+   $(document).on('click','.mob_topmenu_back',function(){
+	  $('.top_menu_port').toggleClass('activate_dash');
+	  $('.mob_topmenu_back').fadeToggle();
+	  $('#nav-icon2').toggleClass('open'); 
+   });
+    
+});
+
+$(document).ready(function(){
+	$('#nav-icon2').click(function(){
+		$(this).toggleClass('open');
+		$('.top_menu_port').toggleClass('activate_dash');
+	  	$('.mob_topmenu_back').fadeToggle();
+		$('body').toggleClass('havefixed');
+	});
+});
+
 	
 

@@ -4,6 +4,16 @@
 
 <div class="inner_page_container nomar_bottom">
 
+<div id="nav-icon2">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="mob_topmenu_back"></div>
+
 <div class="top_menu_port">
     	<div class="acct_box yellow_act">
                 	<div class="acct_box_inn">
@@ -155,7 +165,7 @@
               <div class="product">
                 	<div class="head_section">
                    	  <h2>{!! ucwords($each_product->product_name) !!}</h2>
-                       <p class="price"><?php echo '$'.number_format($each_product->min_price,2);?> </p>
+                       <p class="price"><?php echo '$'.number_format($each_product->min_price*7,2);?> </p>
                       </div>
                     <!--<div class="image_section">
                     @if($each_product->image1!="")

@@ -153,17 +153,18 @@ class MemberController extends BaseController {
  /* --------------------  Multiple Shipping Address For Members --------------------*/
 
  public function memberShippingAddress()
-     {
-        $obj = new helpers();
-       if(!$obj->checkMemberLogin()){
-            return redirect('memberLogin');
-        }
-        
-        $address = DB::table('addresses')->where("mem_brand_id",Session::get('member_userid'))->orderBy('id','DESC')->get();
-      $member_details = Brandmember::find(Session::get('member_userid'));
-        
-        return view('frontend.member.member_shipping_address',compact('address','member_details'),array('title' => 'My Addresses'));
-     }
+ {
+    $obj = new helpers();
+    if(!$obj->checkMemberLogin()){
+      return redirect('memberLogin');
+    }
+    
+    $address = DB::table('addresses')->where("mem_brand_id",Session::get('member_userid'))->orderBy('id','DESC')->get();
+    $member_details = Brandmember::find(Session::get('member_userid'));
+    //echo "<pre>";print_r($address);exit;
+    
+    return view('frontend.member.member_shipping_address',compact('address','member_details'),array('title' => 'My Addresses'));
+ }
      
      
      

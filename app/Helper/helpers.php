@@ -160,15 +160,26 @@ class helpers extends Cart {
     }
     
     function get_state($state_id){
-	$state = DB::table('zones')->where('zone_id',$state_id)->first();
-	 return $state->name;
+        if (DB::table('zones')->where('zone_id',$state_id)->exists()) {
+            $state = DB::table('zones')->where('zone_id',$state_id)->first();
+            return $state->name;
+        }
+        else
+           return ""; 
+	  
+	   
 	
     }
     
     function get_country($country_id){
 	
-	 $country = DB::table('countries')->where('country_id',$country_id)->first();
-	 return $country->name;
+        if (DB::table('countries')->where('country_id',$country_id)->exists()) {
+            $country = DB::table('countries')->where('country_id',$country_id)->first();
+            return $country->name;
+        }
+        else
+           return ""; 
+	
     }
 
     function getProductDetails($product_id){

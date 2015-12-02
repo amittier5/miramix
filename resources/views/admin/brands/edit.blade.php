@@ -36,8 +36,8 @@
                       required: true,
                       email: true
                     },
-            gender: "required",
-            dob: "required",
+            //gender: "required",
+            //dob: "required",
            
             phone_no: 
                     {
@@ -52,8 +52,8 @@
             fname: "Please enter first name.",
             lname: "Please enter last name.",
             email: "Please enter valid email address.",
-            gender: "Please choose gender.",
-            dob: "Please enter date of birth.",
+            //gender: "Please choose gender.",
+            //dob: "Please enter date of birth.",
             phone_no: "Please enter valid phone number."
         },               
 
@@ -155,63 +155,63 @@ $( "#dob" ).datepicker({
       <div class="control-group">
             <label class="control-label" for="basicinput">Brand Website</label>
             <div class="controls">
-               {!! Form::text('brand_sitelink',null,['class'=>'form-control','id'=>'brand_sitelink','placeholder'=>'Website Url', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('brand_sitelink',null,['class'=>'span8','id'=>'brand_sitelink','placeholder'=>'Website Url', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
         </div>
       
     <div class="control-group">
             <label class="control-label" for="basicinput">Facebook Url</label>
             <div class="controls">
-               {!! Form::text('facebook_url',null,['class'=>'form-control','id'=>'facebook_url','placeholder'=>'Facebook Url', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('facebook_url',null,['class'=>'span8','id'=>'facebook_url','placeholder'=>'Facebook Url', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
         </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">Twitter Url</label>
             <div class="controls">
-               {!! Form::text('twitter_url',null,['class'=>'form-control','id'=>'twitter_url','placeholder'=>'Twitter Url', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('twitter_url',null,['class'=>'span8','id'=>'twitter_url','placeholder'=>'Twitter Url', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">Linkedin Url</label>
             <div class="controls">
-               {!! Form::text('linkedin_url',null,['class'=>'form-control','id'=>'linkedin_url','placeholder'=>'Linkedin Url', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('linkedin_url',null,['class'=>'span8','id'=>'linkedin_url','placeholder'=>'Linkedin Url', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">Youtube Url</label>
             <div class="controls">
-               {!! Form::text('youtube_link',null,['class'=>'form-control','id'=>'youtube_link','placeholder'=>'Youtube Url', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('youtube_link',null,['class'=>'span8','id'=>'youtube_link','placeholder'=>'Youtube Url', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
       
       <div class="control-group">
             <label class="control-label" for="basicinput">About Brand</label>
             <div class="controls">
-              {!! Form::textarea('brand_details',null,['class'=>'form-control', 'rows'=>5, 'cols'=>150,'id'=>'brand_details','placeholder'=>'Short Description About Brand', 'aria-describedby'=>'basic-addon2'])!!}
+              {!! Form::textarea('brand_details',null,['class'=>'span8', 'rows'=>5, 'cols'=>150,'id'=>'brand_details','placeholder'=>'Short Description About Brand', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
         </div>
       
     <div class="control-group">
             <label class="control-label" for="basicinput">AuthorizeNet Profile ID</label>
             <div class="controls">
-               {!! Form::text('auth_profile_id',null,['class'=>'form-control','id'=>'auth_profile_id','placeholder'=>'AuthorizeNet Profile ID', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('auth_profile_id',null,['class'=>'span8','id'=>'auth_profile_id','placeholder'=>'AuthorizeNet Profile ID', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">AuthorizeNet Payment Profile ID</label>
             <div class="controls">
-               {!! Form::text('auth_payment_profile_id',null,['class'=>'form-control','id'=>'auth_payment_profile_id','placeholder'=>'AuthorizeNet Payment Profile ID', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('auth_payment_profile_id',null,['class'=>'span8','id'=>'auth_payment_profile_id','placeholder'=>'AuthorizeNet Payment Profile ID', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">AuthorizeNet Address ID</label>
             <div class="controls">
-               {!! Form::text('auth_address_id',null,['class'=>'form-control','id'=>'auth_address_id','placeholder'=>'AuthorizeNet Address ID', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('auth_address_id',null,['class'=>'span8','id'=>'auth_address_id','placeholder'=>'AuthorizeNet Address ID', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
@@ -239,7 +239,7 @@ $( "#dob" ).datepicker({
     <div class="control-group">
             <label class="control-label" for="basicinput">Call DateTime</label>
             <div class="controls">
-               {!! Form::text('call_datetime',null,['class'=>'form-control','id'=>'call_datetime','placeholder'=>'Call Date Time', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('call_datetime',null,['class'=>'span8','id'=>'call_datetime','placeholder'=>'Call Date Time', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
@@ -250,28 +250,28 @@ $( "#dob" ).datepicker({
     <div class="control-group">
             <label class="control-label" for="basicinput">Shipping Firstname</label>
             <div class="controls">
-               {!! Form::text('first_name',$baddress->first_name,['class'=>'form-control','id'=>'first_name','placeholder'=>'Shipping Firstname', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('first_name',$baddress->first_name,['class'=>'span8','id'=>'first_name','placeholder'=>'Shipping Firstname', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">Shipping Lastname</label>
             <div class="controls">
-               {!! Form::text('last_name',$baddress->last_name,['class'=>'form-control','id'=>'first_name','placeholder'=>'Shipping Lastname', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('last_name',$baddress->last_name,['class'=>'span8','id'=>'first_name','placeholder'=>'Shipping Lastname', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
      <div class="control-group">
             <label class="control-label" for="basicinput">Address1</label>
             <div class="controls">
-               {!! Form::text('address1',$baddress->address,['class'=>'form-control','id'=>'address1','placeholder'=>'Address1', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('address1',$baddress->address,['class'=>'span8','id'=>'address1','placeholder'=>'Address1', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
      
      <div class="control-group">
             <label class="control-label" for="basicinput">Address2</label>
             <div class="controls">
-               {!! Form::text('address2',$baddress->address2,['class'=>'form-control','id'=>'address2','placeholder'=>'Address2', 'aria-describedby'=>'basic-addon2'])!!}
+               {!! Form::text('address2',$baddress->address2,['class'=>'span8','id'=>'address2','placeholder'=>'Address2', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
      <div class="control-group">
@@ -290,14 +290,14 @@ $( "#dob" ).datepicker({
     <div class="control-group">
             <label class="control-label" for="basicinput">City</label>
             <div class="controls">
-                {!! Form::text('city',$baddress->city,['class'=>'form-control','id'=>'city','placeholder'=>'City', 'aria-describedby'=>'basic-addon2'])!!}
+                {!! Form::text('city',$baddress->city,['class'=>'span8','id'=>'city','placeholder'=>'City', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     
     <div class="control-group">
             <label class="control-label" for="basicinput">Post Code</label>
             <div class="controls">
-                {!! Form::text('postcode',$baddress->postcode,['class'=>'form-control','id'=>'postcode','placeholder'=>'Post Code', 'aria-describedby'=>'basic-addon2'])!!}
+                {!! Form::text('postcode',$baddress->postcode,['class'=>'span8','id'=>'postcode','placeholder'=>'Post Code', 'aria-describedby'=>'basic-addon2'])!!}
             </div>
     </div>
     

@@ -909,7 +909,8 @@ $("#business").click(function(){
 $('#calltime').datetimepicker({ format: 'LT',
 stepping:60,
  disabledHours: [0, 1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24],
-enabledHours: [8,9, 10, 11, 12, 13, 14, 15, 16,17,18,19,20]
+enabledHours: [8,9, 10, 11, 12, 13, 14, 15, 16,17,18,19,20],
+keepOpen:true
 });
 
  $("#calltime, #calldate").on("dp.change", function(e) {

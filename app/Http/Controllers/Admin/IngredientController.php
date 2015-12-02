@@ -138,6 +138,7 @@ class IngredientController extends Controller {
       // Add Component and vitamins
      // print_r(Request::input('component_name'));
      // exit;
+      $cnt = 0;
       foreach (Request::input('component_name') as $key => $each_component) {
 
           $new_arr = array('ingredient_id'=>$lastinsertedId,'component_name'=>$each_component['name'],
@@ -149,9 +150,9 @@ class IngredientController extends Controller {
 		 //exit;
            //foreach ($each_component['vitamin'] as $key => $each_vitamin) {
            	for($i=0;$i<count($each_component['vitamin']);$i++){
-              $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$each_component['weight'][$i],'vitamin_weight'=>$each_component['vitamin_weight_'.$i][0]);
-//echo "<pre>";print_r($new_vitamin_arr).'<br/>';
-              $component_row = ComponentVitamin::create($new_vitamin_arr);
+              $new_vitamin_arr = array('component_id'=>$lastComponentId,'vitamin'=>$each_component['vitamin'][$i],'weight'=>$each_component['weight'][$i],'vitamin_weight'=>$each_component['vitamin_weight_'.$cnt][0]);
+                $component_row = ComponentVitamin::create($new_vitamin_arr);
+                $cnt++;
            }
 		   
       }

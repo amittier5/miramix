@@ -11,7 +11,7 @@
           </div>
     </div>   
     <!-- Start Products panel -->
-    <div class="products_panel">
+    <div class="products_panel no_marg">
       <div class="container">
         <div class="product_list shop_cart">
          @if(Session::has('success'))
@@ -26,11 +26,15 @@
           <strong>{!! Session::get('error') !!}</strong>
           </div>
          @endif
+         <?php 
+          if(!empty($cart_result))
+          {
+         ?> 
          <div class="row"> 
           <div class="col-sm-9">
           <div class="table-responsive shad_tabres">
               <table class="table table-cart">
-              <thead>
+              <thead>             
               <tr>
                   <th>Product Image</th>
                   <th>Product Name</th>
@@ -39,7 +43,7 @@
                   <th>Unit Price</th>
                   <th>Total</th>
                   <th>&nbsp;</th>
-                </tr>
+                </tr>              
               </thead>
               <tbody>
                 <?php
@@ -106,7 +110,7 @@
               </tr>
               </tfoot>
             </table>
-        </div>
+          </div>
 
           </div>
           <div class="col-sm-3">
@@ -151,7 +155,14 @@
             <?php } ?>
             </div>
           </div>
-         </div> 
+         </div>
+         <?php } else {?>
+         <div class="col-xs-12 text-center noprod_cart">
+         <img src="<?php echo url();?>/public/frontend/images/nocart_prod.png" alt="">
+         <p class="empt_shpcart">Your shopping cart is empty</p>
+         <a href="<?php echo url();?>" class="butt">Continue Shopping</a>
+         </div>
+         <?php } ?>
         </div>
         </div>
     </div>

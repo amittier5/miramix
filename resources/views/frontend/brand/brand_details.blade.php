@@ -43,13 +43,38 @@ if(isset($_REQUEST['page']))
           Please visit <a href="{!! $all_brand_member->brand_sitelink;!!}" target="blank">{!! $all_brand_member->brand_sitelink;!!}</a> for more information
       </p>
       @endif
+      <div class="links_brands">@if($all_brand_member->youtube_link!='')
+      <p class="text-center you_brand">
+         <a href="{!! $all_brand_member->youtube_link;!!}" target="blank"><i class="fa fa-youtube-play"></i></a>
+      </p>
+      @endif
+      @if($all_brand_member->facebook_url!='')
+      <p class="text-center face_brand">
+          <a href="{!! $all_brand_member->facebook_url;!!}" target="blank"><i class="fa fa-facebook-square"></i></a>
+      </p>
+      @endif
+      @if($all_brand_member->twitter_url!='')
+      <p class="text-center twit_brand">
+          <a href="{!! $all_brand_member->twitter_url;!!}" target="blank"><i class="fa fa-twitter"></i></a>
+      </p>
+      @endif
+      @if($all_brand_member->linkedin_url!='')
+      <p class="text-center link_brand">
+          <a href="{!! $all_brand_member->linkedin_url;!!}" target="blank"><i class="fa fa-linkedin-square"></i></a>
+      </p>
+      @endif</div>
       <div class="video-panel">
         <div class="video">
           <img class="laptop img-responsive" src="<?php echo url();?>/public/frontend/images/laptop.png" alt=""/>
           <div class="iframe_panel">
             @if($all_brand_member->youtube_link!='')
-            <?php $arr = explode("=",strip_tags($all_brand_member->youtube_link)); ?>
+            <?php $arr = explode("=",strip_tags($all_brand_member->youtube_link));
+            if(isset($arr[1])){
+            ?>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/{!! $arr[1];!!}" frameborder="0" allowfullscreen></iframe>
+              <?php }else{?>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/qMYwIoPSkFM" frameborder="0" allowfullscreen></iframe>
+              <?php }?>
             @else
             <iframe width="560" height="315" src="https://www.youtube.com/embed/qMYwIoPSkFM" frameborder="0" allowfullscreen></iframe>
             @endif 
@@ -86,7 +111,7 @@ if(isset($_REQUEST['page']))
           <div class="product">
               <div class="head_section">
                   <h2>{!! $each_product->product_name !!}</h2>
-                  <p class="price">Starting at <?php echo '$'.number_format($each_product->min_price,2);?> </p>
+                  <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*7,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
                   <!--<img src="<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}" alt=""/>-->

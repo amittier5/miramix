@@ -16,5 +16,14 @@ jQuery(document).ready(function() {
 			window.location.reload();
 		 }
 		 
-		 }, 224000);
+		 }, 600000);
+     
+     
+       function refreshToken() {
+            jQuery.get('refresh-token').done(function(data){
+                jQuery('input._token').val(data);
+            });
+        };
+
+        setInterval(refreshToken, 60000); // Each minute, edit milliseconds as you prefer.
 });

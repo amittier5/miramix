@@ -372,6 +372,21 @@
 		margin: 0 auto 10px;
 		max-width: 80%;
 	}
+	#nav-icon2{
+		display:block;	
+	}
+	.top_menu_port{
+		width:245px;
+		left:-245px;
+		z-index:99999;
+		transition:all .3s ease-in-out;		
+	}
+	.top_menu_port.activate_dash{
+		left:0;	
+	}
+	.top_menu_port .acct_box{
+		float:none !important;	
+	}
 }
 @media only screen and (max-width: 479px) { 
   

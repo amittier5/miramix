@@ -23,7 +23,7 @@
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?php echo $i;?>"><span class="num_span"><?php echo $i;?></span> {!! $eachfaq->question  !!}<i class="fa fa-minus-square pull-right"></i></a>
                 </h4>
             </div>
-            <div id="collapseOne<?php echo $i;?>" class="panel-collapse collapse in">
+            <div id="collapseOne<?php echo $i;?>" class="panel-collapse collapse <?php if($i==1){ ?> in <?php } ?>">
                 <div class="panel-body">
                     {!! html_entity_decode($eachfaq->answer)  !!}
                 </div>
@@ -47,6 +47,13 @@
  </div>
  <script>
  $(document).ready(function(e) {
+	$('.faq_cnt .panel-collapse').each(function(index, element) {
+        var $this=$(this);
+		if($this.hasClass('in'))
+			$this.parent().find('.panel-heading .panel-title i').removeClass('fa fa-plus-square-o').addClass('fa fa-minus-square');
+		else			
+			$this.parent().find('.panel-heading .panel-title i').removeClass('fa fa-minus-square').addClass('fa fa-plus-square-o');		
+    });
     $(document).on('show.bs.collapse','.faq_cnt .panel-collapse',function(){
 		var $this=$(this);
 		$this.parent().find('.panel-heading .panel-title i').removeClass('fa fa-plus-square-o').addClass('fa fa-minus-square');	

@@ -80,14 +80,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image1')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image1')->getClientOriginalExtension(); // getting image extension
         $fileName1 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image1')->move($destinationPath, $fileName1); // uploading file to given path
 
         $obj->createThumbnail($fileName1,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName1,109,89,$destinationPath,$medium);
       }
       else{
@@ -97,14 +97,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image2')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image2')->getClientOriginalExtension(); // getting image extension
         $fileName2 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image2')->move($destinationPath, $fileName2); // uploading file to given path
 
         $obj->createThumbnail($fileName2,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName2,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName2,109,89,$destinationPath,$medium);
       }
       else{
@@ -114,14 +114,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image3')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image3')->getClientOriginalExtension(); // getting image extension
         $fileName3 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image3')->move($destinationPath, $fileName3); // uploading file to given path
 
         $obj->createThumbnail($fileName3,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName3,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName3,109,89,$destinationPath,$medium);
       }
       else{
@@ -131,14 +131,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image4')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image4')->getClientOriginalExtension(); // getting image extension
         $fileName4 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image4')->move($destinationPath, $fileName4); // uploading file to given path
 
         $obj->createThumbnail($fileName4,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName4,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName4,109,89,$destinationPath,$medium);
       }
       else{
@@ -147,14 +147,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image5')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image5')->getClientOriginalExtension(); // getting image extension
         $fileName5 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image5')->move($destinationPath, $fileName5); // uploading file to given path
 
         $obj->createThumbnail($fileName5,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName5,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName5,109,89,$destinationPath,$medium);
       }
       else{
@@ -163,14 +163,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image6')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		$home_thumb_path = 'uploads/product/home_thumb/';
+		    $home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image6')->getClientOriginalExtension(); // getting image extension
         $fileName6 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image6')->move($destinationPath, $fileName6); // uploading file to given path
 
         $obj->createThumbnail($fileName6,771,517,$destinationPath,$thumb_path);
-		$obj->createThumbnail($fileName1,380,270,$destinationPath,$home_thumb_path);
+		    $obj->createThumbnail($fileName6,380,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName6,109,89,$destinationPath,$medium);
       }
       else{
@@ -601,7 +601,7 @@ class ProductController extends BaseController {
 			Input::file('image2')->move($destinationPath, $fileName2); // uploading file to given path
 
 			$obj->createThumbnail($fileName2,771,517,$destinationPath,$thumb_path);
-			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName2,580,270,$destinationPath,$home_thumb_path);
 			$obj->createThumbnail($fileName2,109,89,$destinationPath,$medium);
 
 		}
@@ -619,7 +619,7 @@ class ProductController extends BaseController {
 			Input::file('image3')->move($destinationPath, $fileName3); // uploading file to given path
 
 			$obj->createThumbnail($fileName3,771,517,$destinationPath,$thumb_path);
-			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName3,580,270,$destinationPath,$home_thumb_path);
 			$obj->createThumbnail($fileName3,109,89,$destinationPath,$medium);
 
 		}
@@ -637,7 +637,7 @@ class ProductController extends BaseController {
 			Input::file('image4')->move($destinationPath, $fileName4); // uploading file to given path
 
 			$obj->createThumbnail($fileName4,771,517,$destinationPath,$thumb_path);
-			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName4,580,270,$destinationPath,$home_thumb_path);
 			$obj->createThumbnail($fileName4,109,89,$destinationPath,$medium);
 
 		}
@@ -654,7 +654,7 @@ class ProductController extends BaseController {
 			Input::file('image5')->move($destinationPath, $fileName5); // uploading file to given path
 
 			$obj->createThumbnail($fileName5,771,517,$destinationPath,$thumb_path);
-			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName5,580,270,$destinationPath,$home_thumb_path);
 			$obj->createThumbnail($fileName5,109,89,$destinationPath,$medium);
 
 
@@ -672,7 +672,7 @@ class ProductController extends BaseController {
 			Input::file('image6')->move($destinationPath, $fileName6); // uploading file to given path
 
 			$obj->createThumbnail($fileName6,771,517,$destinationPath,$thumb_path);
-			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName6,580,270,$destinationPath,$home_thumb_path);
 			$obj->createThumbnail($fileName6,109,89,$destinationPath,$medium);
 
 		}
@@ -785,7 +785,7 @@ class ProductController extends BaseController {
         }
 
       // Create Product Ingredient        
-        if(NULL!=Request::input('ingredient')){
+      if(NULL!=Request::input('ingredient')){
 	      foreach (Request::input('ingredient') as $key2 => $ing_value) {
 	        if($ing_value['id']!="" && $ing_value['weight']!=""){
 
@@ -981,7 +981,7 @@ class ProductController extends BaseController {
 
       //Insert Into searchtags table
       foreach ($all_data_arr as $key => $value) {
-        $arr = array('product_id'=>$lastinsertedId,'type'=>$value['type'],'name'=>$value['value']);
+        $arr = array('product_id'=>$lastinsertedId,'type'=>$value['type'],'name'=>trim($value['value']));
         Searchtag::create($arr);
       }
 

@@ -17,7 +17,7 @@
                 <p class="top_p">Make sure the URL is entered correctly.</p>
                 <a class="return_btn" href="<?php echo url();?>">Return to homepage</a>
                 <p>or try searching what you are looking for</p>
-                <p><?php echo  $e->getMessage() ?></p>sdfds
+               
                 </div>
             </div>
             <div class="col-sm-6 right_four"><img alt="" src="<?php echo url();?>/public/frontend/images/404page/404img.png"></div>

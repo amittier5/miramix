@@ -34,23 +34,35 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-       /* 'facebook' => [
-        'client_id' => '1669868613253456',
-        'client_secret' => 'c4b8346601a4c99171f4653da535aed1',
-        'redirect' => 'http://www.miramix-development.com/account/facebook',
+    //     'facebook' => [
+    //     'client_id' => '1712231159008324',
+    //     'client_secret' => 'cfaefc82fe22a30a071960c46d09362f',
+    //     'redirect' => 'http://www.miramix-development.com/account/facebook',
+    // ],
+    //    'google' => [
+    //     'client_id'     => '649990483092-gsof9f6vtg5v1kg95mkknle69ce83s9i.apps.googleusercontent.com',
+    //     'client_secret' => 'K3-YyyM7e-71xezXj_lqCknr',
+    //     'redirect'      => 'http://www.miramix-development.com/account/google'
+    // ],
+
+    /*'facebook' => [
+        'client_id' => '1712231159008324',
+        'client_secret' => 'cfaefc82fe22a30a071960c46d09362f',
+        'redirect' => 'http://www.miramix.com/account/facebook',
     ],
        'google' => [
         'client_id'     => '649990483092-gsof9f6vtg5v1kg95mkknle69ce83s9i.apps.googleusercontent.com',
         'client_secret' => 'K3-YyyM7e-71xezXj_lqCknr',
-        'redirect'      => 'http://www.miramix-development.com/account/google'
+        'redirect'      => 'http://www.miramix.com/account/google'
     ],*/
+
      'facebook' => [
         'client_id' => '1494855380830024',
         'client_secret' => '86def9d21b7d42a71b41d743b044c0e7',
         'redirect' => 'http://www.miramix.com/account/facebook',
     ],
        'google' => [
-        'client_id'     => '645160792188-vd95504d5uakqndc95mk1kmnbaus91gd.apps.googleusercontent.com',
+        'client_id'     => '645160792188-vd95504d5uakqndc95mklkmnbaus91gd.apps.googleusercontent.com',
         'client_secret' => 'hGGrmZTNwhTKmwjcy8Uguyhr',
         'redirect'      => 'http://www.miramix.com/account/google'
     ],

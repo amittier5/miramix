@@ -4,10 +4,16 @@
 
   
 @if(Session::has('success'))
-        <div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{!! Session::get('success') !!}</strong>
-        </div>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{!! Session::get('success') !!}</strong>
+    </div>
+ @endif
+ @if(Session::has('error'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{!! Session::get('error') !!}</strong>
+    </div>
  @endif
  
     <div class="module">
@@ -15,16 +21,15 @@
         <table cellpadding="0" id="member_admin" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
             <thead>
                 <tr>
-                    <th>Sl No.</th>
+                    <th style="width:20px;">Sl No.</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th style="width:124px;">Email</th>
                     <th>Phone</th>
                     <th>Username</th>
-                    
                     <th>Status</th>
                     <th>Admin Status</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th style="width:44px;">Edit</th>
+                    <th style="width:64px;">Delete</th>
                 </tr>
             </thead>
                 
@@ -38,7 +43,6 @@
                     <td class="">{!! $member->email !!}</td>
                     <td class="">{!! $member->phone_no !!}</td>
                     <td class="">{!! $member->username !!}</td>
-                    
                     <td class="">
                         @if ($member->status == 1)
                             Active 
@@ -59,7 +63,7 @@
                         <a href="{!!route('admin.member.edit',$member->id)!!}" class="btn btn-warning">Edit</a>
                     </td>
                     <td>
-                        {!! Form::open(['method' => 'DELETE', 'route'=>['admin.member.destroy', $member->id]]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'route'=>['admin.member.destroy', $member->id], 'onsubmit' => 'return ConfirmDelete()']) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
                     </td>
@@ -72,4 +76,16 @@
     </div>
 
   <div><?php echo $members->render(); ?></div>
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("Are you sure you want to delete?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
 @endsection

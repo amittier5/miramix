@@ -36,8 +36,8 @@
                       required: true,
                       email: true
                     },
-            gender: "required",
-            dob: "required",
+           // gender: "required",
+            //dob: "required",
            
             phone_no: 
                     {
@@ -52,8 +52,8 @@
             fname: "Please enter first name.",
             lname: "Please enter last name.",
             email: "Please enter valid email address.",
-            gender: "Please choose gender.",
-            dob: "Please enter date of birth.",
+            //gender: "Please choose gender.",
+            //dob: "Please enter date of birth.",
             phone_no: "Please enter valid phone number."
         },               
 
@@ -96,7 +96,8 @@ $( "#dob" ).datepicker({
       <div class="control-group">
             <label class="control-label" for="basicinput">Password</label>
             <div class="controls">
-                 {!! Form::text('password',null,['class'=>'span8','id'=>'password']) !!}
+                 {!! Form::password('password',['class'=>'span8','id'=>'password']) !!}
+                 
             </div>
         </div>
 	    
@@ -107,12 +108,12 @@ $( "#dob" ).datepicker({
             </div>
         </div>
 	    
-      <div class="control-group">
+      <!-- <div class="control-group">
             <label class="control-label" for="basicinput">Slug *</label>
             <div class="controls">
-                 {!! Form::text('slug',null,['class'=>'span8','id'=>'slug']) !!}
+               //  {!! Form::text('slug',null,['class'=>'span8','id'=>'slug']) !!}
             </div>
-        </div>
+        </div> -->
 
        <!-- <div class="control-group">
             <label class="control-label" for="basicinput">Gender</label>

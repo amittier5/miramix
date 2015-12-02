@@ -236,3 +236,146 @@
         $("#pie-interactive").bind("plotclick", pieClick);
     }
 });
+
+
+//document.addEventListener("DOMContentLoaded", init, false);
+$(document).ready(function(){
+
+	$(document).on('change','.files',function(e){	
+			
+	},handleFileSelect);
+	
+	
+	function handleFileSelect(e) {
+
+		
+		var class_val=e.currentTarget.parentNode.parentNode.childNodes[3].className;
+
+		if(!e.target.files || !window.FileReader) return;
+		
+		
+		
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		filesArr.forEach(function(f) {
+			if(!f.type.match("image.*")) {
+				return;
+			}
+			//alert(f.size);
+			if(f.size>2 * 1024 * 1024){
+				sweetAlert("Oops...", "Image size should be less than 2MB", "error");
+				return;
+			}
+	
+			var reader = new FileReader();
+			
+			reader.onload = function (g) {
+
+				var image = new Image();flag=0;
+			    image.src = g.target.result;
+
+			    image.onload = function() {
+			       
+			        // access image size here 
+			        console.log(this.width);
+			        if(this.width<771){
+			        	sweetAlert("Oops...", "Image width should not be less than 771 px", "error");
+						//alert('image width should not be less than 771 px');
+						return;
+					}
+					if(this.height<517){
+						
+						sweetAlert("Oops...", "Image height should not be less than 517 px", "error");
+						return;
+					}
+
+					var html = "<span class=\"image_up\"><img src=\"" + g.target.result + "\"> <input class=\"edit_icon\" type=\"file\" name=\"files\" accept=\"image/*\"></span> <br clear=\"left\"/>";
+					//alert(g.target.result);
+					//e.currentTarget.parentNode.parentNode.childNodes[3].attr('id').append(html);
+					e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML='';	
+					e.currentTarget.parentNode.parentNode.childNodes[3].innerHTML=html;	
+
+			        
+			    };
+
+
+				//console.log(g.target.result);
+									
+			}
+			reader.readAsDataURL(f); 
+			
+		});
+	}
+
+	$(document).on('change','.edit_icon',function(e){
+		alert('files')
+		var $this=$(this);
+		e.addClass('asdas');
+		//console.log(selDiv);	
+		//handleFileSelect;
+			
+	},handleFileSelect_edit);
+	
+	function handleFileSelect_edit(e) {
+		
+		console.log(e.currentTarget.parentNode.parentNode);	
+					   
+		if(!e.target.files || !window.FileReader) return;
+		
+		
+		
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		filesArr.forEach(function(f) {
+			if(!f.type.match("image.*")) {
+				return;
+			}
+			if(f.size>2 * 1024 * 1024){
+				sweetAlert("Oops...", "Image size should be less than 2MB", "error");
+				return;
+			}
+	
+			var reader = new FileReader();
+			reader.onload = function (g) {
+
+				var image = new Image();flag=0;
+			    image.src = g.target.result;
+				
+				image.onload = function() {
+
+			        // access image size here 			     
+			        if(this.width<771){
+			        	sweetAlert("Oops...", "Image width should not be less than 771 px", "error");
+						//alert('image width should not be less than 771 px');
+						return;
+					}
+					if(this.height<517){
+						
+						sweetAlert("Oops...", "Image height should not be less than 517 px", "error");
+						return;
+					}
+
+					var html = "<span class=\"image_up\"><img src=\"" + g.target.result + "\"> <input class=\"edit_icon\" type=\"file\" name=\"files\" accept=\"image/*\"></span> <br clear=\"left\"/>";
+					//e.currentTarget.parentNode.parentNode.childNodes[3].attr('id').append(html);
+					console.log(g.target);
+					//alert(g.target.result);
+					//e.currentTarget.parentNode.parentNode.innerHTML='';	
+					e.currentTarget.parentNode.parentNode.innerHTML=html;	
+
+			        
+			    };
+
+
+												
+			}
+			reader.readAsDataURL(f); 
+			
+		});
+		
+		
+	}
+
+})
+	
+	
+	

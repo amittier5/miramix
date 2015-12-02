@@ -29,7 +29,7 @@ class SubscriptionController extends Controller {
     */
    public function index()
    {
-        $limit = 5;
+        $limit = 10;
         //$subscription = DB::table('subscription_history')->orderBy('subscription_id','DESC')->paginate($limit);
         $subscriptions =  Subscription::with('getSubMembers')->orderBy('subscription_id', 'desc')->paginate($limit);
         //echo '<pre>';print_r($subscriptions); exit;
@@ -49,8 +49,19 @@ class SubscriptionController extends Controller {
      public function edit($id)
     {
         $subscription=Subscription::with('getSubMembers')->where("subscription_id",$id)->first();
-       // print_r($subscription);exit;
-               return view('admin.subscription.edit',compact('subscription'),array('title'=>'Edit Subscription','module_head'=>'Edit Subscription'));
+
+        if(count($subscription)>0)
+        {
+          $status= array("pending"=>'pending',"paid"=>'paid');
+          
+          return view('admin.subscription.edit',compact('subscription','status'),array('title'=>'Edit Subscription','module_head'=>'Edit Subscription'));
+        }
+        else
+        {
+          Session::flash('error', 'Subscribe user is not found.'); 
+          return redirect('admin/subscription');
+        }
+        
     }
 
 

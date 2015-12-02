@@ -14,7 +14,7 @@
       
       
       <div class="search_panel">
-        <input type="text" class="form-control textbox" placeholder="Enter any feeling, ingredient, or brand" id="searchbox">
+        <input type="text" class="form-control textbox" placeholder="Enter any feeling, ingredient, or brand" maxlength="40" id="searchbox">
         <input type="button" class="search_button">
       </div>
       
@@ -67,9 +67,9 @@
       <div class="product">
             <div class="head_section">
               <h2><?php echo $product->product_name?></h2>
-              <p class="price">Starting at <?php echo '$'.number_format($product->min_price,2);?> </p>
+              <p class="price">Starting at <?php echo '$'.number_format($product->min_price*7,2);?> </p>
             </div>
-            <div class="image_section" style="background:url('<?php echo url();?>/uploads/product/<?php echo $product->image1?>');background-size:cover;height:240px;">
+            <div class="image_section" style="background:url('<?php echo url();?>/uploads/product/home_thumb/<?php echo $product->image1?>');background-size:cover;height:240px;">
                 
                 <div class="image_info">
                     <a href="<?php echo url();?>/product-details/{!! $product->product_slug !!}" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
@@ -176,9 +176,12 @@ products invented by people like you.</h2></div>
 		//$(".search_button").trigger("click");
 		search_product();
 	});
+       
+        
 var temp = new Array();
 var u=0;
     $('#searchbox').tokenfield({
+		minWidth: 290,
         autocomplete: {
          
           source: function( request, response ) {

@@ -67,46 +67,45 @@
 			    </div>
 			  @endif
 			 </div>
-              <div class="table-responsive">
-                <table class="table special_height">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>No. of Products</th>
-                    <th>Date Purchased</th>
-                    <th>Total</th>
-                    <th>Order Status</th>
-                    <th>Tracking</th>
-                    <th>Reorder</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                @if(!empty($order_list))
-                  @foreach($order_list as $each_order_list)
-
-                  <tr>
-                    <td>#{!! $each_order_list->order_number; !!}</td>
-                    <td>{!! count($each_order_list->AllOrderItems); !!}</td>
-                    <td>{!! date("M d, Y",strtotime($each_order_list->created_at)); !!}</td>
-                    <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
-                    <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
-                    <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
-                    <td><a href="javascript:void(0)" class="btn btn-white" onclick="reorderProduct('<?php echo $each_order_list->id;?>')">Reorder</a></td>
-                  </tr>
-                  @endforeach
-                @else
+            <div class="table-responsive">
+              <table class="table special_height">
+              <thead>
                 <tr>
-                    <td colspan="6">No records found</td>
+                  <th>Order ID</th>
+                  <th>No. of Products</th>
+                  <th>Date Purchased</th>
+                  <th>Total</th>
+                  <th>Order Status</th>
+                  <th>Tracking</th>
+                  <th>Reorder</th>
                 </tr>
-                @endif
-                </tbody>
-              </table>
-              </div>
-                {!! $order_list->render() !!}
-              <div class="form_bottom_panel">
-                <a href="member-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>
-              </div>
+              </thead>
+              <tbody>
+              @if($order_list->count()!=0)
+                @foreach($order_list as $each_order_list)
+
+                <tr>
+                  <td>#{!! $each_order_list->order_number; !!}</td>
+                  <td>{!! count($each_order_list->AllOrderItems); !!}</td>
+                  <td>{!! date("M d, Y",strtotime($each_order_list->created_at)); !!}</td>
+                  <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
+                  <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
+                  <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
+                  <td><a href="javascript:void(0)" class="btn btn-white" onclick="reorderProduct('<?php echo $each_order_list->id;?>')">Reorder</a></td>
+                </tr>
+                @endforeach
+              @else
+              <tr>
+                  <td colspan="6">No records found</td>
+              </tr>
+              @endif
+              </tbody>
+            </table>
+            </div>
+              {!! $order_list->render() !!}
+            <div class="form_bottom_panel">
+              <a href="member-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>
+            </div>
                 
            </div>
          </div>

@@ -61,7 +61,7 @@ class CmsController extends BaseController {
 	 $whereClause = array('role'=>1,'status'=>1,'admin_status'=>1,'subscription_status'=>'active','id'=>$all_brand_member->id);
         $brand = DB::table('brandmembers')->where($whereClause)->first();
         if(!isset($brand)){
-           return redirect('brand'); 
+           return redirect('brands'); 
         }
      
         $page=Request::input('page');
@@ -98,10 +98,12 @@ class CmsController extends BaseController {
 	    }elseif($sortby=='date'){
 		$product->orderBy('created_at', 'DESC');
 	    }else{
-		$product->orderBy('id', 'DESC');
+		$product->orderBy('popularity', 'DESC');
 	    }
 	    
-	 }
+	 }else{
+		$product->orderBy('popularity', 'DESC');
+	    }
           $product=$product->paginate($item_per_page);
           
         $total_brand_product = DB::table('products')

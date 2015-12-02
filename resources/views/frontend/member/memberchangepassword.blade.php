@@ -98,7 +98,7 @@
                     </div>
                     
                     <div class="form_bottom_panel">
-                    <a href="<?php echo url();?>/member-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>
+                    <!--<a href="<?php echo url();?>/member-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>-->
                     <button type="submit" form="change_mem_form" class="btn btn-default green_sub pull-right">Update</button>
                     </div>
                     

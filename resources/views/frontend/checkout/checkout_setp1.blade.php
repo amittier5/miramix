@@ -119,8 +119,9 @@
     </form>
     
     <p class="specil_p clearfix">OR</p>
-    <a href="" class="pull-left"><img src="<?php url();?>public/frontend/images/shopping-checkout/face_btn.png" alt=""></a>
-    <a href="" class="pull-left"><img src="<?php url();?>public/frontend/images/shopping-checkout/goog_btn.png" alt=""></a>
+    <a href="{!!URL::to('facebook')!!}" class="pull-left"><img src="<?php url();?>public/frontend/images/shopping-checkout/face_btn.png" alt=""></a>
+    <a href="{!!URL::to('google')!!}" class="pull-left"><img src="<?php url();?>public/frontend/images/shopping-checkout/goog_btn.png" alt=""></a>
+    
     
     </div>
     </div>
