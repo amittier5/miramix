@@ -36,7 +36,7 @@ class BaseController extends Controller {
 	
         //define("AUTHORIZENET_API_LOGIN_ID", "32px8XM76GZg");
         //define("AUTHORIZENET_TRANSACTION_KEY", "9PLV89n5LPD9dx55");
-	define("AUTHORIZENET_API_LOGIN_ID", "6Z7S5dmfD");
+	    define("AUTHORIZENET_API_LOGIN_ID", "6Z7S5dmfD");
         define("AUTHORIZENET_TRANSACTION_KEY", "2uKS73by9W9Rw3mN");
         define("AUTHORIZENET_SANDBOX", false);
         
@@ -52,6 +52,9 @@ class BaseController extends Controller {
         }
         
 	    view()->share('all_sitesetting',$all_sitesetting);
+
+       
+        
     }
 
     public function index(){

@@ -2,6 +2,15 @@
 @section('content')
 
 <div class="inner_page_container nomar_bottom">
+<div id="nav-icon2">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+  <div class="mob_topmenu_back"></div>
 
 <div class="top_menu_port">
     	<div class="acct_box blue_acct front">
@@ -71,7 +80,17 @@
                     <div class="bottom_dash clearfix">
                       
                       <div class="row">
+                      <?php if(count($address)>0){
+                        ?>
                         <h5 class="text-center">Your addresses are listed below</h5>
+                        <?php 
+                        }
+                        else
+                        {
+                        ?>
+                        <h5 class="text-center">You don't have any address</h5>
+                        <?php } ?>
+                        
                         <?php foreach ($address as $adata){ ?>
                         <div class="col-sm-4">
                             <div class="box_edit_address">

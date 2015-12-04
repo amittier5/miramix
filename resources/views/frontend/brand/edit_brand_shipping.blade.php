@@ -191,21 +191,35 @@
                             {!! Form::text('phone',$address->phone,['class'=>'form-control','id'=>'phone','placeholder'=>'Phone'])!!}
                           </div>
 			  
-                          
+                          <?php
+			 $checked1='';
+			 $checked2='';
+			  if($brand_details->address==$address->id ||  $countaddr==1) {
+			  $checked1='checked="checked"';
+			  }elseif($brand_details->address!=$address->id){
+			   $checked2='checked="checked"';
+			  }
+			  
+			  
+			  ?>
+			  
+			  
                           <div class="col-sm-12">
                           <p class="pull-left for_lineheight">Default Address</p>
-                          
+                         
+			 
                           <div class="check_box_tab marg_left pull-left">                            
-                              <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1" <?php if($brand_details->address==$address->id) {echo  'checked="checked"';} ?>>
+                              <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1" <?php echo  $checked1 ?> >
                               <label for="radio-4">Yes</label>
                           </div>
+			   <?php if($countaddr>1){ ?> 
                           <div class="check_box_tab marg_left pull-left">                            
-                              <input type="radio" class="regular-checkbox" id="radio-5" name="default_address" value="0" <?php if($brand_details->address!=$address->id) {echo  'checked="checked"';} ?>>
+                              <input type="radio" class="regular-checkbox" id="radio-5" name="default_address" value="0" <?php echo  $checked2 ?> >
                               <label for="radio-5">No</label>
                           </div>
-                          
+                           <?php }?>   
                           </div>
-                                                   
+                                               
                         
                        
                         </div>  

@@ -89,7 +89,7 @@ if(isset($_REQUEST['page']))
     @else
     <div class="populer_panel" id="brand_show">
       <p class="pull-left">Showing 
-        Showing <span id="fromtorec"><?php echo $from?>–<?php echo $to?></span> of <span id="totalrec"><?php echo $total_brand_pro?></span> results</p>
+        <span id="fromtorec"><?php echo $from?>–<?php echo $to?></span> of <span id="totalrec"><?php echo $total_brand_pro?></span> results</p>
         <div class="short_by">
           <p>Sort By:</p>
             <select id="sortby" name="sortby" >
@@ -99,8 +99,8 @@ if(isset($_REQUEST['page']))
             </select>
         </div>
     </div>
-    <div class="product_list">
-    <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/css/images/loader_productlist.GIF" alt=""></div>
+    <div class="product_list ajax_content" id="">
+    <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/images/load_genearted.GIF" alt=""></div>
       <?php 
       if((count($product[0]))>0) 
       {
@@ -110,7 +110,7 @@ if(isset($_REQUEST['page']))
       
           <div class="product">
               <div class="head_section">
-                  <h2>{!! $each_product->product_name !!}</h2>
+                  <h2 title="{!! $each_product->product_name !!}">{!! $each_product->product_name !!}</h2>
                   <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*7,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
@@ -154,7 +154,7 @@ if(isset($_REQUEST['page']))
             var page = $(this).attr("data-page"); //get page number from link
            
 			setTimeout(function(){
-            $(".product_list").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":page,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
+            $(".ajax_content").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":page,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
             //get content from PHP page
                 $(".loading-div").hide(); //once done, hide loading element
             });
@@ -167,7 +167,7 @@ if(isset($_REQUEST['page']))
                 $(".loading-div").show();
 				
 				setTimeout(function(){
-					$(".product_list").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":1,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
+					$(".ajax_content").load("<?php echo url();?>/brand-details/<?php echo $brand_slug?>",{"page":1,"_token":'{!! csrf_token() !!}',"sortby":$("#sortby").val()}, function(){
 					//get content from PHP page
 						$(".loading-div").hide(); //once done, hide loading element
 					});

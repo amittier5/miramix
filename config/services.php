@@ -45,7 +45,7 @@ return [
     //     'redirect'      => 'http://www.miramix-development.com/account/google'
     // ],
 
-    /*'facebook' => [
+   /*'facebook' => [
         'client_id' => '1712231159008324',
         'client_secret' => 'cfaefc82fe22a30a071960c46d09362f',
         'redirect' => 'http://www.miramix.com/account/facebook',
@@ -55,16 +55,27 @@ return [
         'client_secret' => 'K3-YyyM7e-71xezXj_lqCknr',
         'redirect'      => 'http://www.miramix.com/account/google'
     ],*/
-
-     'facebook' => [
-        'client_id' => '1494855380830024',
-        'client_secret' => '86def9d21b7d42a71b41d743b044c0e7',
+ 'facebook' => [
+        'client_id' => env('FB_CLIENT_ID'),
+        'client_secret' => env('FB_CLIENT_SECRET'),
         'redirect' => 'http://www.miramix.com/account/facebook',
     ],
        'google' => [
-        'client_id'     => '645160792188-vd95504d5uakqndc95mklkmnbaus91gd.apps.googleusercontent.com',
-        'client_secret' => 'hGGrmZTNwhTKmwjcy8Uguyhr',
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect'      => 'http://www.miramix.com/account/google'
+    ],  
+   
+/*
+     'facebook' => [
+        'client_id' => '907683882655002',
+        'client_secret' => 'bbb1db05b247729952ad4c968647e36f',
+        'redirect' => 'http://www.miramix.com/account/facebook',
+    ],
+       'google' => [
+        'client_id'     => '125667655280-r088iljh6jt7d6m2eilkri5rdm8d0hpu.apps.googleusercontent.com',
+        'client_secret' => 'kcWS2DXZI7efSp6X0x64oKlk',
         'redirect'      => 'http://www.miramix.com/account/google'
     ],
-
+*/
 ];

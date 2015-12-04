@@ -1,7 +1,7 @@
 <?php
 $about_us = '';
 
-  if($getHelper->getCmsLink(1) !='')
+ if(isset($getHelper) && $getHelper->getCmsLink(1) !='')
   {
     $getcms_about_us = $getHelper->getCmsLink(1);
     $about_us = $getcms_about_us->slug;

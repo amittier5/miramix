@@ -101,6 +101,20 @@ class SitesettingController extends Controller {
            $sitesetting=Sitesetting::find($id);
            //$cmsUpdate['description']=htmlentities($cmsUpdate['description']);
            $sitesetting->update($sitesettingUpdate);
+	   
+	   $sitesettings = DB::table('sitesettings')->get();
+	    $all_sitesetting = array();
+	    $current='';
+	    foreach($sitesettings as $each_sitesetting)
+	    {
+		//$all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value;
+		$current .=strtoupper($each_sitesetting->name)."=".$each_sitesetting->value."\n";
+	    }
+	   $file = '.env';
+	   
+	   
+	   file_put_contents($file, $current);
+	   
            Session::flash('success', 'Site setting updated successfully'); 
            return redirect('admin/sitesetting');
     }

@@ -2,7 +2,7 @@
 @section("content")
     <div class="container">
     <div class="product_list">
-    <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/css/images/loader_productlist.GIF" alt=""></div>
+    <div class="loading-div" style="display:none"><img src="<?php echo url();?>/public/frontend/images/load_genearted.GIF" alt=""></div>
     <?php
     foreach ($product as $each_product) 
         {
@@ -10,7 +10,7 @@
       
           <div class="product">
               <div class="head_section">
-                  <h2>{!! $each_product->product_name !!}</h2>
+                  <h2 title="{!! $each_product->product_name !!}">{!! $each_product->product_name !!}</h2>
                   <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*7,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >

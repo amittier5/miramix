@@ -12,6 +12,12 @@
 <script src="<?php echo url();?>/public/backend/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="<?php echo url();?>/resources/assets/js/jquery.validate-1.9.1.min.js"></script>
 <script src="<?php echo url();?>/public/backend/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+// Change JQueryUI plugin names to fix name collision with Bootstrap.
+$.widget.bridge('uitooltip', $.ui.tooltip);
+$.widget.bridge('uibutton', $.ui.button);
+</script>
+<script src="<?php echo url();?>/public/backend/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
 <link type="text/css" href="<?php echo url();?>/public/backend/css/jquery-ui.css" rel="stylesheet">
 

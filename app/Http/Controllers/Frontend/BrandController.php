@@ -133,11 +133,10 @@ class BrandController extends BaseController {
         $total_pages=ceil($total_brand_pro/$item_per_page);
 	
 	$offset = ($current_page - 1)  * $item_per_page;
-
 	
+    //echo $current_page.' - '.$total_pages.' - '.$total_brand_pro.' - '.$item_per_page.' - '.$offset; exit; 
         $from = $offset + 1;
         $to = min(($offset + $item_per_page), $total_brand_pro);
-            
             
 
         $product->setPath($brand_slug);
@@ -650,8 +649,9 @@ public function brand_paydetails(){
             
             if($address->save()) 
 			{
+                            $cnt = DB::table('addresses')->where("mem_brand_id",Session::get('brand_userid'))->orderBy('id','DESC')->count();
 				
-                                if(Request::input('default_address')=='1'){
+                                if(Request::input('default_address')=='1' || $cnt==1){
                                 $addressId = $address->id;
 				$dataUpdateAddress = DB::table('brandmembers')
 					->where('id',Session::get('brand_userid'))
@@ -713,9 +713,9 @@ public function brand_paydetails(){
             DB::table('addresses')
 					->where('id',Request::input('id'))
 					->update($address);
-           
+          $cnt = DB::table('addresses')->where("mem_brand_id",Session::get('brand_userid'))->orderBy('id','DESC')->count(); 
 				
-         if(Request::input('default_address')=='1'){
+         if(Request::input('default_address')=='1' || $cnt==1){
                                 $addressId = Request::input('id');
 				$dataUpdateAddress = DB::table('brandmembers')
 					->where('id',Session::get('brand_userid'))
@@ -748,7 +748,9 @@ public function brand_paydetails(){
         }
         $brand_details = Brandmember::find(Session::get('brand_userid'));
         
-        return view('frontend.brand.edit_brand_shipping',compact('alldata','address','allstates','brand_details'),array('title' => 'Edit Shipping Address'));
+        $countaddr = DB::table('addresses')->where("mem_brand_id",Session::get('brand_userid'))->orderBy('id','DESC')->count();
+        
+        return view('frontend.brand.edit_brand_shipping',compact('alldata','address','allstates','brand_details','countaddr'),array('title' => 'Edit Shipping Address'));
      }
      
      public function delAddress(){

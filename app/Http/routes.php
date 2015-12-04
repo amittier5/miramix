@@ -275,6 +275,13 @@ $router->group([
     //resource('admin/product-list', 'ProductController');
     get('admin/product-list/{id}', 'ProductController@index');
     get('admin/product-list/{id}/{param}', 'ProductController@index');
+    get('admin/ratings/{id}', 'ProductController@ratings');
+    post('admin/ratings/{id}', 'ProductController@ratings');
+     get('admin/destroyrating/{id}', 'ProductController@destroyrating');
+    post('admin/destroyrating/{id}', 'ProductController@destroyrating');
+     get('admin/ratingstatus/{id}', 'ProductController@ratingstatus');
+    post('admin/ratingstatus/{id}', 'ProductController@ratingstatus');
+    
     get('admin/change_related_status/{id}/{param}', 'ProductController@change_related_status');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  
 
@@ -343,3 +350,4 @@ Route::group(
 
 
 Route:: get('/{param}','Frontend\CmsController@showContent');   /* For Show content */
+Route:: post('/{param}','Frontend\CmsController@showContent');   /* For Show content */

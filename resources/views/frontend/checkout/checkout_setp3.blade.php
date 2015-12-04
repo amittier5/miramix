@@ -33,7 +33,7 @@
     $.validator.addMethod("new_address", function(value, element) 
     { 
         if($('#radio-2').is(':checked')){
-            if($('#fname').val()=='' || $('#lname').val()=='' || $('#email').val()=='' || $('#phone').val()=='' || $('#address').val()=='' || $('#country_id').val()=='' || $('#city').val()=='' || $('#zip_code').val()==''){
+            if($('#fname').val()==''){
                 return false;
             }
             else{
@@ -43,7 +43,112 @@
         else{
             return true;
         }
-    }, "Please enter a valid shipping address.");
+    }, "Please Enter First Name.");
+	
+	$.validator.addMethod("new_address_name", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#lname').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Last Name.");
+	
+	$.validator.addMethod("new_address_email", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#email').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Email Address.");
+	
+	$.validator.addMethod("new_address_address", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#address').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Address.");
+	
+	$.validator.addMethod("new_address_phn", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#phone').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Phone Number.");
+	
+	$.validator.addMethod("new_address_country", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#country_id').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Country Name.");
+	
+	$.validator.addMethod("new_address_city", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#city').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter City.");
+	
+	$.validator.addMethod("new_address_zip", function(value, element) 
+    { 
+        if($('#radio-2').is(':checked')){
+            if($('#zip_code').val()==''){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return true;
+        }
+    }, "Please Enter Zip Code.");
 
 
     // Setup form validation  //
@@ -52,22 +157,22 @@
         // Specify the validation rules
         rules: {
             fname: {new_address:true},
-            lname: {new_address:true},
+            lname: {new_address_name:true},
             email: 
             {
-                new_address:true,
+                new_address_email:true,
                 email: true
             },
             phone :
             {
-                new_address:true,
+                new_address_phn:true,
                 phoneUS: true
             },
             existing_address:{existing_address:true},
-            address:{new_address:true},
-            country_id: {new_address:true},
-            city:{new_address:true},
-            zip_code: {new_address:true}
+            address:{new_address_address:true},
+            country_id: {new_address_country:true},
+            city:{new_address_city:true},
+            zip_code: {new_address_zip:true}
             
         },
         
@@ -127,6 +232,7 @@
     $ship_fname = (($eachAddress->first_name) =='')?$eachAddress->fname:$eachAddress->first_name;
     $ship_lname = (($eachAddress->last_name) =='')?$eachAddress->lname:$eachAddress->last_name;
     //echo $ship_fname.$ship_lname; exit;
+    $selected_address_id = 0;
     if(Session::has('selected_address_id'))
     {
         $selected_address_id = Session::get('selected_address_id');
@@ -226,8 +332,14 @@
         //alert(data);
         if(data!='')
         {
+			$("#state").attr('disabled',false);
             $("#state").html(data);
+			
         }
+		else{
+			$("#state").html('<option>Please Select Country First</option>');
+			$("#state").attr('disabled','disabled');	
+		}
       }
     });
 

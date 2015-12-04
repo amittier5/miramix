@@ -50,22 +50,23 @@
    <div class="my_acct_sec">           
      <div class="container">
        <div class="col-sm-12">
+       @if(Session::has('error'))
+          <div class="alert alert-error container-fluid">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{!! Session::get('error') !!}</strong>
+          </div>
+        @endif
+        @if(Session::has('success'))
+          <div class="alert alert-success container-fluid">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{!! Session::get('success') !!}</strong>
+          </div>
+        @endif
          <div class="row">
            <div class="form_dashboardacct">
               <h3>Order History</h3>
                 <div class="row">
-			 @if(Session::has('error'))
-			    <div class="alert alert-error container">
-				<button type="button" class="close" data-dismiss="alert">×</button>
-				<strong>{!! Session::get('error') !!}</strong>
-			    </div>
-			  @endif
-			  @if(Session::has('success'))
-			    <div class="alert alert-success container">
-			    <button type="button" class="close" data-dismiss="alert">×</button>
-			    <strong>{!! Session::get('success') !!}</strong>
-			    </div>
-			  @endif
+			 
 			 </div>
             <div class="table-responsive">
               <table class="table special_height">

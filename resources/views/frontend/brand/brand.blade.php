@@ -22,7 +22,7 @@
         @foreach($all_brand_member as $each_brand_member)
           <div class="product">
             	<div class="head_section">
-               	  <h2><?php if ($each_brand_member->business_name!=''){echo $each_brand_member->business_name; }else{ echo $each_brand_member->fname.' '.$each_brand_member->lname; }?></h2>
+               	  <h2 title="<?php if ($each_brand_member->business_name!=''){echo $each_brand_member->business_name; }else{ echo $each_brand_member->fname.' '.$each_brand_member->lname; }?>"><?php if ($each_brand_member->business_name!=''){echo $each_brand_member->business_name; }else{ echo $each_brand_member->fname.' '.$each_brand_member->lname; }?></h2>
                   </div>
                 <div class="image_section" <?php if(($each_brand_member->pro_image!="")  && (file_exists('uploads/brandmember/'.$each_brand_member->pro_image))){ ?>
            	  		style="background:url(<?php echo url();?>/uploads/brandmember/{!! $each_brand_member->pro_image !!}) no-repeat center center; background-size:cover;height:240px;" <?php } else {?> style="background:url(<?php echo url();?>/uploads/brandmember/noimage.png) no-repeat center center;background-size:cover;height:240px;" <?php } ?>>

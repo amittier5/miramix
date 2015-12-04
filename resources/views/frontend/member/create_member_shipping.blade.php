@@ -1,6 +1,15 @@
  @extends('frontend/layout/frontend_template')
 @section('content')
 <div class="inner_page_container nomar_bottom">
+<div id="nav-icon2">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+  <div class="mob_topmenu_back"></div>
 <div class="top_menu_port">
     	<div class="acct_box blue_acct front">
                 	<div class="acct_box_inn">
@@ -109,23 +118,30 @@
 			    <div class="form-group col-sm-6">
                             {!! Form::text('address2',null,['class'=>'form-control','id'=>'address2','placeholder'=>'Address 2'])!!}
                           </div>
-                          
-                          <div class="col-sm-12">
-                          <p class="pull-left">Default Address</p>
-                          
-                          <div class="check_box_tab marg_left pull-left">                            
-                              <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1">
-                              <label for="radio-4">Yes</label>
-                          </div>
-                          <div class="check_box_tab marg_left pull-left">                            
-                              <input type="radio" class="regular-checkbox" id="radio-5" name="default_address" value="0" checked="checked">
-                              <label for="radio-5">No</label>
-                          </div>
-                          
-                          </div>
-                                                   
-                        
-                         
+                          <?php if($total_add==0){?>
+                              <div class="col-sm-12">
+                                <p class="pull-left">Default Address</p>
+                                
+                                <div class="check_box_tab marg_left pull-left">                            
+                                    <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1" checked="checked">
+                                    <label for="radio-4">Yes</label>
+                                </div>
+                              </div>
+                          <?php } else { ?>
+                              <div class="col-sm-12">
+                                <p class="pull-left">Default Address</p>
+                                
+                                <div class="check_box_tab marg_left pull-left">                            
+                                    <input type="radio" class="regular-checkbox" id="radio-4" name="default_address" value="1">
+                                    <label for="radio-4">Yes</label>
+                                </div>
+                                <div class="check_box_tab marg_left pull-left">                            
+                                    <input type="radio" class="regular-checkbox" id="radio-5" name="default_address" value="0" checked="checked">
+                                    <label for="radio-5">No</label>
+                                </div>
+                              </div>
+                          <?php } ?>
+
                         </div>  
                         </div>
                         </div>
@@ -182,10 +198,10 @@
 	    city: "required",
 	    postcode: "required",
 	    phone :
-                {
-                    required : true,
-                    phoneUS: true
-                },
+        {
+            required : true,
+            phoneUS: true
+        },
       
       
             

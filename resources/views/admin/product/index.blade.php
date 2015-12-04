@@ -103,6 +103,7 @@ $(document).ready(function(){
                
                 <td>
                     <a href="{!!route('admin.product.edit',$product->id)!!}" class="btn btn-warning">Edit</a>
+                    <a href="{!! url() !!}/admin/ratings/{!! $product->id !!}" class="btn btn-warning">Ratings</a>
                 </td>
                 <td>
                     {!! Form::open(['method' => 'DELETE', 'route'=>['admin.product.destroy', $product->id], 'onsubmit' => 'return ConfirmDelete()']) !!}

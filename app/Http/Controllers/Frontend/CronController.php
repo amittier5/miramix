@@ -173,21 +173,24 @@ class CronController extends BaseController {
     }
     
     public function sendpasswordmail(){
-	return false;
+	//return false;
 	
-	$members=DB::table('brandmembers')->where('id', '>', 51)->get();
+	$members=DB::table('brandmembers')->whereRaw('CHAR_LENGTH(password)<1')->get();
 	
 	foreach($members as $member){
 	   $brand=array();
 	    $fname=explode(" ",$member->fname);
-	   if(count($fname)>0){
+	   if(isset($fname[0]) && isset($fname[1])){
 	   $brand=array("fname"=>trim($fname[0]),"lname"=>trim($fname[1]));
 	   }
+	   //echo $member->id;exit;
+	   
 	    $brandresult=Brandmember::find($member->id );
 	    $orgpass=uniqid();
 	    $password= Hash::make($orgpass);
 	    $brand["password"]=$password;
-	   
+	   $brand["status"]='1';
+	   $brand["admin_status"]='1';
             $brandresult->update($brand);
 	    
 	    $sitesettings = DB::table('sitesettings')->where("name","email")->first();
@@ -196,9 +199,18 @@ class CronController extends BaseController {
 	    $user_name =$member->fname.' '.$member->lname;
 	    $user_email = $member->email;
 	  
-	    $activateLink = $orgpass;
-	    $userid=$member->username;
-	    $sent = Mail::send('frontend.register.newPassword', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink,'userid'=>$userid,'admin_users_email'=>$admin_users_email), 
+	  if($member->role==0){
+	      $activateLink='http://www.miramix.com/memberLogin/';
+	      $changepass_link='http://www.miramix.com/member-changepass/';
+	    }else{
+		$activateLink='http://www.miramix.com/brandlogin/';
+		$changepass_link='http://www.miramix.com/change-password/';
+	    }
+	    $pass = $orgpass;
+	    
+	    
+	    $userid=$member->email;
+	    $sent = Mail::send('frontend.register.newPassword', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink,'userid'=>$userid,'admin_users_email'=>$admin_users_email,'password'=>$pass,'changepass_link'=>$changepass_link), 
 	    function($message) use ($admin_users_email, $user_email,$user_name)
 	    {
 		    $message->from($admin_users_email);
@@ -208,11 +220,15 @@ class CronController extends BaseController {
 	    if( ! $sent) 
 	    {
 		    echo 'Unable to send email'.$member->id.' <br />';
+	    }else{
+		
+		echo 'mail sent to ->'.$member->id .$member->email."<br />";
 	    }
 	   
 	    
 	    
 	}
+	echo count($members);
 	
 	
     }

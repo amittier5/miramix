@@ -66,7 +66,7 @@
     <?php foreach($products as $product){ ?>
       <div class="product">
             <div class="head_section">
-              <h2><?php echo $product->product_name?></h2>
+              <h2 title="<?php echo $product->product_name?>"><?php echo $product->product_name?></h2>
               <p class="price">Starting at <?php echo '$'.number_format($product->min_price*7,2);?> </p>
             </div>
             <div class="image_section" style="background:url('<?php echo url();?>/uploads/product/home_thumb/<?php echo $product->image1?>');background-size:cover;height:240px;">

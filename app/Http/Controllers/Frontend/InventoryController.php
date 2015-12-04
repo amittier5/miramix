@@ -59,7 +59,7 @@ class InventoryController extends BaseController {
         $admin_users_email=$setting->value;
         
         
-        $sent = Mail::send('frontend.inventory.ingredientemail', array('name'=>$name,'brand_name'=>$brand_name,'email'=>$user_email,'messages'=>$cmessage), 
+        $sent = Mail::send('frontend.inventory.ingredientemail', array('admin_users_email'=>$admin_users_email,'name'=>$name,'brand_name'=>$brand_name,'email'=>$user_email,'messages'=>$cmessage), 
         
         function($message) use ($admin_users_email, $user_email,$brand_name,$subject)
         {

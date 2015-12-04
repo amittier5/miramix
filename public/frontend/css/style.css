@@ -12,6 +12,9 @@
 /*------------------------------------------*/
 /*	     01 - General & Basic Styles
 /*------------------------------------------*/
+a{
+	color:#71D2E3;	
+}
 body {
 	font-family:  'Source Sans Pro', sans-serif;
 	font-size: 13px;
@@ -6420,6 +6423,8 @@ input:focus, select:focus, textarea:focus{
 	-webkit-appearance:none;
 	padding-right:25px;
 	float:left;
+	height:39px;
+	line-height:39px;
 }
 /*-------------------------BRAND DETAILS PAGE END----------------------*/
 
@@ -10127,6 +10132,12 @@ p.empt_shpcart {
 }
 .pad_bot20{
 	padding-bottom:20px;	
+}
+.form_dashboardacct .btn:hover,.form_dashboardacct .btn:focus{
+	color:#6DC4D3;	
+}
+#brand_show > p.pull-left{
+	margin-top:20px;	
 }
 
 

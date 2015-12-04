@@ -1,6 +1,7 @@
 @extends('admin/layout/admin_template')
 @section('content')
 <script src="<?php echo url();?>/public/frontend/js/bootstrap.min.js"></script>
+<!--<script src="<?php echo url();?>/public/frontend/js/tooltip.js"></script>-->
 <?php //echo "<pre>";print_r($total_count);exit; ?>
 
 <div class="inner_page_container">        
@@ -288,7 +289,7 @@
                                 <th>Ingredient<span class="weight_span">Weight Range</span></th>
                                @if (!empty($formfac))
                                   @foreach ($formfac as $key => $value) 
-                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm)<!-- <a href="#" class="toll_tipfor_red" title="Not Within Available Weight Range">i</a> --></span></th>
+                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm) <a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Not Within Available Weight Range">i</a></span></th>
                                   @endforeach
                                 @endif
                                 
@@ -582,7 +583,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
                     
               });
 			  //console.log(html);
-			  //$this.parent().parent().find('.tooltipcls').attr('data-original-title',html).tooltip('fixTitle');
+			  $this.parent().parent().find('.tooltipcls').attr('data-original-title',html).tooltip('fixTitle');
             });
 
               $this.parent().parent().find('.get_val').val(getprice);
@@ -944,8 +945,8 @@ function onlyLoadChecktable(){
 			  $('#load_table').hide(); 
 			  
 			  
-			  // $('.form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red').tooltip("option", "content", "Does not have all the ingredients");
-			  // $('.form_check_table .table>thead>tr>th.red_selc .toll_tipfor_red').tooltip("option", "content", "Not Within Available Weight Range");
+			   $('.form_check_table .table>thead>tr>th:not(.all_selec) .toll_tipfor_red').tooltip("option", "content", "Does not have all the ingredients");
+			   $('.form_check_table .table>thead>tr>th.red_selc .toll_tipfor_red').tooltip("option", "content", "Not Within Available Weight Range");
               
 
 }
@@ -1170,9 +1171,9 @@ function checktable_val(){
 
 
 
-	// $('[data-toggle="tooltip"]').tooltip({
- //        placement : 'bottom'
- //    });
+	 $('.toll_tipfor_red').tooltip({
+         placement : 'bottom'
+     });
    });
   
   $(function() {

@@ -8,7 +8,7 @@ use App\Model\ProductFormfactor;      /* Model name*/
 use App\Model\Ingredient;             /* Model name*/
 use App\Model\FormFactor;             /* Model name*/
 use App\Model\Searchtag;             /* Model name*/
-
+use App\Model\Ratings; 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
 use Illuminate\Support\Facades\Request;
@@ -648,8 +648,34 @@ class ProductController extends BaseController {
          return redirect('admin/product-list/'.$pro['discountinue']);
     }
 
-
+public function ratings($id){
+        $limit = 50;
+        $ratings = Ratings::with('getRatings','getMembers')->orderBy('rating_id', 'desc')->paginate($limit);;
+         //$ratings->setPath('ratings');
+       return view('admin.product.ratings',compact('ratings'));
+}
     
+public function destroyrating($id){
+   DB::table('product_rating')->where("rating_id",$id)->delete();
 
+        Session::flash('success', 'Rating deleted successfully'); 
+       return redirect('admin/ratings/'.$ratings->product_id);
+}
+
+public function ratingstatus($id){
+    $ratings=DB::table('product_rating')->where("rating_id",$id)->first();
+    
+    if($ratings->status=='1'){
+       
+        DB::table('product_rating')->where('rating_id', $id)->update(['status' =>0]);
+    }else{
+         DB::table('product_rating')->where('rating_id', $id)->update(['status' =>1]);
+    }
+   
+   
+
+        Session::flash('success', 'Rating status updated successfully'); 
+        return redirect('admin/ratings/'.$ratings->product_id);
+}
               
 }

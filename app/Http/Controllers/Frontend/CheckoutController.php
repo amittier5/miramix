@@ -81,6 +81,7 @@ class CheckoutController extends BaseController {
                     {
                         Session::put('member_userid', $users->id);
 						Session::put('member_user_email', $users->email);
+                        Session::put('member_username', ucfirst($users->username));
 
                         //Set the user cart 
 						$this->update_cart($users->id);
@@ -146,8 +147,21 @@ class CheckoutController extends BaseController {
     {
 
 		$obj = new helpers();
+		//echo Session::get('member_userid');
+		$userShipAddress = DB::table('addresses')->where('addresses.mem_brand_id','=',Session::get('member_userid'))->count();
+		//print_r($userShipAddress); exit;
+		if($userShipAddress == 1)
+		{
+			$addrs=DB::table('addresses')->where('addresses.mem_brand_id','=',Session::get('member_userid'))->get();
+			//echo $addrs->id;
+				
+		}
+
+					
         if(($obj->checkMemberLogin()) && (!$obj->checkBrandLogin()))  //for not logged in member
         {
+        	
+    
         	$shipAddress = DB::table('addresses')
                                 ->leftJoin('brandmembers', 'brandmembers.id', '=', 'addresses.mem_brand_id')
                                 ->leftJoin('countries', 'countries.country_id', '=', 'addresses.country_id')
@@ -155,6 +169,8 @@ class CheckoutController extends BaseController {
                                 ->select('addresses.*', 'brandmembers.fname', 'brandmembers.lname', 'brandmembers.username','brandmembers.address as default_address','countries.name as country_name', 'zones.name as zone_name', 'brandmembers.status', 'brandmembers.admin_status')
                                 ->where('addresses.mem_brand_id','=',Session::get('member_userid'))
                                 ->get();
+
+                         
                                 //echo "<pre>";print_r($shipAddress); exit;
             $allcountry = DB::table('countries')->orderBy('name','ASC')->get();
 
@@ -184,10 +200,24 @@ class CheckoutController extends BaseController {
 												'zone_id' => Request::input('state'),
 												'postcode' => Request::input('zip_code')
 												]);
-					$lastInsertedId =DB::getPdo()->lastInsertId();   			// Getting last inserted id
+					$lastInsertedId =DB::getPdo()->lastInsertId();   
+
+
+					// Getting last inserted id
 
 					Session::put('selected_address_id',$lastInsertedId);		// shipping address option value store in session.
 				}
+
+				$userShipAddress = DB::table('addresses')->where('addresses.mem_brand_id','=',Session::get('member_userid'))->count();
+					if($userShipAddress == 1)
+					{
+						$addrs=DB::table('addresses')->where('addresses.mem_brand_id','=',Session::get('member_userid'))->first();
+						
+						DB::table('brandmembers')
+			                                ->where('id', Session::get('member_userid'))
+			                                ->update(['address' =>$addrs->id]);
+					}			
+
 				
 				return redirect('/checkout-step4');
 			}
@@ -538,6 +568,9 @@ class CheckoutController extends BaseController {
 	                    ->where('orders.id','=',$order_id)
 	                    ->get();
 
+	        Session::put('order_number',$order_list[0]->order_number);
+            Session::put('order_id',$order_id);
+            
 			$user_details = DB::table('brandmembers')->where('id', Session::get('member_userid'))->first();
 			// echo "dddd<pre>";print_r($user_details);
 			// exit;
@@ -614,12 +647,11 @@ class CheckoutController extends BaseController {
               Session::flash('success', 'Your order successfully placed.'); 
               //return redirect('memberLogin');
             }
-            Session::put('order_number',$order_list[0]->order_number);
-            Session::put('order_id',$order_id);
-
+            
             Session::forget('coupon_code');
             Session::forget('coupon_type');
             Session::forget('coupon_discount');
+			
         	}
     	}
 
@@ -658,7 +690,11 @@ class CheckoutController extends BaseController {
 			                    ->select('orders.*', 'order_items.brand_id', 'order_items.brand_name','order_items.brand_email', 'order_items.product_id', 'order_items.product_name', 'order_items.product_image', 'order_items.quantity', 'order_items.price', 'order_items.form_factor_id', 'order_items.form_factor_name')
 			                    ->where('orders.id','=',$order_id)
 			                    ->get();
-//print_r($order_list); exit;
+					//print_r($order_list); exit;
+
+		            Session::put('order_number',$order_list[0]->order_number);
+		            Session::put('order_id',$order_id);
+
 					$user_details = DB::table('brandmembers')->where('id', Session::get('member_userid'))->first();
 					// echo "dddd<pre>";print_r($user_details);
 					// exit;
@@ -681,13 +717,10 @@ class CheckoutController extends BaseController {
 		                $message->to($user_email, $mailing_name)->subject('Miramix Order Details');
 		            });
 
-
-		            Session::put('order_number',$order_list[0]->order_number);
-		            Session::put('order_id',$order_id);
-
 		            Session::forget('coupon_code');
 		            Session::forget('coupon_type');
 		            Session::forget('coupon_discount');
+		           
 	        	
 	    	}
     	return view('frontend.checkout.payment_cancel',array('title'=>'MIRAMIX | Checkout-Cancel'));

@@ -128,6 +128,9 @@
 	.home .navbar-default .navbar-nav > li > a{
 		font-size:16px;	
 	}
+	.right_acct_box .acct_box .acct_box_inn{
+		height:369px;	
+	}
 }
 
 @media (max-width: 991px) {
@@ -287,6 +290,22 @@
 	.home .navbar-default .navbar-nav > li > a{
 		font-size:13px;	
 	}
+	.right_border{
+		border:none;
+		border-bottom:1px solid #d5d5d5;
+		padding-bottom:20px;	
+	}
+	.form_check_table .table > thead > tr > th{
+		min-width:180px;	
+	}
+	.add_product_panel .form_factore_panel table td{
+		width:180px;	
+	}
+	.add_product_panel .product_name label{
+		font-size: 17px;
+    	line-height: 36px;	
+	}
+	
 	
 	
 }
@@ -386,6 +405,9 @@
 	}
 	.top_menu_port .acct_box{
 		float:none !important;	
+	}
+	.right_acct_box{
+		padding-left:15px;	
 	}
 }
 @media only screen and (max-width: 479px) { 
@@ -573,9 +595,12 @@
 	.for_nav_prod{
 		padding-top:35px;	
 	}
-	
-	
-    
+	.mydash_two .acct_box{
+		width:100%;	
+	}
+	.right_acct_box .acct_box .acct_box_inn{
+		height:180px;	
+	}  
 }
 
 
@@ -767,6 +792,19 @@
 	div#nmsg{
 		bottom:-78px;	
 	}
+	.form_check_table .table > thead > tr > th{
+		min-width:180px;	
+	}
+	.add_product_panel .form_factore_panel table td{
+		min-width:180px;	
+	}
+	.add_product_panel .prod_panel{
+		margin:0 15px;	
+	}
+	.faq_cnt .panel-default .panel-title{
+		font-size:18px;	
+	}
+	
     
 }
 

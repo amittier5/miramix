@@ -169,7 +169,7 @@ class MemberController extends BaseController {
      
      
 public function createMemberShippingAddress()
-     {
+{
         $obj = new helpers();
        if(!$obj->checkMemberLogin()){
             return redirect('memberLogin');
@@ -183,43 +183,45 @@ public function createMemberShippingAddress()
             $alldata[$value->country_id] = $value->name;
         }
         
-         if(Request::isMethod('post'))
+        if(Request::isMethod('post'))
         {
             $address = New Address;
             
             $address->mem_brand_id = Session::get('member_userid');
-	    $address->first_name = Request::input('first_name');
-	    $address->last_name = Request::input('last_name');
+    	    $address->first_name = Request::input('first_name');
+    	    $address->last_name = Request::input('last_name');
             $address->address = Request::input('address');
-	    $address->address2 = Request::input('address2');
+	         $address->address2 = Request::input('address2');
             $address->country_id = Request::input('country');
             $address->zone_id =  Request::input('zone_id'); // State id
             $address->city =  Request::input('city');
-	    $address->postcode =  Request::input('postcode');
+	         $address->postcode =  Request::input('postcode');
             $address->phone =  Request::input('phone');
             $address->email =  Request::input('email');
             
-            if($address->save()) 
-			{
+           if($address->save()) 
+			     {
 				
-                                if(Request::input('default_address')=='1'){
-                                $addressId = $address->id;
-				$dataUpdateAddress = DB::table('brandmembers')
-					->where('id',Session::get('member_userid'))
-					->update(['address' => $addressId]);
-                                        
-                                }
+                if(Request::input('default_address')=='1'){
+                $addressId = $address->id;
+                $dataUpdateAddress = DB::table('brandmembers')
+                  ->where('id',Session::get('member_userid'))
+                  ->update(['address' => $addressId]);
+
+                }
                                 
               Session::flash('success', 'Shipping Address successfully added.'); 
               return redirect('member-shipping-address');
                                         
-                        }
-            
-            
-            
-        }
+            }
+          }
+
         
-        return view('frontend.member.create_member_shipping',compact('alldata'),array('title' => 'Create Shipping Address'));
+          $total_add = DB::table('addresses')->where('mem_brand_id',Session::get('member_userid'))->count();
+
+
+        
+        return view('frontend.member.create_member_shipping',compact('alldata','total_add'),array('title' => 'Create Shipping Address'));
      } 
 
 
@@ -276,7 +278,7 @@ public function editMemberShippingAddress()
                                 
            
                                         
-                        }
+          }
             Session::flash('success', 'Shipping Address successfully updated.'); 
               return redirect('member-shipping-address');   
             
@@ -299,8 +301,11 @@ public function editMemberShippingAddress()
             $allstates[$value->zone_id] = $value->name;
         }
         $member_details = Brandmember::find(Session::get('member_userid'));
+
+        $total_add = DB::table('addresses')->where('mem_brand_id',Session::get('member_userid'))->where('id','!=',$id)->count();
+
         
-        return view('frontend.member.edit_member_shipping',compact('alldata','address','allstates','member_details'),array('title' => 'Edit Shipping Address'));
+        return view('frontend.member.edit_member_shipping',compact('alldata','address','allstates','member_details','total_add'),array('title' => 'Edit Shipping Address'));
      }
      
      public function delAddress(){
