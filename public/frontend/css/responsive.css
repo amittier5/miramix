@@ -604,6 +604,7 @@
 	.right_acct_box .acct_box .acct_box_inn{
 		height:180px;	
 	}  
+	
 }
 
 
@@ -1259,7 +1260,7 @@ footer .bottom_footer li {
     margin:28px 0 0 !important;
 }
 .tot_formlog{
-		width:94%;	
+		width:94% !important;	
 	}
 .log_inner h2 {
 	font-size: 30px;
