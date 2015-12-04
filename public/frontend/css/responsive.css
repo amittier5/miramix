@@ -409,6 +409,9 @@
 	.right_acct_box{
 		padding-left:15px;	
 	}
+	.tokenfield .token-input{
+		float:none !important;	
+	}
 }
 @media only screen and (max-width: 479px) { 
   
@@ -959,7 +962,15 @@
 		font-size: 32px;
 	}
 	.home .header_section .overlay {
-		height: 600px;
+		height: auto;
+		min-height: 600px;
+		padding-bottom: 30px;
+	}
+	.brand_login_panel .filesdoc{
+		width:100%;	
+	}
+	.calldate_grp{
+		margin-bottom:15px;	
 	}
 	
 }
@@ -1344,6 +1355,14 @@ div#increment_input,div#incdec{
 }
 .acct_img{
 	background-position:center center !important;	
+}
+.signup_form_panel input.form-control,.signup_form_panel select{
+	font-size:12px;	
+}
+.brand_login_panel h2{
+	line-height:26px;
+	font-size:22px;
+	padding-bottom:10px;	
 }
 }
 /*--------------------------------SUMIT 9.10.2015----------------------------------*/

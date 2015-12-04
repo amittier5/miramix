@@ -75,7 +75,7 @@
 	  }*/
 	  
       if($('#mailing_info').is(':checked')) { 
-	if ($("#mailing_name").val()=='' || $("#mailing_lastname").val()=='' || $("#mailing_address").val()=='' || $("#mailing_country_id").val()=='' || $("#mailing_state").val()=='' || $("#mailing_city").val()=='' || $("#mailing_postcode").val()==''){
+	if ($("#mailing_state option:selected").val()==''){
 	  return false;
 	}else{
 	  return true;
@@ -84,7 +84,103 @@
 	  return true;
 	}
       
-    }, 'This field is required.');
+    }, 'Please Select Mailing State.');
+	
+	/******mailinginfo_postcode*******/
+	$.validator.addMethod("mailinginfo_postcode", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_postcode").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Postcode');
+	/******mailinginfo_postcode*******/
+	
+	/******mailinginfo_lastname*******/
+	$.validator.addMethod("mailinginfo_lastname", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_lastname").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Last Name');
+	/******mailinginfo_lastname*******/
+	
+	/******mailinginfo_city*******/
+	$.validator.addMethod("mailinginfo_city", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_city").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter City Name');
+	/******mailinginfo_city*******/
+	
+	/******mailinginfo_countryid*******/
+	$.validator.addMethod("mailinginfo_countryid", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_country_id option:selected").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Country Name');
+	/******mailinginfo_countryid*******/
+	
+	/******mailinginfo_name*******/
+	$.validator.addMethod("mailinginfo_name", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_name").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Mailing Name');
+	/******mailinginfo_name*******/
+	
+	/******mailinginfo_address*******/
+	$.validator.addMethod("mailinginfo_address", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_address").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Mailing Address');
+	/******mailinginfo_address*******/
     
   /*  $.validator.addMethod("requiredpayinfo", function(value, element, params) { 
     var selectedValue = $('input:radio[name=' + element.name + ']:checked').val();
@@ -153,13 +249,13 @@
                 required :true,
                 number: true,
             },*/
-	    mailing_name: {mailinginfo: true},
-	     mailing_address: {mailinginfo: true},
-	    mailing_country_id: {mailinginfo: true},
-	    mailing_city: {mailinginfo: true},
-	    mailing_lastname: {mailinginfo: true},
+	    mailing_name: {mailinginfo_name: true},
+	    mailing_address: {mailinginfo_address: true},
+	    mailing_country_id: {mailinginfo_countryid: true},
+	    mailing_city: {mailinginfo_city: true},
+	    mailing_lastname: {mailinginfo_lastname: true},
 	    mailing_state: {mailinginfo: true},
-	    mailing_postcode: {mailinginfo: true},
+	    mailing_postcode: {mailinginfo_postcode: true},
 			
 			shiping_fname: "required",
 			shiping_lname: "required",
@@ -734,7 +830,7 @@
                     <div class="col-sm-2">&nbsp;</div>
                     <div class="col-sm-8">
                         <div class="row">
-                        <div class="col-sm-6"><div class="input-group ">
+                        <div class="col-sm-6"><div class="input-group calldate_grp">
                              {!! Form::text('calldate',null,['class'=>'form-control','id'=>'calldate','placeholder'=>'Call Date'])!!}
                         </div></div>
                         <div class="col-sm-6"><div  class="input-group ">
