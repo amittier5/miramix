@@ -1,22 +1,22 @@
 <?php
 $about_us = $return_policy = $terms = $privacy ='';
 
-  if($getHelper->getCmsLink(1) !='')
+  if(isset($getHelper) && $getHelper->getCmsLink(1) !='')
   {
     $getcms_about_us = $getHelper->getCmsLink(1);
     $about_us = $getcms_about_us->slug;
   }
-  if($getHelper->getCmsLink(2) !='')
+  if(isset($getHelper) && $getHelper->getCmsLink(2) !='')
   {
     $getcms_ret_policy = $getHelper->getCmsLink(2);
     $return_policy = $getcms_ret_policy->slug;
   }
-  if($getHelper->getCmsLink(3) !='' && (!Session::has('brand_userid')))
+  if(isset($getHelper) && $getHelper->getCmsLink(3) !='' && (!Session::has('brand_userid')))
   {
     $getcms_terms = $getHelper->getCmsLink(3);
     $terms = $getcms_terms->slug;
   }
-  if($getHelper->getCmsLink(4) !='')
+  if(isset($getHelper) && $getHelper->getCmsLink(4) !='')
   {
     $getcms_privacy = $getHelper->getCmsLink(4);
     $privacy = $getcms_privacy->slug;
@@ -37,9 +37,9 @@ $about_us = $return_policy = $terms = $privacy ='';
 		<div class="row top_footer">
         	<h2>Join Us</h2>
             <ul class="social-icons">
-            	<li><a href="<?php echo  $all_sitesetting['facebook_link']; ?>" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="<?php echo  $all_sitesetting['twitter_link']; ?>" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="<?php echo  $all_sitesetting['instagram_link']; ?>" target="_blank"><i class="fa fa-instagram"></i></a></li>
+            	<li><a href="<?php echo  isset($all_sitesetting['facebook_link'])?$all_sitesetting['facebook_link']:'#'; ?>" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="<?php echo  isset($all_sitesetting['twitter_link'])?$all_sitesetting['twitter_link']:'#'; ?>" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="<?php echo  isset($all_sitesetting['instagram_link'])?$all_sitesetting['instagram_link']:'#'; ?>" target="_blank"><i class="fa fa-instagram"></i></a></li>
             </ul>
         </div>
         <div class="row bottom_footer">
