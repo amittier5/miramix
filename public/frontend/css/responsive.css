@@ -131,6 +131,21 @@
 	.right_acct_box .acct_box .acct_box_inn{
 		height:369px;	
 	}
+	#nav-icon2{
+		display:block;	
+	}
+	.top_menu_port{
+		width:245px;
+		left:-245px;
+		z-index:99999;
+		transition:all .3s ease-in-out;		
+	}
+	.top_menu_port.activate_dash{
+		left:0;	
+	}
+	.top_menu_port .acct_box_inn_inn a:last-child{
+		font-size:14px;	
+	}
 }
 
 @media (max-width: 991px) {
@@ -304,6 +319,9 @@
 	.add_product_panel .product_name label{
 		font-size: 17px;
     	line-height: 36px;	
+	}
+	.selectedFiles span.image_up{
+		width:100%;	
 	}
 	
 	
@@ -614,6 +632,12 @@
     
     #main-slide .slider-content h2{
 		font-size: 68px;
+	}
+}
+
+@media (min-width : 992px) and (max-width: 1024px) {
+	.selectedFiles span.image_up{
+		left:14px;	
 	}
 }
 
