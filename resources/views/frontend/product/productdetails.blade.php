@@ -1,80 +1,101 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-<?php // echo "<pre/>"; print_r($productdetails); exit;
+<?php //echo "<pre/>"; print_r($productdetails); exit;
 //print_r($productformfactor);  exit;?>
-<script src="<?php echo url();?>/public/frontend/js/jquery.raty.js"></script>
+
+<!----Fb Script Start-->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=<?php echo env('FB_CLIENT_ID')?>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!------------ Fb Script End ------------>
+
+
+<script src="<?php echo url();?>/public/frontend/js/jquery.raty.js"></script> 
+<script src="<?php echo url();?>/public/frontend/js/jquery.elevatezoom.js"></script>
 <link href="<?php echo url();?>/public/frontend/css/jquery.raty.css" rel="stylesheet">
 <div class="inner_page_container">
-      <div class="header_panel">
-          <div class="container">
-           <h2>Brands</h2>
-             <ul class="breadcrumb">
-                <li><a href="<?php echo url();?>">Home</a></li>
-                <li><a href="<?php echo url();?>/{!! $productdetails->slug !!}">Brands</a></li>
-                <li>{!! ucwords($productdetails->product_name) !!}</li>
-             </ul>
-            </div>
-        </div>   
-<!-- Start Products panel -->
-<div class="products_panel nopad_bot">
-  <div class="container">
-    <!--top_proddetails-->
-    <div class="top_proddetails">
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-        <div class="main_img">
+  <div class="header_panel">
+    <div class="container">
+      <h2>Brands</h2>
+      <ul class="breadcrumb">
+        <li><a href="<?php echo url();?>">Home</a></li>
+        <li><a href="<?php echo url();?>/{!! $productdetails->slug !!}">Brands</a></li>
+        <li>{!! ucwords($productdetails->product_name) !!}</li>
+      </ul>
+    </div>
+  </div>
 
-          <img src="<?php if(($productdetails->image1 !='') && (file_exists('uploads/product/'.$productdetails->image1))) {?><?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}<?php } ?>" class="img-responsive" alt="">
-          
-        </div>
-        <div class="sub_img clearfix">
-        <?php if(($productdetails->image1 !='') && (file_exists('uploads/product/'.$productdetails->image1))) {?>
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image1 !!}" alt=""></a>
-        <?php } ?>
-        <?php if(($productdetails->image2 !='') && (file_exists('uploads/product/'.$productdetails->image2))) {?>
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image2 !!}" alt=""></a>
-        <?php } ?>
-        <?php if(($productdetails->image3 !='') && (file_exists('uploads/product/'.$productdetails->image3))) {?> 
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image3 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image3 !!}" alt=""></a>
-        <?php } ?>
-        <?php if(($productdetails->image4 !='') && (file_exists('uploads/product/'.$productdetails->image4))) {?>
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image4 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image4 !!}" alt=""></a>
-        <?php } ?>
-        <?php if(($productdetails->image5 !='') && (file_exists('uploads/product/'.$productdetails->image5))) {?>
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image5 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image5 !!}" alt=""></a>
-        <?php } ?>
-        <?php if(($productdetails->image6 !='') && (file_exists('uploads/product/'.$productdetails->image6))) {?>
-        <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image6 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image6 !!}" alt=""></a>
-        <?php } ?>
-        </div>
-        <div class="bordered_panel clearfix special_add">
-        <p class="spec_text">Tags: <span>{!! rtrim($productdetails->tags,',') !!}</span></p>
-        </div>
-        </div>
-        <div class="col-md-6 col-sm-12 pad_top">
-        
-        <div class="bordered_panel clearfix">
-        <div class="top_panel_border clearfix"><h3 class="pull-left">{!! ucwords($productdetails->product_name) !!}</h3>
-        <p class="spec_prc pull-right">$ <small id="min_val">{!! sprintf("%.2f",($productformfactor[0]->actual_price)*($timeduration[0]->no_of_days)) !!} </small><span id="min_val2">/ {!! $timeduration[0]->name !!}</span></p>
-        </div>
-        
-        <div class="bot_panel">
-        <ul class="nav nav-tabs" id="myTab">
-          <?php $i= 1; 
+  
+
+  <!-- Start Products panel -->
+  <div class="products_panel nopad_bot">
+    <div class="container"> 
+      <!--top_proddetails-->
+      <div class="top_proddetails">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="main_img"> <img src="<?php if(($productdetails->image1 !='') && (file_exists('uploads/product/'.$productdetails->image1))) {?><?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}<?php } ?>" class="img-responsive" alt=""> </div>
+            <div class="sub_img clearfix">
+              <?php if(($productdetails->image1 !='') && (file_exists('uploads/product/'.$productdetails->image1))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image1 !!}" alt=""></a>
+              <?php } ?>
+              <?php if(($productdetails->image2 !='') && (file_exists('uploads/product/'.$productdetails->image2))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image2 !!}" alt=""></a>
+              <?php } ?>
+              <?php if(($productdetails->image3 !='') && (file_exists('uploads/product/'.$productdetails->image3))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image3 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image3 !!}" alt=""></a>
+              <?php } ?>
+              <?php if(($productdetails->image4 !='') && (file_exists('uploads/product/'.$productdetails->image4))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image4 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image4 !!}" alt=""></a>
+              <?php } ?>
+              <?php if(($productdetails->image5 !='') && (file_exists('uploads/product/'.$productdetails->image5))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image5 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image5 !!}" alt=""></a>
+              <?php } ?>
+              <?php if(($productdetails->image6 !='') && (file_exists('uploads/product/'.$productdetails->image6))) {?>
+              <a href="javascript:void(0);" class="pull-left img_bord" data-rel="<?php echo url();?>/uploads/product/{!! $productdetails->image6 !!}"><img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->image6 !!}" alt=""></a>
+              <?php } ?>
+            </div>
+            <div class="bordered_panel clearfix special_add">
+              <p class="spec_text">Tags: <span>{!! rtrim($productdetails->tags,',') !!}</span></p>
+              
+              <ul class="social_plug_new">
+                 <li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($productdetails->product_name);?>','<?php echo url().'/product-details/'.$productdetails->product_slug;?>','<?php echo ($productdetails->id);?>');"><i class="fa fa-facebook"></i><span>Share To get Discounts</span></a></li>
+                 <li class="goog_li"><a href="javascript:void(0)" id="signin" ><i class="fa fa-google-plus"></i><span>Share To get Discounts</span></a>
+                <div id="plusone-div"></div></li>
+              </ul>
+            </div>
+          </div>
+
+         
+    
+          <div class="col-md-6 col-sm-12 pad_top">
+            <div class="bordered_panel clearfix">
+              <div class="top_panel_border clearfix">
+                <h3 class="pull-left">{!! ucwords($productdetails->product_name) !!}</h3>
+                <p class="spec_prc pull-right">$ <small id="min_val">{!! sprintf("%.2f",($productformfactor[0]->actual_price)*($timeduration[0]->no_of_days)) !!} </small><span id="min_val2">/ {!! $timeduration[0]->name !!}</span></p>
+              </div>
+              <div class="bot_panel">
+                <ul class="nav nav-tabs" id="myTab">
+                  <?php $i= 1; 
           foreach($productformfactor as $eachformfactor){
             if($i ==1)
               $active = "active";
             else
               $active = "";
           ?>
-            <li class="<?php echo $active;?>"><a data-toggle="tab" href="#section<?php echo $eachformfactor->id?>" onclick="changeval('<?php echo $eachformfactor->id;?>','<?php echo $eachformfactor->actual_price;?>','<?php echo $eachformfactor->product_id;?>','<?php echo trim($eachformfactor->product_name); ?>','<?php echo $eachformfactor->formfactor_id?>')"><img src="<?php echo url();?>/uploads/formfactor/{!! $eachformfactor->image !!}" alt=""></a></li>
-            
-          <?php $i++;} ?>
-      
-      </ul>
-      <form id="form1" action="">
-      <div class="tab-content" id="myTabContent">
-        <?php 
+                  <li class="<?php echo $active;?>"><a data-toggle="tab" href="#section<?php echo $eachformfactor->id?>" onclick="changeval('<?php echo $eachformfactor->id;?>','<?php echo $eachformfactor->actual_price;?>','<?php echo $eachformfactor->product_id;?>','<?php echo trim($eachformfactor->product_name); ?>','<?php echo $eachformfactor->formfactor_id?>')"><img src="<?php echo url();?>/uploads/formfactor/{!! $eachformfactor->image !!}" alt=""></a></li>
+                  <?php $i++;} ?>
+                </ul>
+                <form id="form1" action="">
+                  <div class="tab-content" id="myTabContent">
+                    <?php 
         $i= 1; 
         foreach($productformfactor as $eachformfactor)
          { 
@@ -83,9 +104,9 @@
             else
               $in_active = "";
         ?>
-        <div id="section<?php echo $eachformfactor->id?>" class="tab-pane fade <?php echo $in_active;?>">
-            <ul class="list-group" id="duration<?php echo $eachformfactor->id ?>">
-              <?php 
+                    <div id="section<?php echo $eachformfactor->id?>" class="tab-pane fade <?php echo $in_active;?>">
+                      <ul class="list-group" id="duration<?php echo $eachformfactor->id ?>">
+                        <?php 
                 foreach($timeduration as $eachduration){
                   if($eachduration->no_of_days==90){
                     $total_price = $eachduration->no_of_days*$productformfactor[0]->actual_price;
@@ -100,93 +121,86 @@
                       $net_price = $eachduration->no_of_days*$productformfactor[0]->actual_price;
                   }
               ?>
-              <li class="list-group-item clearfix"><span class="pull-left">{!! $eachduration->name !!}</span><span class="pull-right" data-duration="{!! ($eachduration->name)!!}" data-days="{!! ($eachduration->no_of_days) !!}" data-product-id="{!! ($eachformfactor->product_id)!!}" data-product="{!! ($eachformfactor->product_name)!!}" data-formfactor="{!! ($eachformfactor->formfactor_id)!!}" data-money="{!! sprintf("%.2f",$net_price)!!}">
-                {!! '$'.sprintf("%.2f",$net_price)!!}</span></li>
-              
-              <?php } ?>
-            </ul>
-        </div>
-        <?php 
+                        <li class="list-group-item clearfix"><span class="pull-left">{!! $eachduration->name !!}</span><span class="pull-right" data-duration="{!! ($eachduration->name)!!}" data-days="{!! ($eachduration->no_of_days) !!}" data-product-id="{!! ($eachformfactor->product_id)!!}" data-product="{!! ($eachformfactor->product_name)!!}" data-formfactor="{!! ($eachformfactor->formfactor_id)!!}" data-money="{!! sprintf("%.2f",$net_price)!!}"> {!! '$'.sprintf("%.2f",$net_price)!!}</span></li>
+                        <?php } ?>
+                      </ul>
+                    </div>
+                    <?php 
         $i++;
         } 
         ?>
-        
-    </div>
-    </form>
+                  </div>
+                </form>
+                <div class="row">
+                  <div class="total_top">
+                    <div class="col-sm-8 price_panel">
+                      <p class="pull-left price_pan" data-money="5.20">$5.20</p>
+                      <div id="incdec" class="col-sm-6"> <a href="javascript:void(0);" id="down" class="pull-left incremt_a"><i class="fa fa-minus"></i></a>
+                        <div class="col-sm-10" id="increment_input">
+                          <input type="text" class="form-control text-center" value="1"  id="qty" readonly/>
+                        </div>
+                        <a href="javascript:void(0);" id="up" class="pull-left incremt_a"><i class="fa fa-plus"></i></a> </div>
+                      <p id="result">=&nbsp;$5.00</p>
+                    </div>
+                    <div class="col-sm-4">
+                      <?php if($brandlogin == 0) {?>
+                      <button type="button" class="butt cart" id="add_cart"  onclick="addCart()"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt="">Add to cart<span id="no_dis_orig"><i class="fa fa-check"></i>Product Added</span></button>
+                      <?php } ?>
+                      <!----------------------- ADD TO CART ALL VALUE HIDDEN START ---------------------------->
+                      
+                      <input type="hidden" name="product_id" id="product_id" value=""/>
+                      <input type="hidden" name="quantity" id="quantity" value=""/>
+                      <input type="hidden" name="product_name" id="product_name" value=""/>
+                      <input type="hidden" name="amount" id="amount" value=""/>
+                      <input type="hidden" name="duration" id="duration" value=""/>
+                      <input type="hidden" name="no_of_days" id="no_of_days" value=""/>
+                      <input type="hidden" name="form_factor" id="form_factor" value=""/>
+                      
+                      <!----------------------- ADD TO CART ALL VALUE HIDDEN START ----------------------------> 
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--top_proddetails--> 
+      
+      <!--mid_panel-->
+      <div class="mid_panel">
         <div class="row">
-        <div class="total_top">
-        <div class="col-sm-8 price_panel"><p class="pull-left price_pan" data-money="5.20">$5.20</p>
-        <div id="incdec" class="col-sm-6">
-          <a href="javascript:void(0);" id="down" class="pull-left incremt_a"><i class="fa fa-minus"></i></a>
-            <div class="col-sm-10" id="increment_input"><input type="text" class="form-control text-center" value="1"  id="qty" readonly/></div>
-            <a href="javascript:void(0);" id="up" class="pull-left incremt_a"><i class="fa fa-plus"></i></a>
+          <div class="total_block">
+            <div class="col-sm-6 lefted_img"> <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}" class="img-responsive" alt=""> </div>
+            <div class="col-sm-6 righted_text">
+              <p>{!! ucfirst($productdetails->description1) !!}</p>
+            </div>
+          </div>
+          <div class="total_block">
+          	<div class="col-sm-6 lefted_img col-sm-push-6"> <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}" class="img-responsive" alt=""> </div>
+            <div class="col-sm-6 righted_text col-sm-pull-6">
+              <p>{!! ucfirst($productdetails->description2) !!}</p>
+            </div>
+            
+          </div>
+          <div class="total_block">
+            <div class="col-sm-6 lefted_img"> <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image3 !!}" class="img-responsive" alt=""> </div>
+            <div class="col-sm-6 righted_text">
+              <p>{!! ucfirst($productdetails->description3) !!}</p>
+            </div>
+          </div>
         </div>
-        
-        <p id="result">=&nbsp;$5.00</p>
+      </div>
+      <!--mid_panel--> 
+      
     </div>
-        <div class="col-sm-4">
-        <?php if($brandlogin == 0) {?>
-        <button type="button" class="butt cart" id="add_cart"  onclick="addCart()"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt="">Add to cart</button>
-        <?php } ?>
-      <!----------------------- ADD TO CART ALL VALUE HIDDEN START ---------------------------->
-          
-          <input type="hidden" name="product_id" id="product_id" value=""/>
-          <input type="hidden" name="quantity" id="quantity" value=""/>
-          <input type="hidden" name="product_name" id="product_name" value=""/>
-          <input type="hidden" name="amount" id="amount" value=""/>
-          <input type="hidden" name="duration" id="duration" value=""/>
-          <input type="hidden" name="no_of_days" id="no_of_days" value=""/>
-          <input type="hidden" name="form_factor" id="form_factor" value=""/>
 
-      <!----------------------- ADD TO CART ALL VALUE HIDDEN START ---------------------------->  
-
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        
-        </div>
-    </div>
-    </div>
-    <!--top_proddetails-->
-    
-    <!--mid_panel-->
-    <div class="mid_panel">
-    <div class="row">
-    <div class="total_block"><div class="col-sm-6 lefted_img">
-    <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image1 !!}" class="img-responsive" alt="">
-    </div>
-    <div class="col-sm-6 righted_text">
-    <p>{!! ucfirst($productdetails->description1) !!}</p>
-    </div></div>
-    <div class="total_block">
-    <div class="col-sm-6 righted_text">
-    <p>{!! ucfirst($productdetails->description2) !!}</p>
-    </div>
-    <div class="col-sm-6 lefted_img">
-    <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}" class="img-responsive" alt="">
-    </div>
-    </div>
-    <div class="total_block"><div class="col-sm-6 lefted_img">
-    <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image3 !!}" class="img-responsive" alt="">
-    </div>
-    <div class="col-sm-6 righted_text">
-    <p>{!! ucfirst($productdetails->description3) !!}</p>
-    </div></div>
-    </div>
-    </div>
-    <!--mid_panel-->
-    
-    
-    </div>
-    
     <!--accnt_desc panel-->
     <section class="accnt_desc">
-    <div class="container">
-    
-    <div class="acct_text">
-    <?php if(($productdetails->pro_image !='') && (file_exists('uploads/brandmember/'.$productdetails->pro_image))) {
+      <div class="container">
+        <div class="acct_text">
+          <?php if(($productdetails->pro_image !='') && (file_exists('uploads/brandmember/'.$productdetails->pro_image))) {
       $brand_profile_image = $productdetails->pro_image;
       }
       else
@@ -194,24 +208,23 @@
         $brand_profile_image ='noimage.png';
       } 
     ?>
-
-    <div class="acct_img" style="background:url(<?php echo url();?>/uploads/brandmember/{!! $brand_profile_image !!}) no-repeat 0 0;background-size:cover;"></div>
-    <h4>{!! ucwords($productdetails->business_name) !!}</h4>
-     <p>{!! ucfirst($productdetails->brand_details) !!}</p>
-    </div>
-    </div>
+          <div class="acct_img" style="background:url(<?php echo url();?>/uploads/brandmember/{!! $brand_profile_image !!}) no-repeat 0 0;background-size:cover;"></div>
+          <h4>{!! ucwords($productdetails->business_name) !!}</h4>
+          <p>{!! ucfirst($productdetails->brand_details) !!}</p>
+        </div>
+      </div>
     </section>
     <!--accnt_desc panel-->
     
-    <div class="container">
-    <!--bottom_panel_rev-->
-    <div class="bottom_panel_rev">
-    <div class="row">
-    <div class="col-sm-6 review_block">
-        <h6>Reviews</h6>
-          <div class="avrating_box">
-          <p class="pull-left">Average rating</p>
-          <?php
+    <div class="container"> 
+      <!--bottom_panel_rev-->
+      <div class="bottom_panel_rev">
+        <div class="row">
+          <div class="col-sm-6 review_block">
+            <h6>Reviews</h6>
+            <div class="avrating_box">
+              <p class="pull-left">Average rating</p>
+              <?php
           $rval=0;
           foreach($rating as $prate){
           $rval +=$prate->rating_value;
@@ -222,8 +235,8 @@
           $avg=0;
           }
           ?>
-          <div id="avgrate"></div>
-           <script>
+              <div id="avgrate"></div>
+              <script>
              $(document).ready(function(){
                 $('#avgrate').raty({
                 readOnly: true,
@@ -234,130 +247,110 @@
                 });
                 
                 });
-          </script>
-        
-        <small>(Based on <?php echo count($rating);?>  Reviews)</small>
-    </div>
-    <?php if(count($rating)>0) {?>
-    <div class="news_list">
-        <div class="wrap_load"><a href="javascript:void(0);" class="btn btn-special loadmore" data-page="0">View More Reviews</a>
-        <span class="disable_click"></span></div>
-    </div>
-   <?php } ?> 
-     
-    </div>
-
-
-    <div class="col-sm-6 suppl_facts">
-      <h6>Supplement Facts</h6>
-        <!--supp_box-->
-      <div class="supp_box">
-      <?php if(($productdetails->label !='') && (file_exists('uploads/product/'.$productdetails->label))) {?>
-       <img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->label !!}" alt="">
-      <?php } else { ?>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elementum nulla et nisi lacinia viverra. Class aptent taciti sociosqu </p>
-        
-        <div class="table-responsive spec_table">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th width="60%">&nbsp;</th>
-                <th width="20%">Amount per Savings</th>
-                <th width="20%">% Daliy Value</th>
-              </tr>
-              </thead>
-            <tbody>
-              <tr>
-                <td>Kale Powder</td>
-                <td>100 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Cocao Extract</td>
-                <td>50 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Kale Powder</td>
-                <td>100 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Cocao Extract</td>
-                <td>50 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Kale Powder</td>
-                <td>100 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Cocao Extract</td>
-                <td>50 mg</td>
-                <td>N/A</td>
-              </tr>
-              <tr>
-                <td>Cocao Extract</td>
-                <td>50 mg</td>
-                <td>N/A</td>
-              </tr>
-            </tbody>
-          </table>
+          </script> 
+              <small>(Based on <?php echo count($rating);?> Reviews)</small> </div>
+            <?php if(count($rating)>0) {?>
+            <div class="news_list">
+              <div class="wrap_load"><a href="javascript:void(0);" class="btn btn-special loadmore" data-page="0">View More Reviews</a> <span class="disable_click"></span></div>
+            </div>
+            <?php } ?>
+          </div>
+          <div class="col-sm-6 suppl_facts">
+            <h6>Supplement Facts</h6>
+            <!--supp_box-->
+            <div class="supp_box">
+              <?php if(($productdetails->label !='') && (file_exists('uploads/product/'.$productdetails->label))) {?>
+              <img src="<?php echo url();?>/uploads/product/thumb/{!! $productdetails->label !!}" id="zoom_01" data-zoom-image="<?php echo url();?>/uploads/product/{!! $productdetails->label !!}" alt="">
+              <?php } else { ?>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elementum nulla et nisi lacinia viverra. Class aptent taciti sociosqu </p>
+              <div class="table-responsive spec_table">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th width="60%">&nbsp;</th>
+                      <th width="20%">Amount per Savings</th>
+                      <th width="20%">% Daliy Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Kale Powder</td>
+                      <td>100 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Cocao Extract</td>
+                      <td>50 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Kale Powder</td>
+                      <td>100 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Cocao Extract</td>
+                      <td>50 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Kale Powder</td>
+                      <td>100 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Cocao Extract</td>
+                      <td>50 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td>Cocao Extract</td>
+                      <td>50 mg</td>
+                      <td>N/A</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <?php } ?>
+            </div>
+            <!--supp_box--> 
+          </div>
         </div>
-
-      <?php } ?>
       </div>
-        <!--supp_box-->
-    </div>
-    </div>
-    </div>
-    <!--bottom_panel_rev-->
-    
-    <!--related_prod-->
+      <!--bottom_panel_rev--> 
+      
+      <!--related_prod-->
       <div class="related_prod">
-      <?php 
+        <?php 
           if(!empty($related_product)){
       ?>
-      <h3>Related Products</h3>
-      <div class="product_list">
-        <?php 
+        <h3>Related Products</h3>
+        <div class="product_list">
+          <?php 
          
             foreach ($related_product as $key => $value) {
         ?>
-        <div class="product">
+          <div class="product">
             <div class="head_section">
-                <h2><?php echo $value->product_name;?></h2>
-                <p class="price"><?php echo '$'.number_format($value->min_price*7,2);?></p>
+              <h2><?php echo $value->product_name;?></h2>
+              <p class="price"><?php echo '$'.number_format($value->min_price*7,2);?></p>
             </div>
-
             <div class="image_section" <?php if(($value->image1 !='') && (file_exists('uploads/product/thumb/'.$value->image1))) {?>
                 style="background:url(<?php echo url();?>/uploads/product/thumb/{!! $value->image1 !!}) no-repeat center center; background-size:cover;height:240px;" <?php } else {?> style="background:url(<?php echo url();?>/uploads/brandmember/noimage.png) no-repeat center center;background-size:cover;height:240px;" <?php } ?>>
-
-
-        
-                <div class="image_info">
-                  <a href="<?php echo url().'/product-details/'.$value->product_slug;?>" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                  <a href="<?php echo url().'/product-details/'.$value->product_slug;?>" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a>
-                </div>
-            </div> 
+            <div class="image_info"><!-- <a href="<?php // echo url().'/product-details/'.$value->product_slug;?>" class="butt cart"><img src="<?php // echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>--> <a href="<?php echo url().'/product-details/'.$value->product_slug;?>" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> Get Details</a> </div>
+          </div>
         </div>
         <?php
             }
         ?>
-        
-        </div>
-      <?php } ?>
       </div>
-    <!--related_prod-->
+      <?php } ?>
     </div>
-    
+    <!--related_prod--> 
+  </div>
 </div>
-<!-- End Products panel --> 
- </div>
-
-
+<!-- End Products panel -->
+</div>
 <script type="text/javascript">
   $(document).ready(function(){
     $('.loadmore').trigger('click');
@@ -387,11 +380,8 @@
 
         
   });
-  </script>
-
-
-
- <script>
+  </script> 
+<script>
   jQuery(document).ready(function(e) {
   var flag=false;  
     $('.rating span.star').click(function(){
@@ -429,6 +419,7 @@
   
     <?php if((Session::has('member_userid')) || !(Session::has('brand_userid'))) { ?>
       $(document).on('click','.list-group-item',function(){
+	  //alert('listitem');	  
 
       var $this=$(this);
       $('.list-group-item').removeClass('main_active');
@@ -460,6 +451,7 @@
       total_calc();
       flag=true;
       //alert(flag);
+	  $('#myTabContent .error_msg').remove(); //remove error message after selecting item
     });
     
   <?php } ?>
@@ -467,16 +459,7 @@
   $('#add_cart').on('click',function(e){
     //alert("p="+flag);
     //e.preventDefault();   
-    if(flag===true){
-      $('#myTabContent .error_msg').remove();
-      //$('#form1').submit();
-    }
-    else{
-      $('#myTabContent .error_msg').remove();
-      $('#myTabContent').append('<div class="alert alert-danger fade in error_msg"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a><strong>Danger!</strong> Please Select A Value.</div>');
-      flag=false;
-      return false; 
-    }
+    
   });
   
   
@@ -557,8 +540,8 @@ function changeval(id,price,product_id,product_name,formfactor_id)
    $("#section"+id).html(str);
    //return false;
   }
-  </script>
-  <script>
+  </script> 
+<script>
   function addCart()
   {
     var product_id = $("#product_id").val();
@@ -570,24 +553,119 @@ function changeval(id,price,product_id,product_name,formfactor_id)
     var form_factor = $("#form_factor").val();
 
     //alert(data_money+','+data_duration+','+data_product_id+','+data_product+','+data_formfactor+','+quantity);
-    $.ajax({
-        url: '<?php echo url();?>/allmycard',
-        type: "post",
-        data: { product_id : product_id , quantity : quantity ,product_name : product_name, amount : amount, duration : duration, no_of_days:no_of_days, form_factor : form_factor,_token: '{!! csrf_token() !!}'},
-        success:function(data)
-        {
-          //alert(data);
-          if(data !='' ) // email exist already
+    if(product_id!='' && quantity!='' && amount!='' && product_name!='' && duration!='' && no_of_days!='' && form_factor!='')
+    {
+      $.ajax({
+          url: '<?php echo url();?>/allmycard',
+          type: "post",
+          data: { product_id : product_id , quantity : quantity ,product_name : product_name, amount : amount, duration : duration, no_of_days:no_of_days, form_factor : form_factor,_token: '{!! csrf_token() !!}'},
+          success:function(data)
           {
-            $("#cart_det").html(data);
-            $("#cart_det").effect( "shake", {times:4}, 1000 );
-             //window.location.href = "<?php echo url()?>/brandregister";
+           //alert(data);
+            if(data !='' ) // email exist already
+            {
+              $("#cart_det").html(data);
+			  $("#cart_mob_det").html(data);
+              //$("#cart_det").effect( "shake", {times:4}, 1000 );
+               //window.location.href = "<?php echo url()?>/brandregister";
+			   $('#myTabContent .error_msg').remove();
+			   
+			   //for add to cart animation
+			   var foroffset_calc=$('#add_cart');
+			   if($(window).width()>767)
+				var cart = $('.navbar-default .navbar-nav > li.cart');
+			   else
+			    var cart = $('#formob_only');	
+				var imgtodrag = $('.main_img').find("img").eq(0);
+				console.log(imgtodrag);
+				if (imgtodrag) {
+					var imgclone = imgtodrag.clone()
+						.offset({
+						top: foroffset_calc.offset().top,
+						left: foroffset_calc.offset().left
+					})
+						.css({
+						'opacity': '0.5',
+							'position': 'absolute',
+							'height': '150px',
+							'width': '150px',
+							'z-index': '9999999999'
+					})
+						.appendTo($('body'))
+						.animate({
+						'top': cart.offset().top + 10,
+							'left': cart.offset().left + 10,
+							'width': 75,
+							'height': 75
+					}, 1000, 'easeInOutExpo');
+					
+					
+					imgclone.animate({
+						'width': 0,
+							'height': 0
+					}, function () {
+						$(this).detach()
+					});
+				}
+				setTimeout(function(){
+					$("#cart_det").show();
+			  		$("#cart_mob_det").show();	
+				},1100)
+				setTimeout(function(){
+					$('#no_dis_orig').animate({'left':0});
+					$('#add_cart').prop('disabled',true);
+					/*if($(window).width()>767){
+						$(".nav > li.cart a").tooltip({
+							title: 'Product Added To Cart.',
+							placement:'bottom'
+						});
+						$(".nav > li.cart a").tooltip('show');
+					}
+					else{
+						$("#formob_only").tooltip({
+							title: 'Product Added To Cart.',
+							placement:'bottom'
+						});
+						$("#formob_only").tooltip('show');
+					}*/
+				},600);		
+				setTimeout(function(){
+					$('#no_dis_orig').animate({'left':100+'%'});
+					$('#add_cart').prop('disabled',false);
+					/*if($(window).width()>767){
+						$(".nav > li.cart a").tooltip('destroy');
+					}
+					else{
+						$("#formob_only").tooltip('destroy');
+					}*/
+				},4000);
+			   //for add to cart animation
+			   
+			   /*-- After Add to Cart Remove All the hidden required Fields Start --*/
+				$("#product_id").val('');
+				$("#quantity").val('');
+				$("#product_name").val('');
+				$("#amount").val('');
+				$("#duration").val('');
+				$("#no_of_days").val('');
+				$("#form_factor").val('');
+				$('.list-group-item').removeClass('main_active'); //Remove selected item
+				$('.price_panel').hide(); // remove selected quantity
+				/*-- After Add to Cart Remove All the hidden required Fields Start --*/
+            }
+			            
           }
-          
-        }
-    
-      });
-
+      
+        }); //ajax end
+    } // if end
+	else{
+				//alert();
+				//$('#myTabContent .error_msg').remove();
+				$('#myTabContent .error_msg').remove();
+				$('#myTabContent').append('<div class="alert alert-danger fade in error_msg"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a><strong>Danger!</strong> Please Select A Value.</div>');
+				//flag=false;
+      				
+	}
 
   }
   
@@ -602,6 +680,131 @@ function changeval(id,price,product_id,product_name,formfactor_id)
 
   });
 
-  </script>
+  </script> 
+<script>
+if($(window).width()>767){
+    $('#zoom_01').elevateZoom({
+		cursor: "crosshair",
+		zoomWindowFadeIn: 500,
+		zoomWindowFadeOut: 750,
+    zoomWindowWidth: 500,
+    zoomWindowHeight: 500,
+    borderSize: 1,
+    showLens: false,
+    borderColour: "#6ED1E3"
+    }); 
+}
+</script>
+<style>
+  .zoomWindow {
+    left: -500px !important;
+}
 
- @stop
+</style>
+
+<!--INNER PAGE CONTENT END -->
+
+<script>
+function fb_share(product_name,url,product_id) {
+ 	FB.ui(
+  {
+    method: 'share',
+	name: product_name,
+	href: url,
+  product_id: product_id
+	//caption: details
+  },
+  
+  function(response) {
+    if (response && !response.error_code) 
+    {
+    	FB.api('/me?fields=name,email', function(response)
+    	{
+    		//alert('Posting completed.'+response.email+product_id);
+			$.ajax({
+				url: '<?php echo url();?>/saveShare',
+				type: "post",
+				data: { email : response.email, product_id : product_id ,_token: '{!! csrf_token() !!}'},
+				success:function(data)
+				{
+				//alert(data);
+				}
+			});
+    	});
+    } 
+    // else 
+    // {
+    //  alert('Error while posting.');
+    // }
+  }
+);
+
+}
+</script>
+
+<!--------Google Share -------->
+<script >
+  window.___gcfg = {
+  
+    parsetags: 'onload'
+  };
+</script>
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="<?php echo env('GOOGLE_CLIENT_ID')?>">
+
+<script>
+
+  function attachSignin(element) {
+      
+       auth2.attachClickHandler(element, {},
+	   function(googleUser) {
+	     
+	  $.post( "<?php echo url();?>/saveShare",{_token:'{!! csrf_token() !!}',email:googleUser.getBasicProfile().getEmail(),product_id:18} , function(response) {
+	    //window.location.href=response;
+	    //console.log("Response: "+response);
+           // $("#sharegoogle").css('opacity', '1');
+           renderPlusone();
+           $("#signin").hide();
+	   });
+	   }, function(error) {
+	    
+	   });
+     }
+     
+var googleUser = {};
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: '<?php echo env('GOOGLE_CLIENT_ID')?>',
+        cookiepolicy: 'single_host_origin',
+         
+      });
+      attachSignin(document.getElementById('signin'));
+      
+      
+     /* gapi.auth.checkSessionState({session_state: null}, function(isUserNotLoggedIn){
+                  if (isUserNotLoggedIn) {
+                       
+                        $("#signin").show();
+                  }else{
+                     renderPlusone();    
+                    $("#signin").hide();    
+                  }
+              });
+      */
+    });
+  };
+startApp();
+
+
+  function renderPlusone() {
+        gapi.plusone.render("plusone-div");
+      }
+</script>
+
+
+<!--------Google Share -------->
+@stop

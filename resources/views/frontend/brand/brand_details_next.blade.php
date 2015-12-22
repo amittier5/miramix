@@ -11,14 +11,12 @@
           <div class="product">
               <div class="head_section">
                   <h2 title="{!! $each_product->product_name !!}">{!! $each_product->product_name !!}</h2>
-                  <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*7,2);?> </p>
+                  <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*30,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
                   <!--<img src="<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}" alt=""/>-->
                     <div class="image_info">
-                      <?php if($brandlogin == 0) {?>
-                      <a href="<?php echo url();?>/product-details/{!! $each_product->product_slug !!}" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                      <?php } ?>
+                     
                         <a href="<?php echo url();?>/product-details/{!! $each_product->product_slug !!}" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> View Details</a>
                     </div>
               </div> 

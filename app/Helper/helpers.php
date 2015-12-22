@@ -51,16 +51,23 @@ class helpers extends Cart {
 
         $dst_img        =   ImageCreateTrueColor($thumb_w,$thumb_h);
 
+        /* for png black background error Start */
+        imagealphablending($dst_img, false);
+        imagesavealpha($dst_img,true);
+        $transparent = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
+        imagefilledrectangle($dst_img, 0, 0, $thumb_w, $thumb_h, $transparent);
+        /* for png black background error end */
+
         imagecopyresampled($dst_img,$src_img,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y);
 
 
         // New save location
         $new_thumb_loc = $moveToDir . $imageName;
 
-        if($mime['mime']=='image/png'){ $result = imagepng($dst_img,$new_thumb_loc,8); }
-        if($mime['mime']=='image/jpg'){ $result = imagejpeg($dst_img,$new_thumb_loc,80); }
-        if($mime['mime']=='image/jpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,80); }
-        if($mime['mime']=='image/pjpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,80); }
+        if($mime['mime']=='image/png'){ $result = imagepng($dst_img,$new_thumb_loc,9); }
+        if($mime['mime']=='image/jpg'){ $result = imagejpeg($dst_img,$new_thumb_loc,100); }
+        if($mime['mime']=='image/jpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,100); }
+        if($mime['mime']=='image/pjpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,100); }
 
         imagedestroy($dst_img);
         imagedestroy($src_img);

@@ -81,31 +81,36 @@ class BrandController extends BaseController {
         //$total_brand_pro = 0;
         $item_per_page=3;
         $product = DB::table('products')
-                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`'))
+                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at, AVG(product_rating.rating_value) as rating '))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
+                 ->leftJoin('product_rating', 'products.id', '=', 'product_rating.product_id')
+                 ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
                  ->where('products.brandmember_id', '=', $all_brand_member->id)
                  ->where('products.active', 1)
                  ->where('products.is_deleted', 0)
                  ->where('product_formfactors.servings', '!=',0)
                  ->where('products.discountinue', 0)
                  ->groupBy('product_formfactors.product_id')
-                ;
-
+                 ->groupBy('product_rating.product_id') ;
+                
        $sortby=Request::input('sortby');
 	 if(!empty($sortby)){
 	    
 	    if($sortby=='popularity'){
-		$product->orderBy('popularity', 'DESC');
-	    }elseif($sortby=='price'){
-		$product->orderBy('min_price', 'ASC');
-	    }elseif($sortby=='date'){
+		$product->orderBy('rating', 'DESC');
+	    }elseif($sortby=='pricelow'){
+        $product->orderBy('min_price', 'ASC');
+        }
+        elseif($sortby=='pricehigh'){
+        $product->orderBy('min_price', 'DESC');
+        }elseif($sortby=='date'){
 		$product->orderBy('created_at', 'DESC');
 	    }else{
-		$product->orderBy('popularity', 'DESC');
+		$product->orderBy('rating', 'DESC');
 	    }
 	    
 	 }else{
-		$product->orderBy('popularity', 'DESC');
+		$product->orderBy('rating', 'DESC');
 	    }
           $product=$product->paginate($item_per_page);
           

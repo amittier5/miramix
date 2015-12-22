@@ -169,7 +169,7 @@ class CronController extends BaseController {
            }
            
          }
-         
+       $this->onlineusers();  
     }
     
     public function sendpasswordmail(){
@@ -232,6 +232,31 @@ class CronController extends BaseController {
 	
 	
     }
+    
+    
+public function onlineusers(){
+    $session=Session::getId();
+    $time=time();
+    $time_check=$time-600; //SET TIME 10 Minute
+    
+    
+    
+    $count=DB::table('user_online')->where("session",$session)->count();
+    if($count=="0"){
+	DB::table('user_online')->insert(['session' => $session, 'time' => $time,'ip' => Request::ip()]);
+    }else{
+	DB::table('user_online')
+                                    ->where('session', $session)
+                                    ->update(['time' => $time,'ip' => Request::ip()]);
+    }
+    
+    $count=DB::table('user_online')->count();
+    echo "Online Users : ".$count;
+    DB::table('user_online')->where("time",'<',$time_check)->delete(); 
+
+ 
+    
+}
     
 }
 ?>

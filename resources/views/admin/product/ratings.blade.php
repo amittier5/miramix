@@ -20,23 +20,25 @@
                     <th>Rating</th>
                     <th>User</th>
                     <th>Comment</th>
-                    
                     <th>Status</th>
-                  
                     <th>Delete</th>
                 </tr>
             </thead>
                 
                 
             <tbody>
-                <?php $i=1;?>
-                @foreach ($ratings as $rating)
+            <?php $i=1;
+            if(!empty($ratings))
+            {
+                foreach ($ratings as $rating) 
+                {
+            ?>            
                 <tr class="odd gradeX">
                     <td class=""><?php echo $i; ?></td>
-                    <td class="">{!! $rating->getRatings->product_name !!}</td>
-                    <td class="">{!! $rating->rating_value !!}</td>
-                    <td class="">{!! $rating->getMembers->email !!}</td>
-                    <td class="">{!! $rating->comment !!}</td>
+                    <td class="">{!! $rating->getRatings->product_name; !!}</td>
+                    <td class="">{!! $rating->rating_value; !!}</td>
+                    <td class="">{!! $rating->username !!}</td>
+                    <td class="">{!! $rating->comment; !!}</td>
                  
                     <td class="">
                         @if ($rating->status == 1)
@@ -54,21 +56,40 @@
                         <input type="button" class="btn btn-danger" onclick="ConfirmDelete()" value="Delete"/>
                     </td>
                 </tr>
-                <?php $i++;?>
-                @endforeach
+                <?php $i++;
+                }
+            }
+            else
+            {
+                echo 'No data found.'; 
+            }
+                ?>
+                
                 </tbody>
                 
             </table>
     </div>
 
-  <div><?php echo $ratings->render(); ?></div>
+  <div>
+<?php 
+if(!empty($ratings))
+{
+    echo $ratings->render(); 
+    if(isset($rating->rating_id))
+        $url = $rating->rating_id;
+    else
+        $url = '';
+}
+?>
+    </div>
   <script>
 
   function ConfirmDelete()
   {
   var x = confirm("Are you sure you want to delete?");
+  var url = '<?php echo $url ?>';
   if (x)
-    location.href='{{ URL::to('admin/destroyrating/' . $rating->rating_id) }}';
+    location.href='<?php echo url().('/admin/destroyrating/') ?>'+url;
   else
     return false;
   }

@@ -61,6 +61,10 @@ Route:: get('/subscription-history','Frontend\BrandController@subscriptionHistor
 
 // ============================== For Payment Methods End ============================= 
 
+// Product Share Start //
+Route:: get('/saveShare','Frontend\ProductController@saveShare'); 
+Route:: post('/saveShare','Frontend\ProductController@saveShare');
+// Product Share Start //
 
 // ======================= Add To Cart Fuctionality Start  =======================
 
@@ -111,13 +115,20 @@ Route:: post('/productPost','Frontend\ProductController@productPost');
 
 
 // ======================= CheckOut Start ========================
-Route:: get('checkout-step1','Frontend\CheckoutController@checkoutStep1');   
+//Route:: get('checkout-step1','Frontend\CheckoutController@checkoutStep1');   
 Route:: get('/checkout-step2','Frontend\CheckoutController@checkoutStep2'); 
 Route:: post('/checkout-step2','Frontend\CheckoutController@checkoutStep2');
 Route:: get('/checkout-step3','Frontend\CheckoutController@checkoutStep3'); 
 Route:: post('/checkout-step3','Frontend\CheckoutController@checkoutStep3'); 
 Route:: get('/checkout-step4','Frontend\CheckoutController@checkoutStep4'); 
 Route:: post('/checkout-step4','Frontend\CheckoutController@checkoutStep4'); 
+
+Route:: post('/checkout-submit-step2','Frontend\CheckoutController@checkoutSubStep2');
+Route:: post('/checkout-submit-step3','Frontend\CheckoutController@checkoutSubStep3');
+Route:: post('/checkout-guest-login','Frontend\CheckoutController@checkoutguestlogin');
+Route:: post('/checkout-guest-submit','Frontend\CheckoutController@checkoutguestsubmit'); 
+
+Route:: get('checkout','Frontend\CheckoutController@checkoutStep1');    
 
 Route:: get('/checkout-paypal/{id}','Frontend\CheckoutController@checkoutPaypal');
 Route:: post('/checkout-paypal/{id}','Frontend\CheckoutController@checkoutPaypal');
@@ -135,6 +146,12 @@ Route:: post('/checkout-authorize/{id}','Frontend\CheckoutController@checkoutAut
 Route:: get('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin'); 
 Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin');
 
+//======================== Paypal notify Url Call Start==============================//
+
+Route:: get('/wc-api/WC_Gateway_Paypal/','Frontend\CheckoutController@paypalNotify');
+Route:: post('/wc-api/WC_Gateway_Paypal/','Frontend\CheckoutController@paypalNotify');
+
+//======================== Paypal notify Url Call End ==============================//
 
 // ======================= CheckOut End ========================
 
@@ -152,6 +169,10 @@ Route:: post('/usernameChecking','Frontend\RegisterController@usernameChecking')
 Route:: get('/brandregister','Frontend\RegisterController@brandRegister');            /* For Show signup page - registration */
 Route:: post('/brandregister','Frontend\RegisterController@brandRegister');            /* For Show signup page - registration */
 Route:: post('/updateDate','Frontend\RegisterController@updateDate');           /* For ajax sign up page calender date update */
+
+
+Route:: post('/usernameEmailChecking','Frontend\RegisterController@usernameEmailChecking'); /* For duplicate email & username checking  */
+
 
 // =======================REGISTER CONTROLLER END ===============================
 
@@ -207,19 +228,22 @@ Route:: post('/tag-popularity','Frontend\HomeController@tagPopularity');   /* Fo
 
 Route::get('/facebook', 'Frontend\HomeController@facebook_redirect');
 Route::get('/account/facebook', 'Frontend\HomeController@facebook');
+Route::post('/account/facebook', 'Frontend\HomeController@facebook');
 
 Route::get('/google', 'Frontend\HomeController@google_redirect');
 Route::get('/account/google', 'Frontend\HomeController@google');
+Route::post('/account/google', 'Frontend\HomeController@google');
 
 //============================ HOME CONTROLLER END ================================
 
 //============================ FAO CONTROLLER START ===============================
-Route:: get('/faq-list', 'Frontend\FaqController@faqList');
+Route:: get('/faqs', 'Frontend\FaqController@faqList');
 //============================ FAO CONTROLLER START ===============================
 
 //============================ Corn Controller Start ==============================
 Route:: get('/cron','Frontend\CronController@index'); 
-Route:: get('/sendpass','Frontend\CronController@sendpasswordmail'); 
+Route:: get('/sendpass','Frontend\CronController@sendpasswordmail');
+Route:: get('/onlineusers','Frontend\CronController@onlineusers');
 //============================ Corn Controller End ================================
 
 //============================ ORDER CONTROLLER START ==============================
@@ -282,6 +306,11 @@ $router->group([
      get('admin/ratingstatus/{id}', 'ProductController@ratingstatus');
     post('admin/ratingstatus/{id}', 'ProductController@ratingstatus');
     
+    get('admin/orders/filter', 'OrderController@filters');
+    post('admin/orders/filter', 'OrderController@filters');
+
+    post('admin/add-process-queue', 'OrderController@add_process_queue');
+    
     get('admin/change_related_status/{id}/{param}', 'ProductController@change_related_status');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  
 
@@ -293,11 +322,19 @@ $router->group([
     resource('admin/member/admin_active_status', 'MemberController@admin_active_status');
     resource('admin/member/admin_inactive_status', 'MemberController@admin_inactive_status');
     resource('admin/member', 'MemberController');
-
+    post('admin/member', 'MemberController@index');
+    
+    post('admin/add-member', 'MemberController@add_member');
+    get('admin/add-member', 'MemberController@add_member');
+     post('admin/brand-orders/{id}', 'MemberController@brand_orders');
+    get('admin/brand-orders/{id}', 'MemberController@brand_orders');
+    
+    
     resource('admin/brand/status', 'BrandController@status');
     resource('admin/brand/admin_active_status', 'BrandController@admin_active_status');
     resource('admin/brand/admin_inactive_status', 'BrandController@admin_inactive_status');
     resource('admin/brand', 'BrandController');
+    post('admin/brand', 'BrandController@index');
     
     resource('admin/vitamin', 'VitaminController');
 	  get('admin/upload', 'UploadController@index');
@@ -310,7 +347,9 @@ $router->group([
     resource('admin/form-factor', 'FormfactorController@index');
     resource('admin/form-factor-name', 'FormfactorController@form_factor_name');
     resource('admin/orders', 'OrderController');
-
+     post('admin/brand-search/', 'OrderController@brand_search');
+    get('admin/brand-search/', 'OrderController@brand_search');
+    
     get('admin/order-details/{id}', 'OrderController@orderDetails');
 
     // ========================== COUPON PAGES URL START ===============================//

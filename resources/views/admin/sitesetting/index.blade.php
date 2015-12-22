@@ -22,7 +22,7 @@
                                             <th>Display Name</th>
                                             <th>Value</th>
                                             <th>Edit</th>
-                                            <th>Delete</th>
+                                           
                                         </tr>
                                     </thead>
                                         
@@ -51,11 +51,11 @@
                                             <td>
                                                 <a href="{!!route('admin.sitesetting.edit',$sitesetting->id)!!}" class="btn btn-warning">Edit</a>
                                             </td>
-                                            <td>
+                                           <!-- <td>
                                                 {!! Form::open(['method' => 'DELETE', 'route'=>['admin.sitesetting.destroy', $sitesetting->id]]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                                 {!! Form::close() !!}
-                                            </td>
+                                            </td>-->
                                         </tr>
                                         <?php $i++; ?>
                                             @endforeach

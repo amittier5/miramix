@@ -36,7 +36,7 @@
                       equalTo: "#password",
                   },
             
-            agree: "required",
+            //agree: "required",
             
         },
         
@@ -70,7 +70,7 @@
                 <img src="<?php echo url();?>/public/frontend/images/or.png" alt=""> -->
                 {!! Form::open(['url' => 'register','method'=>'POST', 'files'=>true, 'id'=>'member_form', 'autocomplete'=>'off']) !!}
                 <div class="row signup_form_panel">
-                	<div class="col-sm-2">&nbsp;</div>
+                	<div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 	<div class="col-sm-4">
                     	
                         <div class="input-group wow slideInRight md15">
@@ -98,16 +98,16 @@
                     	</div>
                         
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="wow fadeInLeft checkbox col-sm-offset-2 col-sm-8">
                         <!-- <label><input type="checkbox">I agree to the terms and conditions of miramix.com</label> -->
-                         <label>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!}I agree to the <a href="<?php echo url();?>/terms-condition" target="_blank">terms and conditions</a> of miramix.com</label>
+                         <label style="padding-left:0"><strong style="color: red;margin-right: 5px;">*</strong>I agree to the <a href="<?php echo url();?>/terms-condition" target="_blank">terms and conditions</a> of miramix.com</label>
                     </div>
                 </div>
                 <div class="row  signup_form_panel text-center md30">
-                	<div class="col-sm-4">&nbsp;</div>
+                	<div class="col-sm-4 no_disp_mob">&nbsp;</div>
                 	<div class="col-sm-4 mu15"><button type="submit" class="wow fadeInUp btn btn-default sub_btn">Sign Up</button></div>
-                    <div class="col-sm-4">&nbsp;</div>                    
+                    <div class="col-sm-4 no_disp_mob">&nbsp;</div>                    
                 </div>
                 {!! Form::close() !!}
                 <p class="wow zoomInUp brand_p clearfix">Already have an Account? <a href="<?php url();?>memberLogin">Sign in now!</a></p>

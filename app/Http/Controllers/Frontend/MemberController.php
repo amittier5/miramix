@@ -107,6 +107,8 @@ class MemberController extends BaseController {
         // if(!Session::has('member_userid')){
         //     return redirect('memberLogin');
         // }
+	
+	$member_details =$user=Brandmember::find(Session::get('member_userid'));
 
         if(Request::isMethod('post'))
         {
@@ -124,10 +126,10 @@ class MemberController extends BaseController {
 
           // Get Admin's password
 
-          $user=Brandmember::find(Session::get('member_userid'));
+          
           
 
-          if(Hash::check($old_password, $user['password']))
+          if(Hash::check($old_password, $user['password']) || empty($user['password']))
           {
             if($password!=$conf_pass){
               Session::flash('error', 'Password and confirm password is not matched.'); 
@@ -146,8 +148,8 @@ class MemberController extends BaseController {
             return redirect('member-changepass');
           }
         }
-
-        return view('frontend.member.memberchangepassword',array('title' => 'Member Change Password'));
+	
+        return view('frontend.member.memberchangepassword',compact('member_details'),array('title' => 'Member Change Password'));
     }
 
  /* --------------------  Multiple Shipping Address For Members --------------------*/

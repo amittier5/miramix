@@ -270,7 +270,7 @@
                 number: true,
             },
 			
-            agree: "required",
+            //agree: "required",
 	    government_issue: "required",
 	    banking_address: "required",
 	    calldate: "required",
@@ -318,15 +318,15 @@
 	
 	<div class="brand_login_panel regis_formvalidmsg">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Business or Personal Account</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		   
                 <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                        
 			    
@@ -337,20 +337,20 @@
 			    </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
 		    
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Personal Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                       <div class="row signup_form_panel">                    
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         
 			  <div class="col-sm-4">
 			    <div class="input-group wow slideInLeft md15">
@@ -401,28 +401,28 @@
                                 {!! Form::file('image',['class'=>'btn','id'=>'image','placeholder'=>'Issue Id'])!!}
                             </div>-->
                          </div>
-                         <div class="col-sm-2">&nbsp;</div>                             
+                         <div class="col-sm-2 no_disp_mob">&nbsp;</div>                             
 
                         </div>
                       </div>
                 	</div>
                 <div class="brand_login_panel">
 		<div class="row">
-		<div class="col-sm-2">&nbsp;</div>
+		<div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8">
 		    <p class="col-sm-12">Either wire transfer, check, or Paypal will be used for payment distributions from revenue generated on the Miramix platform. Complete Information for at least one deposit location. Thank you</p>
 		    </div>
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    
 		</div>
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Banking Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
@@ -451,23 +451,23 @@
 		    </div></div></div></div>
 			
 		<div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Paypal Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                  </div>
 		   
 		   <div class="form_panel">
 		   <div class="row">
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8">
 		    <div class="checkbox check_now wow slideInRight md15">
                         	<label><input type="radio" name="default_band_preference" id="paypal_email_radio" value="1" checked="checked"> Paypal Email - Make default deposit method</label>
                         </div>
 		    </div>
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		   </div>
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                     <div class="row"> 
 			
@@ -481,14 +481,14 @@
 		    </div></div></div></div>
 			
 		    <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Check Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                  </div>
 			    
 		 <div class="form_panel">
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
@@ -560,19 +560,19 @@
                     
                  
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Card Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     
                     <div class="form-horizontal col-sm-8" >
                         <fieldset>
@@ -700,15 +700,15 @@
                           </div>
                         </fieldset>
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Shipping address for monthly samples</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">
@@ -764,32 +764,32 @@
                            {!! Form::text('shipping_postcode',null,['class'=>'form-control','id'=>'shipping_postcode','placeholder'=>'Post Code'])!!}
                         </div>
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Verification Documents</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		    <div class="row">
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8"><h3>Government Issued ID ( Driver’s License or Passport)</h3></div>
-			<div class="col-sm-2">&nbsp;</div>
+			<div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    </div>
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                         <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
                              {!! Form::file('government_issue',['class'=>'btn filesdoc','id'=>'government_issue','placeholder'=>'Issue Id'])!!}
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
@@ -797,15 +797,15 @@
 		    
 		<div class="brand_login_panel regis_formvalidmsg">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Articles of Incorporation / Any other document proving business ownership</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		   
                 <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                        
 			<div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
@@ -813,7 +813,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
@@ -821,13 +821,13 @@
 
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">(Schedule Intro) call date (and) time (Eastern Time Zone)</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                         <div class="row">
                         <div class="col-sm-6"><div class="input-group calldate_grp">
@@ -842,7 +842,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
 		    
                     </div>
@@ -851,23 +851,24 @@
 		<div class="brand_login_panel">
                     <div class="form_panel">
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
-                        <p>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!} I accept Brand Contract with electronic signature on document.</p>
+                        <p>
+                        <strong style="color: red;margin-right: 5px;">*</strong> I accept Brand Contract with electronic signature on document.</p>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
 		    
 		    
                 <div class="row  signup_form_panel text-center md30">
-                    <div class="col-sm-4">&nbsp;</div>
+                    <div class="col-sm-4 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-4 mu15">
                       <button type="submit" class="wow fadeInUp btn btn-default sub_btn">Submit</button>
                     </div>
-                    <div class="col-sm-4">&nbsp;</div>                    
+                    <div class="col-sm-4 no_disp_mob">&nbsp;</div>                    
                 </div>
                 {!! Form::close() !!}
             </div>

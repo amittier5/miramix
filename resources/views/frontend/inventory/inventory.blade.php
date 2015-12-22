@@ -39,11 +39,11 @@ $name='';
                     </div>
                      <div class="form-group">
 
-                    {!! Form::text('brand_name',$name,['class'=>'form-control','id'=>'brand_name','placeholder'=>'Brand Name']) !!}
+                    {!! Form::text('ingradient_name',$name,['class'=>'form-control','id'=>'ingradient_name','placeholder'=>'Ingradient Name']) !!}
                     </div>
                     <div class="form-group">
 
-                    {!! Form::text('request_ing',null,['class'=>'form-control','id'=>'request_ing','placeholder'=>'Request Ingredient']) !!}
+                    {!! Form::textarea('request_ing',null,['class'=>'form-control','id'=>'request_ing','placeholder'=>'Why You Want This Ingradients']) !!}
                     </div>
                     
                     <div class="form-group"><input type="submit" class="butt" value="Submit"></div>

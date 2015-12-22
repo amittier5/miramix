@@ -58,7 +58,7 @@
                 {!! Form::open(array('url'=>'member-forgot-password','method'=>'POST','id' =>'change_mem_form')) !!}
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="tot_formlog clearfix">
-                        <div class="input-group wow slideInLeft md15">
+                        <div class="input-group wow slideInLeft">
                         {!! Form::text('email',NULL,array('class'=>'form-control','id'=>'email','placeholder'=>'Email')) !!}
                           <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon2"></span>
                         </div>

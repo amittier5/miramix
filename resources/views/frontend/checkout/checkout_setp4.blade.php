@@ -93,6 +93,8 @@
           $total =0.00;
           $grand_total=0.00;
           $total_discount = 0.00;
+
+
           if(!empty($cart_result))
           { 
             $i=1;
@@ -140,7 +142,17 @@
         }
 
         ?>
-      
+        <?php 
+        if($grand_total<=$all_sitesetting['free_discount_rate']) 
+            {
+              $shipping_rate = $all_sitesetting['shipping_rate'];
+            }
+        elseif($grand_total>$all_sitesetting['free_discount_rate'])
+        {
+          $shipping_rate = 0.00;
+        }
+        ?>
+
       <tr>
       <td colspan="6"></td>
       <td class="text-left">
@@ -174,7 +186,7 @@
       <span>Shipping Rate:</span>
       </td>
       <td class="text-right">
-      <span>{!! ($shipping_rate!='')?'$':'' !!}{!! number_format($shipping_rate,2) !!}</span>
+      <span>{!! (isset($shipping_rate))?'$':'' !!}{!! number_format($shipping_rate,2) !!}</span>
       </td>
       </tr>
       <tr>

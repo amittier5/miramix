@@ -72,12 +72,20 @@ class OrderController extends BaseController {
         }
 
         $order_list = Order::find($id);
-        if($order_list=='')
-            return redirect('order-history');
-        $order_items_list = $order_list->AllOrderItems;
-	
-       //echo "<pre>";print_r($order_list);exit;
-       return view('frontend.order.member_order_details',compact('order_list','order_items_list'),array('title'=>'MIRAMIX | My Past Order'));
+        if($order_list->user_id == Session::get('member_userid'))
+        {
+			if($order_list=='')
+			return redirect('order-history');
+			$order_items_list = $order_list->AllOrderItems;
+
+			//echo "<pre>";print_r($order_list);exit;
+			return view('frontend.order.member_order_details',compact('order_list','order_items_list'),array('title'=>'MIRAMIX | My Past Order'));
+        }
+        else
+        {
+        	return redirect('memberLogin');
+        }
+        
 
   	}
 
@@ -111,12 +119,14 @@ class OrderController extends BaseController {
 		$ratedata=array(
 		"product_id"=>Request::input('product_id'),
 		"user_id"=>$member2,
+		"username"=>$memberdetail->username,
 		"rating_value"=>Request::input('rating_val'),
 		"rating_title"=>Request::input('review_title'),
 		"comment"=>Request::input('message'),
 		"created_on"=> date('Y-m-d H:i:s'),
 		
 		);
+		
 		DB::table('product_rating')->insert($ratedata);
 		
 		

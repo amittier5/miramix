@@ -92,7 +92,7 @@
                             {!! Form::text('email',null,['class'=>'form-control','id'=>'email','placeholder'=>'Email'])!!}
                           </div>
                           <div class="form-group col-sm-6">
-                            {!! Form::text('address',null,['class'=>'form-control','id'=>'address1','placeholder'=>'Address 1'])!!}
+                            {!! Form::text('address',null,['class'=>'form-control','id'=>'address1','placeholder'=>'Address 1', 'onFocus'=>'geolocate()'])!!}
                           </div>
 			    
 			  
@@ -102,15 +102,15 @@
                           </div>
 			    
 			  <div class="form-group col-sm-6">
-                             {!! Form::select('zone_id', array('' => 'Please select state'),'default', array('id' => 'state','class'=>"form-control")); !!}
+                             {!! Form::select('zone_id', array('' => 'Please select state'),'default', array('id' => 'administrative_area_level_1','class'=>"form-control")); !!}
                           </div>
 			    
 			 <div class="form-group col-sm-6">
-                            {!! Form::text('city',null,['class'=>'form-control','id'=>'city','placeholder'=>'City'])!!}
+                            {!! Form::text('city',null,['class'=>'form-control','id'=>'locality','placeholder'=>'City'])!!}
                           </div>
 			    
 			<div class="form-group col-sm-6">
-                            {!! Form::text('postcode',null,['class'=>'form-control','id'=>'postcode','placeholder'=>'Zip code'])!!}
+                            {!! Form::text('postcode',null,['class'=>'form-control','id'=>'postal_code','placeholder'=>'Zip code'])!!}
                           </div>
 			<div class="form-group col-sm-6">
                             {!! Form::text('phone',null,['class'=>'form-control','id'=>'phone','placeholder'=>'Phone'])!!}
@@ -173,7 +173,13 @@
       success:function(data)
       {
         
-	        $("#state").html(data);
+	        $("#administrative_area_level_1").html(data);
+		if (state!='') {
+		    $("#administrative_area_level_1 option").filter(function() {
+		    return this.text == state; 
+		}).attr('selected', true);
+		}
+		
       }
     });
 
@@ -194,9 +200,9 @@
 	    email: "required",
 	    address: "required",
 	    country: "required",
-	    state: "required",
+	    administrative_area_level_1: "required",
 	    city: "required",
-	    postcode: "required",
+	    postal_code: "required",
 	    phone :
         {
             required : true,
@@ -215,6 +221,102 @@
 
   });
 	    
-	   </script>
+	   </script>	    
  </div>
+  
+   
+<script>
+// This example displays an address form, using the autocomplete feature
+// of the Google Places API to help users fill in the information.
+
+var placeSearch, autocomplete,state;
+var componentForm = {
+  //street_number: 'short_name',
+  //route: 'long_name',
+  locality: 'long_name',
+  administrative_area_level_1: 'long_name',
+ country: 'long_name',
+  postal_code: 'short_name'
+};
+  var input=document.getElementById('address1');
+function initAutocomplete() {
+
+var options = {
+  types:  ['geocode']
+};
+
+autocomplete = new google.maps.places.Autocomplete(input, options);
+
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  autocomplete.addListener('place_changed', fillInAddress);
+}
+
+
+
+// [START region_fillform]
+function fillInAddress() {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+console.log(place);
+  for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+  }
+
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+  
+  document.getElementById("address1").value = place.address_components[0]['long_name'] +" "+ place.address_components[1]['long_name'];
+  
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+      var val = place.address_components[i][componentForm[addressType]];
+      
+     
+	document.getElementById(addressType).value = val;
+     
+      if(addressType=='country'){
+	
+	$("#country option").filter(function() {
+	    return this.text == val; 
+	}).prop('selected', true);
+	$( "#country" ).change();
+    }
+      
+      if(addressType=='administrative_area_level_1'){
+	state=val;
+      }
+      
+      
+    }
+  }
+}
+// [END region_fillform]
+
+// [START region_geolocation]
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: position.coords.accuracy
+      });
+      autocomplete.setBounds(circle.getBounds());
+    });
+  }
+}
+// [END region_geolocation]
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo env('GOOGLE_CLIENT_SECRET')?>&signed_in=true&libraries=places&callback=initAutocomplete"
+        async defer></script>
+   
  @stop

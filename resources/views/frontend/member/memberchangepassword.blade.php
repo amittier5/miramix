@@ -85,10 +85,13 @@
                         <div class="row">
                               <div class="col-sm-12">
 			    <div class="row">
-			    <div class="form-group col-sm-12">
+                            
+			    <?php if(!empty($member_details['password'])){ ?>
+                            <div class="form-group col-sm-12">
 				 {!! Form::password('old_password',array('class'=>'form-control','id'=>'old_password','placeholder'=>'Old Password')) !!}
                                 
 			    </div>
+                            <?php }?>
 			    <div class="form-group col-sm-12">
 				 {!! Form::password('password',array('class'=>'form-control','id'=>'password','placeholder'=>'New Password')) !!}
                                 

@@ -247,7 +247,9 @@
                     <div class="form_bottom_panel">
                     <!--<a href="<?php echo url();?>/brand-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>-->
                     <button type="submit" form="member_form" class="btn btn-default green_sub pull-right">Save</button>
+			<?php if(Session::get('social_login')!=1) {?>
 			&nbsp;<a href="<?php echo url();?>/change-password" class="green_btn pull-left">Change Password</a>
+			<?php }?>
 			   
                     </div>
                     
@@ -270,6 +272,15 @@ if (value=='') {
      var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
      return (value.match(p)) ? RegExp.$1 : false;
     }, "Enter correct Youtube Url");
+
+$.validator.addMethod("facebook", function(value, element) {
+if (value=='') {
+    return true;
+}
+     var p = /^(https?:\/\/)?((w{3}\.)?)facebook.com\/.*/i.test(url);
+     
+     return (value.match(p)) ? RegExp.$1 : false;
+    }, "Enter correct facebook Url");
     
 $.validator.addMethod("complete_url", function(val, elem) {
     
@@ -284,36 +295,46 @@ $.validator.addMethod("complete_url", function(val, elem) {
   
   // When the browser is ready...
   $(function() {
-
-   
-
     // Setup form validation  //
     $("#member_form").validate({
     
         // Specify the validation rules
         rules: {
 			business_name:"required",
-      fname: "required",
-      lname: "required",
-      slug: "required",
-     email: 
+			fname: "required",
+			lname: "required",
+			slug: "required",
+			email: 
                 {
                     
-                    email: true
+            email: true
                 },
 			phone_no :
                 {
                     required : true,
                     phoneUS: true
                 },
-     youtube_link: {
-                required: false,
-                youtube: true,
-            },
-      brand_sitelink: {
-                required: false,
-                complete_url: true,
-            },      
+		    youtube_link: {
+		                required: false,
+		                youtube: true,
+		                complete_url: true,
+		            },
+		     brand_sitelink: {
+		                required: false,
+		                complete_url: true,
+		            },
+		    twitter_url: {
+		            required: false,
+		            complete_url: true,
+		        },
+		    facebook_url: {
+		            required: false,
+		            complete_url: true,
+		        },  
+	        linkedin_url: {
+	            required: false,
+	            complete_url: true,
+	        },    
      },
 		
         submitHandler: function(form) {

@@ -21,14 +21,18 @@
                         </div>                    	
                     </div>
                 </div> 
-        <div class="acct_box green_acct no_marg">
+       
+	<div class="acct_box green_acct no_marg">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">
                         <a href="<?php echo url();?>/member-changepass"><img src="<?php echo url();?>/public/frontend/images/account/changepassword.png" alt=""></a>
-                        <a href="<?php echo url();?>/member-changepass" class="link_wholediv">Change Password</a>
+                        
+			<a href="<?php echo url();?>/member-changepass" class="link_wholediv">Change Password</a>
+			   
                         </div>                    	
                     </div>
-                </div>                
+                </div>
+	
         <div class="acct_box violet_acct">
                 	<div class="acct_box_inn">
                     	<div class="acct_box_inn_inn">

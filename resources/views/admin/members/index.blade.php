@@ -17,7 +17,18 @@
  @endif
  
     <div class="module">
-                               
+             
+       <form method="post" id="filterform" action="<?php echo url();?>/admin/member">
+          <input type="hidden" name="_token" value="{!! csrf_token() !!}"/>
+         <div class="pull-left">
+            <div class="search_top"><input type="botton" onclick="location.href='<?php echo url()."/admin/add-member"?>'" class="btn btn-success marge add_memeber_btn" value="Add Member" name="addmember"/></div>
+         </div>
+            <div class="filter filt_css pull-right"><span>Search members</span> <input type="text" name="searchstring" value="<?php echo $searchstring?>" id="searchstring" />
+            <div class="search_top"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
+            </div>
+                
+        </form>
+            
         <table cellpadding="0" id="member_admin" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
             <thead>
                 <tr>
