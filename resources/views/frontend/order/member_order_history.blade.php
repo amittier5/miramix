@@ -131,8 +131,9 @@
           //alert(data);
           if(data !='' ) // email exist already
           {
-            /*$("#cart_det").html(data);
-            $("#cart_det").effect( "shake", {times:4}, 1000 );*/
+			  $("#cart_det").html(data);
+            
+            /*$("#cart_det").effect( "shake", {times:4}, 1000 );*/
 			
 			//for add to cart animation
 			   var foroffset_calc=$(el); 
@@ -177,8 +178,8 @@
 					}); 
 				}
 				setTimeout(function(){
-					//$("#cart_det").show();
-			  		//$("#cart_mob_det").show();	
+					$("#cart_det").show();
+			  		$("#cart_mob_det").show();	
 				},1100)
 				setTimeout(function(){
 					$(el).find('.no_dis_orig').animate({'left':0});
