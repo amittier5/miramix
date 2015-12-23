@@ -163,18 +163,18 @@
 						.appendTo($('body'))
 						.animate({
 						'top': cart.offset().top + 10,
-							'left': cart.offset().left + 10,
+							'left': cart.offset().left - 10,
 							'width': 75,
 							'height': 75
 					}, 1000, 'easeInOutExpo');
 					
 					
-					/*imgclone.animate({
+					imgclone.animate({
 						'width': 0,
 							'height': 0
 					}, function () {
 						$(this).detach()
-					});*/
+					}); 
 				}
 				setTimeout(function(){
 					//$("#cart_det").show();
