@@ -74,6 +74,31 @@ class Usps  {
 	
 	}
 	
+public function trackrequest($parameters_array){
+
+
+		$user = $parameters_array['user'];
+	
+	$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
+	
+		$xml_data ='<TrackFieldRequest USERID="'.$user.'">'.
+		'<Revision>1</Revision>'.
+		'<ClientIp>'.$parameters_array['FromIP'].'</ClientIp>'.
+		'<SourceId>'.$parameters_array['Name'].'</SourceId>'.
+		'<TrackID ID="'.$parameters_array['TrackID'].'">'.
+		'<DestinationZipCode>'.$parameters_array['Zipcode'].'</DestinationZipCode>'.
+		'<MailingDate>'.$parameters_array['MailDate'].'</MailingDate>'.
+		'</TrackID>'.
+		'</TrackFieldRequest>';
+		
+		$output=$this->callCurl($url,$xml_data);
+
+		
+
+		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
+		return $array_data;
+}
+	
 private function callCurl($url,$data){
 	
 		//setting the curl parameters.
