@@ -157,7 +157,8 @@
 							'background':'#fff',
 							'color':'#000',
 							'text-align':'center',
-							'line-height':'40px'
+							'line-height':'40px',
+							'border-radius':'4px'
 					})
 						.appendTo($('body'))
 						.animate({
@@ -168,12 +169,12 @@
 					}, 1000, 'easeInOutExpo');
 					
 					
-					imgclone.animate({
-						/*'width': 0,
-							'height': 0*/
+					/*imgclone.animate({
+						'width': 0,
+							'height': 0
 					}, function () {
 						$(this).detach()
-					});
+					});*/
 				}
 				setTimeout(function(){
 					//$("#cart_det").show();
