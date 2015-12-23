@@ -101,7 +101,7 @@
                     <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
                     <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
                     <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
-                    <td><a href="javascript:void(0)" class="btn btn-white" onclick="reorderProduct('<?php echo $each_order_list->id;?>')">Reorder</a></td>
+                    <td><a href="javascript:void(0)" class="btn btn-white" id="reorder-prod" onclick="reorderProduct('<?php echo $each_order_list->id;?>',this)">Reorder</a></td>
                   </tr>
                   @endforeach
                 @else
@@ -129,7 +129,7 @@
 
  <script>
 
- function reorderProduct(order_id)
+ function reorderProduct(order_id,el)
  {
     $.ajax({
     url: '<?php echo url();?>/reorder',
@@ -140,8 +140,80 @@
           //alert(data);
           if(data !='' ) // email exist already
           {
-            $("#cart_det").html(data);
-            $("#cart_det").effect( "shake", {times:4}, 1000 );
+            //$("#cart_det").html(data);
+            //$("#cart_det").effect( "shake", {times:4}, 1000 );
+			
+			//for add to cart animation
+			   var foroffset_calc=$('#reorder-prod'); 
+			   if($(window).width()>767)
+				var cart = $('.navbar-default .navbar-nav > li.cart');
+			   else
+			    var cart = $('#formob_only');	
+				var imgtodrag = $(el).parent().parent().find('td:first-child').text();
+				console.log(imgtodrag);
+				if (imgtodrag) {
+					var imgclone = imgtodrag.clone()
+						.offset({
+						top: foroffset_calc.offset().top,
+						left: foroffset_calc.offset().left
+					})
+						.css({
+						'opacity': '0.5',
+							'position': 'absolute',
+							'height': '150px',
+							'width': '150px',
+							'z-index': '9999999999'
+					})
+						.appendTo($('body'))
+						.animate({
+						'top': cart.offset().top + 10,
+							'left': cart.offset().left + 10,
+							'width': 75,
+							'height': 75
+					}, 1000, 'easeInOutExpo');
+					
+					
+					imgclone.animate({
+						'width': 0,
+							'height': 0
+					}, function () {
+						$(this).detach()
+					});
+				}
+				setTimeout(function(){
+					//$("#cart_det").show();
+			  		//$("#cart_mob_det").show();	
+				},1100)
+				setTimeout(function(){
+					//$('#no_dis_orig').animate({'left':0});
+					$('#reorder-prod').prop('disabled',true);
+					/*if($(window).width()>767){
+						$(".nav > li.cart a").tooltip({
+							title: 'Product Added To Cart.',
+							placement:'bottom'
+						});
+						$(".nav > li.cart a").tooltip('show');
+					}
+					else{
+						$("#formob_only").tooltip({
+							title: 'Product Added To Cart.',
+							placement:'bottom'
+						});
+						$("#formob_only").tooltip('show');
+					}*/
+				},600);		
+				setTimeout(function(){
+					//$('#no_dis_orig').animate({'left':100+'%'});
+					$('#reorder-prod').prop('disabled',false);
+					/*if($(window).width()>767){
+						$(".nav > li.cart a").tooltip('destroy');
+					}
+					else{
+						$("#formob_only").tooltip('destroy');
+					}*/
+				},4000);
+			   //for add to cart animation
+			
           }
           
         }
