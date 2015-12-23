@@ -66,7 +66,7 @@ return [
 //            'strict'    => false,
   //      ],
 
-    /*********** Server Database Details **********/
+    /********* Server Database Details ********/
     
          'mysql' => [
              'driver'    => 'mysql',
