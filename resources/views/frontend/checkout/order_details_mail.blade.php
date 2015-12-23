@@ -1,25 +1,14 @@
 <?php 
-
+use App\Helper\helpers;
+$obj = new helpers();
 $shipping_address = unserialize($order_list[0]->shiping_address_serialize);
-
 ?>
 <!doctype html>
 <html xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta charset="utf-8">
-<!--<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>-->
 <title>Miramix Order Mail</title>
 
-<!--[if gte mso 9]>
-    <style type="text/css">
-     #top_part{
-     background:#f8f8f8;
-     }
-     #bot_part{
-     background:#f8f8f8;
-     }
-    </style>
-<![endif]-->
 </head>
 
 <body>
@@ -42,7 +31,7 @@ $shipping_address = unserialize($order_list[0]->shiping_address_serialize);
             <tr>
               <td style="padding-left:30px;padding-right:30px;" bgcolor="#f8f8f8"><table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
                   <tr>
-                    <td align="center"><p style="font-size:20px;line-height:22px;color:#1588d1;font-family:'Lato', sans-serif;font-weight:700;display:block;text-align:center;margin:0;margin-bottom:20px;display:block;">Thank you for your order from miramix store.</p>
+                    <td align="center"><p style="font-size:20px;line-height:22px;color:#1588d1;font-family:'Lato', sans-serif;font-weight:700;display:block;text-align:center;margin:0;margin-bottom:20px;display:block;">Thank you for your order from The Miramix Store.</p>
                       <p style="font-size:15px; line-height:20px;color:#4e4e4e;font-family:'Lato', sans-serif;font-weight:400;margin:0;margin-bottom:15px;display:block;text-align:center">Once your package ships we will send an email with a link to track your order. Your order summary is below. Thank you again for your business.</p>
                       <div style="font-size:16px;line-height:22px;color:#4e4e4e;font-family:'Lato', sans-serif;font-weight:700;background:#fff;border:1px solid #1588d1;border-radius:25px;  display: inline-block;margin-bottom:30px;">
                         <p style="margin:0;margin-top:13px;margin-bottom:13px;margin-left:25px;margin-right:25px;">Order Questions?   Email: <a href="mailto:{!! $admin_users_email !!}" style="font-weight:400;font-style:italic;color:#1588d1;text-decoration:none;">{!! $admin_users_email !!}</a></p>
@@ -60,12 +49,42 @@ $shipping_address = unserialize($order_list[0]->shiping_address_serialize);
                           </tr>
                           <tr>
                             <td style="font-size:15px;line-height:22px;color:#4e4e4e;font-family:'Lato', sans-serif;">
+                  <?php 
+                    if((isset($shipping_address['zone_id'])))
+                    {
+                      if(is_numeric($shipping_address['zone_id']))
+                      {
+                        $state = $obj->get_state($shipping_address['zone_id']);
+                      }
+                      else
+                      {
+                        $state = $shipping_address['zone_id'];
+                      }
+                    }
 
-{!! (isset($receiver_name) && ($receiver_name!=''))?ucwords($receiver_name):'' !!}<br>
-{!! (isset($shipping_address['address']) && ($shipping_address['address']!=''))?$shipping_address['address']:'' !!}<br>
-{!! (isset($shipping_address['address2']) && ($shipping_address['address2']!=''))?$shipping_address['address2']:'' !!}<br>
-{!! (isset($shipping_address['country_id']) && ($shipping_address['country_id']!=''))?$shipping_address['country_id']:'' !!}<br>
-T: {!! (isset($shipping_address['phone']) && ($shipping_address['phone']!=''))?$shipping_address['phone']:'' !!}</td>
+                    if((isset($shipping_address['country_id'])))
+                    {
+                      if(is_numeric($shipping_address['country_id']))
+                      {
+                        $country = $obj->get_country($shipping_address['country_id']);
+                      }
+                      else
+                      {
+                        $country = $shipping_address['country_id'];
+                      }
+                    }
+                  ?>
+
+                  {!! (isset($receiver_name) && ($receiver_name!=''))?ucwords($receiver_name):'' !!}<br>
+                  {!! (isset($shipping_address['address']) && ($shipping_address['address']!=''))?$shipping_address['address']:'' !!}<br>
+                  {!! (isset($shipping_address['address2']) && ($shipping_address['address2']!=''))?$shipping_address['address2'].'<br>':'' !!}
+                  {!! (isset($shipping_address['city']) && ($shipping_address['city']!=''))?$shipping_address['city']:'' !!}<br>
+                  {!! (isset($shipping_address['zone_id']) && ($shipping_address['zone_id']!=''))?$state.',':'' !!}
+                  {!! (isset($shipping_address['country_id']) && ($shipping_address['country_id']!=''))?$country:'' !!}<br>
+                  {!! (isset($shipping_address['postcode']) && ($shipping_address['postcode']!=''))?$shipping_address['postcode']:'' !!}<br>
+                  T: {!! (isset($shipping_address['phone']) && ($shipping_address['phone']!=''))?$shipping_address['phone']:'' !!}
+                
+                  </td>                          
                             
                           </tr>
                         </tbody>
@@ -106,6 +125,14 @@ T: {!! (isset($shipping_address['phone']) && ($shipping_address['phone']!=''))?$
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Sub-Total:</b></td>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">${!! number_format(($order_list[0]->sub_total),2) !!}</td>
                           </tr>
+                          <?php 
+                            if($order_list[0]->discount!=0){
+                          ?>
+                          <tr>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Discount:</b></td>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">-${!! number_format(($order_list[0]->discount),2) !!}</td>
+                          </tr>
+                          <?php } ?>
                           <tr>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Flat Shipping Rate:</b></td>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">${!! number_format(($order_list[0]->shipping_cost),2) !!}</td>

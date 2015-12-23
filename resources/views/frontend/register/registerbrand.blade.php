@@ -75,7 +75,7 @@
 	  }*/
 	  
       if($('#mailing_info').is(':checked')) { 
-	if ($("#mailing_name").val()=='' || $("#mailing_lastname").val()=='' || $("#mailing_address").val()=='' || $("#mailing_country_id").val()=='' || $("#mailing_state").val()=='' || $("#mailing_city").val()=='' || $("#mailing_postcode").val()==''){
+	if ($("#mailing_state option:selected").val()==''){
 	  return false;
 	}else{
 	  return true;
@@ -84,7 +84,103 @@
 	  return true;
 	}
       
-    }, 'This field is required.');
+    }, 'Please Select Mailing State.');
+	
+	/******mailinginfo_postcode*******/
+	$.validator.addMethod("mailinginfo_postcode", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_postcode").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Postcode');
+	/******mailinginfo_postcode*******/
+	
+	/******mailinginfo_lastname*******/
+	$.validator.addMethod("mailinginfo_lastname", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_lastname").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Last Name');
+	/******mailinginfo_lastname*******/
+	
+	/******mailinginfo_city*******/
+	$.validator.addMethod("mailinginfo_city", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_city").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter City Name');
+	/******mailinginfo_city*******/
+	
+	/******mailinginfo_countryid*******/
+	$.validator.addMethod("mailinginfo_countryid", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_country_id option:selected").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Country Name');
+	/******mailinginfo_countryid*******/
+	
+	/******mailinginfo_name*******/
+	$.validator.addMethod("mailinginfo_name", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_name").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Mailing Name');
+	/******mailinginfo_name*******/
+	
+	/******mailinginfo_address*******/
+	$.validator.addMethod("mailinginfo_address", function(value, element) {
+        
+      if($('#mailing_info').is(':checked')) { 
+	if ($("#mailing_address").val()==''){
+	  return false;
+	}else{
+	  return true;
+	}
+      }else{
+	  return true;
+	}
+      
+    }, 'Please Enter Mailing Address');
+	/******mailinginfo_address*******/
     
   /*  $.validator.addMethod("requiredpayinfo", function(value, element, params) { 
     var selectedValue = $('input:radio[name=' + element.name + ']:checked').val();
@@ -153,13 +249,13 @@
                 required :true,
                 number: true,
             },*/
-	    mailing_name: {mailinginfo: true},
-	     mailing_address: {mailinginfo: true},
-	    mailing_country_id: {mailinginfo: true},
-	    mailing_city: {mailinginfo: true},
-	    mailing_lastname: {mailinginfo: true},
+	    mailing_name: {mailinginfo_name: true},
+	    mailing_address: {mailinginfo_address: true},
+	    mailing_country_id: {mailinginfo_countryid: true},
+	    mailing_city: {mailinginfo_city: true},
+	    mailing_lastname: {mailinginfo_lastname: true},
 	    mailing_state: {mailinginfo: true},
-	    mailing_postcode: {mailinginfo: true},
+	    mailing_postcode: {mailinginfo_postcode: true},
 			
 			shiping_fname: "required",
 			shiping_lname: "required",
@@ -174,7 +270,7 @@
                 number: true,
             },
 			
-            agree: "required",
+            //agree: "required",
 	    government_issue: "required",
 	    banking_address: "required",
 	    calldate: "required",
@@ -222,15 +318,15 @@
 	
 	<div class="brand_login_panel regis_formvalidmsg">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Business or Personal Account</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		   
                 <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                        
 			    
@@ -241,20 +337,20 @@
 			    </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
 		    
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Personal Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                       <div class="row signup_form_panel">                    
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         
 			  <div class="col-sm-4">
 			    <div class="input-group wow slideInLeft md15">
@@ -305,28 +401,28 @@
                                 {!! Form::file('image',['class'=>'btn','id'=>'image','placeholder'=>'Issue Id'])!!}
                             </div>-->
                          </div>
-                         <div class="col-sm-2">&nbsp;</div>                             
+                         <div class="col-sm-2 no_disp_mob">&nbsp;</div>                             
 
                         </div>
                       </div>
                 	</div>
                 <div class="brand_login_panel">
 		<div class="row">
-		<div class="col-sm-2">&nbsp;</div>
+		<div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8">
 		    <p class="col-sm-12">Either wire transfer, check, or Paypal will be used for payment distributions from revenue generated on the Miramix platform. Complete Information for at least one deposit location. Thank you</p>
 		    </div>
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    
 		</div>
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Banking Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
@@ -355,23 +451,23 @@
 		    </div></div></div></div>
 			
 		<div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Paypal Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                  </div>
 		   
 		   <div class="form_panel">
 		   <div class="row">
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8">
 		    <div class="checkbox check_now wow slideInRight md15">
                         	<label><input type="radio" name="default_band_preference" id="paypal_email_radio" value="1" checked="checked"> Paypal Email - Make default deposit method</label>
                         </div>
 		    </div>
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		   </div>
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                     <div class="row"> 
 			
@@ -385,14 +481,14 @@
 		    </div></div></div></div>
 			
 		    <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Check Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                  </div>
 			    
 		 <div class="form_panel">
                     <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
 		    <div class="row">
 		     <div class="checkbox check_now wow slideInRight md15">
@@ -464,19 +560,19 @@
                     
                  
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Card Information</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">                    
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     
                     <div class="form-horizontal col-sm-8" >
                         <fieldset>
@@ -604,15 +700,15 @@
                           </div>
                         </fieldset>
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Shipping address for monthly samples</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">
@@ -668,32 +764,32 @@
                            {!! Form::text('shipping_postcode',null,['class'=>'form-control','id'=>'shipping_postcode','placeholder'=>'Post Code'])!!}
                         </div>
                     </div>
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Verification Documents</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		    <div class="row">
-		    <div class="col-sm-2">&nbsp;</div>
+		    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    <div class="col-sm-8"><h3>Government Issued ID ( Driver’s License or Passport)</h3></div>
-			<div class="col-sm-2">&nbsp;</div>
+			<div class="col-sm-2 no_disp_mob">&nbsp;</div>
 		    </div>
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                         <div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
                              {!! Form::file('government_issue',['class'=>'btn filesdoc','id'=>'government_issue','placeholder'=>'Issue Id'])!!}
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
@@ -701,15 +797,15 @@
 		    
 		<div class="brand_login_panel regis_formvalidmsg">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">Articles of Incorporation / Any other document proving business ownership</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     
 		    <div class="form_panel">
 		   
                 <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                        
 			<div style="visibility: visible; animation-name: slideInLeft;" class="input-group wow slideInLeft md15 animated">
@@ -717,7 +813,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
@@ -725,16 +821,16 @@
 
                 <div class="brand_login_panel">
                     <div class="row">
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                         <div class="col-sm-8  wow fadeInDown"><h2 class="">(Schedule Intro) call date (and) time (Eastern Time Zone)</h2></div>
-                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     </div>
                     <div class="form_panel">
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
                         <div class="row">
-                        <div class="col-sm-6"><div class="input-group ">
+                        <div class="col-sm-6"><div class="input-group calldate_grp">
                              {!! Form::text('calldate',null,['class'=>'form-control','id'=>'calldate','placeholder'=>'Call Date'])!!}
                         </div></div>
                         <div class="col-sm-6"><div  class="input-group ">
@@ -746,7 +842,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
 		    
                     </div>
@@ -755,23 +851,24 @@
 		<div class="brand_login_panel">
                     <div class="form_panel">
                          <div class="row signup_form_panel">
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-8">
-                        <p>{!! Form::checkbox('agree', 1, null, ['class' => 'field']) !!} I accept Brand Contract with electronic signature on document.</p>
+                        <p>
+                        <strong style="color: red;margin-right: 5px;">*</strong> I accept Brand Contract with electronic signature on document.</p>
                     </div>
                     
-                    <div class="col-sm-2">&nbsp;</div>
+                    <div class="col-sm-2 no_disp_mob">&nbsp;</div>
                 </div>
                     </div>
                 </div>
 		    
 		    
                 <div class="row  signup_form_panel text-center md30">
-                    <div class="col-sm-4">&nbsp;</div>
+                    <div class="col-sm-4 no_disp_mob">&nbsp;</div>
                     <div class="col-sm-4 mu15">
                       <button type="submit" class="wow fadeInUp btn btn-default sub_btn">Submit</button>
                     </div>
-                    <div class="col-sm-4">&nbsp;</div>                    
+                    <div class="col-sm-4 no_disp_mob">&nbsp;</div>                    
                 </div>
                 {!! Form::close() !!}
             </div>

@@ -63,11 +63,11 @@
     <cite>Please select the preferred payment method to use on this order.</cite>
     
   {!! Form::open(['url' => 'checkout-step2','method'=>'POST', 'files'=>true,'class'=>'form-horizontal row-fluid','id'=>'checkout_form']) !!}
-	<!-- <div class="check_box_tab green_version">                            
+    <div class="check_box_tab green_version">                            
          <input type="radio" class="regular-checkbox payment_type" id="creditcard" name="payment_type" value="creditcard"
-          <?php //echo (Session::get('payment_method') =='creditcard')? "checked=checked":''  ?>>
+          <?php echo (Session::get('payment_method') =='creditcard')? "checked=checked":''  ?>>
          <label for="creditcard">Credit or Debit Card</label>
-    </div> -->
+    </div> 
     <div class="check_box_tab green_version">                            
          <input type="radio" class="regular-checkbox payment_type" id="paypal" name="payment_type" value="paypal" 
          <?php echo (Session::get('payment_method') =='paypal')? "checked=checked":''  ?>>

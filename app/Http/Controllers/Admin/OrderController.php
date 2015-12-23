@@ -9,6 +9,7 @@ use App\Model\Ingredient;             /* Model name*/
 use App\Model\FormFactor;             /* Model name*/
 use App\Model\Order;             /* Model name*/
 use App\Model\OrderItem;             /* Model name*/
+use App\Model\AddProcessOrderLabel;             /* Model name*/
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
@@ -33,7 +34,7 @@ class OrderController extends BaseController {
     public function __construct() 
     {
     	parent::__construct();
-        view()->share('member_class','active');
+        view()->share('order_class','active');
         $this->obj = new helpers();
         view()->share('obj',$this->obj);
     }
@@ -46,16 +47,108 @@ class OrderController extends BaseController {
    public function index()
    {
       
-	 $limit = 10;
-        
-        $order_list = Order::with('getOrderMembers','AllOrderItems')->paginate($limit);
+	$limit = 20;
+	Session::forget('orderstatus');
+	Session::forget('filterdate');
+	Session::forget('brandemail');
+	$order_list = Order::with('getOrderMembers','AllOrderItems')->orderBy('id','DESC')->paginate($limit);
 	//print_r($order_list);exit;
-        $order_list->setPath('orders');
-  
-        
-        return view('admin.order.order_history',compact('order_list'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+	$order_list->setPath('orders');
+	$orderstatus='';
+	$filterdate='';
+	$brandemail='';
+	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
 
     }
+
+    public function show()
+    {
+    	// No action needed.
+    }
+    
+public function filters(){
+    $limit = 10;
+
+    $orderstatus=Request::input('orderstatus');
+	$filterdate=Request::input('filterdate');
+	$brandemail=Request::input('brandemail');
+	if($orderstatus == '0') // If choose nothing in select box.
+	{
+		$orderstatus = '';
+		if(Request::isMethod('post'))
+        {
+		Session::forget('orderstatus');
+		}
+	}
+	if($filterdate == '') // If choose nothing in select box.
+	{
+		$filterdate = '';
+		if(Request::isMethod('post'))
+		{
+		Session::forget('filterdate');
+		}
+	}
+	if($brandemail == '') // If choose nothing in select box.
+	{
+		$brandemail = '';
+		if(Request::isMethod('post'))
+		{
+		Session::forget('brandemail');
+		}
+	}
+	//echo $filterdate; exit;
+	if(Request::isMethod('post'))
+        {
+			if($orderstatus !='0')
+			Session::put('orderstatus',$orderstatus);
+			if($filterdate !='')
+			Session::put('filterdate',$filterdate);
+			if($brandemail !='')
+			Session::put('brandemail',$brandemail);
+		}
+
+   // $order_list = Order::with('getOrderMembers','AllOrderItems')->orderBy('id','DESC');
+	$order_list = DB::table('orders')
+	->select(DB::raw('orders.*'))
+	
+	->leftJoin('order_items', 'orders.id', '=', 'order_items.order_id')
+	->leftJoin('brandmembers', 'order_items.brand_id', '=', 'brandmembers.id')
+	->orderBy('id','DESC');
+	
+	$orderstatus = Session::get('orderstatus');
+	$filterdate = Session::get('filterdate');
+	$brandemail = Session::get('brandemail');
+	
+	if(($orderstatus =='' || $orderstatus =='0') && $filterdate =='' && $brandemail=='')
+		{
+			Session::forget('orderstatus');
+			return redirect('/admin/orders');
+		}
+
+	if($orderstatus!='0' && $orderstatus!=''){
+	   $order_list->whereRaw("orders.order_status='".$orderstatus."'"); 
+	}
+	if($filterdate!=''){ 
+	   $order_list->whereRaw("DATE(orders.created_at)='".$filterdate."'"); 
+	}
+	if($brandemail!=''){
+	   $order_list->whereRaw("(brandmembers.email='".$brandemail."' or brandmembers.business_name like '%".$brandemail."%')"); 
+	}
+	
+	$order_list=$order_list->paginate($limit);
+	//print_r($order_list);exit;
+    $order_list->setPath('');
+  	
+  	if($orderstatus == '0') // If choose nothing in select box.
+	{
+		Session::forget('orderstatus');
+		Session::forget('filterdate');
+		Session::forget('brandemail');
+		return redirect('/admin/orders');
+	}
+        
+    return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+}
  public function edit($id)
     {
 	
@@ -71,38 +164,52 @@ public function update(Request $request, $id)
        	$order=Order::with('getOrderMembers','AllOrderItems')->where("id",$id)->first();
 		$order->update($orderUpdate);
 	
-        	
+
+		$shipping_detail = unserialize($order->shiping_address_serialize);
 		
-				$user_name = $order->getOrderMembers->fname." ".$order->getOrderMembers->lname;
-				$user_email = $order->getOrderMembers->email;
-				$subject = 'Order status change of : #'.$order->order_number;
-				$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
-				if($order->order_status=='shipped'){
-					$cmessage .= 'Tracking Number is : '.$order->tracking_number.'. Please visit your account for details.';
-				}
-				
-				$setting = DB::table('sitesettings')->where('name', 'email')->first();
-				$admin_users_email=$setting->value;
-				
-				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email), 
-				
-				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
-				{
-					$message->from($admin_users_email);
-					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
-					
-				});
-	
-				if( ! $sent) 
-				{
-					Session::flash('error', 'something went wrong!! Mail not sent.'); 
-					return redirect('admin/orders');
-				}
-				else
-				{
-				    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
-				    return redirect('admin/orders');
-				}
+		$user_email = $shipping_detail['email'];
+		$user_name = $shipping_detail['first_name']." ".$shipping_detail['last_name'];
+		
+		if($order->user_id!=''){
+		$user_email = $order->getOrderMembers->email;
+		
+		$user_name = !empty($order->getOrderMembers->fname)?$order->getOrderMembers->fname." ".$order->getOrderMembers->lname:$order->getOrderMembers->username;
+		}
+
+
+		
+		$subject = 'Order status change of : #'.$order->order_number;
+		$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
+		$tracking = '';
+		$shipping = '';
+
+		if($order->order_status=='shipped'){
+			$tracking = 'Tracking Number is : '.$order->tracking_number;
+			$shipping='Shipping Method is : '.$order->shipping_carrier .'<br />Please visit your account for details';
+		}
+		
+		$setting = DB::table('sitesettings')->where('name', 'email')->first();
+		$admin_users_email=$setting->value;
+		
+		$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+		
+		function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+		{
+			$message->from($admin_users_email);
+			$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+			
+		});
+
+		if( ! $sent) 
+		{
+			Session::flash('error', 'something went wrong!! Mail not sent.'); 
+			return redirect('admin/orders');
+		}
+		else
+		{
+		    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+		    return redirect('admin/orders');
+		}
 
        
     }
@@ -123,7 +230,40 @@ public function update(Request $request, $id)
         if($order_list=='')
             return redirect('order-history');
         $order_items_list = $order_list->AllOrderItems;
-        return view('admin.order.order_details',compact('order_list','order_items_list'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+	$order_members=$order_list->getOrderMembers;
+        return view('admin.order.order_details',compact('order_list','order_items_list','order_members'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+        
+    }
+   public function brand_search(){
+	 $brands = DB::table('brandmembers')->whereRaw("role='1'")->whereRaw('(business_name LIKE "%' . $_REQUEST['term'] . '%" OR email LIKE "' . $_REQUEST['term'] . '%")' )->orderBy('id','DESC')->get();
+      $arr = array();
+	
+      foreach ($brands as $value) {
+          if(!empty($value->business_name) && $value->role=="1"){
+          $arr[] = $value->business_name;
+	  }
+      }
+      echo json_encode($arr);
+    }
+
+
+    public function add_process_queue()
+    { 
+        $mail_option = Input::get('mail_option');
+        $param = Input::get('param');
+        $order_id = Input::get('order_id');
+
+        if($param=='add'){
+			$arr = array('order_id'=>$order_id,'label'=>$mail_option);
+			AddProcessOrderLabel::create($arr);
+        }
+        else{
+
+        	AddProcessOrderLabel::where('order_id', '=',$order_id)->delete();
+        }
+
+        
+        exit;
         
     }
 

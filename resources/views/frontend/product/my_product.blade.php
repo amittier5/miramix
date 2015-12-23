@@ -165,7 +165,7 @@
               <div class="product">
                 	<div class="head_section">
                    	  <h2>{!! ucwords($each_product->product_name) !!}</h2>
-                       <p class="price"><?php echo '$'.number_format($each_product->min_price*7,2);?> </p>
+                       <p class="price"><?php echo '$'.number_format($each_product->min_price*30,2);?> </p>
                       </div>
                     <!--<div class="image_section">
                     @if($each_product->image1!="")

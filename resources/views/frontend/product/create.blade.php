@@ -3,6 +3,9 @@
 
 <?php //print_r($ingredients);exit;?>
 
+<script src="<?php echo url();?>/public/frontend/js/stacktable.js"></script>
+<link href="<?php echo url();?>/public/frontend/css/stacktable.css" rel="stylesheet">
+
 <div class="inner_page_container nomar_bottom add_prod_new">  
 <div id="nav-icon2">
   <span></span>
@@ -1551,6 +1554,14 @@ function blank_ingredientgroupname_check(){
 }
   
  </script>
+ 
+ <script>
+  $(document).ready(function(e) {
+  	
+	//$('#order_history').stacktable({myClass:'your-custom-class'}); 
+  });
+  </script>
+ 
 
 
  @stop

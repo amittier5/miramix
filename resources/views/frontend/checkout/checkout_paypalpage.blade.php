@@ -16,6 +16,8 @@
 <?php
 $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 //$custom_data_serialize = serialize($custom_data);
+
+
 ?>
 <div id="paypal_form"> 
 <form  action="<?php echo $paypal_url; ?>" method="post" name="_xcart" id="payment_form">
@@ -28,13 +30,14 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
         <input type="hidden" name="return" value="<?php echo url();?>/checkout-success">
         <input type="hidden" name="cancel_return" value="<?php echo url();?>/checkout-cancel">
         <input type="hidden" name="notify_url" value="<?php echo url();?>/paypal-notify">
-        <!-- <input type="hidden" name="notify_url" value="http://www.phppowerhousedemo.com/webroot/team13/test/test.php"> -->
         <input type="hidden" name="currency_code" value="USD" />
 
 		<?php 
 		$i =1;
+		echo $total_price = ($order_list[0]->sub_total-$order_list[0]->discount);
 		foreach($order_list as $eachOrderlist)
 		{
+			
 		?>
 			<input type="hidden" name="item_name_<?php echo $i;?>" id="item_name_<?php echo $i;?>" value="{!! $eachOrderlist->product_name !!}">
 	        <input type="hidden" name="quantity_<?php echo $i;?>" id="quantity_<?php echo $i;?>" value="{!! $eachOrderlist->quantity !!}">
@@ -43,8 +46,18 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 		$i++;
 		}
 		?>
-
-        <input type="hidden" name="handling_cart" id="handling_cart" value="{!! $order_list[0]->shipping_cost !!}" >
+		<?php  echo floatval($all_sitesetting['free_discount_rate']);
+			// Check Shipping rate
+			if($total_price <= $all_sitesetting['free_discount_rate']) 
+			{
+			  $shipping_rate = $order_list[0]->shipping_cost;
+			}
+			elseif($total_price>$all_sitesetting['free_discount_rate'])
+			{
+				$shipping_rate = 0.00;
+			}
+		?>
+        <input type="hidden" name="handling_cart" id="handling_cart" value="{!! $shipping_rate !!}">
         <?php 
         	if($order_list[0]->discount!=0){
         ?>
@@ -54,10 +67,6 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit">
 </form>
 
-<!-- <form action="<?php //echo url();?>/paypal-notify" method="post">
-<input name="test" value="test" />
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit">
-</form> -->
 </div>
 <script>
 	$( document ).ready(function() {

@@ -161,9 +161,10 @@ class Product1Controller extends BaseController {
 
     	$rating = DB::table('product_rating')
                         ->leftJoin('brandmembers', 'brandmembers.id', '=', 'product_rating.user_id')
-                        ->select('product_rating.*','brandmembers.username')
+                        ->select('product_rating.*','brandmembers.username as buser')
                         ->where('product_rating.status',1)
                         ->where('product_rating.product_id',$product_id)
+                        ->orderBy('product_rating.created_on','DESC')
                         ->skip($page_limit)
                         ->take($resultsPerPage)
                         ->get();
@@ -171,7 +172,7 @@ class Product1Controller extends BaseController {
         // For Next load more
  		$rating_count_arr = DB::table('product_rating')
                         ->leftJoin('brandmembers', 'brandmembers.id', '=', 'product_rating.user_id')
-                        ->select('product_rating.*','brandmembers.username')
+                        ->select('product_rating.*')
                         ->where('product_rating.status',1)
                         ->where('product_rating.product_id',$product_id)
                         ->skip($next_check_page)
@@ -187,7 +188,7 @@ class Product1Controller extends BaseController {
                 </div>
               </div>
               <div class="bot_rev">
-                <p class="author pull-left">Authored by <a href=""><?php echo $prate->username?></a> </p>
+                <p class="author pull-left">Authored by <a href=""><?php echo !empty($prate->username)?$prate->username:$prate->buser ?></a> </p>
                 <p class="date pull-left"><?php echo $obj->time_elapsed_string(strtotime($prate->created_on))?></p>
               </div>
          </div>
