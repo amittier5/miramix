@@ -43,8 +43,14 @@ class HomeController extends BaseController {
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
     $body_class = 'home';
+
   
     $page=Request::input('page');
+
+   //amit change
+
+	$page=Request::input('page');
+
 	if(!empty($page)){
 	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
 	    if(!is_numeric($current_page)){die('Invalid page number!');} //incase of invalid page number
