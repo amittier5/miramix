@@ -96,6 +96,8 @@
 <script type="text/javascript">
     $('.radio_cls').on('change',function(){
         $this = $(this);
+
+        alert("test");
         alert($this.attr('id'));
 
         $('#add_queue'+$this.attr('id')).attr("checked",true);
