@@ -132,6 +132,7 @@
           if(data !='' ) // email exist already
           {
 			  $("#cart_det").html(data);
+			  $("#cart_mob_det").html(data);
             
             /*$("#cart_det").effect( "shake", {times:4}, 1000 );*/
 			
