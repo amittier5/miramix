@@ -10535,7 +10535,7 @@ input#paypal_checkout.logged_outbtn {
 }
 .order-history .st-head-row{
 	border-bottom:1px solid #fff;	
-}
+} 
 .form_dashboardacct p.status_btn.cancel_btn{
 	background:#ed5e68;	
 }

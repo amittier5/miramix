@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend; /* path of this controller*/
 
 use App\Model\Brandmember; /* Model name*/
-use App\Model\Newsletter;
+use App\Model\Newsletter;  /* Model name*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
 use Illuminate\Support\Facades\Request;
