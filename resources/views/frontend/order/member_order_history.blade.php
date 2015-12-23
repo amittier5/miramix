@@ -1,6 +1,6 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-
+<script src="stacktable.js" type="text/javascript"></script>
 <div class="inner_page_container nomar_bottom">
 
 <div class="top_menu_port">
@@ -68,8 +68,8 @@
                 <div class="row">
 			 
 			 </div>
-            <div class="table-responsive">
-              <table class="table special_height">
+            
+              <table class="table special_height" id="responsive-example-table">
               <thead>
                 <tr>
                   <th>Order ID</th>
@@ -102,7 +102,7 @@
               @endif
               </tbody>
             </table>
-            </div>
+            
               {!! $order_list->render() !!}
             <div class="form_bottom_panel">
               <a href="member-dashboard" class="green_btn pull-left"><i class="fa fa-angle-left"></i> Back to Dashboard</a>
@@ -131,8 +131,10 @@
           //alert(data);
           if(data !='' ) // email exist already
           {
-            /*$("#cart_det").html(data);
-            $("#cart_det").effect( "shake", {times:4}, 1000 );*/
+			  $("#cart_det").html(data);
+			  $("#cart_mob_det").html(data);
+            
+            /*$("#cart_det").effect( "shake", {times:4}, 1000 );*/
 			
 			//for add to cart animation
 			   var foroffset_calc=$(el); 
@@ -163,7 +165,7 @@
 						.appendTo($('body'))
 						.animate({
 						'top': cart.offset().top + 10,
-							'left': cart.offset().left + 10,
+							'left': cart.offset().left - 10,
 							'width': 75,
 							'height': 75
 					}, 1000, 'easeInOutExpo');
@@ -174,11 +176,11 @@
 							'height': 0
 					}, function () {
 						$(this).detach()
-					});
+					}); 
 				}
 				setTimeout(function(){
-					//$("#cart_det").show();
-			  		//$("#cart_mob_det").show();	
+					$("#cart_det").show();
+			  		$("#cart_mob_det").show();	
 				},1100)
 				setTimeout(function(){
 					$(el).find('.no_dis_orig').animate({'left':0});
@@ -197,5 +199,8 @@
         }
   });
  }
+ 
+ //for responsive table
+ $('#responsive-example-table').stacktable({myClass:'your-custom-class'});
  </script>
 @stop
