@@ -3,6 +3,15 @@
 <link rel="stylesheet" href="<?php echo url();?>/public/frontend/css/stacktable.css" type="text/css" media="screen">
 <script src="<?php echo url();?>/public/frontend/js/stacktable.js" type="text/javascript"></script>
 <div class="inner_page_container nomar_bottom">
+<div id="nav-icon2">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<div class="mob_topmenu_back"></div>
 
 <div class="top_menu_port">
     	<div class="acct_box blue_acct front">
