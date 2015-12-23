@@ -169,12 +169,12 @@
 					}, 1000, 'easeInOutExpo');
 					
 					
-					/*imgclone.animate({
+					imgclone.animate({
 						'width': 0,
 							'height': 0
 					}, function () {
 						$(this).detach()
-					});*/
+					});
 				}
 				setTimeout(function(){
 					//$("#cart_det").show();
