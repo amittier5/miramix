@@ -92,7 +92,9 @@
                   <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
                   <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
                   <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
+
                   <td><a href="javascript:void(0)" class="btn btn-white reord_prod" onclick="reorderProduct('<?php echo $each_order_list->id;?>',this)">Reorder<span class="no_dis_orig"><i class="fa fa-check"></i>Product Added</span></a></td>
+
                 </tr>
                 @endforeach
               @else
@@ -182,7 +184,11 @@
 					$("#cart_det").show();
 			  		$("#cart_mob_det").show();	
 				},1100)
+					
 				setTimeout(function(){
+					//$('#no_dis_orig').animate({'left':100+'%'});
+					$('#reorder-prod').prop('disabled',false);
+
 					$(el).find('.no_dis_orig').animate({'left':0});
 					$('.reord_prod').prop('disabled',true);
 					
@@ -190,6 +196,7 @@
 				setTimeout(function(){
 					$(el).find('.no_dis_orig').animate({'left':100+'%'});
 					$('.reord_prod').prop('disabled',false);
+
 					
 				},4000);
 			   //for add to cart animation

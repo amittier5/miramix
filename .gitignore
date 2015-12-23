@@ -1,4 +1,11 @@
+<<<<<<< HEAD
+/node_modules
+Homestead.yaml
+Homestead.json
+
+=======
 /config
 /node_modules
 Homestead.yaml
 Homestead.json
+>>>>>>> sumitradev
