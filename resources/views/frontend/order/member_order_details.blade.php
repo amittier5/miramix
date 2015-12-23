@@ -6,6 +6,9 @@ use App\Helper\helpers;
 $obj = new helpers(); 
 $serialize_address = unserialize($order_list->shiping_address_serialize);
 ?>
+
+
+
   <div class="inner_page_container nomar_bottom">
   
   <div class="top_menu_port">
@@ -233,5 +236,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
     
 	location.href='<?php echo url();?>/rate-product/'+productid
       }
+	  
+	  
     </script>
  @stop
