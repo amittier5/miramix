@@ -71,8 +71,8 @@
                     <td>{!! $serialize_address['first_name'].' '.$serialize_address['last_name'] !!}</td>
                     <td>{!! date('m/d/Y',strtotime($order->created_at)) !!}</td>                    
                     <td>
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="id1_<?php echo $order->id;?>" value="priority">Priority Mail
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="id2_<?php echo $order->id;?>"  value="flat">Flat Rate
+                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="priority">Priority Mail
+                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="flat">Flat Rate
                         <a href="<?php echo url();?>/admin/order-details/<?php echo $order->id;?>" class="btn btn-success">Details</a>
                     </td>
                     <td>
@@ -96,11 +96,10 @@
 <script type="text/javascript">
     $('.radio_cls').on('change',function(){
         $this = $(this);
-        var str = $('.radio_cls:checked').attr('id');
-        var allData = str.split("_")
-        
-        $('#add_queue'+allData[1]).attr("checked",true);
-        call_ajax(allData[1],$('.checkbox_cls'));
+        alert($this.attr('id'));
+
+        $('#add_queue'+$this.attr('id')).attr("checked",true);
+        call_ajax($this.attr('id'),'checkbox_cls');
 
     });
 
@@ -119,7 +118,7 @@
         else
             var param = 'remove';
 
-        var mail_option = $('input[name="mail'+order_id+'"]');
+        var mail_option = $('#'+order_id).val();
 
         $.ajax({
               url: '<?php echo url();?>/admin/add-process-queue',
