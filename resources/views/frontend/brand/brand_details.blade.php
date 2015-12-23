@@ -39,28 +39,97 @@ if(isset($_REQUEST['page']))
     <div class="brand_details_info">
       <p class="text-center">{!! $all_brand_member->brand_details;!!}</p>
       @if($all_brand_member->brand_sitelink!='')
+      <?php 
+        if(strpos($all_brand_member->brand_sitelink, "http://") !== false)
+        {
+          $brand_sitelink = $all_brand_member->brand_sitelink;
+        }
+        else
+        {
+          $brand_sitelink = "http://".$all_brand_member->brand_sitelink;
+        }
+      ?>
       <p class="text-center">
-          Please visit <a href="{!! $all_brand_member->brand_sitelink;!!}" target="blank">{!! $all_brand_member->brand_sitelink;!!}</a> for more information
+          Please visit <a href="{!! $brand_sitelink;!!}" target="_blank">{!! $brand_sitelink;!!}</a> for more information
       </p>
       @endif
       <div class="links_brands">@if($all_brand_member->youtube_link!='')
       <p class="text-center you_brand">
-         <a href="{!! $all_brand_member->youtube_link;!!}" target="blank"><i class="fa fa-youtube-play"></i></a>
+         <a href="{!! $all_brand_member->youtube_link;!!}" target="_blank"><i class="fa fa-youtube-play"></i></a>
       </p>
       @endif
       @if($all_brand_member->facebook_url!='')
+      <?php 
+        if(strpos($all_brand_member->facebook_url, "http://") !== false)
+        {
+          if(strpos($all_brand_member->facebook_url, "facebook.com") !== false)
+          {
+            $facebook_url = $all_brand_member->facebook_url;
+          }
+          else
+          {
+            $facebook_url = "facebook.com/".$all_brand_member->facebook_url;
+          }
+        }
+        else
+        {
+          if(strpos($all_brand_member->facebook_url, "facebook.com") !== false)
+          {
+            $facebook_url = "http://".$all_brand_member->facebook_url;
+          }
+          else
+          {
+            $facebook_url = "http://facebook.com/".$all_brand_member->facebook_url;
+          }
+          
+        }
+      ?>
       <p class="text-center face_brand">
-          <a href="{!! $all_brand_member->facebook_url;!!}" target="blank"><i class="fa fa-facebook-square"></i></a>
+          <a href="{!! $facebook_url;!!}" target="_blank"><i class="fa fa-facebook-square"></i></a>
       </p>
       @endif
       @if($all_brand_member->twitter_url!='')
+      <?php 
+        if(strpos($all_brand_member->twitter_url, "http://") !== false)
+        {
+          if(strpos($all_brand_member->twitter_url, "twitter.com") !== false)
+          {
+            $twitter_url = $all_brand_member->twitter_url;
+          }
+          else
+          {
+            $twitter_url = "twitter.com/".$all_brand_member->twitter_url;
+          }
+        }
+        else
+        {
+          if(strpos($all_brand_member->twitter_url, "twitter.com") !== false)
+          {
+            $twitter_url = "http://".$all_brand_member->twitter_url;
+          }
+          else
+          {
+            $twitter_url = "http://twitter.com/".$all_brand_member->twitter_url;
+          }
+        }
+      ?>
       <p class="text-center twit_brand">
-          <a href="{!! $all_brand_member->twitter_url;!!}" target="blank"><i class="fa fa-twitter"></i></a>
+          <a href="{!! $twitter_url;!!}" target="_blank"><i class="fa fa-twitter"></i></a>
       </p>
       @endif
       @if($all_brand_member->linkedin_url!='')
+      <?php 
+        if(strpos($all_brand_member->linkedin_url, "http://") !== false)
+        {
+          $linkedin_url = $all_brand_member->linkedin_url;
+        }
+        else
+        {
+          $linkedin_url = "http://".$all_brand_member->linkedin_url;
+        }
+      ?>
       <p class="text-center link_brand">
-          <a href="{!! $all_brand_member->linkedin_url;!!}" target="blank"><i class="fa fa-linkedin-square"></i></a>
+          <a href="{!! $linkedin_url;!!}" target="_blank"><i class="fa fa-linkedin-square"></i></a>
       </p>
       @endif</div>
       <div class="video-panel">
@@ -94,8 +163,9 @@ if(isset($_REQUEST['page']))
           <p>Sort By:</p>
             <select id="sortby" name="sortby" >
             <option value="popularity">Popularity</option>
-                <option value="price">Price</option>
-                <option value="date">Date</option>
+            <option value="pricelow">Price Low</option>
+            <option value="pricehigh">Price High</option>
+            <option value="date">Date</option>
             </select>
         </div>
     </div>
@@ -111,14 +181,12 @@ if(isset($_REQUEST['page']))
           <div class="product">
               <div class="head_section">
                   <h2 title="{!! $each_product->product_name !!}">{!! $each_product->product_name !!}</h2>
-                  <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*7,2);?> </p>
+                  <p class="price">Starting at <?php echo '$'.number_format((float)$each_product->min_price*30,2);?> </p>
                   </div>
                 <div class="image_section" style="background:url(<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}) no-repeat center center; background-size:cover;height:240px;" >
                   <!--<img src="<?php echo url();?>/uploads/product/{!! $each_product->image1 !!}" alt=""/>-->
                     <div class="image_info">
-                      <?php if($brandlogin == 0) {?>
-                      <a href="<?php echo url();?>/product-details/{!! $each_product->product_slug !!}" class="butt cart"><img src="<?php echo url();?>/public/frontend/images/icon2.png" alt=""/> Add to cart</a>
-                      <?php } ?>
+                      
                         <a href="<?php echo url();?>/product-details/{!! $each_product->product_slug !!}" class="butt butt-green"><img src="<?php echo url();?>/public/frontend/images/icon3.png" alt=""/> View Details</a>
                     </div>
               </div> 

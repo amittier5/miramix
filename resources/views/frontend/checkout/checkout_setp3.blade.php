@@ -217,14 +217,16 @@
     <h5>Step 3 :  Shipping Detail</h5>
    <?php // echo "w= ".Session::get('selected_address_id'); ?>
     <cite>Please select the mailing address you would like to have your item(s) delivered to.</cite>
-    
+    <?php echo $selected_address_id=Session::get('selected_address_id');
+	$select_address=Session::get('select_address');
+	?>
     {!! Form::open(['url' => 'checkout-step3','method'=>'POST', 'files'=>true,'class'=>'form row-fluid','id'=>'checkout_form3']) !!}
 
     <div class="check_box_tab selectionbasedshow green_version">                            
-         <input type="radio" class="regular-checkbox" id="radio-1" <?php echo (Session::has('selected_address_id'))?"checked=checked":"checked=checked" ?>name="RadioGroup1">
+         <input type="radio" class="regular-checkbox" id="radio-1" <?php echo !empty($selected_address_id)? "checked=checked":"" ?> name="RadioGroup1">
          <label for="radio-1">I want to use an existing address</label>
     </div>
-    <div class="col-sm-12 clearfix show_hide" id="old_address">
+    <div class="col-sm-12 clearfix show_hide" id="old_address" <?php if(empty($selected_address_id)){ echo 'style="display:none"';}?>>
     
     <div class="form-group">
     <select class="form-control" name="existing_address">
@@ -254,12 +256,12 @@
     
     </div>
     <div class="check_box_tab selectionbasedshow green_version bot_clear">                            
-         <input type="radio" class="regular-checkbox" id="radio-2" name="RadioGroup1">
+         <input type="radio" class="regular-checkbox" id="radio-2" name="RadioGroup1" <?php echo (!Session::has('selected_address_id'))?"checked=checked":"" ?>>
          <label for="radio-2">I want to use a new shipping address</label>
     </div>
     <div class="col-sm-12 clearfix show_hide">
    
-    <div class="row" id="new_address">
+    <div class="row" id="new_address" <?php if(!Session::has('selected_address_id')){ echo 'style="display:block"';}?> >
     <div class="form-group col-sm-6">
     <input type="text" class="form-control" placeholder="First Name" name="fname"  id="fname">
     </div>
@@ -302,7 +304,7 @@
     <input type="text" class="form-control" placeholder="Post Code"  name="zip_code"  id="zip_code">
     </div>
     </div>
-    <input type="hidden" value="existing" name="select_address" id="select_address">
+    <input type="hidden" name="select_address" id="select_address" value="<?php echo !empty($selected_address_id)? "existing":"newaddress" ?>">
     
     <input type="submit" class="full_green_btn text-uppercase pull-right" value="Continue">
 

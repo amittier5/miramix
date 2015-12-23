@@ -3,6 +3,9 @@
 use App\Model\Brandmember; /* Model name*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Model\Order;            
+use App\Model\OrderItems;
+
 use Illuminate\Support\Facades\Request;
 use Input; /* For input */
 use Validator;
@@ -30,11 +33,18 @@ class MemberController extends Controller {
     */
    public function index()
    {
+    $searchstring=Request::input('searchstring');
         $limit = 50;
-		$members = DB::table('brandmembers')->where('role',0)->orderBy('id','DESC')->paginate($limit);
+	$members = DB::table('brandmembers')->orderBy('id','DESC');
         //echo '<pre>';print_r($members); exit;
+	if($searchstring!=''){
+	   $members->whereRaw("role='0' and (fname like '%".$searchstring."%' or lname like '%".$searchstring."%' or email like '%".$searchstring."%' or username like '%".$searchstring."%' )"); 
+	}
+	$members=$members->paginate($limit);
 	    $members->setPath('member');
-        return view('admin.members.index',compact('members'),array('title'=>'Member Management','module_head'=>'Members'));
+	
+	
+        return view('admin.members.index',compact('members','searchstring'),array('title'=>'Member Management','module_head'=>'Members'));
 
     }
 
@@ -209,6 +219,117 @@ class MemberController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+   public function add_member(){
+    if(Request::isMethod('post'))
+        {
+	    
+	    $register=Request::all();
+	    //print_r($register);
+	    
+	    $hashpassword = Hash::make($register['password']);
+	    
+	     if(isset($_FILES['pro_image']['name']) && $_FILES['pro_image']['name']!="")
+			{
+				$destinationPath = 'uploads/member/'; // upload path
+				$thumb_path = 'uploads/member/thumb/';
+				$medium = 'uploads/member/thumb/';
+				$extension = Input::file('pro_image')->getClientOriginalExtension(); // getting image extension
+				$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
+				Input::file('pro_image')->move($destinationPath, $fileName); // uploading file to given path
+				
+                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
+                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
+			}
+			else
+			{
+				$fileName = '';
+			}
+                        
+			
+			
+    
+	    $brandmember= Brandmember::create([
+		'email'             => $register['email'],
+		'username'          => $register['username'],
+		'fname'             => $register['fname'],
+		'lname'             => $register['lname'],
+		'phone_no'          => $register['phone_no'],
+		'pro_image'	    => $fileName,
+		'password'          => $hashpassword,
+		'role'              => 0,                   // for member role is "0"
+		'admin_status'      => 1,                   // Admin status
+		'status'	    => 1,
+		'updated_at'        => date('Y-m-d H:i:s'),
+		'created_at'        => date('Y-m-d H:i:s')
+	    ]);
+    
+	    $lastInsertedId = $brandmember->id;
+    
+	    $sitesettings = DB::table('sitesettings')->get();
+	    //exit;
+	    if(!empty($sitesettings))
+	    {
+		foreach($sitesettings as $each_sitesetting)
+		{
+		  if($each_sitesetting->name == 'email')
+		  {
+		    $admin_users_email = $each_sitesetting->value;
+		  }
+		}
+	    }
+    
+	    $user_name = $register['username'];
+	    $user_email = $register['email'];
+	   
+	    $activateLink =url().'/memberLogin';
+	    $sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink, 'admin_users_email'=>$admin_users_email), 
+	    function($message) use ($admin_users_email, $user_email,$user_name)
+	    {
+		$message->from($admin_users_email);
+		$message->to($user_email, $user_name)->subject('Welcome to Miramix');
+	    });
+    
+	    if( ! $sent) 
+	    {
+		Session::flash('error', 'something went wrong!! Mail not sent.'); 
+		return redirect('admin/add-member');
+	    }
+	    else
+	    {
+		Session::flash('success', 'Member created successfully.'); 
+		return redirect('admin/member');
+	    }
+	}
+     return view('admin.members.add',array('title'=>'Add Member','module_head'=>'Members'));
+   }
    
+   public function brand_orders($brandid){
+    
+    $limit = 10;
+   /* $currentPage = Request::segment(4);
+    Paginator::currentPageResolver(function() use ($currentPage) {
+	    return $currentPage;
+	});
+     */   
+        //$order_list = Order::with('getOrderMembers','AllOrderItems')->orderBy('id','DESC')->paginate($limit);
+	
+	//$order_list = Order::with('getOrderMembers','AllOrderItems')->orderBy('id','DESC');
+	//$order_list = DB::table('order_items')->where('brand_id', $brandid)->groupby("order_id")->paginate($limit);
+	$order_list = OrderItems::with('order')->where('brand_id', $brandid)->orderBy('order_id','DESC')->paginate($limit);
+	/*
+	$order_list = Order::with(array('getOrderMembers','AllOrderItems' => function($query)
+	    {
+	      $query->where('brand_id', '=', 1038);
+	    }))   ->orderBy('id','DESC')->paginate($limit);
+	*/
+	//$order_list->whereRaw("brand_id1='".$brandid."'");
+	//$order_list=$order_list->get();
+      //$order_list->setPath('brand-orders');
+	$orderstatus='';
+	$filterdate='';
+        
+        return view('admin.order.brand_order_history',compact('order_list','orderstatus','filterdate'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+
+   }
 
 }

@@ -1,7 +1,11 @@
 @extends('admin/layout/admin_template')
 
 @section('content')
-
+<?php 
+use App\Helper\helpers;
+$obj = new helpers();
+$serialize_address = unserialize($order_list->shiping_address_serialize);
+?>
 
 <div class="inner_page_container nomar_bottom">
      <!--my_acct_sec-->
@@ -12,29 +16,63 @@
          <div class="form_dashboardacct">
             <h3>Order History</h3>
               <div class="bottom_dash clearfix">
-                  <h5 class="text-center">Shipping address</h5>
                   
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="order_box">
                   <h6>Order Information</h6>
-                   <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
+                    <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
+                    <?php if($order_list->shipping_address_id == 1){?>
+                      Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
+                      <?php }else {?>
+                      Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
+                      <?php }?>
                       Date Added: {!! date("M d, Y",strtotime($order_list->created_at)); !!}<br>
                       Payment Method: {!! $order_list->payment_method; !!}<br>
                       Shipping Type: {!! $order_list->shipping_type; !!}<br>
-                      Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p></div>
+                      Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
+                    </div>
                   </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="order_box">
-                      <h6>Payment Address</h6>
+                      <h6>Shipping Address</h6>
                        <div class="bottom_panel_ship">
-                       <?php $serialize_address = unserialize($order_list->shiping_address_serialize);?>
-                        <p>{!! $serialize_address['first_name'].' '.$serialize_address['last_name'] !!}<br>                          
-                          {!! $serialize_address['address']; !!}<br>
-                          {!! $serialize_address['address2']; !!}<br>
-                          {!! $serialize_address['city']; !!}, Florida<br>
-                          United States</p>
+                       <?php 
+                        if((isset($serialize_address['zone_id'])))
+                        {
+                          if(is_numeric($serialize_address['zone_id']))
+                          {
+                            $state = $obj->get_state($serialize_address['zone_id']);
+                          }
+                          else
+                          {
+                            $state = $serialize_address['zone_id'];
+                          }
+                        }
+
+                        if((isset($serialize_address['country_id'])))
+                        {
+                          if(is_numeric($serialize_address['country_id']))
+                          {
+                            $country = $obj->get_country($serialize_address['country_id']);
+                          }
+                          else
+                          {
+                            $country = $serialize_address['country_id'];
+                          }
+                        }
+                      ?>
+
+                      <p>
+                      {!! isset($serialize_address['first_name'])?($serialize_address['first_name'].' '.$serialize_address['last_name']):'' !!}<br>                          
+                      {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
+                      {!! isset($serialize_address['address'])?$serialize_address['address']:''; !!}<br>
+                      {!! ($serialize_address['address2']!='')?$serialize_address['address2'].'<br>':''; !!}
+                      {!! "City: ".isset($serialize_address['city'])?$serialize_address['city']:''; !!}<br>
+                      {!! (isset($serialize_address['zone_id']) && ($serialize_address['zone_id']!=''))?"State: ".$state :'' !!}<br>
+                      {!! (isset($serialize_address['country_id']) && ($serialize_address['country_id']!=''))? "Country : " .$country:'' !!}<br>
+                      {!! "Post Code: ". isset($serialize_address['postcode'])?$serialize_address['postcode']:'';!!}</p>
                        </div>
                       </div>
                     </div>                    

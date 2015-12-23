@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
      setInterval(function(){ 
 		 
 		 if (jQuery("#member_form, #member_login").length>0) {
-			window.location.reload();
+			window.location.reload(true);
 		 }
 		 
 		 }, 600000);

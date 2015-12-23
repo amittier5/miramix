@@ -45,11 +45,12 @@ $(document).ready(function(){
 </script> 
 
     <div class="pull-left">
-       <input type="text" name="search_name" id="search_name" value="{!! $param !!}"  placeholder="Search By Product Name" class="span4"> 
+       <input type="text" name="search_name" id="search_name" value="{!! $param !!}"  placeholder="Search By Product Name" class="span3"> 
        <a href="javascript:search()" class="btn btn-success marge">Search</a>
        <a href="{!! url('admin/product-list/'.$discountinue);!!}" class="btn btn-success marge">Clear</a>
     </div>
 
+     <a href="{!!url('admin/product/create')!!}" class="btn btn-success pull-right">Create Product</a>
     <select name="pro_type" id="pro_type" style="float:right">
       <option value="1" @if($discountinue=="1") selected="selected" @endif>Discontinue Product</option>
       <option value="0" @if($discountinue=="0") selected="selected" @endif>Continue Product</option>
@@ -83,7 +84,7 @@ $(document).ready(function(){
                   <?php } ?>
                </td>
                <td class="">{!! $product->product_name !!}</td>
-               <td class="">{!! $product->GetBrandDetails['fname'].' '.$product->GetBrandDetails['lname']; !!}</td>
+               <td class="">{!! $product->GetBrandDetails['business_name']; !!}</td>
                <td class="">{!! rtrim($product->formfactor_name,'<br/>'); !!}</td>
                <td class="">
                <?php
@@ -102,8 +103,8 @@ $(document).ready(function(){
                   <a href="{!! url() !!}/admin/change_related_status/{!! $product->id.'/'.$make_related_status;!!}" data-toggle="tooltip" title="{!! $tooltip;!!}">{!! $product->related; !!}</a></td>
                
                 <td>
-                    <a href="{!!route('admin.product.edit',$product->id)!!}" class="btn btn-warning">Edit</a>
-                    <a href="{!! url() !!}/admin/ratings/{!! $product->id !!}" class="btn btn-warning">Ratings</a>
+                    <a href="{!!route('admin.product.edit',$product->id)!!}" class="btn btn-warning edit_table_btn">Edit</a>
+                    <a href="{!! url() !!}/admin/ratings/{!! $product->id !!}" class="btn btn-warning rating_table_btn">Ratings</a>
                 </td>
                 <td>
                     {!! Form::open(['method' => 'DELETE', 'route'=>['admin.product.destroy', $product->id], 'onsubmit' => 'return ConfirmDelete()']) !!}

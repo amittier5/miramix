@@ -4506,10 +4506,10 @@ a.btn.btn-success.add_vitamin.normal_vitamin, a.btn.btn-danger.remove_vitamin.no
     margin-top: 15px;
 }
 .add_product_panel .product_name label {
-    font-size: 22px;
+    font-size: 19px;
     color: #6dc4d3;
     text-align: right;
-    line-height: 34px;
+    line-height: 40px;
 }
 .add_product_panel .product_name label span{
 	width:15px;
@@ -4531,7 +4531,7 @@ a.btn.btn-success.add_vitamin.normal_vitamin, a.btn.btn-danger.remove_vitamin.no
 	height:43px;
 	background-color:transparent;
 	font-size:14px;
-	line-height:43px;
+	line-height:40px;
 	color:#777777;
 	padding:0 10px;
 	box-shadow:none !important;
@@ -4785,6 +4785,7 @@ a.click_more:hover i,a.remove_row:hover i,a.add_row:hover i,a.add_ingre:hover i,
 	overflow:hidden;
 	border:1px solid #d5d5d5;
 	margin-bottom:15px;
+	position:relative;
 }
 .upload_image_panel .image_upload_panel .upload_button_panel {
     width: 120px;
@@ -5075,6 +5076,102 @@ span.weight_span {
     color: red;
     clear: left;
     font-size: 16px;
+}
+.dataTables_wrapper{
+	clear:both;	
+}
+.filt_css.pull-left{
+	margin-left: 10px;	
+}
+.filt_css{
+	margin-top: 10px;	
+}
+.filt_css span{
+    display: block;
+    float: left;
+    line-height: 29px;
+    margin-right: 10px;		
+}
+.search_top {
+    float: right;
+    margin-right: 10px;
+}
+.search_top input[type="submit"].btn{
+	line-height:20px;	
+}
+.choosebrand_lab label {
+    text-align: left;
+    font-size: 19px;
+    line-height: 39px;
+    margin: 0;
+    color: #6DC7DF;
+}
+.special_padleft{
+    padding-left: 7px;		
+}
+.tags_div label.col-sm-2{
+    line-height: 39px;		
+}
+.submit_panel{
+	margin-top:20px;	
+}
+.remove_row_formfactortable{
+	margin-left:5px;
+	position:relative;
+	top:13px;	
+}
+.del_btn,.collapsing_btn{
+	border:none;	
+}
+.table th, .table td{
+	vertical-align:middle;	
+}
+.edit_table_btn,.rating_table_btn{
+	display:block;
+	margin-bottom:4px;	
+}
+#pro_type{
+	margin-right:5px;	
+}
+.add_memeber_btn{
+    margin-bottom: 0;
+    margin-left: 10px;
+    margin-top: 11px;		
+}
+#searchstring{
+	margin-right:5px;	
+}
+.label_for_newup{
+    font-size: 17px;
+    line-height: 34px;		
+}
+.image_upload_panel label.error{
+    position: absolute;
+    bottom: -3px;
+    left: 9px;
+    font-size: 12px;	
+}
+.add_product_panel .product_name label.error{
+    font-size: 13px;
+    color: red;
+    line-height: 15px;
+}
+
+.upload_image_panel .image_upload_panel label.error {
+    bottom: -1px;
+    color: #ab0000;
+    font-size: 13px;
+    font-weight: 600;
+    left: 125px;
+    padding-left: 11px;
+    position: absolute;
+}
+.upload_image_panel p.upload_image label.error {
+    bottom: -4px;
+    left: -4px;
+    text-align: center;
+    width: 100%;
+    z-index: 99;
 }
 
 

@@ -279,3 +279,27 @@ label.error {
 	padding-right:0;	
 }
 
+
+
+@media (max-width: 767px) {
+	.log_inner h2{
+		font-size:30px;
+		line-height:32px;
+		margin-bottom: 15px;	
+	}
+	.brand_p{
+		font-size:18px;	
+	}
+	.login_cont{
+		padding-top:65px;	
+	}
+	.signup_form_panel{
+		width:100%;
+		float:left;
+		margin:0;	
+	}
+	.no_disp_mob{
+		display:none;	
+	}
+}
+

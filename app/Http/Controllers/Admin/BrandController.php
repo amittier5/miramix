@@ -29,11 +29,17 @@ class BrandController extends Controller {
     */
    public function index()
    {
+    $searchstring=Request::input('searchstring');
         $limit = 50;
-        $brands = DB::table('brandmembers')->where('role',1)->orderBy('id','DESC')->paginate($limit);
+        $brands = DB::table('brandmembers')->where('role',1)->orderBy('id','DESC');
         //echo '<pre>';print_r($brands); exit;
+        if($searchstring!=''){
+	   $brands->whereRaw("fname like '%".$searchstring."%' or lname like '%".$searchstring."%' or email like '%".$searchstring."%' or username like '%".$searchstring."%'"); 
+	}
+	$brands=$brands->paginate($limit);
+        
         $brands->setPath('brand');
-        return view('admin.brands.index',compact('brands'),array('title'=>'Brand Management','module_head'=>'Brands'));
+        return view('admin.brands.index',compact('brands','searchstring'),array('title'=>'Brand Management','module_head'=>'Brands'));
 
     }
 

@@ -78,4 +78,11 @@ return [
         'redirect'      => 'http://www.miramix.com/account/google'
     ],
 */
+    'twilio' => [
+    'sid' => env('TWILIO_SID'),
+    'token' => env('TWILIO_TOKEN'),
+    'from' => env('TWILIO_FROM_NUMBER'),
+    'ssl_verify' => false, // Development switch to bypass API SSL certificate verfication
+    ],
+
 ];

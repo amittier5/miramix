@@ -92,7 +92,7 @@
                   <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
                   <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
                   <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
-                  <td><a href="javascript:void(0)" class="btn btn-white" onclick="reorderProduct('<?php echo $each_order_list->id;?>')">Reorder</a></td>
+                  <td><a href="javascript:void(0)" class="btn btn-white reord_prod" onclick="reorderProduct('<?php echo $each_order_list->id;?>',this)">Reorder<span class="no_dis_orig"><i class="fa fa-check"></i>Product Added</span></a></td>
                 </tr>
                 @endforeach
               @else
@@ -120,7 +120,7 @@
 
  <script>
 
- function reorderProduct(order_id)
+ function reorderProduct(order_id,el)
  {
     $.ajax({
     url: '<?php echo url();?>/reorder',
@@ -131,8 +131,69 @@
           //alert(data);
           if(data !='' ) // email exist already
           {
-            $("#cart_det").html(data);
-            $("#cart_det").effect( "shake", {times:4}, 1000 );
+			  $("#cart_det").html(data);
+			  $("#cart_mob_det").html(data);
+            
+            /*$("#cart_det").effect( "shake", {times:4}, 1000 );*/
+			
+			//for add to cart animation
+			   var foroffset_calc=$(el); 
+			   if($(window).width()>767)
+				var cart = $('.navbar-default .navbar-nav > li.cart');
+			   else
+			    var cart = $('#formob_only');	
+				var imgtodrag = $(el).parent().parent().find('td:first-child');
+				console.log(imgtodrag.length);
+				if (imgtodrag.length>0) {
+					var imgclone = imgtodrag.clone()
+						.offset({
+						top: foroffset_calc.offset().top,
+						left: foroffset_calc.offset().left
+					})
+						.css({
+						'opacity': '0.5',
+							'position': 'absolute',
+							'height': '40px',
+							'width': '150px',
+							'z-index': '9999999999',
+							'background':'#fff',
+							'color':'#000',
+							'text-align':'center',
+							'line-height':'40px',
+							'border-radius':'4px'
+					})
+						.appendTo($('body'))
+						.animate({
+						'top': cart.offset().top + 10,
+							'left': cart.offset().left - 10,
+							'width': 75,
+							'height': 75
+					}, 1000, 'easeInOutExpo');
+					
+					
+					imgclone.animate({
+						'width': 0,
+							'height': 0
+					}, function () {
+						$(this).detach()
+					}); 
+				}
+				setTimeout(function(){
+					$("#cart_det").show();
+			  		$("#cart_mob_det").show();	
+				},1100)
+				setTimeout(function(){
+					$(el).find('.no_dis_orig').animate({'left':0});
+					$('.reord_prod').prop('disabled',true);
+					
+				},600);		
+				setTimeout(function(){
+					$(el).find('.no_dis_orig').animate({'left':100+'%'});
+					$('.reord_prod').prop('disabled',false);
+					
+				},4000);
+			   //for add to cart animation
+			
           }
           
         }

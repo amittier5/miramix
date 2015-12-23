@@ -20,7 +20,7 @@ use App\Helper\helpers;
 use Cart;
 use App\Model\Subscription;
 use Redirect;
-use Socialize;
+//use Socialize;
 use App\Model\Address; 
 
 class HomeController extends BaseController {
@@ -39,8 +39,11 @@ class HomeController extends BaseController {
     */
     public function index()
     {
+	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
+	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
-        $body_class = 'home';
+    $body_class = 'home';
+   //amit change
 	$page=Request::input('page');
 	if(!empty($page)){
 	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
@@ -55,15 +58,17 @@ class HomeController extends BaseController {
 	$item_per_page=6;
 	
 	$products =DB::table('products')
-                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at'))
+                 ->select(DB::raw('products.id,products.brandmember_id,products.product_name,products.product_slug,products.image1, MIN(`actual_price`) as `min_price`,MAX(`actual_price`) as `max_price`,products.created_at, AVG(product_rating.rating_value) as rating '))
                  ->leftJoin('product_formfactors', 'products.id', '=', 'product_formfactors.product_id')
                  ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
+		 ->leftJoin('product_rating', 'products.id', '=', 'product_rating.product_id')
                  ->where('subscription_status', "active")
                  ->where('brandmembers.admin_status', 1)
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
 		 ->where('product_formfactors.actual_price','!=', 0)
-                 ->groupBy('product_formfactors.product_id');
+                 ->groupBy('product_formfactors.product_id')
+		 ->groupBy('product_rating.product_id')	 ;
                 
 	$tags=Request::input('tags');  
 	  if(!empty($tags)){
@@ -94,17 +99,21 @@ class HomeController extends BaseController {
 	 if(!empty($sortby)){
 	    
 	    if($sortby=='popularity'){
-		$products->orderBy('popularity', 'DESC');
-	    }elseif($sortby=='price'){
+		$products->orderBy('rating', 'DESC');
+	    }elseif($sortby=='pricelow'){
 		$products->orderBy('min_price', 'ASC');
-	    }elseif($sortby=='date'){
+	    }
+	    elseif($sortby=='pricehigh'){
+		$products->orderBy('min_price', 'DESC');
+	    }
+	    elseif($sortby=='date'){
 		$products->orderBy('created_at', 'DESC');
 	    }else{
-		$products->orderBy('popularity', 'DESC');
+		$products->orderBy('rating', 'DESC');
 	    }
 	    
 	 }else{
-	    $products->orderBy('popularity', 'DESC');
+	    $products->orderBy('rating', 'DESC');
 	 }
 	 $products=$products->paginate($item_per_page);
 	 
@@ -164,28 +173,44 @@ class HomeController extends BaseController {
     public function userLogout() /* For All user logout */
     {
     	
-
+ 
+	
         if(Session::has('member_userid'))
         {
             Session::forget('member_userid');
             Session::forget('member_user_email');
             Session::forget('member_username');
-            Session::forget('payment_method');
+            
+            /* Delete Cart Session */
+			Session::forget('coupon_code');
+			Session::forget('coupon_type');
+			Session::forget('coupon_discount');
+			Session::forget('share_coupon_status');
+
+			/* Delete Cart Session */
 
             /* Delete Checkout Session */
             Session::forget('select_address');                  
             Session::forget('selected_address_id');
+            Session::forget('payment_method');
+            Session::forget('step3');
+            Session::forget('step1');
+            Session::forget('guest_array');
+            Session::forget('guest');
+	    	Session::forget('social_login');
+	    
             /* Delete Checkout Session */
             
 			Cart::destroy(); // If any thing in cart session destroy the cart session  //
             Session::flash('success', 'You are successfully logged out.'); 
             return redirect('memberLogin');
-        }  
+        }
         else if(Session::has('brand_userid'))
         {
             Session::forget('brand_userid');
             Session::forget('brand_user_email');
-             Session::forget('brand_username');
+            Session::forget('brand_username');
+	    	Session::forget('social_login');
             Session::flash('success', 'You are successfully logged out.'); 
             return redirect('brandLogin');
         } 
@@ -197,12 +222,18 @@ class HomeController extends BaseController {
 
     public function member_login()
     {
+	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
+	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	/*if( ! Request::secure() )
+	{
+	    return Redirect::secure( Request::path() );
+	}*/
         $obj = new helpers();
          if($obj->checkMemberLogin()){
             return redirect('member-dashboard');
         }
 	if($obj->checkBrandLogin()){
-            return redirect('brand-dashboard');
+            return redirect('brand-dashboard'); 
         }
     Session::put('member_type', 0);
         if(Request::isMethod('post'))
@@ -524,7 +555,14 @@ class HomeController extends BaseController {
 */
     public function brand_login()
     {
-        //echo Hash::make(123456); exit;
+	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
+	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+        
+	/*if( ! Request::secure() )
+	{
+	    return Redirect::secure( Request::path() );
+	}*/
+	
         $obj = new helpers();
         if($obj->checkMemberLogin()){
             return redirect('member-dashboard');
@@ -871,51 +909,104 @@ public function errorpage(){
   return view('frontend.home.error',array('title'=>'Something went wrong'));   
 }
 
-
+/*
 public function facebook_redirect(){
    
     return Socialize::with('facebook')->redirect();
-}
-
+}*/
+//social login in ajax
 public function facebook(){
      $obj = new helpers();
-    $user = Socialize::with('facebook')->user();
+    $name = Request::input('name');
   
-    $email=($user->email);
+    $email=(Request::input('email'));
+    $checkout=(Request::input('checkout'));
+    $id=(Request::input('id'));
     
-    $name=explode(" ",$user->name);
+    $name=explode(" ",$name);
     if(count($name)>0){
 	$fname=$name[0];
 	$lname=end($name);
     }else{
-	$fname=$user->name; 
-	$lname=$user->name;
+	$fname=$name; 
+	$lname=$name;
     }
     $username=strtolower($fname);
     $count = DB::table('brandmembers')->where('email', $email)->count();
     
     if($count>0){
+	$membertype=Session::get('member_type');
+	 
+		    
       
 	$member=DB::table('brandmembers')->where('email', $email)->first();
-	//brand member
-    //print_r($member); exit;
-	if($member->role==1){
-       // echo 't1'; exit;
+	
+	//for brand user
+	if($member->role==1 && empty($checkout) && $membertype=='1'){
+	    
+	    //redirect if not activated
+	    
+	    $user_cnt = DB::table('brandmembers')->where('email', $email)->where('status', 1)->where('admin_status', 1)->count();
+	 
+	  if($user_cnt<=0){
+			$site = DB::table('sitesettings')->where('name','email')->first();
+                        Session::put('error', 'Your Status is inactive. Contact Admin at '.$site->value.' to get your account activated!'); 
+                        echo url().'/brandLogin';
+			exit;
+                    }
+      
 	    $this->check_subscription($member);
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-        Session::put('member_username', $member->username);
-        return Redirect::back()->withMessage('You are logged in successfully.');
-	}else{
-         // echo 't2'; exit;
-          //echo   $member->email; exit;
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+        echo url()."/brand-dashboard";
+	}
+	elseif($member->role==1 && $membertype!='1'){
+	    Session::put('error', 'You are already registered as brand!'); 
+	    echo url().'/brandLogin';
+	}
+	elseif($member->role==1 && !empty($checkout)){
+	    Session::put('error', 'You are unable to login as brand!'); 
+	    echo url();
+	}
+	elseif($member->role==0 && $membertype=='1'){
+	    Session::put('error', 'You are already registered as member!'); 
+	     echo url().'/memberLogin';
+			
+	} 
+	elseif($member->role==0 && ($membertype=='0' || !empty($checkout))){
+	   //for member user 
+	    
+	    //redirect if admin deactivated account
+	    $user_cnt = DB::table('brandmembers')->where('email', $email)->where('status', 1)->where('admin_status', 1)->count();
+	 
+	  if($user_cnt<=0){
+			$site = DB::table('sitesettings')->where('name','email')->first();
+                        Session::put('error', 'Your Status is inactive. Contact Admin at '.$site->value.' to get your account activated!'); 
+                        echo url().'/memberLogin';
+			exit;
+                    }
+		    
+         
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
-        Session::put('member_username', $member->username);
-	    $this->update_cart($member->id);
-       // echo Session::get('member_user_email'); exit;
-	    return Redirect::back()->withMessage('You are logged in successfully.');
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+	      
+	     $this->update_cart($member->id);
+	    
+	    
+	    if(!empty($checkout)){
+		echo url()."/checkout";
+		
+	    }else{
+		
+      
+	    echo url()."/member-dashboard";
+	    }
+	   
 	    
 	}
 	
@@ -924,16 +1015,32 @@ public function facebook(){
 	
 	$hashpassword = Hash::make(uniqid());
 	$slug=$obj->create_slug($fname."-".$lname,'brandmembers','slug');
+	$checkout=(Request::input('checkout'));
+	if(!empty($checkout)){
+	    
+	   Session::put('member_type', 0);
+	}
+	$membertype=Session::get('member_type');
+	
+	
+	if($membertype=='1'){
+	    
+	     Session::put('error', 'Please register as brand for login!'); 
+                        echo url(). '/brandregister';
+			exit;
+	}
+	//echo $membertype;exit;
 	
         $brandmember= Brandmember::create([
             'email'             => $email,
 	    'fname'             => $fname,
 	    'lname'             => $lname,
             'username'          => $username,
-            'password'          => $hashpassword,
+            'password'          => '',
             'role'              => Session::get('member_type'),                   // for member role is "0"
             'admin_status'      => 1,
-	    'facebook_id'	=>$user->id,// Admin status
+	    'status'		=> 1,
+	    'facebook_id'	=>$id,// Admin status
 	    'slug'		=>$slug,
 	    'business_name'	=>$fname." ".$lname,
             'updated_at'        => date('Y-m-d H:i:s'),
@@ -968,14 +1075,25 @@ public function facebook(){
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-        Session::put('member_username', $member->username);
-        return Redirect::back()->withMessage('You are logged in successfully.');
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+	   
+	    
+        echo url()."/brand-dashboard";
 	}else{
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
-        Session::put('member_username', $member->username);
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
 	    $this->update_cart($member->id);
-	    return Redirect::back()->withMessage('You are logged in successfully.');
+	    
+	     if(!empty($checkout)){
+		echo url()."/checkout";
+		
+	    }else{
+	    
+	   echo url()."/member-dashboard";
+	    }
 	    
 	}
 	
@@ -983,25 +1101,25 @@ public function facebook(){
     
 }
 
-
+/*
 public function google_redirect(){
    
     return Socialize::with('google')->redirect();
-}
-
+}*/
+//social login in ajax
 public function google(){
      $obj = new helpers();
-    $user = Socialize::with('google')->user();
-    
-    $email=($user->email);
-    
-    $name=explode(" ",$user->name);
+    $name = Request::input('name');;
+    $checkout=(Request::input('checkout'));
+    $email=( Request::input('email'));
+    $membertype=Session::get('member_type');
+    $name=explode(" ",$name);
     if(count($name)>0){
 	$fname=$name[0];
 	$lname=end($name);
     }else{
-	$fname=$user->name; 
-	$lname=$user->name;
+	$fname= $name; 
+	$lname= $name;
     }
     $username=strtolower($fname);
     $count = DB::table('brandmembers')->where('email', $email)->count();
@@ -1009,25 +1127,88 @@ public function google(){
     if($count>0){
 	$member=DB::table('brandmembers')->where('email', $email)->first();
 	//brand member
-	if($member->role==1){
+	if($member->role==1  && empty($checkout) && $membertype=='1'){
+	    
+	       //redirect if admin deactivated account
+	    $user_cnt = DB::table('brandmembers')->where('email', $email)->where('status', 1)->where('admin_status', 1)->count();
+	 
+	  if($user_cnt<=0){
+			$site = DB::table('sitesettings')->where('name','email')->first();
+                        Session::put('error', 'Your Status is inactive. Contact Admin at '.$site->value.' to get your account activated!'); 
+                        echo url().'/brandLogin';
+			exit;
+                    }
+		    
 	    $this->check_subscription($member);
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-        Session::put('member_username', $member->username);
-        return Redirect::back()->withMessage('You are logged in successfully.');
-	}else{
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+       echo url()."/brand-dashboard";
+	}
+	elseif($member->role==1 && $membertype!='1'){
+	    Session::put('error', 'You are already registered as brand!'); 
+	    echo url().'/brandLogin';
+	}
+	elseif($member->role==1 && !empty($checkout)){
+	    Session::put('error', 'You are unable to login as brand!'); 
+	    echo url();
+	}
+	elseif($member->role==0 && $membertype=='1'){
+	    Session::put('error', 'You are already registered as member!'); 
+	     echo url().'/memberLogin';
+			exit;
+	}
+	
+	elseif($member->role==0 && ($membertype=='0' || !empty($checkout))){
+	    
+	       //redirect if admin deactivated account
+	    $user_cnt = DB::table('brandmembers')->where('email', $email)->where('status', 1)->where('admin_status', 1)->count();
+	 
+	  if($user_cnt<=0){
+			$site = DB::table('sitesettings')->where('name','email')->first();
+                        Session::put('error', 'Your Status is inactive. Contact Admin at '.$site->value.' to get your account activated!'); 
+                        echo url().'/memberLogin';
+			exit;
+                    }
+		    
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
-        Session::put('member_username', $member->username);
-	    $this->update_cart($member->id);
-	    return Redirect::back()->withMessage('You are logged in successfully.');
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+	    
+	     $this->update_cart($member->id);
+	     
+	     if(!empty($checkout)){
+		echo url()."/checkout";
+		
+	    }else{
+		echo url()."/member-dashboard";
+	    }
+	    
+	   
+	    
 	    
 	}
 	
     }else{
 	
 	//create social users
+	$checkout=(Request::input('checkout'));
+	if(!empty($checkout)){
+	    
+	   Session::put('member_type', 0);
+	}
+	
+	$membertype=Session::get('member_type');
+	
+	if($membertype=='1'){
+	    
+	     Session::put('error', 'Please register as brand for login!'); 
+                        echo url().'/brandregister';
+			exit;
+	}
 	
 	$hashpassword = Hash::make(uniqid());
 	$slug=$obj->create_slug($fname."-".$lname,'brandmembers','slug');
@@ -1036,10 +1217,11 @@ public function google(){
 	    'fname'             => $fname,
 	    'lname'             => $lname,
             'username'          => $username,
-            'password'          => $hashpassword,
+            'password'          => '',
             'role'              => Session::get('member_type'),                   // for member role is "0"
             'admin_status'      => 1,                   // Admin status
-	    'google_id'		=>$user->id,
+	    'status'		=> 1,
+	    'google_id'		=>Request::input('id'),
 	    'slug'		=>$slug,
 	    'business_name'	=>$fname." ".$lname,
             'updated_at'        => date('Y-m-d H:i:s'),
@@ -1075,14 +1257,23 @@ public function google(){
 	    
 	    Session::put('brand_userid', $member->id);
 	    Session::put('brand_user_email', $member->email);
-        Session::put('member_username', $member->username);
-        return Redirect::back()->withMessage('You are logged in successfully.');
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+	    echo url()."/brand-dashboard";
 	}else{
 	    Session::put('member_userid', $member->id);
 	    Session::put('member_user_email', $member->email);
-        Session::put('member_username', $member->username);
-	    $this->update_cart($member->id);
-	    return Redirect::back()->withMessage('You are logged in successfully.');
+	    Session::put('member_username', $member->username);
+	    Session::put('social_login', 1);
+	     $this->update_cart($member->id);
+	     if(!empty($checkout)){
+		echo url()."/checkout";
+		
+	    }else{
+		echo url()."/member-dashboard";
+	    }
+	   
+	    
 	    
 	}
 	
@@ -1113,11 +1304,17 @@ private function check_subscription($users){
 			
 			if($today>$enddate && $subscription->payment_status=='pending'){
 			    
-			    //Session::flash('error', 'Your subscription is expired. Contact Admin to activated your account'); 
-			    //return redirect('brandLogin');
+			    Session::put('error', 'Your subscription has expired. Contact Admin to activated your account'); 
+			   // return redirect('brandLogin');
 			     $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'expired'));
+			     echo url().'/brandLogin';exit;
 			    
-			}else{
+			}
+			elseif( $users->subscription_status!='active'){
+			     Session::put('error', 'Your subscription has expired. Contact Admin to activated your account');
+			      echo url().'/brandLogin';exit;
+			}
+			else{
 			   $updateWithCode = DB::table('brandmembers')->where('id', '=', $users->id)->update(array('subscription_status' => 'active'));  
 			    
 			}
@@ -1126,6 +1323,10 @@ private function check_subscription($users){
 		    }
 		    
 		    /******************  check subscription **************************/
+}
+
+public function show(){
+    return redirect('home');
 }
 
 }

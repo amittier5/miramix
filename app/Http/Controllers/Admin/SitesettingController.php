@@ -97,7 +97,7 @@ class SitesettingController extends Controller {
     public function update(Request $request, $id)
     {
         //
-           $sitesettingUpdate=Request::all();
+       $sitesettingUpdate=Request::all();
            $sitesetting=Sitesetting::find($id);
            //$cmsUpdate['description']=htmlentities($cmsUpdate['description']);
            $sitesetting->update($sitesettingUpdate);

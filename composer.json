@@ -10,8 +10,14 @@
 	"laravel/framework": "5.1.*",
         "anam/phpcart": "^1.0",
         "gloudemans/shoppingcart": "^1.3",
-        "laravel/socialite": "~2.0"
+	"olsgreen/twilio": "2.0.*"
     },
+	"repositories": [
+	    {
+		"type": "vcs",
+		"url":  "git@github.com:olsgreen/laravel5-twilio.git"
+	    }
+	],
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",

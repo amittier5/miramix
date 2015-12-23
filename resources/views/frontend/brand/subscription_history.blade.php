@@ -1,5 +1,9 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+
+<script src="<?php echo url();?>/public/frontend/js/stacktable.js"></script>
+<link href="<?php echo url();?>/public/frontend/css/stacktable.css" rel="stylesheet">
+
   <div class="inner_page_container nomar_bottom">
   <div id="nav-icon2">
       <span></span>
@@ -131,7 +135,7 @@
                		<h3>Subscription History</h3>
                     
                     <div class="table-responsive">
-                    <table class="table special_height">
+                    <table class="table special_height" id="subscribe_table">
                     <thead>
                       <tr>
                         <th>Subscription ID</th>
@@ -174,6 +178,10 @@
            </div>
            <!--my_acct_sec ends-->
  </div>
-
+<script>
+$(document).ready(function(e) {
+    $('#subscribe_table').stacktable({myClass:'brand-table-section'}); 
+});
+</script>
 
  @stop

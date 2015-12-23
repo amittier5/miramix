@@ -50,7 +50,7 @@ class InventoryController extends BaseController {
       if(Request::isMethod('post'))
       {
         $name = Request::input('name');
-        $brand_name = Request::input('brand_name');
+        $ingradient_name = Request::input('ingradient_name');
         $user_email = Request::input('contact_email');
         $subject = 'Request for ingredient';
         $cmessage = Request::input('request_ing');
@@ -59,12 +59,12 @@ class InventoryController extends BaseController {
         $admin_users_email=$setting->value;
         
         
-        $sent = Mail::send('frontend.inventory.ingredientemail', array('admin_users_email'=>$admin_users_email,'name'=>$name,'brand_name'=>$brand_name,'email'=>$user_email,'messages'=>$cmessage), 
+        $sent = Mail::send('frontend.inventory.ingredientemail', array('admin_users_email'=>$admin_users_email,'name'=>$name,'ingradient_name'=>$ingradient_name,'email'=>$user_email,'messages'=>$cmessage), 
         
-        function($message) use ($admin_users_email, $user_email,$brand_name,$subject)
+        function($message) use ($admin_users_email, $user_email,$ingradient_name,$subject)
         {
           $message->from($admin_users_email);
-          $message->to($user_email, $brand_name)->cc($admin_users_email)->subject($subject);
+          $message->to($user_email, $ingradient_name)->cc($admin_users_email)->subject($subject);
           
         });
   

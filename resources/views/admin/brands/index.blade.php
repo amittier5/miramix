@@ -11,6 +11,13 @@
  @endif
  
     <div class="module">
+    
+    <form method="post" id="filterform" action="<?php echo url();?>/admin/brand">
+          <input type="hidden" name="_token" value="{!! csrf_token() !!}"/>
+         
+            <div class="filter filt_css pull-right"><span>Search members</span> <input type="text" name="searchstring" value="<?php echo $searchstring?>" id="searchstring" /><div class="search_top"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div></div>
+                
+        </form>
                                
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
             <thead>
@@ -18,7 +25,7 @@
                     <th>Sl No.</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone</th>
+                    <th>Subscription Status</th>
                     <th>Slug</th>
                     
                     <th>Status</th>
@@ -34,9 +41,9 @@
                 @foreach ($brands as $brand)
                 <tr class="odd gradeX">
                     <td class=""><?php echo $i; ?></td>
-                    <td class="">{!! $brand->business_name !!}</td>
+                    <td class="">{!! $brand->business_name !!}</td> 
                     <td class="">{!! $brand->email !!}</td>
-                    <td class="">{!! $brand->phone_no !!}</td>
+                    <td class="">{!! $brand->subscription_status !!}</td>
                     <td class="">{!! $brand->slug !!}</td>
                  
                     <td class="">
@@ -52,6 +59,8 @@
                         @else
                            <a href="{{ URL::to('admin/brand/admin_active_status/' . $brand->id) }}" data-toggle="tooltip" title="Make Active" >Inactive</a>
                         @endif
+                        
+                      <!--  <a href="{{ URL::to('admin/brand-orders/' . $brand->id) }}" data-toggle="tooltip" title="Orders" >Orders</a>-->
                     </td>
                    
                     <td>

@@ -1,8 +1,105 @@
  @extends('frontend/layout/frontend_template')
 @section('content')
+<script src="https://connect.facebook.net/en_US/all.js"></script>
 
+ <script src="https://apis.google.com/js/api:client.js"></script>
+
+<meta name="google-signin-client_id" content="<?php echo env('GOOGLE_CLIENT_ID')?>">
 <script>
-  
+
+
+
+
+      var clientId = '<?php echo env('GOOGLE_CLIENT_ID')?>';
+      
+      var apiKey = '<?php echo env('GOOGLE_CLIENT_SECRET')?>';
+      var response=[];
+       function attachSignin(element) {
+      
+       auth2.attachClickHandler(element, {},
+	   function(googleUser) {
+	     console.log(googleUser.getBasicProfile());
+	     
+	     //response['_token']='{!! csrf_token() !!}';
+	     //response['name']=googleUser.getBasicProfile().getName();
+	     //response['email']=googleUser.getBasicProfile().getEmail();
+	   
+	       $.post( "<?php echo url();?>/account/google",{_token:'{!! csrf_token() !!}',name:googleUser.getBasicProfile().getName(),email:googleUser.getBasicProfile().getEmail(),id:googleUser.getBasicProfile().getId()} , function(response) {
+	    window.location.href=response;
+	    //console.log("Response: "+response);
+	    });
+	 
+	   }, function(error) {
+	     //alert(JSON.stringify(error, undefined, 2));
+	   });
+     }
+
+var googleUser = {};
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: '<?php echo env('GOOGLE_CLIENT_ID')?>',
+        cookiepolicy: 'single_host_origin',
+        // Request scopes in addition to 'profile' and 'email'
+        //scope: 'additional_scope'
+      });
+      attachSignin(document.getElementById('googleSignIn'));
+    });
+  };
+startApp();
+
+   
+      
+  function fbAsyncInit() {
+  FB.init({
+   appId      : '<?php echo env('FB_CLIENT_ID')?>',
+   status     : true, // check login status
+   cookie     : true, // enable cookies to allow the server to access the session
+   xfbml      : true  // parse XFBML
+  });
+ }
+
+ function fblogIn() {
+    FB.login(
+         function(response) {
+    if (response.status== 'connected') {
+     FB.api('/me?fields=name,email', function(response) {
+         console.log(response);
+          // console.log('Good to see you, ' + response.email + '.');
+	   response._token='{!! csrf_token() !!}';
+         $.post( "<?php echo url();?>/account/facebook",response , function(response) {
+	 window.location.href=response;
+	 //console.log("Response: "+response);
+	 });  
+     /*
+      $('#userInfo').html(response.name + ' ' + response.location.name);
+        });
+ 
+        FB.api("/me/picture?width=200&redirect=0&type=normal&height=200", function (response) {
+           if (response && !response.error) {
+       
+             console.log('PIC ::', response);
+             
+           }*/
+        });
+	
+    }
+   }
+   ,{
+ scope: "email,public_profile,user_location"
+     }
+  );
+ }
+ fbAsyncInit();
+ 
+ 
+  function fblogOut() {
+  FB.logout(function(response) {
+   console.log('logout :: ', response);
+   
+  });
+ }
   // When the browser is ready...
   $(function() {
   
@@ -41,7 +138,8 @@
   });
   
 </script>
-    
+   <script src="https://apis.google.com/js/client:plusone.js?onload=handleClientLoad"></script>
+
      <!--for login page-->
     <div class="brand_login">
     	
@@ -61,9 +159,13 @@
                     <strong>{!! Session::get('success') !!}</strong>
                     </div>
                   @endif
+		  <?php
+		  Session::forget('success');
+		  Session::forget('error');
+		  ?>
                 <div class="log_btnblock md15">
-               <a href="{!!URL::to('facebook')!!}"><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
-               <a href="{!!URL::to('google')!!}"><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>
+               <a href="javascript:void(0)" onclick="fblogIn()"><img src="<?php echo url();?>/public/frontend/images/log_fb.png" alt=""></a>
+               <a href="javascript:void(0)"  id="googleSignIn"><img src="<?php echo url();?>/public/frontend/images/log_google.png" alt=""></a>
                 </div>
                 <!--<img src="<?php echo url();?>/public/frontend/images/or.png" alt="">-->
 

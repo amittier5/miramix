@@ -4,11 +4,14 @@
 $(window).load(function () {
     "use strict";    
 	$('#loader').fadeOut();
+	$('body').removeClass('fixed_style');
 });
 
 $(document).ready(function ($) {
 	"use strict";	
-	////	Hidder Header	
+	////	Hidder Header
+	$('body').addClass('fixed_style');
+		
 	var headerEle = function () {
 		var $headerHeight = $('header').height();
 		$('.hidden-header').css({ 'height' : $headerHeight  + "px" });
@@ -871,7 +874,7 @@ $(window).scroll(function() {
 	 }
   });
   
-  $(document).on('change','input[type="radio"]',function(){
+  /*$(document).on('change','input[type="radio"]',function(){
 	  //alert();
 	 if($("#banking_address1").is(":checked")){
   		$('#paypal_email').val('');
@@ -888,7 +891,7 @@ $(window).scroll(function() {
 	 else{
 		 
 	 }
-  });
+  });*/
 
  $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -922,6 +925,47 @@ $(document).ready(function(){
 		$('body').toggleClass('havefixed');
 	});
 });
+
+//for menu close 
+$(document).click(function(e) {
+    if (!$(e.target).parents("header").size()) {
+		//console.log(e.target);
+        $('header .navbar-collapse').collapse('hide');        
+    }
+});
+
+//for image section click redirection in mobile
+$(document).ready(function(e) {
+	if($(window).width()<768){
+		/*$(document).on('click','.image_section',function(){
+			var $this=$(this);
+			var this_redirecturl=$this.find('.butt.butt-green:first-child').attr('href');
+			window.location.href=this_redirecturl;
+		});*/
+		$(document).on('click','.product',function(){
+			var $this=$(this);
+			var this_redirecturl=$this.find('.butt.butt-green:first-child').attr('href');
+			window.location.href=this_redirecturl;
+		});
+	}
+});
+
+//FOR CART SECTION IN MOBILE
+$(document).ready(function(e) {
+    $(document).on('click','.edit_cart_qty',function(){
+		var $this=$(this);
+		$this.parent().parent().parent().parent().find('.edit_qty_thisprod').slideToggle();
+	});
+	/*$(document).on('click','.remove_this_prod',function(){
+		var $this=$(this);
+		$this.parent().parent().parent().parent().fadeOut(function(){
+			$(this).remove();
+		});
+	});*/
+	
+});
+
+
 
 	
 

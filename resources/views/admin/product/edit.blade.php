@@ -389,7 +389,9 @@
               <div class="container-fluid">
                     <div class="row">
                       <div class="col-sm-12">
-                      <div class="col-sm-12 mar_top_bot"><div class="upload_button_panel img_modify bottom_img_define pull-right">
+                      <div class="col-sm-12 mar_top_bot">
+                      <label class="label_for_newup">Label</label>
+                      <div class="upload_button_panel img_modify bottom_img_define pull-right">
                               <p class="upload_image">
                                <input class="upload_button files_label" type="file" name="label" id="label" accept="image/*">
                               </p>

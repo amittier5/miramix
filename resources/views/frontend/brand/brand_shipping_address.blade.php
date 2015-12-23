@@ -153,7 +153,7 @@
                         <div class="row">
                         <h5 class="text-center">Your addresses are listed below</h5>
                         <?php foreach ($address as $adata){ ?>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6 col-md-4">
                         <div class="box_edit_address">
                         <p>
                         <?php echo $adata->address_title?><br>

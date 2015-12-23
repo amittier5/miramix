@@ -187,6 +187,7 @@ class RegisterController extends BaseController {
 				'email'             => Request::input('email'),
 				'username'          => strtolower(Request::input('fname')),
 				'password'          => $hashpassword,
+				'status'	    => 1,
 				'government_issue'  => $government_issue,
 				'business_doc'      => $business_doc,
 				'phone_no'          => Request::input('phone_no'),
@@ -266,12 +267,13 @@ class RegisterController extends BaseController {
 				$user_name = Request::input('fname').' '.Request::input('lname');
 				$user_email = Request::input('email');
 				
-				$activateLink = url().'/activateLink/'.base64_encode(Request::input('email')).'/brand';
+				//$activateLink = url().'/activateLink/'.base64_encode(Request::input('email')).'/brand';
+				$activateLink =url().'/brandLogin';
 				$sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink ,'admin_users_email'=>$admin_users_email), 
 				function($message) use ($admin_users_email, $user_email,$user_name)
 				{
 					$message->from($admin_users_email);
-					$message->to($user_email, $user_name)->subject('Activate Profile Mail');
+					$message->to($user_email, $user_name)->subject('Welcome to Miramix');
 				});
 	
 				if( ! $sent) 
@@ -281,7 +283,7 @@ class RegisterController extends BaseController {
 				}
 				else
 				{
-				    Session::flash('success', 'Registration completed successfully.Please check your email to activate your account.'); 
+				    Session::flash('success', 'Registration completed successfully.Please wait for admin approval.'); 
 							Session::flash('flush_reg_brand_id','open_modal'); 
 				    Session::put('reg_brand_id',$reg_brand_id);
 				    return redirect('brandLogin');
@@ -325,6 +327,7 @@ class RegisterController extends BaseController {
             'password'          => $hashpassword,
             'role'              => 0,                   // for member role is "0"
             'admin_status'      => 1,                   // Admin status
+	    'status'	    => 1,
             'updated_at'        => date('Y-m-d H:i:s'),
             'created_at'        => date('Y-m-d H:i:s')
         ]);
@@ -346,12 +349,13 @@ class RegisterController extends BaseController {
 
         $user_name = $register['user_name'];
         $user_email = $register['email'];
-        $activateLink = url().'/activateLink/'.base64_encode($register['email']).'/member';
+        //$activateLink = url().'/activateLink/'.base64_encode($register['email']).'/member';
+	$activateLink =url().'/memberLogin';
         $sent = Mail::send('frontend.register.activateLink', array('name'=>$user_name,'email'=>$user_email,'activate_link'=>$activateLink, 'admin_users_email'=>$admin_users_email), 
         function($message) use ($admin_users_email, $user_email,$user_name)
         {
             $message->from($admin_users_email);
-            $message->to($user_email, $user_name)->subject('Activate Profile Mail');
+            $message->to($user_email, $user_name)->subject('Welcome to Miramix');
         });
 
         if( ! $sent) 
@@ -361,7 +365,7 @@ class RegisterController extends BaseController {
         }
         else
         {
-            Session::flash('success', 'Registration completed successfully.Please check your email to activate your account.'); 
+            Session::flash('success', 'Registration completed successfully.Please login with your details to your account.'); 
             return redirect('memberLogin');
         }
        
@@ -445,6 +449,26 @@ class RegisterController extends BaseController {
         }
     }
     
+    public function usernameEmailChecking()
+    {
+        $user_name = Input::get('user_name');
+        $email = Input::get('email');
+        
+        $user_name_count = DB::table('brandmembers')
+                    ->where('username', '=', $user_name)
+                    ->count();
+        $email_count = DB::table('brandmembers')
+                    ->where('email', '=', $email)
+                    ->count();
+
+		if($user_name_count>0)
+			echo 1;
+		else if($email_count>0)
+			echo 2;
+		else
+			echo 0;
+        
+    }
 
     /* for activate Register user */
     public function activateLink($email=false,$role=false)

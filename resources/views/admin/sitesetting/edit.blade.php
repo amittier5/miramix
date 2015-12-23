@@ -51,7 +51,7 @@
         <label class="control-label" for="basicinput">Name</label>
 
         <div class="controls">
-             {!! Form::text('name',null,['class'=>'span8','id'=>'name']) !!}
+             {!! Form::text('display_name',null,['class'=>'span8','id'=>'display_name']) !!}
         </div>
     </div>
 
