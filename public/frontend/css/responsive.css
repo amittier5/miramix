@@ -527,6 +527,13 @@
 		position:absolute;
 		right:0;	
 	}
+	.bottomest_order_hist{
+		border:none;
+		margin-top:10px;	
+	}
+	.form_dashboardacct .bottomest_order_hist .table tbody{
+		border-bottom:none;	
+	}
 	
 }
 @media only screen and (max-width: 479px) { 
