@@ -1,6 +1,7 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
-<script src="stacktable.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo url();?>/public/frontend/css/stacktable.css" type="text/css" media="screen">
+<script src="<?php echo url();?>/public/frontend/js/stacktable.js" type="text/javascript"></script>
 <div class="inner_page_container nomar_bottom">
 
 <div class="top_menu_port">
@@ -69,7 +70,7 @@
 			 
 			 </div>
             
-              <table class="table special_height" id="responsive-example-table">
+              <div class="table-responsive"><table class="table special_height" id="responsive-example-table">
               <thead>
                 <tr>
                   <th>Order ID</th>
@@ -90,7 +91,7 @@
                   <td>{!! count($each_order_list->AllOrderItems); !!}</td>
                   <td>{!! date("M d, Y",strtotime($each_order_list->created_at)); !!}</td>
                   <td>$ {!! number_format($each_order_list->order_total,2); !!}</td>
-                  <td><p class="status_btn">{!! $each_order_list->order_status; !!}</p></td>
+                  <td><p class="status_btn <?php if($each_order_list->order_status=='cancel'){ ?>cancel_btn<?php } ?>">{!! $each_order_list->order_status; !!}</p></td>
                   <td><a href="{!! url()!!}/order-detail/{!! $each_order_list->id; !!}" class="btn btn-white">View Status</a></td>
                   <td><a href="javascript:void(0)" class="btn btn-white reord_prod" onclick="reorderProduct('<?php echo $each_order_list->id;?>',this)">Reorder<span class="no_dis_orig"><i class="fa fa-check"></i>Product Added</span></a></td>
                 </tr>
@@ -101,7 +102,7 @@
               </tr>
               @endif
               </tbody>
-            </table>
+            </table></div>
             
               {!! $order_list->render() !!}
             <div class="form_bottom_panel">
@@ -201,6 +202,6 @@
  }
  
  //for responsive table
- $('#responsive-example-table').stacktable({myClass:'your-custom-class'});
+ $('#responsive-example-table').stacktable({myClass:'order-history'});
  </script>
 @stop
