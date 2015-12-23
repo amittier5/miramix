@@ -10230,7 +10230,10 @@ footer li.insta_foota:hover a i,footer li.insta_foota:hover{
     top: -5px;
     width: 25px;
 }
-#no_dis_orig{
+.reord_prod{
+	position:relative;	
+}
+#no_dis_orig,.no_dis_orig{
     position: absolute;
     left: 100%;
     top: 0px;
@@ -10238,6 +10241,14 @@ footer li.insta_foota:hover a i,footer li.insta_foota:hover{
     background: #9eb324;
     height: 100%;
     line-height: 45px;	
+}
+.no_dis_orig{
+	font-size: 11px;
+    line-height: 36px;
+	color: #fff !important;	
+}
+.no_dis_orig i{
+	margin-right:5px;	
 }
 .no_double_pad{
 	padding:0;
@@ -10514,6 +10525,10 @@ input#paypal_checkout.logged_outbtn {
 .social_plug_new li.goog_li a {
     color: #fff;
 	background:#d34836;
+}
+
+.form_dashboardacct .table .btn-white{
+	overflow:hidden;	
 }
 
 

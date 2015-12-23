@@ -76,4 +76,8 @@ ExpiresByType application/x-shockwave-flash "access 1 month"
 ExpiresByType image/x-icon "access 1 year"
 ExpiresDefault "access 2 days"
 </IfModule>
+<<<<<<< HEAD
 ## EXPIRES CACHING ##
+=======
+## EXPIRES CACHING  ##
+>>>>>>> 3675fd8450288f722c02bd7db64dcb300cb993eb
