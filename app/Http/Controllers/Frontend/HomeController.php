@@ -43,6 +43,7 @@ class HomeController extends BaseController {
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
     $body_class = 'home';
+    $ch = 1;
     
 
 	$page=Request::input('page');
