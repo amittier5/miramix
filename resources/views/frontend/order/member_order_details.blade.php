@@ -193,7 +193,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                   <div class="order_box clearfix">
                     <h6>Order History</h6>
                     <div class="col-sm-12"><div class="col-sm-12">
-                      <div class="table-responsive">
+                      <div class="table-responsive bottomest_order_hist">
                         <table class="table table_bottom_new">
                           <thead>
                             <tr>
