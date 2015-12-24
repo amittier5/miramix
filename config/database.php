@@ -57,9 +57,9 @@ return [
     'mysql' => [
              'driver'    => 'mysql',
              'host'      => env('DB_HOST', 'localhost'),
-             'database'  => env('DB_DATABASE', 'miramix_miramix'),
-             'username'  => env('DB_USERNAME', 'miramix_uipl'),
-             'password'  => env('DB_PASSWORD', '*c&m)$C8I%X3'),
+             'database'  => env('DB_DATABASE', 'miramix'),
+             'username'  => env('DB_USERNAME', 'root'),
+             'password'  => env('DB_PASSWORD', 'user123'),
              'charset'   => 'utf8',
              'collation' => 'utf8_unicode_ci',
              'prefix'    => '',
