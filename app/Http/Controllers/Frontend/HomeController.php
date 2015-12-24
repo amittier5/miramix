@@ -44,11 +44,7 @@ class HomeController extends BaseController {
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
     $body_class = 'home';
-<<<<<<< HEAD
-=======
-    
 
->>>>>>> d2d49061276c3afc352ecce88ddb6a30d0903a05
 	$page=Request::input('page');
 	if(!empty($page)){
 	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
