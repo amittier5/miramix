@@ -11,7 +11,7 @@ class Usps  {
 
 		$user = $parameters_array['user'];
 		
-		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
+		$xml_data="<DelivConfirmCertifyV4.0Request USERID=".env('USERID').">".
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
 		"<FromName>".env('FROMNAME')."</FromName>".
@@ -70,7 +70,7 @@ public function trackrequest($parameters_array){
 	
 	$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
 	
-		$xml_data ='<TrackFieldRequest USERID="'.$user.'">'.
+		$xml_data ='<TrackFieldRequest USERID='.env('USERID').'>'.
 		'<Revision>1</Revision>'.
 		'<ClientIp>'.$parameters_array['FromIP'].'</ClientIp>'.
 		'<SourceId>'.$parameters_array['Name'].'</SourceId>'.
