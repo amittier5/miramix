@@ -9,12 +9,9 @@ class Usps  {
 	function USPSLabel($parameters_array){
 
 
-		$user = $parameters_array['user'];
-		$xml_data = "<CityStateLookupRequest USERID='$user'>" .
-		"<ZipCode ID='0'>" .
-		"<Zip5>".$parameters_array['Zip5']."</Zip5>" .
-		"</ZipCode>" .
-		"</CityStateLookupRequest>";
+		$user = '293TESTC3874';
+	
+	
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
