@@ -10,12 +10,9 @@ class Usps  {
 
 
 
-		$user = '293TESTC3874';
-	
-	
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
 
-		$user = $parameters_array['user'];
+		$user = env('USERID');
 		
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID=".env('USERID').">".
 
@@ -39,7 +36,7 @@ class Usps  {
 		"<ToZip4 />".
 		"<ToPOBoxFlag></ToPOBoxFlag>".
 		"<WeightInOunces>".$parameters_array['WeightInOunces']."</WeightInOunces>".
-		"<ServiceType>".$parameters_array['ServiceType']."</ServiceType>".
+		"<ServiceType>PRIORITY</ServiceType>".
 
 		"<SeparateReceiptPage>False</SeparateReceiptPage>".
 		
@@ -65,7 +62,7 @@ class Usps  {
 
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 
-		$labelfile=$this->generateLabel($array_data);
+		$labelfile=$this->generateLabel($array_data,$parameters_array['order_id']);
 		
 	
 	}
@@ -110,7 +107,7 @@ private function callCurl($url,$data){
 		    return $output;
 	}	
 	
-private function generateLabel($hasdata){
+private function generateLabel($hasdata,$order_id){
 	
 		$filecontent=base64_decode($hasdata['DeliveryConfirmationLabel']);
 		//file_put_contents('my.pdf', $binary);
@@ -126,7 +123,7 @@ private function generateLabel($hasdata){
 		echo $contents;
 		*/
 		
-		$label_title = 'label_'.uniqid().'.pdf';
+		$label_title = 'uploads/pdf/'.$order_id.'_label_'.uniqid().'.pdf';
 		
 		$file=fopen($label_title,"w");
 		

@@ -28,6 +28,7 @@ use Cookie;
 use Redirect;
 use Mail;
 use App\Helper\helpers;
+use App\libraries\Usps;
 
 class OrderController extends BaseController {
 
@@ -273,6 +274,7 @@ public function update(Request $request, $id)
 
     public function push_order_process()
     { 
+    	$usps_obj = new Usps();
         $all_process_orders = DB::table('add_process_order_labels')->get();
        
 
@@ -282,18 +284,28 @@ public function update(Request $request, $id)
         		// Get details for each order
         		$ord_dtls = Order::find($value->order_id);
         		$serialize_add = unserialize($ord_dtls['shiping_address_serialize']);
+        		
 
         		$user_email = $serialize_add['email'];
 				$user_name = $serialize_add['first_name']." ".$serialize_add['last_name'];
+        		$phone = $serialize_add['phone'];
+        		$address = $serialize_add['address'];
+        		$address2 = $serialize_add['address2'];
+        		$city = $serialize_add['city'];
+        		$zone_id = $serialize_add['zone_id'];
+        		$country_id = $serialize_add['country_id'];
+        		$postcode = $serialize_add['postcode'];
+
+
         		//echo "<pre>";print_r($serialize_add);exit;
 
 
         		// Call USPS API
-
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address,'ToAddress2'=>$address2,'ToCity'=>$city,'ToState'=>$zone_id,'ToZip5'=>$postcode);
+				$usps_obj->USPSLabel($parameters_array,$value->order_id);
 
 
         		$tracking_number = '12345678';
-
 
         		// Call USPS API to get traking id
 
