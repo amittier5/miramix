@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend; /* path of this controller*/
 
 use App\Model\Brandmember; /* Model name*/
-use App\Model\Newsletter;
+use App\Model\Newsletter;  /* Model name*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;    
 use Illuminate\Support\Facades\Request;
@@ -44,10 +44,7 @@ class HomeController extends BaseController {
 	
     $body_class = 'home';
 
-
-
 	$page=Request::input('page');
-
 	if(!empty($page)){
 	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
 	    if(!is_numeric($current_page)){die('Invalid page number!');} //incase of invalid page number

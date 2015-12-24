@@ -9,19 +9,25 @@ class Usps  {
 	function USPSLabel($parameters_array){
 
 
+
 		$user = '293TESTC3874';
 	
 	
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
+
+		$user = $parameters_array['user'];
+		
+		$xml_data="<DelivConfirmCertifyV4.0Request USERID=".env('USERID').">".
+
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
-		"<FromName>".$parameters_array['FromName']."</FromName>".
-		"<FromFirm>USPS</FromFirm>".
-		"<FromAddress1>".$parameters_array['FromAddress1']."</FromAddress1>".
-		"<FromAddress2>".$parameters_array['FromAddress2']."</FromAddress2>".
-		"<FromCity>".$parameters_array['FromCity']."</FromCity>".
-		"<FromState>".$parameters_array['FromState']."</FromState>".
-		"<FromZip5>".$parameters_array['FromZip5']."</FromZip5>".
+		"<FromName>".env('FROMNAME')."</FromName>".
+		"<FromFirm>".env('FROMFIRM')."</FromFirm>".
+		"<FromAddress1>".env('FROMADDRESS1')."</FromAddress1>".
+		"<FromAddress2>".env('FROMADDRESS2')."</FromAddress2>".
+		"<FromCity>".env('FROMCITY')."</FromCity>".
+		"<FromState>".env('FROMSTATE')."</FromState>".
+		"<FromZip5>".env('FROMZIP5')."</FromZip5>".
 		"<FromZip4/>".
 		"<ToName>".$parameters_array['ToName']."</ToName>".
 		"<ToFirm>".$parameters_array['ToFirm']."</ToFirm>".
@@ -36,28 +42,21 @@ class Usps  {
 		"<ServiceType>".$parameters_array['ServiceType']."</ServiceType>".
 
 		"<SeparateReceiptPage>False</SeparateReceiptPage>".
-		"<POZipCode>20770</POZipCode>".
+		
 		"<ImageType>TIF</ImageType>".
 		"<AddressServiceRequested>False</AddressServiceRequested>".
 		"<HoldForManifest>N</HoldForManifest>".
-		"<Container>NONRECTANGULAR</Container>".
-		"<Size>".$parameters_array['Size']."</Size>".
-		"<Width>".$parameters_array['Width']."</Width>".
-		"<Length>".$parameters_array['Length']."</Length>".
-		"<Height>".$parameters_array['Height']."</Height>".
-		"<Girth>".$parameters_array['Girth']."</Girth>".
+		//"<Container>NONRECTANGULAR</Container>".
+	//	"<Size>".$parameters_array['Size']."</Size>".
+	//	"<Width>".$parameters_array['Width']."</Width>".
+	//	"<Length>".$parameters_array['Length']."</Length>".
+	//	"<Height>".$parameters_array['Height']."</Height>".
+	//	"<Girth>".$parameters_array['Girth']."</Girth>".
 		"<ReturnCommitments>true</ReturnCommitments>".
 		"</DelivConfirmCertifyV4.0Request>";
 
 
 
-		//$url = "http://Production.ShippingAPIs.com/ShippingAPI.dll";
-		//$url = "http://production.shippingapis.com/ShippingAPITest.dll";
-		// $url='http://stg-production.shippingapis.com/ShippingAPI.dll';
-		// $url='https://secure.shippingapis.com/ShippingAPI.dll';
-		// $url='http://production.shippingapis.com/ShippingAPITest.dll';
-
-		// $url = "http://production.shippingapis.com/ShippingAPITest.dll?API=CityStateLookup";
 		$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=DelivConfirmCertifyV4";
 
 		  $output=$this->callCurl($url,$xml_data);
@@ -70,6 +69,31 @@ class Usps  {
 		
 	
 	}
+	
+public function trackrequest($parameters_array){
+
+
+		$user = $parameters_array['user'];
+	
+	$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
+	
+		$xml_data ='<TrackFieldRequest USERID='.env('USERID').'>'.
+		'<Revision>1</Revision>'.
+		'<ClientIp>'.$parameters_array['FromIP'].'</ClientIp>'.
+		'<SourceId>'.$parameters_array['Name'].'</SourceId>'.
+		'<TrackID ID="'.$parameters_array['TrackID'].'">'.
+		'<DestinationZipCode>'.$parameters_array['Zipcode'].'</DestinationZipCode>'.
+		'<MailingDate>'.$parameters_array['MailDate'].'</MailingDate>'.
+		'</TrackID>'.
+		'</TrackFieldRequest>';
+		
+		$output=$this->callCurl($url,$xml_data);
+
+		
+
+		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
+		return $array_data;
+}
 	
 private function callCurl($url,$data){
 	

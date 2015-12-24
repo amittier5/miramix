@@ -67,8 +67,8 @@
                     <td>{!! $serialize_address['first_name'].' '.$serialize_address['last_name'] !!}</td>
                     <td>{!! date('m/d/Y',strtotime($order->created_at)) !!}</td>                    
                     <td>
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="id1_<?php echo $order->id;?>" value="priority">Priority Mail
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="id2_<?php echo $order->id;?>"  value="flat">Flat Rate
+                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="priority">Priority Mail
+                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="flat">Flat Rate
                         <a href="<?php echo url();?>/admin/order-details/<?php echo $order->id;?>" class="btn btn-success">Details</a>
                     </td>
                     <td>
@@ -93,6 +93,7 @@
     $('.radio_cls').on('change',function(){
         $this = $(this);
 
+
         $('#add_queue'+$this.attr('id')).attr("checked",true);
         call_ajax($this.attr('id'),'checkbox_cls');
 
@@ -102,7 +103,6 @@
         $('#add_queue'+allData[1]).attr("checked",true);
 
         call_ajax(allData[1],$('.checkbox_cls'));
-
     });
 
     $('.checkbox_cls').on('click',function(){
@@ -120,9 +120,10 @@
         else
             var param = 'remove';
 
+
         var mail_option = $('input[name="mail'+order_id+'"]:checked').val();
         //alert(mail_option);return false;
-        
+
         $.ajax({
               url: '<?php echo url();?>/admin/add-process-queue',
               method: "POST",      
