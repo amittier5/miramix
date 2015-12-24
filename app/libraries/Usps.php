@@ -35,7 +35,7 @@ class Usps  {
 		"<ToZip5>".$parameters_array['ToZip5']."</ToZip5>".
 		"<ToZip4 />".
 		"<ToPOBoxFlag></ToPOBoxFlag>".
-		"<WeightInOunces>".$parameters_array['WeightInOunces']."</WeightInOunces>".
+		"<WeightInOunces>10</WeightInOunces>".
 		"<ServiceType>PRIORITY</ServiceType>".
 
 		"<SeparateReceiptPage>False</SeparateReceiptPage>".
