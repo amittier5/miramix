@@ -45,7 +45,13 @@ class HomeController extends BaseController {
 	
     $body_class = 'home';
 
+<<<<<<< HEAD
     $ch = 1;
+=======
+
+
+	$page=Request::input('page');
+>>>>>>> 27c6df9c88c9e2a6e34bcfe25052eb03595bdefa
 
 	$page=Request::input('page');
 	if(!empty($page)){

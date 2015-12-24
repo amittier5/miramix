@@ -1,7 +1,6 @@
 @extends('admin/layout/admin_template')
  
 @section('content')
-
   
 @if(Session::has('success'))
         <div class="alert alert-success">
@@ -12,13 +11,12 @@
  <?php 
     $orderstatus = Session::get('orderstatus');
     $filterdate = Session::get('filterdate');
-?>
+?> 
     <div class="module">
           
-          <form method="post" id="filterform" action="<?php echo url();?>/admin/orders/filter">
+        <form method="post" id="filterform" action="<?php echo url();?>/admin/orders/filter">
           <input type="hidden" name="_token" value="{!! csrf_token() !!}"/>
           <div class="filter filt_css pull-left"><span>Filter by status</span>
-          
           
           <select id="orderstatus" name="orderstatus">
             <option value="0">Select</option>
@@ -29,17 +27,15 @@
             <option value="cancel" <?php if($orderstatus=='cancel'){echo 'selected="selected"';}?>>Cancel</option>
             <option value="fraud" <?php if($orderstatus=='fraud'){echo 'selected="selected"';}?>>Fraud</option>
           </select>
-          
             
             
           </div>
             <div class="filter filt_css filter_right" style="clear:both;padding-left: 10px;">
                 <div class="pull-left" style="margin-right: 10px;"><span>Filter by brand</span> <input type="text" name="brandemail" value="<?php echo $brandemail?>" id="brandemail" /></div>
                 <div class="pull-left"><span>Filter by date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
-                <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/>
-                    </div></div>
-           
-                
+                <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
+                <a href="<?php echo url();?>/admin/push_order_process">Push</a>
+            </div>
         </form>
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
             <thead>
@@ -96,11 +92,17 @@
 <script type="text/javascript">
     $('.radio_cls').on('change',function(){
         $this = $(this);
-        alert($this.attr('id'));
+
 
         $('#add_queue'+$this.attr('id')).attr("checked",true);
         call_ajax($this.attr('id'),'checkbox_cls');
 
+        var str = $('.radio_cls:checked').attr('id');
+        var allData = str.split("_");
+        
+        $('#add_queue'+allData[1]).attr("checked",true);
+
+        call_ajax(allData[1],$('.checkbox_cls'));
     });
 
     $('.checkbox_cls').on('click',function(){
@@ -118,8 +120,14 @@
         else
             var param = 'remove';
 
+<<<<<<< HEAD
         var mail_option = $('#'+order_id).val();
 
+=======
+        var mail_option = $('input[name="mail'+order_id+'"]:checked').val();
+        //alert(mail_option);return false;
+        
+>>>>>>> 27c6df9c88c9e2a6e34bcfe25052eb03595bdefa
         $.ajax({
               url: '<?php echo url();?>/admin/add-process-queue',
               method: "POST",      
