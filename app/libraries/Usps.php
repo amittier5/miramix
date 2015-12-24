@@ -10,21 +10,17 @@ class Usps  {
 
 
 		$user = $parameters_array['user'];
-		$xml_data = "<CityStateLookupRequest USERID='$user'>" .
-		"<ZipCode ID='0'>" .
-		"<Zip5>".$parameters_array['Zip5']."</Zip5>" .
-		"</ZipCode>" .
-		"</CityStateLookupRequest>";
+		
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
-		"<FromName>".$parameters_array['FromName']."</FromName>".
-		"<FromFirm>MIRAMIX</FromFirm>".
-		"<FromAddress1>".$parameters_array['FromAddress1']."</FromAddress1>".
-		"<FromAddress2>".$parameters_array['FromAddress2']."</FromAddress2>".
-		"<FromCity>".$parameters_array['FromCity']."</FromCity>".
-		"<FromState>".$parameters_array['FromState']."</FromState>".
-		"<FromZip5>".$parameters_array['FromZip5']."</FromZip5>".
+		"<FromName>".env('FROMNAME')."</FromName>".
+		"<FromFirm>".env('FROMFIRM')."</FromFirm>".
+		"<FromAddress1>".env('FROMADDRESS1')."</FromAddress1>".
+		"<FromAddress2>".env('FROMADDRESS2')."</FromAddress2>".
+		"<FromCity>".env('FROMCITY')."</FromCity>".
+		"<FromState>".env('FROMSTATE')."</FromState>".
+		"<FromZip5>".env('FROMZIP5')."</FromZip5>".
 		"<FromZip4/>".
 		"<ToName>".$parameters_array['ToName']."</ToName>".
 		"<ToFirm>".$parameters_array['ToFirm']."</ToFirm>".
@@ -54,13 +50,6 @@ class Usps  {
 
 
 
-		//$url = "http://Production.ShippingAPIs.com/ShippingAPI.dll";
-		//$url = "http://production.shippingapis.com/ShippingAPITest.dll";
-		// $url='http://stg-production.shippingapis.com/ShippingAPI.dll';
-		// $url='https://secure.shippingapis.com/ShippingAPI.dll';
-		// $url='http://production.shippingapis.com/ShippingAPITest.dll';
-
-		// $url = "http://production.shippingapis.com/ShippingAPITest.dll?API=CityStateLookup";
 		$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=DelivConfirmCertifyV4";
 
 		  $output=$this->callCurl($url,$xml_data);
