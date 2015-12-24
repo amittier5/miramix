@@ -45,7 +45,8 @@ class HomeController extends BaseController {
     $body_class = 'home';
 
 
-    $page=Request::input('page');
+
+	$page=Request::input('page');
 
 	if(!empty($page)){
 	    $current_page = filter_var($page, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number

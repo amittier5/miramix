@@ -254,8 +254,12 @@ public function update(Request $request, $id)
         $order_id = Input::get('order_id');
 
         if($param=='add'){
-			$arr = array('order_id'=>$order_id,'label'=>$mail_option);
-			AddProcessOrderLabel::create($arr);
+
+        	$cnt = DB::table('add_process_order_labels')->where('order_id',$order_id)->count();
+        	if($cnt==0){
+        		$arr = array('order_id'=>$order_id,'label'=>$mail_option);
+				AddProcessOrderLabel::create($arr);
+        	}			
         }
         else{
 
@@ -264,6 +268,36 @@ public function update(Request $request, $id)
 
         
         exit;
+        
+    }
+
+    public function push_order_process()
+    { 
+        $all_process_orders = DB::table('add_process_order_labels')->get();
+       
+
+        if(!empty($all_process_orders)){
+        	foreach ($all_process_orders as $key => $value) {
+        		
+        		// Get details for each order
+        		$ord_dtls = Order::find($value->order_id);
+        		$serialize_add = unserialize($ord_dtls['shiping_address_serialize']);
+        		echo "<pre>";print_r($serialize_add);
+
+
+        		// Call USPS API
+
+
+        		// Call USPS API to get traking id
+
+
+        		// change order status and send mail
+
+
+        		// Delete from add_process_order_labels
+
+        	}
+        }
         
     }
 
