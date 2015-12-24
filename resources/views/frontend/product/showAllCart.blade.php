@@ -58,7 +58,7 @@
                   {
                     $all_sub_total = $all_sub_total+$eachcart['subtotal'];
                    // $all_sub_total = number_format($all_sub_total,2);
-                    $share_discount = $share_discount + $eachcart['share_discount'];
+                    //$share_discount = $share_discount + $eachcart['share_discount'];
                 ?>
                 <tr>
                   <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}"><img src="<?php echo url();?>/uploads/product/{!! $eachcart['product_image'] !!}" width="116" alt=""></a></td>
@@ -78,9 +78,12 @@
                  $i++;
                  }
                 
+                /*---------------------*/
+                $share_discount = $cart_result[0]['share_discount'];
+
                  if(Session::has('coupon_discount'))
                  {
-                    if(($share_discount==0))
+                    if(($share_discount==0) || ($share_discount==''))
                     {
                       if(Session::get('coupon_type')=='P')
                       {
