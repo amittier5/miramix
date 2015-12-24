@@ -1107,7 +1107,7 @@ public function show(){
   {
     $product_id = Input::get('product_id');
     Session::put('product_id',$product_id);
-    echo Session::get('product_id');
+    //echo Session::get('product_id');
     // if(Session::has('product_id'))
     // {
 

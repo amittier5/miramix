@@ -759,7 +759,7 @@ function fb_share(product_name,url,product_id) {
         data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
         success:function(data)
         {
-          alert(data);
+          //alert(data);
         }
       });
       });
