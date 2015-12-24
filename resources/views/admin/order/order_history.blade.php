@@ -94,23 +94,15 @@
     $('.radio_cls').on('change',function(){
         $this = $(this);
 
-<<<<<<< HEAD
-
         $('#add_queue'+$this.attr('id')).attr("checked",true);
         call_ajax($this.attr('id'),'checkbox_cls');
 
-=======
->>>>>>> development
         var str = $('.radio_cls:checked').attr('id');
         var allData = str.split("_");
         
         $('#add_queue'+allData[1]).attr("checked",true);
-<<<<<<< HEAD
-=======
 
->>>>>>> development
         call_ajax(allData[1],$('.checkbox_cls'));
-
 
     });
 
