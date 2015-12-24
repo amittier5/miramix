@@ -9,10 +9,10 @@ class Usps  {
 	function USPSLabel($parameters_array){
 
 
+		$user = env('USERID');
 
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
 
-		$user = env('USERID');
 		
 		$xml_data="<DelivConfirmCertifyV4.0Request USERID=".env('USERID').">".
 
