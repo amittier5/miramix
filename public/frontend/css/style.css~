@@ -10539,7 +10539,7 @@ input#paypal_checkout.logged_outbtn {
 .form_dashboardacct p.status_btn.cancel_btn{
 	background:#ed5e68;	
 }
-.bordered_panel p.social_share{
+.social_share{
     font-size: 20px;
     margin-bottom: 15px;
     color: #000;
