@@ -1105,42 +1105,11 @@ public function show(){
   
   public function saveShare()
   {
-    $email = Input::get('email');
+    
     $product_id = Input::get('product_id');
 
-    if(Session::has('member_userid') && (!Session::has('brand_userid'))) // only for member login
-    {
-      $product_share['user_email'] = Session::get('member_user_email');
-    }
-    elseif((!Session::has('member_userid')) && (!Session::has('brand_userid')))  // without any login
-    {
-      $product_share['user_email'] = $email;
-    }
+    Session::put('product_id',$product_id);
     
-    $product_share['product_id'] = $product_id;
-    $product_share['created_at'] = date('Y-m-d h:i:s');
-
-    $hasemail = DB::table('product_shares')->where('user_email','=',$product_share['user_email'])->where('product_id','=',$product_id)->count();
-    if($hasemail<1)
-    {
-      if($email !='')
-      {
-        // insert
-        ProductShare::create($product_share);
-      }
-      else
-      {
-        if(Session::has('member_userid'))
-        {
-          // insert 
-          ProductShare::create($product_share); 
-        }
-        else
-        {
-          //No Action
-        }
-      }
-    } // hasmail if end
     
   }
               
