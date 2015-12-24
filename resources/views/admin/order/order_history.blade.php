@@ -120,14 +120,10 @@
         else
             var param = 'remove';
 
-<<<<<<< HEAD
-        var mail_option = $('#'+order_id).val();
 
-=======
         var mail_option = $('input[name="mail'+order_id+'"]:checked').val();
         //alert(mail_option);return false;
-        
->>>>>>> 27c6df9c88c9e2a6e34bcfe25052eb03595bdefa
+
         $.ajax({
               url: '<?php echo url();?>/admin/add-process-queue',
               method: "POST",      
