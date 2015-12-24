@@ -1,7 +1,6 @@
 @extends('admin/layout/admin_template')
  
 @section('content')
-
   
 @if(Session::has('success'))
         <div class="alert alert-success">
@@ -12,7 +11,7 @@
  <?php 
     $orderstatus = Session::get('orderstatus');
     $filterdate = Session::get('filterdate');
-?>
+?> 
     <div class="module">
           
         <form method="post" id="filterform" action="<?php echo url();?>/admin/orders/filter">
