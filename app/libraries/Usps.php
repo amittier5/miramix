@@ -19,7 +19,7 @@ class Usps  {
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
 		"<FromName>".$parameters_array['FromName']."</FromName>".
-		"<FromFirm>USPS</FromFirm>".
+		"<FromFirm>MIRAMIX</FromFirm>".
 		"<FromAddress1>".$parameters_array['FromAddress1']."</FromAddress1>".
 		"<FromAddress2>".$parameters_array['FromAddress2']."</FromAddress2>".
 		"<FromCity>".$parameters_array['FromCity']."</FromCity>".
