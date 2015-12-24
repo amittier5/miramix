@@ -39,16 +39,16 @@ class Usps  {
 		"<ServiceType>".$parameters_array['ServiceType']."</ServiceType>".
 
 		"<SeparateReceiptPage>False</SeparateReceiptPage>".
-		"<POZipCode>20770</POZipCode>".
+		
 		"<ImageType>TIF</ImageType>".
 		"<AddressServiceRequested>False</AddressServiceRequested>".
 		"<HoldForManifest>N</HoldForManifest>".
-		"<Container>NONRECTANGULAR</Container>".
-		"<Size>".$parameters_array['Size']."</Size>".
-		"<Width>".$parameters_array['Width']."</Width>".
-		"<Length>".$parameters_array['Length']."</Length>".
-		"<Height>".$parameters_array['Height']."</Height>".
-		"<Girth>".$parameters_array['Girth']."</Girth>".
+		//"<Container>NONRECTANGULAR</Container>".
+	//	"<Size>".$parameters_array['Size']."</Size>".
+	//	"<Width>".$parameters_array['Width']."</Width>".
+	//	"<Length>".$parameters_array['Length']."</Length>".
+	//	"<Height>".$parameters_array['Height']."</Height>".
+	//	"<Girth>".$parameters_array['Girth']."</Girth>".
 		"<ReturnCommitments>true</ReturnCommitments>".
 		"</DelivConfirmCertifyV4.0Request>";
 
