@@ -120,7 +120,9 @@ private function callCurl($url,$data){
 private function generateLabel($hasdata,$order_id){
 	try
     {
-	
+		if(!isset($hasdata['DeliveryConfirmationLabel'])){
+			return array("filename"=>'',"tracking_no"=>'');
+		}
 		$filecontent=base64_decode($hasdata['DeliveryConfirmationLabel']);
 
 		$path = 'uploads/pdf/';
