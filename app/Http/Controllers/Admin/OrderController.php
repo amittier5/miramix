@@ -303,11 +303,22 @@ public function update(Request $request, $id)
         		$city = $serialize_add['city'];
         		$zone_id = $serialize_add['zone_id'];
         		$country_id = $serialize_add['country_id'];
-        		$postcode = $serialize_add['postcode'];
+        		$postcode = $serialize_add['postcode']; 
+
+
+				$ToState = '';
+				if(is_numeric($zone_id))
+				{
+					$ToState = $obj->get_statecode($zone_id);
+				}
+				else
+				{
+					$ToState = $obj->get_statecode_by_name($zone_id);
+				}
 
 
         		// Call USPS API
-        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$obj->get_state_name($zone_id,$country_id),'ToZip5'=>$postcode,'order_id'=>$value->order_id);
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$ToState,'ToZip5'=>$postcode,'order_id'=>$value->order_id);
 				$ret_array = $usps_obj->USPSLabel($parameters_array);
 				//echo "<pre>";print_r($ret_array);exit;
 
@@ -334,23 +345,22 @@ public function update(Request $request, $id)
 				$setting = DB::table('sitesettings')->where('name', 'email')->first();
 				$admin_users_email=$setting->value;
 				
-				// $sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
 				
-				// function($message) use ($admin_users_email, $user_email,$user_name,$subject)
-				// {
-				// 	$message->from($admin_users_email);
-				// 	$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+				{
+					$message->from($admin_users_email);
+					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
 					
-				// });
-
-        		// Delete from add_process_order_labels
-				DB::table('add_process_order_labels')->delete();
-
-			    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
-			    return redirect('admin/orders');
+				});
 
         	}
         }
+        // Delete from add_process_order_labels
+		DB::table('add_process_order_labels')->delete();
+
+	    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+	    return redirect('admin/orders');
         
     }
 
