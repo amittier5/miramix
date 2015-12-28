@@ -152,6 +152,8 @@ $(document).ready(function() {
 	            
 	        },
 	        submitHandler: function(form) {
+	        	//usps address validation for guest user will go here
+	        	form.submit();
 				//alert('inside sub below');
 				
 	        }
@@ -1118,7 +1120,21 @@ $(document).ready(function() {
 			},
 			
 			submitHandler: function(form) {
-				form.submit();
+				//usps address validation for loggedin user will go here  
+				// var street = ;
+				// var city = ;
+				// var state = ;
+				// var zip = ;
+				
+				// $.ajax({
+				// 	      url: '<?php echo url();?>/uspsAddressValidate',
+				// 	      method: "POST",
+				// 		  data: { street : street ,city : city, state : state , zip : zip ,_token: '{!! csrf_token() !!}'},
+				// 	      success:function(data)
+				// 	      {
+							form.submit();
+						//   }
+						// });
 			}
 		});
 	
