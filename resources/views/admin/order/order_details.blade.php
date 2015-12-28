@@ -20,18 +20,21 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="order_box">
-                  <h6>Order Information</h6>
-                    <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
-                    <?php if($order_list->shipping_address_id == 1){?>
-                      Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
-                      <?php }else {?>
-                      Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
-                      <?php }?>
-                      Date Added: {!! date("M d, Y",strtotime($order_list->created_at)); !!}<br>
-                      Payment Method: {!! $order_list->payment_method; !!}<br>
-                      Shipping Type: {!! $order_list->shipping_type; !!}<br>
-                      Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
-                    </div>
+                        <h6>Order Information</h6>
+                       <?php if($order_list->usps_label != ''){?>
+                        <div> Label : <a href="{!! url(); !!}/uploads/pdf/{!! $order_list->usps_label; !!}" target="_blank"> Usps Label</a></div>
+                       <?php } ?>
+                      <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
+                        <?php if($order_list->shipping_address_id == 1){?>
+                          Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
+                          <?php }else {?>
+                          Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
+                          <?php }?>
+                          Date Added: {!! date("M d, Y",strtotime($order_list->created_at)); !!}<br>
+                          Payment Method: {!! $order_list->payment_method; !!}<br>
+                          Shipping Type: {!! $order_list->shipping_type; !!}<br>
+                          Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
+                      </div>
                   </div>
                     </div>
                     <div class="col-sm-6">

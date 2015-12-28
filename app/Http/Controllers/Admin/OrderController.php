@@ -58,7 +58,13 @@ class OrderController extends BaseController {
 	$orderstatus='';
 	$filterdate='';
 	$brandemail='';
-	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+
+	// Get All selected check Usps mail
+	//$all_process_labels = DB::table('add_process_order_labels')->select('order_id', 'label')->get();
+	$all_process_labels = AddProcessOrderLabel::all();
+
+
+	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail','all_process_labels'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
 
     }
 
@@ -231,7 +237,7 @@ public function update(Request $request, $id)
         if($order_list=='')
             return redirect('order-history');
         $order_items_list = $order_list->AllOrderItems;
-	$order_members=$order_list->getOrderMembers;
+		$order_members=$order_list->getOrderMembers;
         return view('admin.order.order_details',compact('order_list','order_items_list','order_members'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
         
     }
@@ -260,6 +266,9 @@ public function update(Request $request, $id)
         	if($cnt==0){
         		$arr = array('order_id'=>$order_id,'label'=>$mail_option);
 				AddProcessOrderLabel::create($arr);
+        	}
+        	else{
+        		AddProcessOrderLabel::where('order_id',$order_id)->update(['label'=>$mail_option]);
         	}			
         }
         else{
@@ -280,12 +289,11 @@ public function update(Request $request, $id)
 
         if(!empty($all_process_orders)){
         	foreach ($all_process_orders as $key => $value) {
-        		
+
         		// Get details for each order
         		$ord_dtls = Order::find($value->order_id);
         		$serialize_add = unserialize($ord_dtls['shiping_address_serialize']);
         		
-
         		$user_email = $serialize_add['email'];
 				$user_name = $serialize_add['first_name']." ".$serialize_add['last_name'];
         		$phone = $serialize_add['phone'];
@@ -297,23 +305,20 @@ public function update(Request $request, $id)
         		$postcode = $serialize_add['postcode'];
 
 
-        		//echo "<pre>";print_r($serialize_add);exit;
-
-
         		// Call USPS API
-        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address,'ToAddress2'=>$address2,'ToCity'=>$city,'ToState'=>$zone_id,'ToZip5'=>$postcode);
-				$usps_obj->USPSLabel($parameters_array,$value->order_id);
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$zone_id,'ToZip5'=>$postcode,'order_id'=>$value->order_id);
+				$ret_array = $usps_obj->USPSLabel($parameters_array);
+				//echo "<pre>";print_r($ret_array);exit;
 
+        		$filename = $ret_array['filename'];
+        		$tracking_number = $ret_array['tracking_no'];
 
-        		$tracking_number = '12345678';
-
-        		// Call USPS API to get traking id
+        		// Update label name in DB
+        		Order::where('id', $value->order_id)->update(['tracking_number' => $tracking_number,'shipping_carrier'=>'USPS','usps_label'=>$filename,'order_status'=>'shipped']);
 
 
         		// change order status and send mail
-        		$order = Order::find($value->order_id);
-        		$orderUpdate = array('id'=>$value->order_id,'order_status'=>'processing');
-				$order->update($orderUpdate);
+        		$order = Order::find($value->order_id);        		
 				
 				$subject = 'Order status change of : #'.$order->order_number;
 				$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
@@ -328,18 +333,17 @@ public function update(Request $request, $id)
 				$setting = DB::table('sitesettings')->where('name', 'email')->first();
 				$admin_users_email=$setting->value;
 				
-				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				// $sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
 				
-				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
-				{
-					$message->from($admin_users_email);
-					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+				// function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+				// {
+				// 	$message->from($admin_users_email);
+				// 	$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
 					
-				});
+				// });
 
         		// Delete from add_process_order_labels
-				$all_process_label = AddProcessOrderLabel::all();
-				$all_process_label->delete();
+				DB::table('add_process_order_labels')->delete();
 
 			    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 			    return redirect('admin/orders');

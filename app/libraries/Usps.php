@@ -7,14 +7,8 @@ use Cart;
 class Usps  {
 
 	function USPSLabel($parameters_array){
-
-
-		$user = env('USERID');
-
-		$xml_data="<DelivConfirmCertifyV4.0Request USERID='$user'>".
-
 		
-		$xml_data="<DelivConfirmCertifyV4.0Request USERID=".env('USERID').">".
+		$xml_data="<DelivConfirmCertifyV4.0Request USERID='".env('USERID')."'>".
 
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
@@ -28,7 +22,7 @@ class Usps  {
 		"<FromZip4/>".
 		"<ToName>".$parameters_array['ToName']."</ToName>".
 		"<ToFirm>".$parameters_array['ToFirm']."</ToFirm>".
-		"<ToAddress1>".$parameters_array['ToAddress1']."</ToAddress1>".
+		"<ToAddress1>".$parameters_array['ToAddress2']."</ToAddress1>".
 		"<ToAddress2>".$parameters_array['ToAddress2']."</ToAddress2>".
 		"<ToCity>".$parameters_array['ToCity']."</ToCity>".
 		"<ToState>".$parameters_array['ToState']."</ToState>".
@@ -56,14 +50,16 @@ class Usps  {
 
 		$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=DelivConfirmCertifyV4";
 
-		  $output=$this->callCurl($url,$xml_data);
+		$output=$this->callCurl($url,$xml_data);
 
 		
 
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 
-		$labelfile=$this->generateLabel($array_data,$parameters_array['order_id']);
-		
+		//print_r($array_data);
+		//exit;
+		$ret_array = $this->generateLabel($array_data,$parameters_array['order_id']);
+		return $ret_array;
 	
 	}
 	
@@ -72,7 +68,7 @@ public function trackrequest($parameters_array){
 
 		$user = $parameters_array['user'];
 	
-	$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
+		$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
 	
 		$xml_data ='<TrackFieldRequest USERID='.env('USERID').'>'.
 		'<Revision>1</Revision>'.
@@ -123,13 +119,16 @@ private function generateLabel($hasdata,$order_id){
 		echo $contents;
 		*/
 		
-		$label_title = 'uploads/pdf/'.$order_id.'_label_'.uniqid().'.pdf';
+		$path = 'uploads/pdf/';
+		$usps_filename = $order_id.'_label_'.rand(9999,99999).'.pdf';
+		$label_title = $path.$usps_filename;
 		
 		$file=fopen($label_title,"w");
 		
 		fwrite($file,$filecontent);
 		fclose($file);
-		return $label_title;
+		
+		return array("filename"=>$usps_filename,"tracking_no"=>substr($hasdata['DeliveryConfirmationNumber'], 8));
 		
 	}
 
