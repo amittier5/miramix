@@ -23,6 +23,7 @@ use App\Helper\helpers;
 use Cart;
 use Mail;
 use Twilio;
+use App\libraries\Usps;
 
 class CheckoutController extends BaseController {
 
@@ -1575,4 +1576,17 @@ class CheckoutController extends BaseController {
 	}
 
 	/* update Cart End */
+	
+    public function uspsAddressValidate(){
+	
+	 $street = Request::input('street');
+         $city = Request::input('city');
+	 $state = Request::input('state');
+	 $zip = Request::input('zip');
+	 
+	 $status=Usps::varifyaddress(array("Address1"=>$street,"Address2"=>$street,"City"=>$city,"State"=>$state,"Zip4"=>$zip));
+	 echo $status;
+	
+    }
+    
 }
