@@ -40,13 +40,14 @@
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
             <thead>
                 <tr>
-                    <th>Sl No.</th>
+                    <th></th>
                     <th>Order ID</th>
-                    <th>Order Total</th>
-                    <th>Order Status</th>
+                    <th>Total</th>
+                    <th>Status</th>
                     <th>Ordered By</th>
-                    <th>Order Date</th>
-                    <th>View Details</th>
+                    <th>Date</th>
+                    <th>Label</th>
+                    <th>Details</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -54,21 +55,51 @@
                 
                 
             <tbody>
-                <?php $i=1;?>
+                <?php 
+                    $i=1;
+                   //echo "<pre>";print_r($all_process_labels); 
+                ?>
                 @foreach ($order_list as $order)
                <?php  $serialize_address = unserialize($order->shiping_address_serialize);?>
                 <tr class="odd gradeX">
-                    <td><?php echo $i; ?>
-                        <input type="checkbox" class="checkbox_cls" name="add_queue[]" id="add_queue<?php echo $order->id;?>" value="<?php echo $order->id;?>">
+                    <td>
+                        @if($order->usps_label=='')
+                        <?php
+                            $checked_var = '';
+                            if(!empty($all_process_labels)){
+                                foreach ($all_process_labels as $each_label) {
+                                    if($each_label->order_id==$order->id){
+                                        $checked_var = 'checked=checked';
+                                        break;
+                                    }                       
+                                }
+                            }
+                        ?>
+                     <input type="checkbox" class="checkbox_cls" name="add_queue[]" id="add_queue<?php echo $order->id;?>" <?php echo $checked_var;?> value="<?php echo $order->id;?>">
+                        @endif
                     </td>
                     <td>{!! $order->order_number !!}</td>
                     <td>{!! '$'.number_format($order->order_total,2); !!}</td>
                     <td><a href="#" data-toggle="tooltip" title="Status" >{!! $order->order_status !!}</a></td>
                     <td>{!! $serialize_address['first_name'].' '.$serialize_address['last_name'] !!}</td>
                     <td>{!! date('m/d/Y',strtotime($order->created_at)) !!}</td>                    
+                    <td style="word-break:break-all;word-wrap:break-word;">{!! $order->usps_label; !!}</td>                    
                     <td>
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="priority">Priority Mail
-                        <input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" id="<?php echo $order->id;?>" value="flat">Flat Rate
+                        @if($order->usps_label=='')
+                        <?php
+                            $mail_opt = '';
+                            if(!empty($all_process_labels)){
+                                foreach ($all_process_labels as $each_label) {
+                                    if($each_label->order_id==$order->id){
+                                        $mail_opt = $each_label->label;
+                                        break;
+                                    }                       
+                                }
+                            }
+                        ?>
+                        <label class="custom_input"><input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" data-id="<?php echo $order->id;?>" <?php if($mail_opt=='priority'){?> checked='checked'; <?php } ?> value="priority">Priority Mail</label>
+                        <label class="custom_input"><input type="radio" class="radio_cls" name="mail<?php echo $order->id;?>" data-id="<?php echo $order->id;?>" <?php if($mail_opt=='flat'){?> checked='checked'; <?php } ?> value="flat">Flat Rate</label>
+                        @endif
                         <a href="<?php echo url();?>/admin/order-details/<?php echo $order->id;?>" class="btn btn-success">Details</a>
                     </td>
                     <td>
@@ -92,33 +123,50 @@
 <script type="text/javascript">
     $('.radio_cls').on('change',function(){
         $this = $(this);
+		var name_grp=$this.attr('name');
+		//alert('#add_queue'+$this.attr('data-id'));
 
+        $('#add_queue'+$this.attr('data-id')).prop("checked",true);
+       
+       //alert($('#add_queue'+$this.attr('data-id')+':checked').length);
 
-        $('#add_queue'+$this.attr('id')).attr("checked",true);
-        call_ajax($this.attr('id'),'checkbox_cls');
-
-        var str = $('.radio_cls:checked').attr('id');
-        var allData = str.split("_");
+        var str = $('input[name="'+name_grp+'"]:checked').val();
+		var sel_id = $('input[name="'+name_grp+'"]:checked').attr('data-id');
         
-        $('#add_queue'+allData[1]).attr("checked",true);
-
-        call_ajax(allData[1],$('.checkbox_cls'));
+		//alert(sel_id);
+        
+        call_ajax(sel_id,$this);
     });
 
     $('.checkbox_cls').on('click',function(){
         $this = $(this);
-
-        call_ajax($this.val(),$this);
-       
+		//alert($this.val());
+		var this_id=$this.val();
+		if($this.is(':checked')){
+			var check_length=$('input[name="mail'+this_id+'"]:checked').length;	
+			if(check_length>0){
+			call_ajax($this.val(),$this);		
+			}
+			else{
+				$this.prop('checked',false);
+				alert('Please Check a Radio Box');	
+			}
+		}
+		else{
+			$('input[name="mail'+this_id+'"]').attr('checked',false);	
+        	call_ajax($this.val(),$this);
+		}
     });
 
 
     function call_ajax(order_id,obj){
-
+		//console.log(obj)
         if(obj.is(':checked'))
             var param = 'add';
         else
             var param = 'remove';
+			
+			//alert(param);
 
 
         var mail_option = $('input[name="mail'+order_id+'"]:checked').val();
