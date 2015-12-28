@@ -10,7 +10,7 @@ class Usps  {
 
 function USPSLabel($parameters_array){
 
-		$xml_data="<DelivConfirmCertifyV4.0Request USERID='".env('USERID')."'>".
+		echo $xml_data="<DelivConfirmCertifyV4.0Request USERID='".env('USERID')."'>".
 
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
