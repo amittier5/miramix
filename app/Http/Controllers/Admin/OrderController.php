@@ -303,7 +303,7 @@ public function update(Request $request, $id)
         		$city = $serialize_add['city'];
         		$zone_id = $serialize_add['zone_id'];
         		$country_id = $serialize_add['country_id'];
-        		$postcode = $serialize_add['postcode'];
+        		$postcode = $serialize_add['postcode']; 
 
 
 				$ToState = '';
