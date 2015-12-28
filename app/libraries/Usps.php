@@ -212,7 +212,7 @@ public function getshippingRates($parameters_array){
 }
 
 public function printPdf($files){
-	
+	$filecontents='';
 	foreach($files as $file){
 	$filecontents .= file_get_contents($file);
 	}
