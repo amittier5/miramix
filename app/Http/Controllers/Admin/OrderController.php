@@ -28,6 +28,7 @@ use Cookie;
 use Redirect;
 use Mail;
 use App\Helper\helpers;
+use App\libraries\Usps;
 
 class OrderController extends BaseController {
 
@@ -273,6 +274,7 @@ public function update(Request $request, $id)
 
     public function push_order_process()
     { 
+    	$usps_obj = new Usps();
         $all_process_orders = DB::table('add_process_order_labels')->get();
        
 
@@ -282,19 +284,65 @@ public function update(Request $request, $id)
         		// Get details for each order
         		$ord_dtls = Order::find($value->order_id);
         		$serialize_add = unserialize($ord_dtls['shiping_address_serialize']);
-        		echo "<pre>";print_r($serialize_add);
+        		
+
+        		$user_email = $serialize_add['email'];
+				$user_name = $serialize_add['first_name']." ".$serialize_add['last_name'];
+        		$phone = $serialize_add['phone'];
+        		$address = $serialize_add['address'];
+        		$address2 = $serialize_add['address2'];
+        		$city = $serialize_add['city'];
+        		$zone_id = $serialize_add['zone_id'];
+        		$country_id = $serialize_add['country_id'];
+        		$postcode = $serialize_add['postcode'];
+
+
+        		//echo "<pre>";print_r($serialize_add);exit;
 
 
         		// Call USPS API
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address,'ToAddress2'=>$address2,'ToCity'=>$city,'ToState'=>$zone_id,'ToZip5'=>$postcode);
+				$usps_obj->USPSLabel($parameters_array,$value->order_id);
 
+
+        		$tracking_number = '12345678';
 
         		// Call USPS API to get traking id
 
 
         		// change order status and send mail
+        		$order = Order::find($value->order_id);
+        		$orderUpdate = array('id'=>$value->order_id,'order_status'=>'processing');
+				$order->update($orderUpdate);
+				
+				$subject = 'Order status change of : #'.$order->order_number;
+				$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
+				$tracking = '';
+				$shipping = '';
 
+				if($order->order_status=='shipped'){
+					$tracking = 'Tracking Number is : '.$tracking_number;
+					$shipping='Shipping Method is : USPS<br />Please visit your account for details';
+				}
+				
+				$setting = DB::table('sitesettings')->where('name', 'email')->first();
+				$admin_users_email=$setting->value;
+				
+				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				
+				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+				{
+					$message->from($admin_users_email);
+					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+					
+				});
 
         		// Delete from add_process_order_labels
+				$all_process_label = AddProcessOrderLabel::all();
+				$all_process_label->delete();
+
+			    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+			    return redirect('admin/orders');
 
         	}
         }
