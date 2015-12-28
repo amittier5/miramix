@@ -10,7 +10,7 @@ class Usps  {
 
 function USPSLabel($parameters_array){
 
-		echo $xml_data="<DelivConfirmCertifyV4.0Request USERID='".env('USERID')."'>".
+		$xml_data="<DelivConfirmCertifyV4.0Request USERID='".env('USERID')."'>".
 
 		"<Revision>2</Revision>".
 		"<ImageParameters />".
@@ -58,8 +58,7 @@ function USPSLabel($parameters_array){
 
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 
-		print_r($array_data);
-		exit;
+		
 		$ret_array = $this->generateLabel($array_data,$parameters_array['order_id']);
 		return $ret_array;
 	
