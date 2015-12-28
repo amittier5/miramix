@@ -209,7 +209,7 @@ class helpers extends Cart {
     }
     
     
-    function get_statecode_by_name($state_code,$country_id)
+    function get_statecode_by_name($state_code)
     {
         if (DB::table('zones')->where('name',trim($state_code))->exists()) {
             $state = DB::table('zones')
