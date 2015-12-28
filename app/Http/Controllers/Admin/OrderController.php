@@ -306,8 +306,21 @@ public function update(Request $request, $id)
         		$postcode = $serialize_add['postcode'];
 
 
+				$ToState = '';
+				if(is_numeric($zone_id))
+				{
+					$ToState = $obj->get_statecode($zone_id);
+				}
+				else
+				{
+					$ToState = $obj->get_statecode_by_name($zone_id);
+				}
+
+
+
+
         		// Call USPS API
-        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$obj->get_state_name($zone_id,$country_id),'ToZip5'=>$postcode,'order_id'=>$value->order_id);
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$ToState,'ToZip5'=>$postcode,'order_id'=>$value->order_id);
 				$ret_array = $usps_obj->USPSLabel($parameters_array);
 				//echo "<pre>";print_r($ret_array);exit;
 
