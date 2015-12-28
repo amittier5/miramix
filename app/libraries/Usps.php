@@ -118,6 +118,8 @@ private function callCurl($url,$data){
 //generate shipping label file for priority mail
 
 private function generateLabel($hasdata,$order_id){
+	try
+    {
 	
 		$filecontent=base64_decode($hasdata['DeliveryConfirmationLabel']);
 
@@ -133,7 +135,10 @@ private function generateLabel($hasdata,$order_id){
 
 		
 		return array("filename"=>$usps_filename,"tracking_no"=>substr($hasdata['DeliveryConfirmationNumber'], 8));
-
+    }catch(\App\Http\Controllers\Exception $e)
+		{
+		 return Redirect::to('/admin/orders')->withErrors( $e->getErrors() ) ->withInput();
+		}
 		 
 	}
 
