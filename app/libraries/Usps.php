@@ -6,7 +6,11 @@ use Cart;
 
 class Usps  {
 
-	function USPSLabel($parameters_array){
+
+
+//usps prority mail pdf label file generation
+
+function USPSLabel($parameters_array){
 
 
 		$user = env('USERID');
@@ -66,13 +70,15 @@ class Usps  {
 		
 	
 	}
-	
+
+//track a shipment
+
 public function trackrequest($parameters_array){
 
 
 		$user = $parameters_array['user'];
 	
-	$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
+		$url = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2";
 	
 		$xml_data ='<TrackFieldRequest USERID='.env('USERID').'>'.
 		'<Revision>1</Revision>'.
@@ -91,7 +97,10 @@ public function trackrequest($parameters_array){
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 		return $array_data;
 }
-	
+
+
+//common curl call
+
 private function callCurl($url,$data){
 	
 		//setting the curl parameters.
@@ -106,22 +115,18 @@ private function callCurl($url,$data){
 		    curl_close($ch);
 		    return $output;
 	}	
+
 	
+	
+	
+	
+	
+//generate shipping label file for priority mail
+
 private function generateLabel($hasdata,$order_id){
 	
 		$filecontent=base64_decode($hasdata['DeliveryConfirmationLabel']);
-		//file_put_contents('my.pdf', $binary);
-		//echo "<pre>";print_r($array_data);exit;
 		
-		
-		/*
-		$contents = base64_decode($filecontent);
-		header('Content-type: application/pdf');
-		header('Content-Disposition: inline; filename="label.pdf"');
-		header('Content-Transfer-Encoding: binary');
-		header('Content-Length: ' . strlen($contents));
-		echo $contents;
-		*/
 		
 		$label_title = 'uploads/pdf/'.$order_id.'_label_'.uniqid().'.pdf';
 		
@@ -132,33 +137,26 @@ private function generateLabel($hasdata,$order_id){
 		return $label_title;
 		 
 	}
- 	
+
+	
+	
+//validate address for proper shipping label
+
 public function varifyaddress($parameters_array){
 	
 	$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify";
 	
 	$xml_data=urlencode('<AddressValidateRequest USERID="'.env('USERID').'">
-
 	<IncludeOptionalElements>true</IncludeOptionalElements>
-      
-	<ReturnCarrierRoute>true</ReturnCarrierRoute>
-      
+      	<ReturnCarrierRoute>true</ReturnCarrierRoute>
 	<Address ID="0">  
-      
 	  <FirmName />   
-      
 	  <Address1>'.$parameters_array['Address1'].'<Address1/>   
-      
 	  <Address2>'.$parameters_array['Address2'].'</Address2>   
-      
 	  <City>'.$parameters_array['City'].'</City>   
-      
 	  <State>'.$parameters_array['State'].'</State>   
-      
 	  <Zip5></Zip5>   
-      
 	  <Zip4></Zip4> 
-      
 	</Address>      
       
       </AddressValidateRequest>');
@@ -171,35 +169,27 @@ public function varifyaddress($parameters_array){
 		return $array_data;
 }
 
+
+
+
+//get shipping rates at checkout time
+
 public function getshippingRates($parameters_array){
 	
 	$url='http://production.shippingapis.com/ShippingAPI.dll?API=RateV4';
 	$xml_data=urlencode('<RateV4Request USERID="'.env('USERID').'">
-	
 	<Revision>2</Revision>
-	
 	<Package ID="1ST">
-	
 	<Service>FIRST CLASS</Service>
-	
 	<FirstClassMailType>LETTER</FirstClassMailType>
-	
 	<ZipOrigination>21209</ZipOrigination>
-	
 	<ZipDestination>'.$parameters_array['ZipDestination'].'</ZipDestination>
-	
 	<Pounds>0</Pounds>
-	
 	<Ounces>10</Ounces>
-	
 	<Container/>
-	
 	<Size>REGULAR</Size>
-	
 	<Machinable>true</Machinable>
-	
 	</Package>
-	
 	
 	</RateV4Request>');
 
@@ -210,6 +200,10 @@ public function getshippingRates($parameters_array){
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 		return $array_data;
 }
+
+
+
+//print multiple pdf
 
 public function printPdf($files){
 	$filecontents='';
