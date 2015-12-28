@@ -171,5 +171,45 @@ public function varifyaddress($parameters_array){
 		return $array_data;
 }
 
+public function getshippingRates($parameters_array){
+	
+	$url='http://production.shippingapis.com/ShippingAPI.dll?API=RateV4';
+	$xml_data=urlencode('<RateV4Request USERID="'.env('USERID').'">
+	
+	<Revision>2</Revision>
+	
+	<Package ID="1ST">
+	
+	<Service>FIRST CLASS</Service>
+	
+	<FirstClassMailType>LETTER</FirstClassMailType>
+	
+	<ZipOrigination>21209</ZipOrigination>
+	
+	<ZipDestination>'.$parameters_array['ZipDestination'].'</ZipDestination>
+	
+	<Pounds>0</Pounds>
+	
+	<Ounces>10</Ounces>
+	
+	<Container/>
+	
+	<Size>REGULAR</Size>
+	
+	<Machinable>true</Machinable>
+	
+	</Package>
+	
+	
+	</RateV4Request>');
+
+	$output=$this->callCurl($url,$xml_data);
+
+		
+
+		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
+		return $array_data;
+}
+
 }
 ?>
