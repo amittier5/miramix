@@ -303,7 +303,7 @@ public function update(Request $request, $id)
         		$city = $serialize_add['city'];
         		$zone_id = $serialize_add['zone_id'];
         		$country_id = $serialize_add['country_id'];
-        		$postcode = $serialize_add['postcode'];
+        		$postcode = $serialize_add['postcode']; 
 
 
 				$ToState = '';
@@ -315,8 +315,6 @@ public function update(Request $request, $id)
 				{
 					$ToState = $obj->get_statecode_by_name($zone_id);
 				}
-
-
 
 
         		// Call USPS API
@@ -356,14 +354,13 @@ public function update(Request $request, $id)
 					
 				// });
 
-        		// Delete from add_process_order_labels
-				DB::table('add_process_order_labels')->delete();
-
-			    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
-			    return redirect('admin/orders');
-
         	}
         }
+        // Delete from add_process_order_labels
+		DB::table('add_process_order_labels')->delete();
+
+	    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+	    return redirect('admin/orders');
         
     }
 
