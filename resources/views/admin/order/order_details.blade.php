@@ -14,7 +14,14 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
         <div class="col-sm-12">
          <div class="row">
          <div class="form_dashboardacct">
-            <h3>Order History</h3>
+            
+            <div class="custom_addedlater clearfix">
+
+            <h3 class="pull-left">Order History</h3>
+              @if($order_list->usps_label !='')
+                  <div class="pull-right">Label: <a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+                  </div>
+                @endif
               <div class="bottom_dash clearfix">
                   
                   <div class="row">

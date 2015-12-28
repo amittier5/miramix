@@ -161,7 +161,7 @@ public function varifyaddress($parameters_array){
 	  <City>'.$parameters_array['City'].'</City>   
 	  <State>'.$parameters_array['State'].'</State>   
 	  <Zip5></Zip5>   
-	  <Zip4></Zip4> 
+	  <Zip4>'.$parameters_array['Zip4'].'</Zip4> 
 	</Address>      
       
       </AddressValidateRequest>');

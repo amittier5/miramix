@@ -359,11 +359,11 @@ public function update(Request $request, $id)
         // Delete from add_process_order_labels
 		DB::table('add_process_order_labels')->delete();
 
-		if(!empty($all_filename)){
-			foreach ($all_filename as $key => $file) {
-				# code...
-			}
-		}
+		// if(!empty($all_filename)){
+		// 	foreach ($all_filename as $key => $file) {
+		// 		# code...
+		// 	}
+		// }
 
 
 
