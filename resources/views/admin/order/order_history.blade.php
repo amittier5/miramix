@@ -34,7 +34,7 @@
                 <div class="pull-left" style="margin-right: 10px;"><span>Filter by brand</span> <input type="text" name="brandemail" value="<?php echo $brandemail?>" id="brandemail" /></div>
                 <div class="pull-left"><span>Filter by date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
                 <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
-                <a href="<?php echo url();?>/admin/push_order_process">Push</a>
+                <a href="<?php echo url();?>/admin/push_order_process" class="btn btn-success marge">Push</a>
             </div>
         </form>
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">

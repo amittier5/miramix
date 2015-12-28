@@ -173,9 +173,6 @@ class helpers extends Cart {
         }
         else
            return ""; 
-	  
-	   
-	
     }
     
     function get_country($country_id){
@@ -187,6 +184,30 @@ class helpers extends Cart {
         else
            return ""; 
 	
+    }
+
+    function get_state_name($state_code,$country_id)
+    {
+        if (DB::table('zones')->where('code',trim($state_code))->exists()) {
+            $state = DB::table('zones')
+                    ->leftjoin('countries', 'countries.country_id', '=', 'zones.country_id')
+                    ->select('zones.*', 'countries.name as country_name')
+                    ->where('countries.iso_code_3',trim($country_id))
+                    ->where('zones.code',trim($state_code))->first();
+            return $state->name;
+        }
+        else
+           return $state_code; 
+    }
+    
+    function get_country_name($country_code) // three digit code
+    { 
+        if (DB::table('countries')->where('iso_code_3',trim($country_code))->exists()) {
+            $country = DB::table('countries')->where('iso_code_3',trim($country_code))->first();
+            return $country->name;
+        }
+        else
+           return $country_code; 
     }
 
     function getProductDetails($product_id){

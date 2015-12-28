@@ -465,7 +465,6 @@ class CheckoutController extends BaseController {
 										);
 
 
-
 		        	$want_reg=Request::input('register_user');
 		        	if($want_reg=='register'){
 
@@ -490,6 +489,7 @@ class CheckoutController extends BaseController {
 				        $shiping_address['mem_brand_id']=$brandmember->id;
 				        
 						$shp_address=Address::create($shiping_address);
+						$lastAddressId =DB::getPdo()->lastInsertId();  
 				        $user_id=$brandmember->id;
 
 				        // Update Address id in brandmember table
@@ -503,12 +503,33 @@ class CheckoutController extends BaseController {
 		        		$user_id=NULL;
 		        		$shp_address['id']=NULL;
 		        		$shp_address=(object)$shp_address;
+		        		//print_r($shp_address); exit;
 		        	}
 		        	// End of registration ==================================================
 
-
+		        /* To get the country code And Zone code */
 		        	
+					$shp_country = DB::table('countries')
+									->where('country_id',$guestdata["guest_country_id"])
+									->first();
+					$shp_zone = DB::table('zones')
+									->where('zone_id',$guestdata["guest_state"])
+									->first();
 
+				
+					$shiping_address = array('address_title' 		=> 'default address',
+										'first_name' 				=> $guestdata["guest_fname"],
+										'last_name' 				=> $guestdata["guest_lname"],
+										'email' 					=> $guestdata["guest_email"],
+										'phone' 					=> $guestdata["guest_phone"],
+										'address' 					=> $guestdata["guest_address"],
+										'address2' 					=> $guestdata["guest_address2"],
+										'city' 						=> $guestdata["guest_city"],
+										'zone_id' 					=> $shp_zone->code,
+										'country_id' 				=> $shp_country->iso_code_3,
+										'postcode' 					=> $guestdata["guest_zip_code"]
+										);
+				//print_r($shiping_address); exit;
 				$shiping_address_serial = serialize($shiping_address);
 
 		        }
@@ -518,11 +539,10 @@ class CheckoutController extends BaseController {
 					$shp_address = DB::table('addresses')
                                 ->leftjoin('countries', 'countries.country_id', '=', 'addresses.country_id')
                                 ->leftjoin('zones', 'zones.zone_id', '=', 'addresses.zone_id')
-                                ->select('addresses.*', 'countries.name as country_name', 'zones.name as zone_name')
+                                ->select('addresses.*', 'countries.name as country_name','countries.iso_code_3 as country_code', 'zones.name as zone_name', 'zones.code as zone_code')
                                 ->where('mem_brand_id',Session::get('member_userid'))
 								->where('id',Session::get('selected_address_id'))
 								->first();
-								
 
 								//echo "<pre>111111";print_r($shp_address); exit;
 					// Serialize the Shipping Address because If user delete there address from "addresses" table,After that the address also store in the "order" table for  getting order history//
@@ -535,8 +555,8 @@ class CheckoutController extends BaseController {
 											'address' 					=> $shp_address->address,
 											'address2' 					=> $shp_address->address2,
 											'city' 						=> $shp_address->city,
-											'zone_id' 					=> $shp_address->zone_name,
-											'country_id' 				=> $shp_address->country_name,
+											'zone_id' 					=> $shp_address->zone_code, // two digit code //
+											'country_id' 				=> $shp_address->country_code,  // three digit code iso_code_3//
 											'postcode' 					=> $shp_address->postcode
 											);
 
