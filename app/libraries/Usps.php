@@ -58,8 +58,7 @@ function USPSLabel($parameters_array){
 
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
 
-		print_r($array_data);
-		exit;
+		
 		$ret_array = $this->generateLabel($array_data,$parameters_array['order_id']);
 		return $ret_array;
 	
