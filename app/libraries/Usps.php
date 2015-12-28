@@ -128,7 +128,7 @@ private function generateLabel($hasdata){
 		return $label_title;
 		 
 	}
-	
+ 	
 public function varifyaddress($parameters_array){
 	
 	$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify";
