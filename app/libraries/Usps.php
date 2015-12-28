@@ -211,5 +211,16 @@ public function getshippingRates($parameters_array){
 		return $array_data;
 }
 
+public function printPdf($files){
+	
+	foreach($files as $file){
+	$filecontents .= file_get_contents($file);
+	}
+	
+	$handle = printer_open();
+	printer_write($handle,$filecontents);
+	printer_close($handle);
+}
+
 }
 ?>
