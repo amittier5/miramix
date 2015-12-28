@@ -317,8 +317,6 @@ public function update(Request $request, $id)
 				}
 
 
-
-
         		// Call USPS API
         		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$ToState,'ToZip5'=>$postcode,'order_id'=>$value->order_id);
 				$ret_array = $usps_obj->USPSLabel($parameters_array);
@@ -356,14 +354,13 @@ public function update(Request $request, $id)
 					
 				// });
 
-        		// Delete from add_process_order_labels
-				DB::table('add_process_order_labels')->delete();
-
-			    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
-			    return redirect('admin/orders');
-
         	}
         }
+        // Delete from add_process_order_labels
+		DB::table('add_process_order_labels')->delete();
+
+	    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+	    return redirect('admin/orders');
         
     }
 
