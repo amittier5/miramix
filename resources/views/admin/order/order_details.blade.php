@@ -14,7 +14,14 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
         <div class="col-sm-12">
          <div class="row">
          <div class="form_dashboardacct">
-            <h3>Order History</h3>
+            
+            <div class="custom_addedlater clearfix">
+
+            <h3 class="pull-left">Order History</h3>
+              @if($order_list->usps_label !='')
+                  <div class="pull-right">Label: <a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+                  </div>
+                @endif
               <div class="bottom_dash clearfix">
                   
                   <div class="row">
@@ -22,9 +29,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       <div class="order_box">
 
                   <h6>Order Information</h6>
-                  @if($order_list->usps_label !='')
-                  <div>Label: <a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
-                  @endif
+                  
                     <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
                     <?php if($order_list->shipping_address_id == 1){?>
                       Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>

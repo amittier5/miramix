@@ -287,7 +287,7 @@ public function update(Request $request, $id)
     	$obj = new helpers();
         $all_process_orders = DB::table('add_process_order_labels')->get();
        
-
+        $all_filename = array();
         if(!empty($all_process_orders)){
         	foreach ($all_process_orders as $key => $value) {
 
@@ -322,7 +322,7 @@ public function update(Request $request, $id)
 				$ret_array = $usps_obj->USPSLabel($parameters_array);
 				//echo "<pre>";print_r($ret_array);exit;
 
-        		$filename = $ret_array['filename'];
+        		$all_filename[] = $filename = $ret_array['filename'];
         		$tracking_number = $ret_array['tracking_no'];
 
         		// Update label name in DB
@@ -358,6 +358,14 @@ public function update(Request $request, $id)
         }
         // Delete from add_process_order_labels
 		DB::table('add_process_order_labels')->delete();
+
+		// if(!empty($all_filename)){
+		// 	foreach ($all_filename as $key => $file) {
+		// 		# code...
+		// 	}
+		// }
+
+
 
 	    Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 	    return redirect('admin/orders');
