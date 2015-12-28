@@ -345,14 +345,14 @@ public function update(Request $request, $id)
 				$setting = DB::table('sitesettings')->where('name', 'email')->first();
 				$admin_users_email=$setting->value;
 				
-				// $sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
 				
-				// function($message) use ($admin_users_email, $user_email,$user_name,$subject)
-				// {
-				// 	$message->from($admin_users_email);
-				// 	$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+				{
+					$message->from($admin_users_email);
+					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
 					
-				// });
+				});
 
         	}
         }
