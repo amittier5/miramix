@@ -126,8 +126,46 @@ private function generateLabel($hasdata){
 		fwrite($file,$filecontent);
 		fclose($file);
 		return $label_title;
-		
+		 
 	}
+	
+public function varifyaddress($parameters_array){
+	
+	$url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify";
+	
+	$xml_data=urlencode('<AddressValidateRequest USERID="'.env('USERID').'">
+
+	<IncludeOptionalElements>true</IncludeOptionalElements>
+      
+	<ReturnCarrierRoute>true</ReturnCarrierRoute>
+      
+	<Address ID="0">  
+      
+	  <FirmName />   
+      
+	  <Address1>'.$parameters_array['Address1'].'<Address1/>   
+      
+	  <Address2>'.$parameters_array['Address2'].'</Address2>   
+      
+	  <City>'.$parameters_array['City'].'</City>   
+      
+	  <State>'.$parameters_array['State'].'</State>   
+      
+	  <Zip5></Zip5>   
+      
+	  <Zip4></Zip4> 
+      
+	</Address>      
+      
+      </AddressValidateRequest>');
+	
+	$output=$this->callCurl($url,$xml_data);
+
+		
+
+		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
+		return $array_data;
+}
 
 }
 ?>
