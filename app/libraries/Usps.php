@@ -36,7 +36,7 @@ function USPSLabel($parameters_array){
 
 		"<SeparateReceiptPage>False</SeparateReceiptPage>".
 		
-		"<ImageType>TIF</ImageType>".
+		"<ImageType>PDF</ImageType>".
 		"<AddressServiceRequested>False</AddressServiceRequested>".
 		"<HoldForManifest>N</HoldForManifest>".
 		//"<Container>NONRECTANGULAR</Container>".
