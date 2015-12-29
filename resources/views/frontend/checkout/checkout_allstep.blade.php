@@ -620,6 +620,7 @@ $(document).ready(function() {
 						          $total_discount = 0.00;
 						          $share_discount = 0.00;
                 				  $social_discount = 0.00;
+                				  $coupon_amount = 0.00;
 
 
 						          if(!empty($cart_result))
@@ -646,27 +647,6 @@ $(document).ready(function() {
 						         $i++;
 						         }
 						        }
-
-						        // if(Session::has('coupon_type') && Session::has('coupon_discount'))
-						        // {
-						        //   $coupon_type = Session::get('coupon_type');
-						        //   $coupon_discount = Session::get('coupon_discount');
-						        //     if($coupon_type == 'F')
-						        //     {
-						        //       $grand_total = ($total - $coupon_discount);
-						        //       $total_discount = $coupon_discount;
-						        //     }
-						        //     elseif($coupon_type == 'P')
-						        //     {
-						        //       $grand_total = ($total - (($total) * ($coupon_discount)/100));
-						        //       $total_discount = (($total)* ($coupon_discount)/100);
-						        //     }
-						          
-						        // }
-						        // else
-						        // {
-						        //   $grand_total = $total;
-						        // }
 
 						        /*---------------------*/
                 $share_discount = $cart_result[0]['share_discount'];
@@ -743,6 +723,7 @@ $(document).ready(function() {
                     
                  }
 
+                 $total_discount = ($social_discount + $coupon_amount); // total discount (Share discout and coupon discount)
                 ?>
 						        <?php 
 						        if($all_sub_total<=$all_sitesetting['free_discount_rate']) 
@@ -761,27 +742,9 @@ $(document).ready(function() {
 							      <span>Sub-Total:</span>
 							      </td>
 							      <td class="text-right">
-							      <span>{!! ($all_sub_total!='')?'$':'' !!}{!!  $all_sub_total !!}</span>
+							      <span>{!! ($all_sub_total!='')?'$':'' !!}{!!  number_format($all_sub_total,2) !!}</span>
 							      </td>
 							     </tr>
-						      <?php 
-						      // if(Session::has('coupon_type') && Session::has('coupon_discount'))
-						      //   {
-						      ?>
-
-						      <!-- <tr>
-							      <td colspan="5"></td>
-							      <td class="text-left" colspan="2">
-							      <span>Discount(coupon code  {!! Session::get('coupon_code') !!}):</span>
-							      </td>
-							      <td class="text-right">
-							      <span> -${!! number_format($total_discount,2) !!}</span>
-							      </td>
-						      </tr> -->
-
-						      <?php 
-						        // }
-						      ?>
 
 								<?php if($share_discount > 0 ){ ?>
 			                      <tr>
@@ -906,7 +869,7 @@ $(document).ready(function() {
 						        <img src="<?php echo url();?>/public/frontend/images/shopping-checkout/paypal_shp.png" alt="">
 						        <input type="submit" class="full_green_btn text-uppercase no_topmarg pull-right <?php if(Session::has('member_userid')) {?>logged_inbtn<?php } else { ?>logged_outbtn<?php } ?>" id="paypal_checkout" value="Checkout">
 						    <!--###################### HIDDEN FIELD TO INSERT ORDER TABLE START ###############################-->
-						    <input name="grand_total" type="hidden" value="{!! ($grand_total+$shipping_rate) !!}">
+						    <input name="grand_total" type="hidden" value="{!! ($all_total+$shipping_rate) !!}">
 						    <input name="sub_total" type="hidden" value="{!! ($total) !!}">
 						    <input name="discount" type="hidden" value="{!! ($total_discount) !!}">
                             <input name="shipping_rate" type="hidden" value="{!! ($shipping_rate) !!}">

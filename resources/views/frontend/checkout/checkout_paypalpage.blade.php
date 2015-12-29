@@ -34,7 +34,7 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 
 		<?php 
 		$i =1;
-		echo $total_price = ($order_list[0]->sub_total-$order_list[0]->discount);
+		$total_price = ($order_list[0]->sub_total-$order_list[0]->discount);
 		foreach($order_list as $eachOrderlist)
 		{
 			
@@ -46,7 +46,7 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 		$i++;
 		}
 		?>
-		<?php  echo floatval($all_sitesetting['free_discount_rate']);
+		<?php
 			// Check Shipping rate
 			if($total_price <= $all_sitesetting['free_discount_rate']) 
 			{

@@ -64,7 +64,7 @@
             </div>
             <div class="bordered_panel clearfix special_add">
               <p class="spec_text">Tags: <span>{!! rtrim($productdetails->tags,',') !!}</span></p>
-              <p class="social_share">Share this product to get discount::</p>
+              <p class="social_share"><strong>Click to Share for a ${!! number_format($all_sitesetting['discount_share'],2) !!} credit on your purchase :</strong></p>
               <ul class="social_plug_new">
                  <li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($productdetails->product_name);?>','<?php echo url().'/product-details/'.$productdetails->product_slug;?>','<?php echo ($productdetails->id);?>');"><i class="fa fa-facebook-square"></i>
                  <span> Share this on facebook </span>
