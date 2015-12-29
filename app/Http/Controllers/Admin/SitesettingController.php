@@ -33,59 +33,6 @@ class SitesettingController extends Controller {
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     return view('admin.sitesetting.create',array('title'=>'Site Setting Management','module_head'=>'Add Content'));
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(Request $request)
-    // {
-    //     $cms=Request::all();
-    //     //echo $title = Request::input('title'); exit;
-
-    //     $title = Request::input('title');
-    //     $description=htmlentities(Request::input('description'));
-    //     $slug = $title;
-    //     $meta_name=Request::input('meta_name');
-    //     $meta_description=Request::input('meta_description');
-    //     $meta_keyword=Request::input('meta_keyword');
-    //     //$description=Request::input('description');
-    //     $updated_at=Request::input('updated_at');
-    //     $created_at=Request::input('created_at');
-        
-
-    //     //print_r($cms); exit;
-    //     //Cms::create($cms);
-    //     DB::table('cmspages')->insert(
-    //         ['title' => $title, 'description' => $description,'slug' => $slug,'meta_name' => $meta_name,'meta_description' => $meta_description,'meta_keyword' => $meta_keyword,'updated_at' => $updated_at,'created_at' => $created_at]
-    //     );
-    //     Session::flash('success', 'Content added successfully'); 
-    //     return redirect('admin/cms');
-    // }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //    $cms=Cmspage::find($id);
-    //    return view('admin.cms.show',compact('cms'));
-    // }
-
     public function edit($id)
     {
         $sitesettings=Sitesetting::find($id);
@@ -100,9 +47,25 @@ class SitesettingController extends Controller {
        $sitesettingUpdate=Request::all();
            $sitesetting=Sitesetting::find($id);
            //$cmsUpdate['description']=htmlentities($cmsUpdate['description']);
+           if (Input::hasFile('image'))
+            {
+              $destinationPath = 'uploads/share_image/'; // upload path
+              $thumb_path = 'uploads/share_image/thumb/';
+              $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+              $fileName = rand(111111111,999999999).'.'.$extension; // renameing image
+              Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+              // $this->create_thumbnail($thumb_path,$fileName,$extension); 
+              $sitesettingUpdate['value']=$fileName;
+
+              // unlink old photo
+              @unlink('uploads/share_image/'.Request::input('share_icon'));
+            }
+            elseif(Request::input('share_icon')!='')
+               $sitesettingUpdate['value']=Request::input('share_icon');
+
            $sitesetting->update($sitesettingUpdate);
 	   
-	   $sitesettings = DB::table('sitesettings')->get();
+	    $sitesettings = DB::table('sitesettings')->get();
 	    $all_sitesetting = array();
 	    $current='';
 	    foreach($sitesettings as $each_sitesetting)
