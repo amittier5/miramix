@@ -14,13 +14,22 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
         <div class="col-sm-12">
          <div class="row">
          <div class="form_dashboardacct">
-            <h3>Order History</h3>
+            
+            <div class="custom_addedlater clearfix">
+
+            <h3 class="pull-left">Order History</h3>
+              @if($order_list->usps_label !='')
+                  <div class="pull-right">Label: <a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+                  </div>
+                @endif
               <div class="bottom_dash clearfix">
                   
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="order_box">
+
                   <h6>Order Information</h6>
+                  
                     <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
                     <?php if($order_list->shipping_address_id == 1){?>
                       Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
@@ -31,7 +40,12 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       Payment Method: {!! $order_list->payment_method; !!}<br>
                       Shipping Type: {!! $order_list->shipping_type; !!}<br>
                       Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
+                      <p>
+                      {!! isset($order_list->tracking_number) && ($order_list->tracking_number !='')?'<strong>Tracking Number: </strong>'.$order_list->tracking_number :''; !!}</br>
+                      {!! isset($order_list->shipping_carrier) && ($order_list->shipping_carrier !='')?'<strong>Shipping Carrier: </strong>'.$order_list->shipping_carrier :''; !!}
+                      </p>
                     </div>
+
                   </div>
                     </div>
                     <div class="col-sm-6">
@@ -47,7 +61,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $state = $serialize_address['zone_id'];
+                            $state = $obj->get_state_name($serialize_address['zone_id'],$serialize_address['country_id']);
                           }
                         }
 
@@ -59,7 +73,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $country = $serialize_address['country_id'];
+                            $country = $obj->get_country_name($serialize_address['country_id']);
                           }
                         }
                       ?>
@@ -69,10 +83,10 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
                       {!! isset($serialize_address['address'])?$serialize_address['address']:''; !!}<br>
                       {!! ($serialize_address['address2']!='')?$serialize_address['address2'].'<br>':''; !!}
-                      {!! "City: ".isset($serialize_address['city'])?$serialize_address['city']:''; !!}<br>
+                      {!! isset($serialize_address['city'])?"City: ".$serialize_address['city']:''; !!}<br>
                       {!! (isset($serialize_address['zone_id']) && ($serialize_address['zone_id']!=''))?"State: ".$state :'' !!}<br>
                       {!! (isset($serialize_address['country_id']) && ($serialize_address['country_id']!=''))? "Country : " .$country:'' !!}<br>
-                      {!! "Post Code: ". isset($serialize_address['postcode'])?$serialize_address['postcode']:'';!!}</p>
+                      {!! isset($serialize_address['postcode'])?"Post Code: ".$serialize_address['postcode']:'';!!}</p>
                        </div>
                       </div>
                     </div>                    

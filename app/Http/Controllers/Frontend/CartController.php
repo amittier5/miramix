@@ -207,12 +207,13 @@ class CartController extends BaseController {
             $formfactor_id = $formfactor->id;
 
             /* Discount Share Start */
-            $user_share = DB::table('product_shares')
-                                ->where('user_email','=',Session::get('member_user_email'))
-                                ->where('product_id','=',$each_content->id)
-                                ->count();
+            // $user_share = DB::table('product_shares')
+            //                     ->where('user_email','=',Session::get('member_user_email'))
+            //                     ->where('product_id','=',$each_content->id)
+            //                     ->count();
                                 //print_r($user_share); exit;
-            if($user_share >0)
+
+            if(Session::has('product_id'))
             {
                 $share_discount = $all_sitesetting['discount_share'];
             }   

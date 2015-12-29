@@ -28,6 +28,7 @@ use Cookie;
 use Redirect;
 use Mail;
 use App\Helper\helpers;
+use App\libraries\Usps;
 
 class OrderController extends BaseController {
 
@@ -57,7 +58,13 @@ class OrderController extends BaseController {
 	$orderstatus='';
 	$filterdate='';
 	$brandemail='';
-	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+
+	// Get All selected check Usps mail
+	//$all_process_labels = DB::table('add_process_order_labels')->select('order_id', 'label')->get();
+	$all_process_labels = AddProcessOrderLabel::all();
+
+
+	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail','all_process_labels'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
 
     }
 
@@ -230,7 +237,7 @@ public function update(Request $request, $id)
         if($order_list=='')
             return redirect('order-history');
         $order_items_list = $order_list->AllOrderItems;
-	$order_members=$order_list->getOrderMembers;
+		$order_members=$order_list->getOrderMembers;
         return view('admin.order.order_details',compact('order_list','order_items_list','order_members'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
         
     }
@@ -254,8 +261,15 @@ public function update(Request $request, $id)
         $order_id = Input::get('order_id');
 
         if($param=='add'){
-			$arr = array('order_id'=>$order_id,'label'=>$mail_option);
-			AddProcessOrderLabel::create($arr);
+
+        	$cnt = DB::table('add_process_order_labels')->where('order_id',$order_id)->count();
+        	if($cnt==0){
+        		$arr = array('order_id'=>$order_id,'label'=>$mail_option);
+				AddProcessOrderLabel::create($arr);
+        	}
+        	else{
+        		AddProcessOrderLabel::where('order_id',$order_id)->update(['label'=>$mail_option]);
+        	}			
         }
         else{
 
@@ -264,6 +278,112 @@ public function update(Request $request, $id)
 
         
         exit;
+        
+    }
+
+    public function push_order_process()
+    { 
+    	$usps_obj = new Usps();
+    	$obj = new helpers();
+        $all_process_orders = DB::table('add_process_order_labels')->get();
+       
+        $all_filename = array();
+        $flag = 0;
+        if(!empty($all_process_orders)){
+        	foreach ($all_process_orders as $key => $value) {
+
+        		// Get details for each order
+        		$ord_dtls = Order::find($value->order_id);
+        		$serialize_add = unserialize($ord_dtls['shiping_address_serialize']);
+        		
+        		$user_email = $serialize_add['email'];
+				$user_name = $serialize_add['first_name']." ".$serialize_add['last_name'];
+        		$phone = $serialize_add['phone'];
+        		$address = $serialize_add['address'];
+        		$address2 = $serialize_add['address2'];
+        		$city = $serialize_add['city'];
+        		$zone_id = $serialize_add['zone_id'];
+        		$country_id = $serialize_add['country_id'];
+        		$postcode = $serialize_add['postcode']; 
+
+
+				$ToState = '';
+				if(is_numeric($zone_id))
+				{
+					$ToState = $obj->get_statecode($zone_id);
+				}
+				else
+				{
+					$ToState = $obj->get_statecode_by_name($zone_id);
+				}
+
+
+        		// Call USPS API
+        		$parameters_array = array('ToName'=>$user_name,'ToFirm'=>'','ToAddress1'=>$address2,'ToAddress2'=>$address,'ToCity'=>$city,'ToState'=>$ToState,'ToZip5'=>$postcode,'order_id'=>$value->order_id);
+				$ret_array = $usps_obj->USPSLabel($parameters_array);
+				//echo "<pre>";print_r($ret_array);exit;
+
+				if($ret_array['filename']!=""){
+					$flag = 1;
+				}
+
+        		$all_filename[] = $filename = $ret_array['filename'];
+        		$tracking_number = $ret_array['tracking_no'];
+
+        		// Update label name in DB
+        		Order::where('id', $value->order_id)->update(['tracking_number' => $tracking_number,'shipping_carrier'=>'USPS','usps_label'=>$filename,'order_status'=>'shipped']);
+
+
+        		// change order status and send mail
+        		$order = Order::find($value->order_id);        		
+				
+				$subject = 'Order status change of : #'.$order->order_number;
+				$cmessage = 'Your order status is changed to '.$order->order_status.'. Please visit your account for details.';
+				$tracking = '';
+				$shipping = '';
+
+				if($order->order_status=='shipped'){
+					$tracking = 'Tracking Number is : '.$tracking_number;
+					$shipping='Shipping Method is : USPS<br />Please visit your account for details';
+				}
+				
+				$setting = DB::table('sitesettings')->where('name', 'email')->first();
+				$admin_users_email=$setting->value;
+				
+				/*$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				
+				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
+				{
+					$message->from($admin_users_email);
+					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+					
+				});*/
+
+        	}
+        }
+        // Delete from add_process_order_labels
+		//DB::table('add_process_order_labels')->delete();
+
+		
+        $full_path = array();
+		if(!empty($all_filename)){
+			foreach ($all_filename as $file) {
+				
+				if($file!=""){
+					$full_path[]= './uploads/pdf/'.$file;
+				}
+
+			}
+		}
+		$usps_obj->printPdf($full_path);
+		print_r($all_filename);exit;
+
+		if($flag==1)
+	    	Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
+		else
+	    	Session::flash('error', 'No label is created due to invalid address.'); 
+
+	    return redirect('admin/orders');
         
     }
 

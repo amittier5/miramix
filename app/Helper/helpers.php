@@ -173,9 +173,6 @@ class helpers extends Cart {
         }
         else
            return ""; 
-	  
-	   
-	
     }
     
     function get_country($country_id){
@@ -189,67 +186,112 @@ class helpers extends Cart {
 	
     }
 
+    function get_state_name($state_code,$country_id)
+    {
+        if (DB::table('zones')->where('code',trim($state_code))->exists()) {
+            $state = DB::table('zones')
+                    ->leftjoin('countries', 'countries.country_id', '=', 'zones.country_id')
+                    ->select('zones.*', 'countries.name as country_name')
+                    ->where('countries.iso_code_3',trim($country_id))
+                    ->where('zones.code',trim($state_code))->first();
+            return $state->name;
+        }
+        else
+           return $state_code; 
+    }
+    function get_statecode($state_id){
+        if (DB::table('zones')->where('zone_id',$state_id)->exists()) {
+            $state = DB::table('zones')->where('zone_id',$state_id)->first();
+            return $state->code;
+        }
+        else
+           return ""; 
+    }
+    
+    
+    function get_statecode_by_name($state_code)
+    {
+        if (DB::table('zones')->where('name',trim($state_code))->exists()) {
+            $state = DB::table('zones')
+                    ->select('zones.*')
+                    ->where('zones.name',trim($state_code))->first();
+            return $state->code;
+        }
+        else
+           return $state_code; 
+    }
+    
+    function get_country_name($country_code) // three digit code
+    { 
+        if (DB::table('countries')->where('iso_code_3',trim($country_code))->exists()) {
+            $country = DB::table('countries')->where('iso_code_3',trim($country_code))->first();
+            return $country->name;
+        }
+        else
+           return $country_code; 
+    }
+
     function getProductDetails($product_id){
     
      $pro_details = DB::table('products')->where('id',$product_id)->first();
      return $pro_details;
     }
     
-function paginate_function($item_per_page, $current_page, $total_records, $total_pages)
-		{
-		    $pagination = '';
-		    if($total_pages > 0 && $total_pages != 1 && $current_page <= $total_pages){ //verify total pages and current page number
-			$pagination .= '<ul class="pagination pagination-sm">';
-		       
-			$right_links    = $current_page + 3;
-			$previous       = $current_page - 3; //previous link
-			$next           = $current_page + 1; //next link
-			$first_link     = true; //boolean var to decide our first link
-		       
-			if($current_page > 1){
-			    $previous_link = ($previous==0)?1:$previous;
-			    $pagination .= '<li class="first"><a href="#" data-page="1" title="First">&laquo;</a></li>'; //first link
-			    $pagination .= '<li><a href="#" data-page="'.$previous_link.'" title="Previous">&lt;</a></li>'; //previous link
-				for($i = ($current_page-2); $i < $current_page; $i++){ //Create left-hand side links
-				    if($i > 0){
-					$pagination .= '<li><a href="#" data-page="'.$i.'" title="Page'.$i.'">'.$i.'</a></li>';
-				    }
-				}  
-			    $first_link = false; //set first link to false
-			}
-		       
-			if($first_link){ //if current active page is first link
-			    $pagination .= '<li class="first active"><a href="#">'.$current_page.'</a></li>';
-			}elseif($current_page == $total_pages){ //if it's the last active link
-			    $pagination .= '<li class="last active"><a href="#">'.$current_page.'</a></li>';
-			}else{ //regular current link
-			    $pagination .= '<li class="active"><a href="#">'.$current_page.'</a></li>';
-			}
-			       
-			for($i = $current_page+1; $i < $right_links ; $i++){ //create right-hand side links
-			    if($i<=$total_pages){
-				$pagination .= '<li><a href="#" data-page="'.$i.'" title="Page '.$i.'">'.$i.'</a></li>';
-			    }
-			}
-			if($current_page < $total_pages){
-				$next_link = ($i > $total_pages)? $total_pages : $i;
-				$pagination .= '<li><a href="#" data-page="'.$next_link.'" title="Next">&gt;</a></li>'; //next link
-				$pagination .= '<li class="last"><a href="#" data-page="'.$total_pages.'" title="Last">&raquo;</a></li>'; //last link
-			}
-		       
-			$pagination .= '</ul>';
-		    }
-		    return $pagination; //return pagination links
-		}
-
-        function getCmsLink($cms_id)
-        {
-         $cms_details = DB::table('cmspages')->select('slug')->where('id',$cms_id)->first();
-         
-         return $cms_details;
-         
-         
+    function paginate_function($item_per_page, $current_page, $total_records, $total_pages)
+    {
+        $pagination = '';
+        if($total_pages > 0 && $total_pages != 1 && $current_page <= $total_pages){ //verify total pages and current page number
+    	$pagination .= '<ul class="pagination pagination-sm">';
+           
+    	$right_links    = $current_page + 3;
+    	$previous       = $current_page - 3; //previous link
+    	$next           = $current_page + 1; //next link
+    	$first_link     = true; //boolean var to decide our first link
+           
+    	if($current_page > 1){
+    	    $previous_link = ($previous==0)?1:$previous;
+    	    $pagination .= '<li class="first"><a href="#" data-page="1" title="First">&laquo;</a></li>'; //first link
+    	    $pagination .= '<li><a href="#" data-page="'.$previous_link.'" title="Previous">&lt;</a></li>'; //previous link
+    		for($i = ($current_page-2); $i < $current_page; $i++){ //Create left-hand side links
+    		    if($i > 0){
+    			$pagination .= '<li><a href="#" data-page="'.$i.'" title="Page'.$i.'">'.$i.'</a></li>';
+    		    }
+    		}  
+    	    $first_link = false; //set first link to false
+    	}
+           
+    	if($first_link){ //if current active page is first link
+    	    $pagination .= '<li class="first active"><a href="#">'.$current_page.'</a></li>';
+    	}elseif($current_page == $total_pages){ //if it's the last active link
+    	    $pagination .= '<li class="last active"><a href="#">'.$current_page.'</a></li>';
+    	}else{ //regular current link
+    	    $pagination .= '<li class="active"><a href="#">'.$current_page.'</a></li>';
+    	}
+    	       
+    	for($i = $current_page+1; $i < $right_links ; $i++){ //create right-hand side links
+    	    if($i<=$total_pages){
+    		$pagination .= '<li><a href="#" data-page="'.$i.'" title="Page '.$i.'">'.$i.'</a></li>';
+    	    }
+    	}
+    	if($current_page < $total_pages){
+    		$next_link = ($i > $total_pages)? $total_pages : $i;
+    		$pagination .= '<li><a href="#" data-page="'.$next_link.'" title="Next">&gt;</a></li>'; //next link
+    		$pagination .= '<li class="last"><a href="#" data-page="'.$total_pages.'" title="Last">&raquo;</a></li>'; //last link
+    	}
+           
+    	$pagination .= '</ul>';
         }
+        return $pagination; //return pagination links
+    }
+
+    function getCmsLink($cms_id)
+    {
+     $cms_details = DB::table('cmspages')->select('slug')->where('id',$cms_id)->first();
+     
+     return $cms_details;
+ 
+ 
+    }
 	
 	function validateRating($product_id){
 	$member1=Session::get('brand_userid');

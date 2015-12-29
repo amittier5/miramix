@@ -6,6 +6,9 @@ use App\Helper\helpers;
 $obj = new helpers(); 
 $serialize_address = unserialize($order_list->shiping_address_serialize);
 ?>
+
+
+
   <div class="inner_page_container nomar_bottom">
   
   <div class="top_menu_port">
@@ -68,7 +71,12 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       Date Added: {!! date("M d, Y",strtotime($order_list->created_at)); !!}<br>
                       Payment Method: {!! $order_list->payment_method; !!}<br>
                       Shipping Type: {!! $order_list->shipping_type; !!}<br>
-                      Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p></div>
+                      Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
+                      <p>
+                      {!! isset($order_list->tracking_number) && ($order_list->tracking_number !='')?'<strong>Tracking Number: </strong>'.$order_list->tracking_number :''; !!}</br>
+                      {!! isset($order_list->shipping_carrier) && ($order_list->shipping_carrier !='')?'<strong>Shipping Carrier: </strong>'.$order_list->shipping_carrier :''; !!}
+                      </p>
+                    </div>
                   </div>
                     </div>
                     <div class="col-sm-6">
@@ -85,7 +93,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $state = $serialize_address['zone_id'];
+                            $state = $obj->get_state_name($serialize_address['zone_id'],$serialize_address['country_id']);
                           }
                         }
 
@@ -97,7 +105,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $country = $serialize_address['country_id'];
+                            $country = $obj->get_country_name($serialize_address['country_id']);
                           }
                         }
                       ?>
@@ -193,7 +201,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                   <div class="order_box clearfix">
                     <h6>Order History</h6>
                     <div class="col-sm-12"><div class="col-sm-12">
-                      <div class="table-responsive">
+                      <div class="table-responsive bottomest_order_hist">
                         <table class="table table_bottom_new">
                           <thead>
                             <tr>
@@ -233,5 +241,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
     
 	location.href='<?php echo url();?>/rate-product/'+productid
       }
+	  
+	  
     </script>
  @stop

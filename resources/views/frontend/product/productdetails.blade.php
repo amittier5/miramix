@@ -64,11 +64,21 @@
             </div>
             <div class="bordered_panel clearfix special_add">
               <p class="spec_text">Tags: <span>{!! rtrim($productdetails->tags,',') !!}</span></p>
-              
+              <p class="social_share">Share this product to get discount::</p>
               <ul class="social_plug_new">
-                 <li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($productdetails->product_name);?>','<?php echo url().'/product-details/'.$productdetails->product_slug;?>','<?php echo ($productdetails->id);?>');"><i class="fa fa-facebook"></i><span>Share To get Discounts</span></a></li>
-                 <li class="goog_li"><a href="javascript:void(0)" id="signin" ><i class="fa fa-google-plus"></i><span>Share To get Discounts</span></a>
-                <div id="plusone-div"></div></li>
+                 <li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($productdetails->product_name);?>','<?php echo url().'/product-details/'.$productdetails->product_slug;?>','<?php echo ($productdetails->id);?>');"><i class="fa fa-facebook-square"></i>
+                 <span> Share this on facebook </span>
+                 </a>
+                 </li>
+<!-- 
+                 <li class="goog_li"><a href="javascript:void(0)" id="signin" ><i class="fa fa-google-plus-square"></i></a>
+                <div id="plusone-div"></div></li> -->
+
+                <!-- <li> <a id="ref_gp" data-product="<?php // echo $productdetails->id;?>" href="https://plus.google.com/share?url=<?php echo url().'/product-details/'.$productdetails->product_slug;?>" 
+onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=yes,height=400,width=600');return false"><i class="fa fa-google-plus"></i></a></li> -->
+
+<g:plusone size="medium" href="<?php echo url().'/product-details/'.$productdetails->product_slug;?>" callback="myCallback"  onendinteraction="onPlusDone"></g:plusone>
+
               </ul>
             </div>
           </div>
@@ -178,7 +188,7 @@
             </div>
           </div>
           <div class="total_block">
-          	<div class="col-sm-6 lefted_img col-sm-push-6"> <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}" class="img-responsive" alt=""> </div>
+            <div class="col-sm-6 lefted_img col-sm-push-6"> <img src="<?php echo url();?>/uploads/product/{!! $productdetails->image2 !!}" class="img-responsive" alt=""> </div>
             <div class="col-sm-6 righted_text col-sm-pull-6">
               <p>{!! ucfirst($productdetails->description2) !!}</p>
             </div>
@@ -419,7 +429,7 @@
   
     <?php if((Session::has('member_userid')) || !(Session::has('brand_userid'))) { ?>
       $(document).on('click','.list-group-item',function(){
-	  //alert('listitem');	  
+    //alert('listitem');    
 
       var $this=$(this);
       $('.list-group-item').removeClass('main_active');
@@ -451,7 +461,7 @@
       total_calc();
       flag=true;
       //alert(flag);
-	  $('#myTabContent .error_msg').remove(); //remove error message after selecting item
+    $('#myTabContent .error_msg').remove(); //remove error message after selecting item
     });
     
   <?php } ?>
@@ -565,107 +575,107 @@ function changeval(id,price,product_id,product_name,formfactor_id)
             if(data !='' ) // email exist already
             {
               $("#cart_det").html(data);
-			  $("#cart_mob_det").html(data);
+        $("#cart_mob_det").html(data);
               //$("#cart_det").effect( "shake", {times:4}, 1000 );
                //window.location.href = "<?php echo url()?>/brandregister";
-			   $('#myTabContent .error_msg').remove();
-			   
-			   //for add to cart animation
-			   var foroffset_calc=$('#add_cart');
-			   if($(window).width()>767)
-				var cart = $('.navbar-default .navbar-nav > li.cart');
-			   else
-			    var cart = $('#formob_only');	
-				var imgtodrag = $('.main_img').find("img").eq(0);
-				console.log(imgtodrag);
-				if (imgtodrag) {
-					var imgclone = imgtodrag.clone()
-						.offset({
-						top: foroffset_calc.offset().top,
-						left: foroffset_calc.offset().left
-					})
-						.css({
-						'opacity': '0.5',
-							'position': 'absolute',
-							'height': '150px',
-							'width': '150px',
-							'z-index': '9999999999'
-					})
-						.appendTo($('body'))
-						.animate({
-						'top': cart.offset().top + 10,
-							'left': cart.offset().left + 10,
-							'width': 75,
-							'height': 75
-					}, 1000, 'easeInOutExpo');
-					
-					
-					imgclone.animate({
-						'width': 0,
-							'height': 0
-					}, function () {
-						$(this).detach()
-					});
-				}
-				setTimeout(function(){
-					$("#cart_det").show();
-			  		$("#cart_mob_det").show();	
-				},1100)
-				setTimeout(function(){
-					$('#no_dis_orig').animate({'left':0});
-					$('#add_cart').prop('disabled',true);
-					/*if($(window).width()>767){
-						$(".nav > li.cart a").tooltip({
-							title: 'Product Added To Cart.',
-							placement:'bottom'
-						});
-						$(".nav > li.cart a").tooltip('show');
-					}
-					else{
-						$("#formob_only").tooltip({
-							title: 'Product Added To Cart.',
-							placement:'bottom'
-						});
-						$("#formob_only").tooltip('show');
-					}*/
-				},600);		
-				setTimeout(function(){
-					$('#no_dis_orig').animate({'left':100+'%'});
-					$('#add_cart').prop('disabled',false);
-					/*if($(window).width()>767){
-						$(".nav > li.cart a").tooltip('destroy');
-					}
-					else{
-						$("#formob_only").tooltip('destroy');
-					}*/
-				},4000);
-			   //for add to cart animation
-			   
-			   /*-- After Add to Cart Remove All the hidden required Fields Start --*/
-				$("#product_id").val('');
-				$("#quantity").val('');
-				$("#product_name").val('');
-				$("#amount").val('');
-				$("#duration").val('');
-				$("#no_of_days").val('');
-				$("#form_factor").val('');
-				$('.list-group-item').removeClass('main_active'); //Remove selected item
-				$('.price_panel').hide(); // remove selected quantity
-				/*-- After Add to Cart Remove All the hidden required Fields Start --*/
+         $('#myTabContent .error_msg').remove();
+         
+         //for add to cart animation
+         var foroffset_calc=$('#add_cart');
+         if($(window).width()>767)
+        var cart = $('.navbar-default .navbar-nav > li.cart');
+         else
+          var cart = $('#formob_only'); 
+        var imgtodrag = $('.main_img').find("img").eq(0);
+        console.log(imgtodrag);
+        if (imgtodrag) {
+          var imgclone = imgtodrag.clone()
+            .offset({
+            top: foroffset_calc.offset().top,
+            left: foroffset_calc.offset().left
+          })
+            .css({
+            'opacity': '0.5',
+              'position': 'absolute',
+              'height': '150px',
+              'width': '150px',
+              'z-index': '9999999999'
+          })
+            .appendTo($('body'))
+            .animate({
+            'top': cart.offset().top + 10,
+              'left': cart.offset().left + 10,
+              'width': 75,
+              'height': 75
+          }, 1000, 'easeInOutExpo');
+          
+          
+          imgclone.animate({
+            'width': 0,
+              'height': 0
+          }, function () {
+            $(this).detach()
+          });
+        }
+        setTimeout(function(){
+          $("#cart_det").show();
+            $("#cart_mob_det").show();  
+        },1100)
+        setTimeout(function(){
+          $('#no_dis_orig').animate({'left':0});
+          $('#add_cart').prop('disabled',true);
+          /*if($(window).width()>767){
+            $(".nav > li.cart a").tooltip({
+              title: 'Product Added To Cart.',
+              placement:'bottom'
+            });
+            $(".nav > li.cart a").tooltip('show');
+          }
+          else{
+            $("#formob_only").tooltip({
+              title: 'Product Added To Cart.',
+              placement:'bottom'
+            });
+            $("#formob_only").tooltip('show');
+          }*/
+        },600);   
+        setTimeout(function(){
+          $('#no_dis_orig').animate({'left':100+'%'});
+          $('#add_cart').prop('disabled',false);
+          /*if($(window).width()>767){
+            $(".nav > li.cart a").tooltip('destroy');
+          }
+          else{
+            $("#formob_only").tooltip('destroy');
+          }*/
+        },4000);
+         //for add to cart animation
+         
+         /*-- After Add to Cart Remove All the hidden required Fields Start --*/
+        $("#product_id").val('');
+        $("#quantity").val('');
+        $("#product_name").val('');
+        $("#amount").val('');
+        $("#duration").val('');
+        $("#no_of_days").val('');
+        $("#form_factor").val('');
+        $('.list-group-item').removeClass('main_active'); //Remove selected item
+        $('.price_panel').hide(); // remove selected quantity
+        /*-- After Add to Cart Remove All the hidden required Fields Start --*/
             }
-			            
+                  
           }
       
         }); //ajax end
     } // if end
-	else{
-				//alert();
-				//$('#myTabContent .error_msg').remove();
-				$('#myTabContent .error_msg').remove();
-				$('#myTabContent').append('<div class="alert alert-danger fade in error_msg"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a><strong>Danger!</strong> Please Select A Value.</div>');
-				//flag=false;
-      				
-	}
+  else{
+        //alert();
+        //$('#myTabContent .error_msg').remove();
+        $('#myTabContent .error_msg').remove();
+        $('#myTabContent').append('<div class="alert alert-danger fade in error_msg"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a><strong>Danger!</strong> Please Select A Value.</div>');
+        //flag=false;
+              
+  }
 
   }
   
@@ -684,9 +694,9 @@ function changeval(id,price,product_id,product_name,formfactor_id)
 <script>
 if($(window).width()>767){
     $('#zoom_01').elevateZoom({
-		cursor: "crosshair",
-		zoomWindowFadeIn: 500,
-		zoomWindowFadeOut: 750,
+    cursor: "crosshair",
+    zoomWindowFadeIn: 500,
+    zoomWindowFadeOut: 750,
     zoomWindowWidth: 500,
     zoomWindowHeight: 500,
     borderSize: 1,
@@ -702,40 +712,58 @@ if($(window).width()>767){
 
 </style>
 
+<script type="text/javascript">
+     function onPlusDone(reponse) {
+          console.log(reponse);
+
+            var res = 'success';
+             $.ajax({
+                    type:"POST",
+                    dataType: "json",
+                    url: '<?php echo url();?>/saveShare',
+                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    success:function(result){
+
+                    }
+                })
+      }
+     function myCallback(jsonParam) {
+
+         console.log("URL: " + jsonParam.href + " state: " + jsonParam.state);
+
+      }
+</script>
+
 <!--INNER PAGE CONTENT END -->
 
 <script>
 function fb_share(product_name,url,product_id) {
- 	FB.ui(
+  FB.ui(
   {
     method: 'share',
-	name: product_name,
-	href: url,
+  name: product_name,
+  href: url,
   product_id: product_id
-	//caption: details
+  //caption: details
   },
   
   function(response) {
     if (response && !response.error_code) 
     {
-    	FB.api('/me?fields=name,email', function(response)
-    	{
-    		//alert('Posting completed.'+response.email+product_id);
-			$.ajax({
-				url: '<?php echo url();?>/saveShare',
-				type: "post",
-				data: { email : response.email, product_id : product_id ,_token: '{!! csrf_token() !!}'},
-				success:function(data)
-				{
-				//alert(data);
-				}
-			});
-    	});
-    } 
-    // else 
-    // {
-    //  alert('Error while posting.');
-    // }
+      FB.api('/me?fields=name,email', function(response)
+      {
+        //alert('Posting completed.'+response.email+product_id);
+      $.ajax({
+        url: '<?php echo url();?>/saveShare',
+        type: "post",
+        data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
+        success:function(data)
+        {
+          //alert(data);
+        }
+      });
+      });
+    } // end of if response
   }
 );
 
@@ -743,68 +771,18 @@ function fb_share(product_name,url,product_id) {
 </script>
 
 <!--------Google Share -------->
-<script >
-  window.___gcfg = {
-  
-    parsetags: 'onload'
-  };
-</script>
-<script src="https://apis.google.com/js/api:client.js"></script>
-<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="<?php echo env('GOOGLE_CLIENT_ID')?>">
 
-<script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script> 
 
-  function attachSignin(element) {
-      
-       auth2.attachClickHandler(element, {},
-	   function(googleUser) {
-	     
-	  $.post( "<?php echo url();?>/saveShare",{_token:'{!! csrf_token() !!}',email:googleUser.getBasicProfile().getEmail(),product_id:18} , function(response) {
-	    //window.location.href=response;
-	    //console.log("Response: "+response);
-           // $("#sharegoogle").css('opacity', '1');
-           renderPlusone();
-           $("#signin").hide();
-	   });
-	   }, function(error) {
-	    
-	   });
-     }
-     
-var googleUser = {};
-  var startApp = function() {
-    gapi.load('auth2', function(){
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      auth2 = gapi.auth2.init({
-        client_id: '<?php echo env('GOOGLE_CLIENT_ID')?>',
-        cookiepolicy: 'single_host_origin',
-         
-      });
-      attachSignin(document.getElementById('signin'));
-      
-      
-     /* gapi.auth.checkSessionState({session_state: null}, function(isUserNotLoggedIn){
-                  if (isUserNotLoggedIn) {
-                       
-                        $("#signin").show();
-                  }else{
-                     renderPlusone();    
-                    $("#signin").hide();    
-                  }
-              });
-      */
-    });
-  };
-startApp();
-
-
-  function renderPlusone() {
-        gapi.plusone.render("plusone-div");
-      }
-</script>
 
 
 <!--------Google Share -------->
+
+
 @stop

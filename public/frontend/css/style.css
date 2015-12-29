@@ -10530,9 +10530,22 @@ input#paypal_checkout.logged_outbtn {
 .form_dashboardacct .table .btn-white{
 	overflow:hidden;	
 }
+.order-history .st-head-row.st-head-row-main,.order-history .st-head-row{
+	color:#fff;	
+}
+.order-history .st-head-row{
+	border-bottom:1px solid #fff;	
+} 
+.form_dashboardacct p.status_btn.cancel_btn{
+	background:#ed5e68;	
+}
+.bordered_panel p.social_share{
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #000;
+    margin-top: 15px;
 
-
-
+}
 
 
 

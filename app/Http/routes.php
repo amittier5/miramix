@@ -145,6 +145,7 @@ Route:: post('/checkout-authorize/{id}','Frontend\CheckoutController@checkoutAut
 
 Route:: get('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin'); 
 Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin');
+Route:: post('/uspsAddressValidate','Frontend\CheckoutController@uspsAddressValidate');
 
 //======================== Paypal notify Url Call Start==============================//
 
@@ -310,6 +311,7 @@ $router->group([
     post('admin/orders/filter', 'OrderController@filters');
 
     post('admin/add-process-queue', 'OrderController@add_process_queue');
+    get('admin/push_order_process', 'OrderController@push_order_process');
     
     get('admin/change_related_status/{id}/{param}', 'ProductController@change_related_status');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  

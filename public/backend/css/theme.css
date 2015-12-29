@@ -5173,5 +5173,15 @@ span.weight_span {
     width: 100%;
     z-index: 99;
 }
+.custom_input input{
+	position:relative;
+	top:-2px;
+	margin-right:3px;	
+}
+.custom_input{
+	 width:100%;
+	 float:left;
+	 margin-bottom:5px !important;	
+}
 
 
