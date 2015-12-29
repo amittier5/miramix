@@ -120,6 +120,10 @@
                           <div class="form-group">
                              {!! Form::text('phone_no',$member['phone_no'],['class'=>'form-control','placeholder'=>'Phone Number', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
+			      
+			  <div class="form-group">
+                             <span>Total Points : <?php echo $member['user_points']?></span>
+                          </div>
                           
                           
                        

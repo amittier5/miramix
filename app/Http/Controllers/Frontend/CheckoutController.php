@@ -674,7 +674,13 @@ class CheckoutController extends BaseController {
 					$deleteCart =  DB::table('carts')->where('user_id', '=', Session::get('member_userid'))->delete();
 					Cart::destroy(); // After inserting all cart data into Order and Order_item Table database 
 				}
-
+				
+				//set points for users on purchase
+				
+				
+				
+				
+				
 				if(Session::get('payment_method') =='creditcard') 	  // if Payment With Credit Card 
 				{
 					return redirect('/checkout-authorize/'.$last_order_id);
@@ -867,6 +873,18 @@ class CheckoutController extends BaseController {
 			            $user_email = $user_details->email; 
 
 			            $mobile =  $user_details->phone_no; // logged user  phone number
+				    
+				    
+				    
+				
+				$order_total=$order->order_total;
+				$price_for_point = DB::table('sitesettings')->where('name','price_for_point')->first();
+				$points=round($order_total/$price_for_point->value)+$user_details->user_points;
+				
+				DB::table('brandmembers')
+			                                ->where('id', $user_id)
+			                                ->update(['user_points' => $points]);
+				
 
 		        	}else{
 		        		//for guest checkout
@@ -1160,6 +1178,8 @@ class CheckoutController extends BaseController {
 		}
             }
         }
+	
+	
 
 		/* ========================= Remove session ==================================== */	
 			Session::forget('payment_method');
@@ -1378,6 +1398,16 @@ class CheckoutController extends BaseController {
 
 	            $user_email = $user_details->email; 
 	            $mobile =  $user_details->phone_no; // logged user  phone number
+		    
+		    
+		    //update user's points
+		    $order_total=$order_details->order_total;
+				$price_for_point = DB::table('sitesettings')->where('name','price_for_point')->first();
+				$points=round($order_total/$price_for_point->value)+$user_details->user_points;
+				
+				DB::table('brandmembers')
+			                                ->where('id', Session::get('member_userid'))
+			                                ->update(['user_points' => $points]);
 
         	}
         	else
