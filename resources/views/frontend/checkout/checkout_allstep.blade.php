@@ -618,6 +618,8 @@ $(document).ready(function() {
 						          $total =0.00;
 						          $grand_total=0.00;
 						          $total_discount = 0.00;
+						          $share_discount = 0.00;
+                				  $social_discount = 0.00;
 
 
 						          if(!empty($cart_result))
@@ -645,34 +647,109 @@ $(document).ready(function() {
 						         }
 						        }
 
-						        if(Session::has('coupon_type') && Session::has('coupon_discount'))
-						        {
-						          $coupon_type = Session::get('coupon_type');
-						          $coupon_discount = Session::get('coupon_discount');
-						            if($coupon_type == 'F')
-						            {
-						              $grand_total = ($total - $coupon_discount);
-						              $total_discount = $coupon_discount;
-						            }
-						            elseif($coupon_type == 'P')
-						            {
-						              $grand_total = ($total - (($total) * ($coupon_discount)/100));
-						              $total_discount = (($total)* ($coupon_discount)/100);
-						            }
+						        // if(Session::has('coupon_type') && Session::has('coupon_discount'))
+						        // {
+						        //   $coupon_type = Session::get('coupon_type');
+						        //   $coupon_discount = Session::get('coupon_discount');
+						        //     if($coupon_type == 'F')
+						        //     {
+						        //       $grand_total = ($total - $coupon_discount);
+						        //       $total_discount = $coupon_discount;
+						        //     }
+						        //     elseif($coupon_type == 'P')
+						        //     {
+						        //       $grand_total = ($total - (($total) * ($coupon_discount)/100));
+						        //       $total_discount = (($total)* ($coupon_discount)/100);
+						        //     }
 						          
-						        }
-						        else
-						        {
-						          $grand_total = $total;
-						        }
+						        // }
+						        // else
+						        // {
+						        //   $grand_total = $total;
+						        // }
 
-						        ?>
+						        /*---------------------*/
+                $share_discount = $cart_result[0]['share_discount'];
+
+                 if(Session::has('coupon_discount'))
+                 {
+                    if(($share_discount==0) || ($share_discount==''))
+                    {
+                      if(Session::get('coupon_type')=='P')
+                      {
+                        $dis_percent = Session::get('coupon_discount');
+
+                        $dis_amnt = ($dis_percent/100) * $all_sub_total;
+                        $net_amnt = $all_sub_total - $dis_amnt;
+                        if($net_amnt<0)
+                          $all_total = $all_sub_total;
+                        else
+                          $all_total = $net_amnt;
+
+
+                        $coupon_amount = $dis_amnt;
+                      }
+                      else
+                      {
+                        $all_total = $all_sub_total - Session::get('coupon_discount');
+                        $coupon_amount = Session::get('coupon_discount');
+                      }
+                    } // share coupon status if end
+                    elseif(($share_discount>0) && (Session::get('share_coupon_status')==1))
+                    {
+                      // Show coupon+ social
+                      if(Session::get('coupon_type')=='P')
+                      {
+                        $dis_percent = Session::get('coupon_discount');
+
+                        $dis_amnt = ($dis_percent/100) * $all_sub_total;
+                        $net_amnt = $all_sub_total - ($dis_amnt+$share_discount);
+                        if($net_amnt<0)
+                          $all_total = $all_sub_total;
+                        else
+                          $all_total = $net_amnt;
+
+
+                        $coupon_amount = $dis_amnt;
+                        $social_discount = $share_discount;
+                      }
+                      else
+                      {
+                        $all_total = $all_sub_total - (Session::get('coupon_discount')+$share_discount);
+                        $coupon_amount = Session::get('coupon_discount');
+                        $social_discount = $share_discount;
+                      }
+                    } // else share coupon status end 
+                    elseif(($share_discount>0) && (Session::get('share_coupon_status')==0))
+                    {
+                      // Show  social discount
+                      $all_total = $all_sub_total - $share_discount;
+                      $social_discount = $share_discount;
+                    } // else share coupon status end 
+                  
+                 }
+                 else // If there is no Coupon Discount
+                 {
+                    if($share_discount>0)
+                    {
+                      $all_total = $all_sub_total - $share_discount;
+                      $social_discount = $share_discount;
+                    }
+                    else
+                    {
+                      $all_total = $all_sub_total;
+                      $social_discount = $share_discount;
+                    }
+                    
+                 }
+
+                ?>
 						        <?php 
-						        if($grand_total<=$all_sitesetting['free_discount_rate']) 
-						            {
-						              $shipping_rate = $all_sitesetting['shipping_rate'];
-						            }
-						        elseif($grand_total>$all_sitesetting['free_discount_rate'])
+						        if($all_sub_total<=$all_sitesetting['free_discount_rate']) 
+					            {
+					              $shipping_rate = $all_sitesetting['shipping_rate'];
+					            }
+						        elseif($all_sub_total>$all_sitesetting['free_discount_rate'])
 						        {
 						          $shipping_rate = 0.00;
 						        }
@@ -684,15 +761,15 @@ $(document).ready(function() {
 							      <span>Sub-Total:</span>
 							      </td>
 							      <td class="text-right">
-							      <span>{!! ($all_total!='')?'$':'' !!}{!!  $all_total !!}</span>
+							      <span>{!! ($all_sub_total!='')?'$':'' !!}{!!  $all_sub_total !!}</span>
 							      </td>
 							     </tr>
 						      <?php 
-						      if(Session::has('coupon_type') && Session::has('coupon_discount'))
-						        {
+						      // if(Session::has('coupon_type') && Session::has('coupon_discount'))
+						      //   {
 						      ?>
 
-						      <tr>
+						      <!-- <tr>
 							      <td colspan="5"></td>
 							      <td class="text-left" colspan="2">
 							      <span>Discount(coupon code  {!! Session::get('coupon_code') !!}):</span>
@@ -700,11 +777,55 @@ $(document).ready(function() {
 							      <td class="text-right">
 							      <span> -${!! number_format($total_discount,2) !!}</span>
 							      </td>
-						      </tr>
+						      </tr> -->
 
 						      <?php 
-						        }
+						        // }
 						      ?>
+
+								<?php if($share_discount > 0 ){ ?>
+			                      <tr>
+				                      <td colspan="5"></td>
+								      <td class="text-left" colspan="2">
+			                        	<span>Social Discount:</span>
+			                          </td>
+			                        <td class="text-right">
+			                        <span><?php echo '- $'.number_format($social_discount,2);?></span>
+			                        </td>
+			                      </tr>
+			                      <?php } ?>
+
+			                      <?php 
+			                      if($share_discount == 0)
+			                      {
+			                        if(Session::has('coupon_discount') && Cart::count() > 0 ){ ?>
+			                        <tr>
+			                        <td colspan="5"></td>
+								      <td class="text-left" colspan="2">
+			                          <span>Discount(coupon code  {!! Session::get('coupon_code') !!}):</span>
+							      	  </td>
+			                          <td class="text-right">
+								      <span><?php echo '- $'.number_format($coupon_amount,2);?></span>
+								      </td>
+			                        </tr>
+			                        <?php } 
+			                      }
+			                      elseif(($share_discount > 0) && (Session::get('share_coupon_status')==1))
+			                      {
+			                      ?>
+			                        <tr>
+			                        <td colspan="5"></td>
+								      <td class="text-left" colspan="2">
+			                          <span>Discount(coupon code  {!! Session::get('coupon_code') !!}):</span>
+							      	  </td>
+			                          <td class="text-right">
+								      <span><?php echo '- $'.number_format($coupon_amount,2);?></span>
+								      </td>
+			                        </tr>
+			                      <?php 
+			                      }
+			                      ?>
+
 						      <tr>
 							      <td colspan="5"></td>
 							      <td class="text-left" colspan="2">
@@ -720,7 +841,7 @@ $(document).ready(function() {
 							      <span>Total:</span>
 							      </td>
 							      <td class="text-right">
-							      <span>{!! ($grand_total!='')?'$':'' !!}{!! number_format(($grand_total+$shipping_rate),2) !!}</span>
+							      <span>{!! ($all_total!='')?'$':'' !!}{!! number_format(($all_total+$shipping_rate),2) !!}</span>
 							      </td>
 						      </tr>
 							    </tbody>
