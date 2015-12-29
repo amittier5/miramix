@@ -5183,5 +5183,12 @@ span.weight_span {
 	 float:left;
 	 margin-bottom:5px !important;	
 }
+.filt_css.pull-right {
+    margin-right: 10px;
+}
+.custom-styles{
+	font-size: 16px;
+    line-height: 24px;	
+}
 
 

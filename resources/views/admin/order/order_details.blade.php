@@ -18,10 +18,9 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
             <div class="custom_addedlater clearfix">
 
             <h3 class="pull-left">Order History</h3>
-              @if($order_list->usps_label !='')
-                  <div class="pull-right">Label: <a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+              
                   </div>
-                @endif
+                
               <div class="bottom_dash clearfix">
                   
                   <div class="row">
@@ -43,6 +42,9 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       <p>
                       {!! isset($order_list->tracking_number) && ($order_list->tracking_number !='')?'<strong>Tracking Number: </strong>'.$order_list->tracking_number :''; !!}</br>
                       {!! isset($order_list->shipping_carrier) && ($order_list->shipping_carrier !='')?'<strong>Shipping Carrier: </strong>'.$order_list->shipping_carrier :''; !!}
+                      @if($order_list->usps_label !='')
+                      <div class="pull-left custom-styles"><strong>Label:</strong><a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+                      @endif
                       </p>
                     </div>
 
