@@ -213,7 +213,7 @@ public function printPdf($files){
 	foreach($files as $file){
 	$filecontents .= file_get_contents($file);
 	}
-	
+
 	$handle = printer_open();
 	printer_write($handle,$filecontents);
 	printer_close($handle);
