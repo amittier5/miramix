@@ -53,7 +53,7 @@ return [
         ],
 
     /*********** Local Database Details **********/
-
+ /* 
        'mysql' => [
            'driver'    => 'mysql',
            'host'      => env('DB_HOST', 'localhost'),
@@ -65,9 +65,9 @@ return [
            'prefix'    => '',
            'strict'    => false,
        ],
-
+   */
     /*********** Server Database Details **********/
- /*   
+  
    'mysql' => [
                'driver'    => 'mysql',
               'host'      => env('DB_HOST', 'localhost'),
@@ -79,7 +79,7 @@ return [
                'prefix'    => '',
                'strict'    => false,
             ]
-    */
+ 
 
 
         
