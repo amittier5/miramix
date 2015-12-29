@@ -281,8 +281,9 @@ public function update(Request $request, $id)
         
     }
 
-    public function push_order_process()
+    public function push_order_process($param = false)
     { 
+    	//echo $param;exit;
     	$usps_obj = new Usps();
     	$obj = new helpers();
         $all_process_orders = DB::table('add_process_order_labels')->get();
@@ -362,26 +363,30 @@ public function update(Request $request, $id)
         	}
         }
         // Delete from add_process_order_labels
-		//DB::table('add_process_order_labels')->delete();
+		DB::table('add_process_order_labels')->delete();
 
-		
-        $full_path = array();
-		if(!empty($all_filename)){
-			foreach ($all_filename as $file) {
-				
-				if($file!=""){
-					$full_path[]= './uploads/pdf/'.$file;
+		if($param==1){
+
+		    $full_path = array();
+			if(!empty($all_filename)){
+				foreach ($all_filename as $file) {
+					
+					if($file!=""){
+						$full_path[]= './uploads/pdf/'.$file;
+					}
+
 				}
-
 			}
+			if(!empty($full_path))
+			$usps_obj->new_printPdf($full_path);
+
 		}
-		$usps_obj->printPdf($full_path);
-		print_r($all_filename);exit;
+		//echo $flag;print_r($all_filename);exit;
 
 		if($flag==1)
 	    	Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 		else
-	    	Session::flash('error', 'No label is created due to invalid address.'); 
+	    	Session::flash('error', 'No label is created.'); 
 
 	    return redirect('admin/orders');
         

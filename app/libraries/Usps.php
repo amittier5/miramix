@@ -57,7 +57,7 @@ function USPSLabel($parameters_array){
 		
 
 		$array_data = json_decode(json_encode(simplexml_load_string($output)), true);
-
+		//print_r($array_data);exit;
 		
 		$ret_array = $this->generateLabel($array_data,$parameters_array['order_id']);
 		return $ret_array;
@@ -136,12 +136,14 @@ private function generateLabel($hasdata,$order_id){
 
 		
 		return array("filename"=>$usps_filename,"tracking_no"=>substr($hasdata['DeliveryConfirmationNumber'], 8));
-    }catch(\App\Http\Controllers\Exception $e)
-		{
-		 return Redirect::to('/admin/orders')->withErrors( $e->getErrors() ) ->withInput();
-		}
-		 
+    }
+    catch(\App\Http\Controllers\Exception $e)
+	{
+		
+	 return Redirect::to('/admin/orders')->withErrors( $e->getErrors() ) ->withInput();
 	}
+		 
+}
 
 	
 	
@@ -217,6 +219,22 @@ public function printPdf($files){
 	$handle = printer_open();
 	printer_write($handle,$filecontents);
 	printer_close($handle);
+}
+
+public function new_printPdf($files){
+
+	$filecontents='';
+	foreach($files as $file){
+	 	$filecontents = $filecontents.' '.$file;
+	 }
+	// print_r($filecontents);exit;
+	 //shell_exec('lpr label2.pdf label22.pdf');
+
+	 $output = shell_exec('lpr '.$filecontents);
+	//echo "<pre>$output</pre>";
+
+
+	
 }
 
 }
