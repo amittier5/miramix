@@ -281,8 +281,9 @@ public function update(Request $request, $id)
         
     }
 
-    public function push_order_process()
+    public function push_order_process($param = false)
     { 
+    	//echo $param;exit;
     	$usps_obj = new Usps();
     	$obj = new helpers();
         $all_process_orders = DB::table('add_process_order_labels')->get();
@@ -350,38 +351,43 @@ public function update(Request $request, $id)
 				$setting = DB::table('sitesettings')->where('name', 'email')->first();
 				$admin_users_email=$setting->value;
 				
-				/*$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
+				$sent = Mail::send('admin.order.statusemail', array('name'=>$user_name,'email'=>$user_email,'messages'=>$cmessage,'admin_users_email'=>$admin_users_email,'tracking'=>$tracking,'shipping'=>$shipping), 
 				
 				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
 				{
 					$message->from($admin_users_email);
-					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+					//$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+					$message->to('amit.unified@gmail.com', $user_name)->cc($admin_users_email)->subject($subject);
 					
-				});*/
+				});
 
         	}
         }
         // Delete from add_process_order_labels
-		//DB::table('add_process_order_labels')->delete();
+		DB::table('add_process_order_labels')->delete();
 
-		
-        $full_path = array();
-		if(!empty($all_filename)){
-			foreach ($all_filename as $file) {
-				
-				if($file!=""){
-					$full_path[]= './uploads/pdf/'.$file;
+		if($param==1){
+
+		    $full_path = array();
+			if(!empty($all_filename)){
+				foreach ($all_filename as $file) {
+					
+					if($file!=""){
+						$full_path[]= './uploads/pdf/'.$file;
+					}
+
 				}
-
 			}
+			if(!empty($full_path))
+			$usps_obj->new_printPdf($full_path);
+
 		}
-		$usps_obj->printPdf($full_path);
-		print_r($all_filename);exit;
+		//echo $flag;print_r($all_filename);exit;
 
 		if($flag==1)
 	    	Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 		else
-	    	Session::flash('error', 'No label is created due to invalid address.'); 
+	    	Session::flash('error', 'No label is created.'); 
 
 	    return redirect('admin/orders');
         

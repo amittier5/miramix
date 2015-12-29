@@ -3,15 +3,31 @@
 @section('content')
   
 @if(Session::has('success'))
-        <div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{!! Session::get('success') !!}</strong>
-        </div>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{!! Session::get('success') !!}</strong>
+    </div>
+ @endif
+ @if(Session::has('error'))
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{!! Session::get('error') !!}</strong>
+    </div>
  @endif
  <?php 
     $orderstatus = Session::get('orderstatus');
     $filterdate = Session::get('filterdate');
 ?> 
+<script type="text/javascript">
+    function callPush(){
+        if(confirm("Do you want to take print?"))
+            var param = 1;
+        else
+            var param = 0;
+        
+        window.location = '<?php echo url();?>/admin/push_order_process/'+param;
+    }
+</script>
     <div class="module">
           
         <form method="post" id="filterform" action="<?php echo url();?>/admin/orders/filter">
@@ -34,7 +50,7 @@
                 <div class="pull-left" style="margin-right: 10px;"><span>Filter by brand</span> <input type="text" name="brandemail" value="<?php echo $brandemail?>" id="brandemail" /></div>
                 <div class="pull-left"><span>Filter by date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
                 <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
-                <a href="<?php echo url();?>/admin/push_order_process" class="btn btn-success marge">Push</a>
+                <a href="javascript:callPush()"  class="btn btn-success marge">Push</a>
             </div>
         </form>
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
