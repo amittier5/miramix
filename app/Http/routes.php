@@ -145,6 +145,7 @@ Route:: post('/checkout-authorize/{id}','Frontend\CheckoutController@checkoutAut
 
 Route:: get('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin'); 
 Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin');
+Route:: post('/uspsAddressValidate','Frontend\CheckoutController@uspsAddressValidate');
 
 //======================== Paypal notify Url Call Start==============================//
 

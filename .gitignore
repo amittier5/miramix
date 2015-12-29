@@ -8,3 +8,6 @@ Homestead.json
 Homestead.yaml
 Homestead.json
 .htaccess
+config/database.php
+config
+config/*
