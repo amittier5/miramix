@@ -145,6 +145,7 @@ class CheckoutController extends BaseController {
 
     /* ==================== For Step 4 ========================================= */	
      $sitesettings = DB::table('sitesettings')->get();
+     $all_sitesetting = array();
         if(!empty($sitesettings))
         {
             foreach($sitesettings as $each_sitesetting)
@@ -157,6 +158,8 @@ class CheckoutController extends BaseController {
               {
                 $free_discount_rate = ((float)$each_sitesetting->value);
               }
+
+              $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value;
             }
         }
         // All Cart Contain  In Session Will Display Here //
@@ -202,6 +205,19 @@ class CheckoutController extends BaseController {
             $formfactor_name = $formfactor->name;
             $formfactor_id = $formfactor->id;
 
+            /* Discount Share Start */
+            
+            if(Session::has('product_id'))
+            {
+                $share_discount = $all_sitesetting['discount_share'];
+            }   
+            else
+            {
+                $share_discount = '';
+            } 
+
+            /* Discount Share End */
+
             $cart_result[] = array('rowid'=>$each_content->row_id,
                 'product_name'=>$each_content->product_name,
                 'product_slug'=>$brandmember->product_slug,
@@ -213,6 +229,7 @@ class CheckoutController extends BaseController {
                 'formfactor_id'=>$formfactor_id,
                 'brand_name'=>$brand_name,
                 'brand_slug'=>$brandmember->slug,
+                'share_discount'=>$share_discount,
                 'subtotal'=>$each_content->sub_total);
 
         }

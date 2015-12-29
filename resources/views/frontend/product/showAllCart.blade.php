@@ -65,7 +65,7 @@
                   <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}">{!! ucwords($eachcart['product_name']) !!}</a><br>
                   {!! $eachcart['duration'] !!}<br>
                   {!! $eachcart['formfactor_name'] !!}
-                  <p>{!! ($eachcart['share_discount']!='')?'<strong> Social Discount : </strong> - $'.(number_format($eachcart['share_discount'],2)):'' !!}</p>
+                  <!-- <p>{!! ($eachcart['share_discount']!='')?'<strong> Social Discount : </strong> - $'.(number_format($eachcart['share_discount'],2)):'' !!}</p> -->
                   </td>
                   <td><a href="<?php echo url();?>/brand-details/{!! $eachcart['brand_slug'] !!}">{!! $eachcart['brand_name'] !!}</a></td>
                   <td><div class="input-group bootstrap-touchspin pull-left"><span class="input-group-addon bootstrap-touchspin-prefix"></span><input type="text" value="<?php echo $eachcart['qty']; ?>" id="cart<?php echo $i;?>" name="demo1" class="form-control demo1"></div><a href="javascript:void(0);" class="refresh_btn" onclick="updateCart('<?php echo $eachcart['rowid'];?>','cart<?php echo $i;?>')"><i class="fa fa-refresh"></i></a></td>
