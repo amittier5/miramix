@@ -236,7 +236,6 @@ class CartController extends BaseController {
                 'brand_slug'=>$brandmember->slug,
                 'share_discount'=>$share_discount,
                 'subtotal'=>$each_content->subtotal);
-
         }
 
         return view('frontend.product.showAllCart',compact('cart_result'),array('title'=>'cart product'));
@@ -309,27 +308,20 @@ class CartController extends BaseController {
             Session::put('coupon_discount',$counpon_res[0]->discount);
             Session::put('share_coupon_status',$counpon_res[0]->share_coupon); // if 1="discount coupon + share coupon rate", 0="Only discount coupon"//
             
-            $content = $obj->content();
-            foreach($content as $each_content)
-            {
+            //$content = $obj->content();
+            
             /* Discount Share Start */
-                $user_share = DB::table('product_shares')
-                                    ->where('user_email','=',Session::get('member_user_email'))
-                                    ->where('product_id','=',$each_content->id)
-                                    ->count();
-                                    //print_r($user_share); exit;
-                if($user_share >0)
+
+                if(Session::has('product_id'))
                 {
                     $share_discount = 1;
-                    break;
                 }   
                 else
                 {
                     $share_discount = 0;
-                }                
-                /* Discount Share End */
-            }
-
+                }               
+            /* Discount Share End */
+           
             if($share_discount ==1 && $counpon_res[0]->share_coupon==1) //social discount and also apply valid coupon with social
             {
                 Session::flash('success', 'Your coupon code is active.'); 
