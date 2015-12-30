@@ -53,12 +53,7 @@ return [
         ],
 
     /*********** Local Database Details **********/
-<<<<<<< HEAD
 
-=======
->>>>>>> 4209236d2f8be8c6d401e3a773726db2bb8d672d
-
-/*
     'mysql' => [
 
            'driver'    => 'mysql',
@@ -72,23 +67,16 @@ return [
            'strict'    => false,
 
        ],
-<<<<<<< HEAD
+
    
     /*********** Server Database Details **********/
 
 
-     /*   
-=======
-  */
+     
     /*********** Server Database Details **********/
 
 
- 
->>>>>>> 4209236d2f8be8c6d401e3a773726db2bb8d672d
-
-
-
-         'mysql' => [
+         /*'mysql' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'miramixp_live'),
@@ -98,9 +86,9 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             'strict'    => false,
-        ],
+        ],*/
 
-*/
+
 
         'pgsql' => [
             'driver'   => 'pgsql',
