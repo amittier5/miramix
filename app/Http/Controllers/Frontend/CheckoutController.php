@@ -233,9 +233,8 @@ class CheckoutController extends BaseController {
                 'subtotal'=>$each_content->sub_total);
 
         }
-	$cartcontent = Cart::content();
 
-		return view('frontend.checkout.checkout_allstep',compact('body_class','shipAddress','allcountry','allstates','cart_result','shipping_rate','cartcontent'),array('title'=>'MIRAMIX | Checkout-Step1'));
+		return view('frontend.checkout.checkout_allstep',compact('body_class','shipAddress','allcountry','allstates','cart_result','shipping_rate'),array('title'=>'MIRAMIX | Checkout-Step1'));
     }
 
     //
@@ -589,7 +588,6 @@ class CheckoutController extends BaseController {
 										'order_total'            	=> Request::input('grand_total'),
 										'sub_total'					=> Request::input('sub_total'),
 										'discount'					=> Request::input('discount'),
-										'redeem_amount'					=> Request::input('redeem_amount'),
 										'order_status'           	=> 'pending',
 										'shipping_address_id'    	=> $shp_address->id,
 										'shipping_cost'    			=> Request::input('shipping_rate'),
@@ -879,12 +877,10 @@ class CheckoutController extends BaseController {
 				    
 				    
 				
-				$order_total=$order->sub_total;
+				$order_total=$order->order_total;
 				$price_for_point = DB::table('sitesettings')->where('name','price_for_point')->first();
 				$points=round($order_total/$price_for_point->value)+$user_details->user_points;
-				if($order->redeem_amount>0){
-				$points=$points-($order->redeem_amount/$price_for_point->value);
-				}
+				
 				DB::table('brandmembers')
 			                                ->where('id', $user_id)
 			                                ->update(['user_points' => $points]);
@@ -1405,13 +1401,9 @@ class CheckoutController extends BaseController {
 		    
 		    
 		    //update user's points
-		    $order_total=$order_details->sub_total;
+		    $order_total=$order_details->order_total;
 				$price_for_point = DB::table('sitesettings')->where('name','price_for_point')->first();
 				$points=round($order_total/$price_for_point->value)+$user_details->user_points;
-				
-				if($order_details->redeem_amount>0){
-				$points=$points-($order_details->redeem_amount/$price_for_point->value);
-				}
 				
 				DB::table('brandmembers')
 			                                ->where('id', Session::get('member_userid'))
