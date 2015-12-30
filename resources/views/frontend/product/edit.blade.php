@@ -737,8 +737,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : ingredient_id  ,_token: '{!! csrf_token() !!}',ingredient_text : ingredient_text,id_tr : id_tr},
           success:function(data)
           {
-            if(data !='' ) 
-            {
+            
 			$('#load_table').show();
 			$('.form_check_table table').css({'opacity':0});
 			
@@ -785,7 +784,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			 	checktable_val(); 
 			  
 			  
-            }
+            
           }
       });
 
