@@ -53,7 +53,7 @@ return [
         ],
 
     /*********** Local Database Details **********/
-/*
+
 
     'mysql' => [
 
@@ -68,11 +68,11 @@ return [
            'strict'    => false,
 
        ],
-  */ 
+  
     /*********** Server Database Details **********/
 
 
-     
+ /*    
 
 
 
@@ -88,7 +88,7 @@ return [
             'strict'    => false,
         ],
 
-
+*/
 
         'pgsql' => [
             'driver'   => 'pgsql',
