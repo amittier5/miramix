@@ -395,7 +395,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			each_weightval=$this.val();	
 		  }	
           total_wg += parseFloat(each_weightval);
-          console.log( index + ": " + each_weightval );
+          //console.log( index + ": " + each_weightval );
         });
 		total_wg=total_wg.toFixed(2);
 		//alert(total_wg);
@@ -414,7 +414,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			 this_total_val=$this.val(); 
 		  }
           total_pr += parseFloat(this_total_val);
-          console.log( index + ": " + this_total_val );
+          //console.log( index + ": " + this_total_val );
         });
 		//alert(total_pr);
 
@@ -878,7 +878,7 @@ function checktable_val(){
       // Individual ingredient
       $(document).on('click','.remove_row',function(){		
         var $this=$(this);
-		console.log($this);
+		//console.log($this);
 		//calc_weight_ingred($this);
 		var tot_recieve=calc_weight_ingred($this);
 		//alert(tot_recieve);
@@ -1404,7 +1404,7 @@ function checktable_val(){
   });
  function calc_weight_ingred(obj){
 	var total=0;
-	console.log(obj);
+	//console.log(obj);
     var $this=obj;
 	
 	//alert($this.attr('class'));
