@@ -146,15 +146,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                                  <tr>
                                     <td colspan="3">&nbsp;</td>
                                     <td class="text-right">Discount</td>
-                                    <td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
-                                </tr>
-                                 <?php } ?>
-                                 
-                                 <?php if($order_list->redeem_amount!=0){?>
-                                 <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Redeem Amount</td>
-                                    <td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
+                                    <td class="text-right">${!! number_format($order_list->discount,2); !!}</td>
                                 </tr>
                                  <?php } ?>
                                 <tr>
