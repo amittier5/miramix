@@ -141,7 +141,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             ignore: [],
 
             rules: {
-                name: "required"/*,
+                name: "required",
                 chemical_name: "required",
                 price_per_gram: {
                     required:true,
@@ -156,12 +156,12 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
                             }
                         },
                 image: "required",
-                'form_factor[]': "required"*/
+                'form_factor[]': "required"
             },
             
             // Specify the validation error messages
             messages: {
-                name: "Please enter ingredient name."/*,
+                name: "Please enter ingredient name.",
                 chemical_name: "Please enter chemical name.",
                 price_per_gram: {
                     required:"Please enter price per gram.",
@@ -170,14 +170,14 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
                 list_manufacture: "Please enter manufacture.",
                 description: "Please enter description.",
                 image: "Please upload ingredient image.",
-                'form_factor[]': "Please select atleast one form factor."*/
+                'form_factor[]': "Please select atleast one form factor."
             },               
 
             submitHandler: function(form, event) {
 				total_weight=parseFloat(total_weight);
 				$('.comp_value').removeClass('error_red');
 				$('.module-head .appended_error').remove();
-    			/*if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){
+    			if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){
 					
 						if(total!=100){
 							$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
@@ -221,19 +221,25 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight.toFixed(3)+'mg');
 					//alert('else');
 					form.submit();
-				}*/
-
-				form.submit();
+				}
     			
             }
         });
 	  
-      /*$(document).on('click','.sub_btn_spec',function(e){ 
+      $(document).on('click','.sub_btn_spec',function(e){ 
 	  //e.preventDefault();
 	  //alert( "Valid: " + $("#ingredient_frm").valid() );
 		 total=0;
 		 total_weight=0;
-		
+		 /*$('.input_fields_wrap').each(function(index, element) {
+            var $this=$(this);
+			$this.find('.vit_text').each(function(index, element) {
+                var this_elem=$(this);
+				vit_total=parseInt(vit_total)+parseInt(this_elem.val());
+            });
+			$this.find('.spec_btn').append('<p>'+vit_total+'</p>')
+			
+        });*/
 		$('.input_fields_wrap').each(function(index, element) {
 			var total_vitval=0;
             var $this=$(this);
@@ -320,7 +326,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 		 
 		  
 		
-	  });*/
+	  });
 		function comp_value_calc(){
 			$('.comp_value').each(function(index, element) {
 						var $this=$(this);
@@ -356,8 +362,8 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
   });
 </script>
 
-<!-- <div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p id="forwt_calc">Total Weight is:0</p><p id="comp_val">Total Component(%) Value:<span>0</span></div> -->
-        {!! Form::open(['url' => 'admin/ingredient','method'=>'POST', 'files'=>true,'class'=>'form-horizontal row-fluid','id'=>'ingredient_frm','autocomplete'=>'Off']) !!}
+<div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p id="forwt_calc">Total Weight is:0</p><p id="comp_val">Total Component(%) Value:<span>0</span></div>
+        {!! Form::open(['url' => 'admin/ingredient','method'=>'POST', 'files'=>true,'class'=>'form-horizontal row-fluid','id'=>'ingredient_frm']) !!}
             <div class="control-group">
                 <label class="control-label" for="basicinput">Ingredient Name *</label>
 
@@ -367,7 +373,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Chemical Name </label>
+                <label class="control-label" for="basicinput">Chemical Name *</label>
 
                 <div class="controls">
                      {!! Form::text('chemical_name',null,['class'=>'span8','id'=>'chemical_name']) !!}
@@ -375,7 +381,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Price / gm </label>
+                <label class="control-label" for="basicinput">Price / gm *</label>
 
                 <div class="controls">
                      {!! Form::text('price_per_gram',null,['class'=>'span8','id'=>'price_per_gram']) !!}
@@ -383,7 +389,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Manufacture </label>
+                <label class="control-label" for="basicinput">Manufacture *</label>
 
                 <div class="controls">
                      {!! Form::text('list_manufacture',null,['class'=>'span8','id'=>'list_manufacture']) !!}
@@ -391,7 +397,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             </div>
             
             <div class="control-group">
-                <label class="control-label" for="basicinput">Image </label>
+                <label class="control-label" for="basicinput">Image *</label>
 
                 <div class="controls">
                      {!! Form::file('image',null,['class'=>'span8','id'=>'image_file']) !!}
@@ -399,7 +405,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
             </div>
             
             <div class="control-group">
-                <label class="control-label" for="basicinput">Description </label>
+                <label class="control-label" for="basicinput">Description *</label>
                 <div class="controls">
                      {!! Form::textarea('description',null,['class'=>'span8 ckeditor','id'=>'description']) !!}
                 </div>
@@ -407,25 +413,25 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
              <div class="control-group">
                 <label class="control-label" for="basicinput">Type </label>
                 <div class="controls">
-                    {!! Form::select('type', array('' => 'Choose any','synthetic' => 'Synthetic', 'whole_food' => 'Whole Food')); !!}
+                    {!! Form::select('type', array('synthetic' => 'Synthetic', 'whole_food' => 'Whole Food'),'synthetic'); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">Organic</label>
                 <div class="controls">
-                    {!! Form::select('organic', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No')); !!}
+                    {!! Form::select('organic', array('yes' => 'Yes', 'no' => 'No'),'yes'); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">Antibiotic Free</label>
                 <div class="controls">
-                    {!! Form::select('antibiotic_free', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No')); !!}
+                    {!! Form::select('antibiotic_free', array('yes' => 'Yes', 'no' => 'No'),'yes'); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">GMO</label>
                 <div class="controls">
-                    {!! Form::select('gmo', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No')); !!}
+                    {!! Form::select('gmo', array('yes' => 'Yes', 'no' => 'No'),'yes'); !!}
                 </div>
             </div>
             <div class="control-group">
@@ -437,7 +443,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 
                 </div>
             </div>
-            <!-- <div class="tot_wrap">
+            <div class="tot_wrap">
                 <div class="input_fields_wrap" id="0">
                     <div class="control-group comp_val">
                         <label class="control-label" for="basicinput">Components Group</label>
@@ -484,7 +490,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
                     </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
             
             <div class="control-group">
                 <label class="control-label" for="basicinput">Status</label>
@@ -519,14 +525,14 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
         e.preventDefault();
         
             x++; //text box increment
-            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><input type="hidden" id="hid_'+x+'" class="hid_value" value="0" /><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div></div>'); //add input box
-			setTimeout(function(){
-				$('html, body').animate({
-					scrollTop: $("div#"+x+".input_fields_wrap").offset().top
-				}, 400);
-				$("div#"+x+".input_fields_wrap").addClass('blink_me');
-				
-			},600);
+            $(wrapper).append('<div class="input_fields_wrap" id="'+x+'"><input type="text" id="hid_'+x+'" class="hid_value" value="0" /><div class="control-group comp_val"><label class="control-label" for="basicinput">Components Group</label><div class="controls"><a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Remove This Group</a><p class="tot_vitval"></p></div></div><div class="control-group"><label class="control-label" for="basicinput">Component Name</label><div class="controls"><input class="span8 comp_name" type="text" name="component_name['+x+'][name]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Component(%) Value</label><div class="controls"><input class="span8 comp_value" type="text" name="component_name['+x+'][percentage]"></div></div><div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+x+'][vitamin][]"><a href="javascript:void(0);" class="btn btn-success add_vitamin">+</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+x+'][weight][]"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name['+x+'][vitamin_weight][0]" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div></div>'); //add input box
+		setTimeout(function(){
+			$('html, body').animate({
+				scrollTop: $("div#"+x+".input_fields_wrap").offset().top
+			}, 400);
+			$("div#"+x+".input_fields_wrap").addClass('blink_me');
+			
+		},600);
 		setTimeout(function(){
 			$("div#"+x+".input_fields_wrap").removeClass('blink_me');	
 			},1600);
@@ -553,7 +559,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 		var this_id=$(this).parent().parent().parent().parent('div.input_fields_wrap').attr('id');
 		var hidd_value = $this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val();
 		$this.parent().parent().parent().parent('div.input_fields_wrap').find('.hid_value').val(++hidd_value);
-		//alert(hidd_value);
+		alert(hidd_value);
 		$this.parent().parent().parent().parent('div.input_fields_wrap').append('<div class="new_panel_section"><div class="control-group"><label class="control-label" for="basicinput">Vitamin</label><div class="controls"><input class="span8 tags_auto vit_name" type="text" name="component_name['+this_id+'][vitamin][]" id="vitamin'+a+'"><a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a></div></div><div class="control-group new_field"><label class="control-label" for="basicinput">Vitamin Weight</label><div class="controls"><input class="span8 tags_auto vit_text" type="text" name="component_name['+this_id+'][weight][]" id="weight'+a+'"></div></div><div class="control-group"><label class="control-label" for="basicinput">Vitamins Weight Measurement</label><div class="controls"><label><input class="comp_value_radio" checked="" type="radio" name="component_name['+this_id+'][vitamin_weight]['+hidd_value+']" id="weight_measurement1_'+a+'" value="0">Miligram</label><label><input class="comp_value_radio" type="radio" name="component_name['+this_id+'][vitamin_weight]['+hidd_value+']" id="weight_measurement2_'+a+'" value="1">Microgram</label></div></div></div>');
 		//alert('#vitamin'+a);	
 		
@@ -575,6 +581,12 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 		vit_weightval();
 
     });
+	
+	$(document).on('blur','.tags_auto',function(){
+		//alert();
+	});
+	
+	
 	
 });
    </script>     

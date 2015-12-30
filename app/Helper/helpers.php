@@ -423,6 +423,21 @@ public function get_last_query() {
        
         return $cart_content;
     }
+    
+    public function demandredeem($points,$amount){
+	
+	$cart_content = parent::content();
+        if($points && $amount){
+
+            $cart_content->user_points = $points;
+            $cart_content->redeem_amount = $amount;
+        }
+
+
+       
+        return $cart_content;
+	
+    }
 
 
 
