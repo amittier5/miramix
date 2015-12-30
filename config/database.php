@@ -53,8 +53,12 @@ return [
         ],
 
     /*********** Local Database Details **********/
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4209236d2f8be8c6d401e3a773726db2bb8d672d
 
+/*
     'mysql' => [
 
            'driver'    => 'mysql',
@@ -68,11 +72,19 @@ return [
            'strict'    => false,
 
        ],
+<<<<<<< HEAD
    
     /*********** Server Database Details **********/
 
 
      /*   
+=======
+  */
+    /*********** Server Database Details **********/
+
+
+ 
+>>>>>>> 4209236d2f8be8c6d401e3a773726db2bb8d672d
 
 
 
