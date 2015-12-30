@@ -68,12 +68,12 @@ return [
            'strict'    => false,
 
        ],
-
+  
     /*********** Server Database Details **********/
 
 
-     
-/*
+ /*    
+
 
 
          'mysql' => [
@@ -87,8 +87,8 @@ return [
             'prefix'    => '',
             'strict'    => false,
         ],
-*/
 
+*/
 
         'pgsql' => [
             'driver'   => 'pgsql',
