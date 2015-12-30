@@ -147,7 +147,7 @@ var vit_car=0;
         ignore: [],
 
         rules: {
-            name: "required",
+            name: "required"/*,
             chemical_name: "required",
             price_per_gram: {
                 required:true,
@@ -160,35 +160,30 @@ var vit_car=0;
                         {
                         CKEDITOR.instances.description.updateElement();
                         }
-                    }
+                    }*/
         },
         
         // Specify the validation error messages
         messages: {
-            name: "Please enter ingredient name.",
+            name: "Please enter ingredient name."/*,
             chemical_name: "Please enter chemical name.",
             price_per_gram: {
                 required:"Please enter price per gram.",
                 number:"Input only numbers."
             },
             list_manufacture: "Please enter manufacture.",
-            description: "Please enter description."
+            description: "Please enter description."*/
         },               
 
         submitHandler: function(form, event) {
 			//alert('submithandler');
           //alert(form_notsubmit_vitamin+'///'+form_notsubmit_value+'////'+form_notsubmit_name)
 
-          		//alert('vit_car:'+vit_car);
-				//alert('total:'+total);
-				//alert('com_namevar:'+com_namevar);
-				//alert('com_valvar:'+com_valvar);
-				//alert('total_weight:'+total_weight);
-				//if(total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight<100){
+          	
 				total_weight=parseFloat(total_weight);	
 				$('.comp_value').removeClass('error_red');
 				$('.module-head .appended_error').remove();
-				if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){					
+				/*if( total!=100 || vit_car==1 || com_namevar==1 || com_valvar==1 || total_weight>1000){					
 						if(total!=100){
 							$('.module-head').append('<label class="appended_error">Total Amount For all The component(%) should be equal to 100</label>');	
 							$('.comp_value').each(function(index, element) {
@@ -232,18 +227,18 @@ var vit_car=0;
 					$('.tot_vit_weight #forwt_calc').html('Total Weight is:'+total_weight);
 					//alert(total_weight);
 					form.submit();
-				}
+				}*/
        
-    
+    		form.submit();
       
         }
     });	
 	  
-    $(document).on('click','.sub_btn_spec',function(){
-		   total=0;
-		 total_weight=0;
+    /*$(document).on('click','.sub_btn_spec',function(){
+		total=0;
+		total_weight=0;
 		 
-		 $('.input_fields_wrap').each(function(index, element) {
+		$('.input_fields_wrap').each(function(index, element) {
 			var total_vitval=0;
             var $this=$(this);
 			var this_id=$this.attr('id');
@@ -310,7 +305,8 @@ var vit_car=0;
          });
 		 
          comp_value_calc();
-	  });
+	});*/
+
     // Setup form validation on the #register-form element
     function comp_value_calc(){
 		$('.comp_value').each(function(index, element) {
@@ -343,9 +339,9 @@ var vit_car=0;
   
   
   </script>
-<div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p id="forwt_calc">Total Weight is:0</p><p id="comp_val">Total Component(%) Value:<span>0</span></div>     
+<!-- <div class="tot_vit_weight" style="position: fixed;right: 0;top: 80px;width: 140px;padding: 20px 20px;border: 1px solid #ccc;background: #fff;border-radius: 2px;text-align: center;"><p id="forwt_calc">Total Weight is:0</p><p id="comp_val">Total Component(%) Value:<span>0</span></div>   -->   
 
-        {!! Form::model($ingredient,['method' => 'PATCH','files'=>true,'route'=>['admin.ingredient.update',$ingredient->id],'class'=>'form-horizontal row-fluid','id'=>'edit_frm']) !!}
+        {!! Form::model($ingredient,['method' => 'PATCH','files'=>true,'route'=>['admin.ingredient.update',$ingredient->id],'class'=>'form-horizontal row-fluid','id'=>'edit_frm','autocomplete'=>'Off']) !!}
 
         <div class="control-group">
                 <label class="control-label" for="basicinput">Ingredient Name *</label>
@@ -356,7 +352,7 @@ var vit_car=0;
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Chemical Name *</label>
+                <label class="control-label" for="basicinput">Chemical Name </label>
 
                 <div class="controls">
                      {!! Form::text('chemical_name',null,['class'=>'span8','id'=>'chemical_name']) !!}
@@ -364,7 +360,7 @@ var vit_car=0;
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Price / gm *</label>
+                <label class="control-label" for="basicinput">Price / gm </label>
 
                 <div class="controls">
                      {!! Form::text('price_per_gram',null,['class'=>'span8','id'=>'price_per_gram']) !!}
@@ -372,24 +368,26 @@ var vit_car=0;
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="basicinput">Manufacture *</label>
+                <label class="control-label" for="basicinput">Manufacture </label>
 
                 <div class="controls">
                      {!! Form::text('list_manufacture',null,['class'=>'span8','id'=>'list_manufacture']) !!}
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="basicinput">Image *</label>
+                <label class="control-label" for="basicinput">Image </label>
 
                 <div class="controls">
-                     {!! Form::file('image',null,['class'=>'span8','id'=>'image_file']) !!}
+                    {!! Form::file('image',['class'=>'span8 files_img','id'=>'image_file']) !!}
+                    @if($ingredient->image!="")
                     <p><img  src="<?php echo url()?>/uploads/ingredient/{!! $ingredient->image; !!}" class="nav-avatar spec_navavatar"></p>
+                    @endif
                     {!! Form::hidden('hidden_image',$ingredient->image,['class'=>'span8']) !!}
                 </div>
             </div>
             
             <div class="control-group">
-                <label class="control-label" for="basicinput">Description *</label>
+                <label class="control-label" for="basicinput">Description </label>
                 <div class="controls">
                      {!! Form::textarea('description',null,['class'=>'span8 ckeditor','id'=>'description']) !!}
                 </div>
@@ -397,25 +395,25 @@ var vit_car=0;
              <div class="control-group">
                 <label class="control-label" for="basicinput">Type </label>
                 <div class="controls">
-                    {!! Form::select('type', array('synthetic' => 'Synthetic', 'whole_food' => 'Whole Food'),null, ['class' => 'field']); !!}
+                    {!! Form::select('type', array('' => 'Choose any','synthetic' => 'Synthetic', 'whole_food' => 'Whole Food'),null, ['class' => 'field']); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">Organic</label>
                 <div class="controls">
-                    {!! Form::select('organic', array('yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
+                    {!! Form::select('organic', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">Antibiotic Free</label>
                 <div class="controls">
-                    {!! Form::select('antibiotic_free', array('yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
+                    {!! Form::select('antibiotic_free', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="basicinput">GMO</label>
                 <div class="controls">
-                    {!! Form::select('gmo', array('yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
+                    {!! Form::select('gmo', array('' => 'Choose any','yes' => 'Yes', 'no' => 'No'),null, ['class' => 'field']); !!}
                 </div>
             </div>
             <div class="control-group">
@@ -427,73 +425,64 @@ var vit_car=0;
 
                 </div>
             </div>
+            <?php 
+            if(!empty($all_components)){
+            ?>
             <div class="tot_wrap">
                
-                    <div class="control-group">
-                        <label class="control-label" for="basicinput">Components Group</label>
-                        <div class="controls">
-                             <a href="javascript:void(0);" class="btn btn-success spec_btn"><span>+</span>Add Component Group</a>
-                             
-                        </div>
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Components Group</label>
+                    <div class="controls">
+                        <a href="javascript:void(0);" class="btn btn-success spec_btn"><span>+</span>Add Component Group</a>                         
                     </div>
-                     <!--  <div class="control-group">
-                        <label class="control-label" for="basicinput">Vitamins Weight Measurement</label>
+                </div>
+                
+           <?php 
+                $i=0;
+                foreach($all_components as $each_component)
+                {
+                  //echo $each_component['component_details']->name;
+               ?>
+               <div class="input_fields_wrap" id="<?php echo $i;?>">
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Components Group</label>
+                    <div class="controls">
+                         <a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Delete Component Group</a>
+                         <p class="tot_vitval"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Component Name</label>
 
-                      <div class="controls">
-                             <input class="comp_value" <?php if($ingredient->weight_measurement==0){?> checked <?php } ?> type="radio" name="weight_measurement" id="weight_measurement1" value="0">Miligram<br/>
-                             <input class="comp_value" <?php if($ingredient->weight_measurement==1){?> checked <?php } ?>  type="radio" name="weight_measurement" id="weight_measurement2" value="1">Microgram
-                        </div>
-                    </div>-->
-                    <?php 
-                    // echo "<pre>"; print_r($all_components); exit;
-                   // echo $all_components[0]['component_details']->id;
-                   //  exit;
+                    <div class="controls">
+                         <input class="span8 comp_name" type="text" name="component_name[<?php echo $i;?>][name]" value="<?php echo $each_component['component_details']->component_name;?>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Component(%) Value</label>
 
-                    $i=0;
-                    foreach($all_components as $each_component)
-                    {
-                      //echo $each_component['component_details']->name;
-                      ?>
-                   <div class="input_fields_wrap" id="<?php echo $i;?>">
-                    <div class="control-group">
-                        <label class="control-label" for="basicinput">Components Group</label>
-                        <div class="controls">
-                             <a href="javascript:void(0);" class="btn btn-danger remove_btn"><span>-</span>Delete Component Group</a>
-                             <p class="tot_vitval"></p>
-                        </div>
+                    <div class="controls">
+                         <input class="span8 comp_value" type="text" name="component_name[<?php echo $i;?>][percentage]" value="<?php echo $each_component['component_details']->percentage;?>">
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="basicinput">Component Name</label>
+                </div>
 
-                        <div class="controls">
-                             <input class="span8 comp_name" type="text" name="component_name[<?php echo $i;?>][name]" value="<?php echo $each_component['component_details']->component_name;?>">
-                        </div>
+                <?php 
+                    //foreach($each_component['vitamins'] as $each_vitamin) {
+                    for($l=0;$l<count($each_component['vitamins']);$l++) {
+                  ?>
+                <div class="new_panel_section"><div class="control-group">
+                    <label class="control-label" for="basicinput">Vitamin</label>
+                    <div class="controls">
+                    <input class="span8 tags_auto vit_name" type="text" name="component_name[<?php echo $i;?>][vitamin][]" value="<?php echo $each_component['vitamins'][$l];?>">
+                         <a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="basicinput">Component(%) Value</label>
-
-                        <div class="controls">
-                             <input class="span8 comp_value" type="text" name="component_name[<?php echo $i;?>][percentage]" value="<?php echo $each_component['component_details']->percentage;?>">
-                        </div>
+                </div>
+                <div class="control-group new_field">
+                    <label class="control-label" for="basicinput">Vitamin Weight</label>
+                    <div class="controls">
+                         <input class="span8 tags_auto vit_text" type="text" name="component_name[<?php echo $i;?>][weight][]" value="<?php echo $each_component['weights'][$l];?>">
                     </div>
-
-                    <?php 
-                        //foreach($each_component['vitamins'] as $each_vitamin) {
-                        for($l=0;$l<count($each_component['vitamins']);$l++) {
-                      ?>
-                    <div class="new_panel_section"><div class="control-group">
-                        <label class="control-label" for="basicinput">Vitamin</label>
-                        <div class="controls">
-                        <input class="span8 tags_auto vit_name" type="text" name="component_name[<?php echo $i;?>][vitamin][]" value="<?php echo $each_component['vitamins'][$l];?>">
-                             <a href="javascript:void(0);" class="btn btn-danger remove_vitamin">-</a>
-                        </div>
-                    </div>
-                    <div class="control-group new_field">
-                        <label class="control-label" for="basicinput">Vitamin Weight</label>
-                        <div class="controls">
-                             <input class="span8 tags_auto vit_text" type="text" name="component_name[<?php echo $i;?>][weight][]" value="<?php echo $each_component['weights'][$l];?>">
-                        </div>
-                    </div>
+                </div>
 		    
 		    <div class="control-group"><label for="basicinput" class="control-label">Vitamins Weight Measurement</label><div class="controls"><label><input type="radio" value="0" id="weight_measurement<?php echo $i;?>_<?php echo $l?>" name="component_name[<?php echo $i;?>][vitamin_weight_<?php echo $l?>][]" class="comp_value_radio" <?php if ($each_component['vitamin_weight'][$l]==0){echo 'checked="checked"';}?>>Miligram</label><label><input type="radio" value="1" id="weight_measurement<?php echo $i;?>_<?php echo $l?>" name="component_name[<?php echo $i;?>][vitamin_weight_<?php echo $l?>][]" class="comp_value_radio" <?php if ($each_component['vitamin_weight'][$l]==1){echo 'checked="checked"';}?>>Microgram</label></div></div>
 		    
@@ -510,11 +499,13 @@ var vit_car=0;
                   </div>    
                  <?php 
                     $i++;
-                   } 
-                  ?>
+                   }             
+              ?>
                
             </div>
-            
+            <?php
+             }
+            ?>
             
 
 
@@ -530,13 +521,14 @@ var vit_car=0;
         {!! Form::close() !!}
 
 
-   <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function() {
    
     var max_fields      = 10; //maximum input boxes allowed
     var wrapper         = $(".tot_wrap"); //Fields wrapper
     var add_button      = $(".spec_btn"); //Add button ID
-    var a=<?php echo count($each_component['vitamins'])+1?>;
+    
+    var a= 1;
     var x = '<?php  echo count($all_components)-1;?>'; //initlal text box count
     $(document).on('click','.spec_btn',function(e){ //on add input button click
         e.preventDefault();
@@ -588,6 +580,31 @@ var vit_car=0;
     });
 	
 });
-   </script>     
+</script>     
 
-    @stop
+<script type="text/javascript">
+  $( document ).ready(function() {       
+          
+     var _URL = window.URL || window.webkitURL;
+     $(".files_img").change(function (e) {
+         var file, img;
+         if ((file = this.files[0])) {
+             img = new Image();
+             img.onload = function () {
+                if(this.width>100 || this.height>100)
+               {
+                     sweetAlert("Oops...", "Image size should be less than 2MB", "error");
+               }
+               /*else
+               {
+                     $('#image_error').html(""); 
+               }*/
+             };
+             img.src = _URL.createObjectURL(file);
+         }
+     });   
+  })
+
+</script>
+
+@stop
