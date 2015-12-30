@@ -193,6 +193,7 @@ class ProductController extends BaseController {
       $product['brandmember_id'] = Session::get('brand_userid');
       //$product['brandmember_id'] = 33;
       $product['tags'] = Request::input('tags');       
+      $product['visiblity'] = Request::input('visiblity');       
       $product['sku'] = $obj->random_string(9);  
       //$product['tags'] = 'test';
       $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
@@ -331,12 +332,11 @@ class ProductController extends BaseController {
         $formfacator = array();
         $ingredient_id = Input::get('ingredient_id');
         //$ingredient_id = 36;
-        //$ingredients_details = DB::table('ingredients')->where('id','=',$ingredient_id)->first();
-
+       
         $ingredients_details = DB::table('ingredients as I')
                               ->select(DB::raw('I.price_per_gram,FF.name'))
-                              ->Join('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
-                              ->Join('form_factors as FF','FF.id','=','IFF.form_factor_id')
+                              ->LeftJoin('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
+                              ->LeftJoin('form_factors as FF','FF.id','=','IFF.form_factor_id')
                               ->where('I.id','=',$ingredient_id)
                               ->get();
         
@@ -347,7 +347,7 @@ class ProductController extends BaseController {
           }
           //print_r($formfacator);
         }
-         echo json_encode($formfacator);
+        echo json_encode($formfacator);
         exit;
     }
 
@@ -699,6 +699,7 @@ class ProductController extends BaseController {
 		$product['description3']      = htmlentities(Request::input('description3'));
 
 		$product['tags'] = Request::input('tags');   
+    $product['visiblity'] = Request::input('visiblity');       
 
 		$product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
 		$product['created_at'] = date("Y-m-d H:i:s");

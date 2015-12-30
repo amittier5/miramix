@@ -17,118 +17,99 @@
 </div>
 <div class="mob_topmenu_back"></div>
 <div class="top_menu_port">
-    	<div class="acct_box yellow_act">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
-                        <a href="<?php echo url();?>/sold-products" class="link_wholediv">Sold Products History</a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-                <div class="acct_box red_acct">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/product/create"><img src="<?php echo url();?>/public/frontend/images/account/add_products.png" alt=""></a>
-                        <a href="<?php echo url();?>/product/create" class="link_wholediv">Add Products</a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-                <div class="acct_box org_org_acct no_marg">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/my-products"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
-                        <a href="<?php echo url();?>/my-products" class="link_wholediv">Product List</a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-                <div class="acct_box new_green_acct no_marg">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                         <a href=""><img src="<?php echo url();?>/public/frontend/images/account/order_hist.png" alt=""></a>
-                         <a href="javascript:void(0);" class="link_wholediv">Order History<span>Coming Soon</span></a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-                <div class="acct_box blue_acct front">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/brand-account"><img src="<?php echo url();?>/public/frontend/images/account/pers_info.png" alt=""></a>
-                        <a href="<?php echo url();?>/brand-account" class="link_wholediv">Brand Information</a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-                <!--<div class="acct_box green_acct">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/change-password"><img src="<?php echo url();?>/public/frontend/images/account/changepassword.png" alt=""></a>
-                        <a href="<?php echo url();?>/change-password">Change Password</a>
-                        </div>                    	
-                    </div>
-                </div>-->
-                
-                <div class="acct_box violet_acct front">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
-                        <a href="<?php echo url();?>/brand-shipping-address" class="link_wholediv">My Address</a>
-                        </div>                    	
-                    </div>
-                </div>
-                
-               <!-- <div class="acct_box orange_acct no_marg pull-right">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <img src="<?php echo url();?>/public/frontend/images/account/store.png" alt="">
-                        <a href="javascript:void(0);">Store Font<span>Coming Soon</span></a>
-                        </div>                    	
-                    </div>
-                </div>-->
-		    
-		    
-		<div class="acct_box blue_acct front">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/brand-creditcards"><i class="fa fa-credit-card"></i></a>
-                        <a href="<?php echo url();?>/brand-creditcards" class="link_wholediv">Credit Card Details</a>
-                        </div>                    	
-                    </div>
-                </div>
-		    
-		    
-		<div class="acct_box blue_acct no_marg">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="<?php echo url();?>/brand-paydetails"><i class="fa fa-cc-paypal"></i></a>
-                        <a href="<?php echo url();?>/brand-paydetails" class="link_wholediv">Payment Details</a>
-                        </div>                    	
-                    </div>
-                </div>
-		    
-		<div class="acct_box org_org_acct front">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
-                        <a href="<?php echo url();?>/subscription-history" class="link_wholediv">Subscription History</a>
-                        </div>                    	
-                    </div>
-                </div>
-		    
-		<div class="acct_box blue_acct front">
-                	<div class="acct_box_inn">
-                    	<div class="acct_box_inn_inn">
-                        <a href="#"><i class="fa fa-credit-card"></i></a>
-                        <a href="#" class="link_wholediv">Wholesale<span>Coming Soon</span></a>
-                        </div>                    	
-                    </div>
-                </div>
-    </div>       
+  	<div class="acct_box yellow_act">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <img src="<?php echo url();?>/public/frontend/images/account/sold_products.png" alt="">
+            <a href="<?php echo url();?>/sold-products" class="link_wholediv">Sold Products History</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box red_acct">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="<?php echo url();?>/product/create"><img src="<?php echo url();?>/public/frontend/images/account/add_products.png" alt=""></a>
+            <a href="<?php echo url();?>/product/create" class="link_wholediv">Add Products</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box org_org_acct no_marg">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="<?php echo url();?>/my-products"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+            <a href="<?php echo url();?>/my-products" class="link_wholediv">Product List</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box new_green_acct no_marg">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+             <a href=""><img src="<?php echo url();?>/public/frontend/images/account/order_hist.png" alt=""></a>
+             <a href="javascript:void(0);" class="link_wholediv">Order History<span>Coming Soon</span></a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box blue_acct front">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="<?php echo url();?>/brand-account"><img src="<?php echo url();?>/public/frontend/images/account/pers_info.png" alt=""></a>
+            <a href="<?php echo url();?>/brand-account" class="link_wholediv">Brand Information</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box violet_acct front">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <img src="<?php echo url();?>/public/frontend/images/account/address.png" alt="">
+            <a href="<?php echo url();?>/brand-shipping-address" class="link_wholediv">My Address</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box blue_acct front">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="<?php echo url();?>/brand-creditcards"><i class="fa fa-credit-card"></i></a>
+            <a href="<?php echo url();?>/brand-creditcards" class="link_wholediv">Credit Card Details</a>
+            </div>                    	
+        </div>
+    </div>
+
+
+    <div class="acct_box blue_acct no_marg">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="<?php echo url();?>/brand-paydetails"><i class="fa fa-cc-paypal"></i></a>
+            <a href="<?php echo url();?>/brand-paydetails" class="link_wholediv">Payment Details</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box org_org_acct front">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="#"><img src="<?php echo url();?>/public/frontend/images/account/productlist.png" alt=""></a>
+            <a href="<?php echo url();?>/subscription-history" class="link_wholediv">Subscription History</a>
+            </div>                    	
+        </div>
+    </div>
+
+    <div class="acct_box blue_acct front">
+    	<div class="acct_box_inn">
+        	<div class="acct_box_inn_inn">
+            <a href="#"><i class="fa fa-credit-card"></i></a>
+            <a href="#" class="link_wholediv">Wholesale<span>Coming Soon</span></a>
+            </div>                    	
+        </div>
+    </div>
+  </div>       
 <!-- Start Add Products panel -->
-     {!! Form::open(['url' => 'product','method'=>'POST', 'files'=>true, 'id'=>'product_form']) !!}
+     {!! Form::open(['url' => 'product','method'=>'POST', 'files'=>true, 'id'=>'product_form', 'autocomplete'=>'Off']) !!}
     <div class="container">
     <div class="row">
     <div class="add_product_panel">
@@ -148,6 +129,16 @@
                       <div class="check_box_tab green_color marg_left pull-left">                            
                         <input type="radio" value="1" name="own_product" id="radio-5" class="regular-checkbox">
                         <label for="radio-5">Non Miramix product</label>
+                      </div>                        
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                          <input type="radio" checked="checked" value="0" name="visiblity" id="radio-99" class="regular-checkbox">
+                          <label for="radio-99">Public</label>
+                      </div>
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                        <input type="radio" value="1" name="visiblity" id="radio-98" class="regular-checkbox">
+                        <label for="radio-98">Private</label>
                       </div>                        
                     </div>
                 </div> 
@@ -465,10 +456,8 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : $this.val()  ,_token: '{!! csrf_token() !!}'},
           success:function(data)
           {
-            //console.log(data);return false;
-            //jsonval = JSON.parse(data);
-            //alert(jsonval);
-            var getprice;
+            
+          var getprice;
 			     var html='';
             //if(!empty(data)){
             var json = JSON.parse(data);
