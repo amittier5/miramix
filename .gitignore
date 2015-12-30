@@ -11,3 +11,4 @@ Homestead.json
 config/database.php
 config
 config/*
+README.md
