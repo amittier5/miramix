@@ -76,7 +76,7 @@ return [
     /*********** Server Database Details **********/
 
 
-         /*'mysql' => [
+         /*'mysql' => [ 
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'miramixp_live'),
