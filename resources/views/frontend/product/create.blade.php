@@ -472,7 +472,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
                   if(k=='formfactor')
                     html=html+v+',';
 					
-					console.log(html);
+					
                     
               });
 			  //console.log(html);
@@ -515,6 +515,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           {
             if(data !='' ) 
             {
+			alert();	
 			$('#load_table').show();
 			$('.form_check_table table').css({'opacity':0});
 			
