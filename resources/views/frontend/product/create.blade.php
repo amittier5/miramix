@@ -456,7 +456,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : $this.val()  ,_token: '{!! csrf_token() !!}'},
           success:function(data)
           {
-          console.log(data);  
+          //console.log(data);  
           var getprice;
 			     var html='';
             //if(!empty(data)){
@@ -471,6 +471,8 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 
                   if(k=='formfactor')
                     html=html+v+',';
+					
+					console.log(html);
                     
               });
 			  //console.log(html);
