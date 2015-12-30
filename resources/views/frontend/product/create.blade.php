@@ -456,7 +456,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : $this.val()  ,_token: '{!! csrf_token() !!}'},
           success:function(data)
           {
-            
+          console.log(data);  
           var getprice;
 			     var html='';
             //if(!empty(data)){
