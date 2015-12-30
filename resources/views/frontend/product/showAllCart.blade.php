@@ -214,9 +214,11 @@
                         <td>{!! ($all_total!='')?'$':'' !!}{!! number_format($all_total,2); !!}</td>
                       </tr>
 
-                       <tr>
-                        <td>Apply Coupon: </td>
-                        <td><div class="couponcode_apply"><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"><button type="submit" name="sub" id="sub_coupon"><i class="fa fa-plus"></i></button></div></td>
+                      <tr>
+                        <td colspan="2" class="special-pad" align="center">Apply Coupon: </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="special-pad no-bord" align="center"><div class="couponcode_apply"><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"><button type="submit" name="sub" id="sub_coupon">Apply</button></div></td>
                       </tr>
                        <!--<tr>
                         <td>Submit:</td>

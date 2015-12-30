@@ -356,8 +356,8 @@ public function update(Request $request, $id)
 				function($message) use ($admin_users_email, $user_email,$user_name,$subject)
 				{
 					$message->from($admin_users_email);
-					//$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
-					$message->to('amit.unified@gmail.com', $user_name)->cc($admin_users_email)->subject($subject);
+					$message->to($user_email, $user_name)->cc($admin_users_email)->subject($subject);
+					//$message->to('amit.unified@gmail.com', $user_name)->cc($admin_users_email)->subject($subject);
 					
 				});*/
 

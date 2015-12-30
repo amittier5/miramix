@@ -46,11 +46,15 @@
             
             
           </div>
+          <div class="pull-right filt_css"><span>Filter by brand</span> <input type="text" name="brandemail" value="<?php echo $brandemail?>" id="brandemail" /></div>
             <div class="filter filt_css filter_right" style="clear:both;padding-left: 10px;">
-                <div class="pull-left" style="margin-right: 10px;"><span>Filter by brand</span> <input type="text" name="brandemail" value="<?php echo $brandemail?>" id="brandemail" /></div>
-                <div class="pull-left"><span>Filter by date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
+                
+                <div class="pull-left"><span>Filter From date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
+                
                 <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
-                <a href="javascript:callPush()"  class="btn btn-success marge">Push</a>
+               <!--  <div class="pull-right" style="margin-right:10px;"><span>Filter To date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /> --></div>
+                
+                
             </div>
         </form>
         <table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped  display" width="100%">
@@ -134,7 +138,7 @@
             </table>
     </div>
 
-  <div><?php echo $order_list->render(); ?></div>
+  <div><a href="javascript:callPush()"  class="btn btn-success marge pull-left">Print Label</a><div class="pull-right"><?php echo $order_list->render(); ?></div></div>
 
 <script type="text/javascript">
     $('.radio_cls').on('change',function(){
