@@ -14,7 +14,7 @@
       
       
       <div class="search_panel">
-        <input type="text" class="form-control textbox" placeholder="Enter any feeling, ingredient, or brand" maxlength="40" id="searchbox">
+        <input type="text" class="form-control textbox" placeholder="Enter any feeling, ingredient,sku or brand" maxlength="40" id="searchbox">
         <input type="button" class="search_button">
       </div>
       
@@ -172,6 +172,7 @@ products invented by people like you.</h2></div>
                 if (token.value === event.attrs.value || existingTokens.length>=3)
                     event.preventDefault();
             });
+            
         });
 	$('#searchbox').on('tokenfield:removedtoken', function (event) {
 		//$(".search_button").trigger("click");
@@ -181,8 +182,10 @@ products invented by people like you.</h2></div>
         
 var temp = new Array();
 var u=0;
+var sku=''
     $('#searchbox').tokenfield({
 		minWidth: 290,
+                allowPasting: false,
         autocomplete: {
          
           source: function( request, response ) {
@@ -318,7 +321,8 @@ var u=0;
 	function search_product(){
 		 $(".loading-div").show(); //show loading element
            var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
-            $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){ 
+           sku=$('#searchbox-tokenfield').val();
+            $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"sku":sku,"tags":selectedval,"sortby":$("#sortby").val()}, function(){ 
 			
                 $(".loading-div").hide(); //once done, hide loading element
 			
@@ -326,6 +330,7 @@ var u=0;
 	}
 	
       $(document).on("click",'.inn_owl-item', function(){
+      $('#searchbox-tokenfield').val('');
         $('#searchbox').tokenfield('createToken', $(this).text());
          //$('#top_searvh_addhere').tokenfield('createToken', $(this).attr("data"));
         //alert($('#searchbox').tokenfield('getTokensList', ';'));
@@ -339,10 +344,11 @@ var u=0;
 			/*$('html, body').animate({
 				scrollTop: $(".loading-div").offset().top-200
 			}, 2000);*/
+            sku=$('#searchbox-tokenfield').val();
             var page = $(this).attr("data-page"); //get page number from link
             var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
 			setTimeout(function(){
-            $(".products_panel").load("<?php echo url();?>/",{"page":page,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){
+            $(".products_panel").load("<?php echo url();?>/",{"page":page,"_token":'{!! csrf_token() !!}',"sku":sku,"tags":selectedval,"sortby":$("#sortby").val()}, function(){
             //get content from PHP page
                 $(".loading-div").hide(); //once done, hide loading element
             });
@@ -352,10 +358,11 @@ var u=0;
         
         $(".search_button").click(function(){
 			//alert();
-			if($('.token').length>0){
+			
                 $(".loading-div").show(); //show loading element
            var selectedval=$('#searchbox').tokenfield('getTokensList', ',');
-            $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){ //get content from PHP page
+           sku=$('#searchbox-tokenfield').val();
+            $(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"sku":sku,"tags":selectedval,"sortby":$("#sortby").val()}, function(){ //get content from PHP page
 			
 				$('html, body').animate({
 					scrollTop: $(".products_panel").offset().top-200
@@ -364,16 +371,17 @@ var u=0;
                 $(".loading-div").hide(); //once done, hide loading element
 			
             });
-			}
+			
         });
         $("#sortby").on("change",function(){
                 var sort=$(this).val();
                 $(".loading-div").show();
+                 sku=$('#searchbox-tokenfield').val();
 				$('html, body').animate({
 					scrollTop: $(".loading-div").offset().top-200
 				}, 2000);
 				setTimeout(function(){
-					$(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sortby":$("#sortby").val()}, function(){
+					$(".products_panel").load("<?php echo url();?>/",{"page":1,"_token":'{!! csrf_token() !!}',"tags":selectedval,"sku":sku,"sortby":$("#sortby").val()}, function(){
 					//get content from PHP page
 						$(".loading-div").hide(); //once done, hide loading element
 					});

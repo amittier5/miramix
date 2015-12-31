@@ -1119,6 +1119,7 @@ class ProductController extends BaseController {
     if(Input::get('product_id') == 'social_share')
     {
       Session::put('force_social_share','social_share'); 
+      return redirect('/show-cart');
     }
   }
               

@@ -52,7 +52,7 @@
                 <div class="pull-left"><span>Filter From date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /></div>
                 
                 <div class="search_top pull-right"><input type="submit" class="btn btn-success marge" value="search" name="search"/></div>
-               <!--  <div class="pull-right" style="margin-right:10px;"><span>Filter To date</span> <input type="text" name="filterdate" value="<?php echo $filterdate?>" id="filterdate" /> --></div>
+                <div class="pull-right" style="margin-right:10px;"><span>Filter To date</span> <input type="text" name="filtertodate" value="<?php echo $filtertodate?>" id="filtertodate" /> </div>
                 
                 
             </div>
@@ -214,6 +214,7 @@
     });
     $(document).ready(function(){
         $( "#filterdate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+        $( "#filtertodate" ).datepicker({ dateFormat: 'yy-mm-dd' });
         
         $( "#brandemail" ).autocomplete({
             source: "{!!url('admin/brand-search/')!!}" 

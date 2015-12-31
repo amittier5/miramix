@@ -54,8 +54,9 @@ return [
 
     /*********** Local Database Details **********/
 
+/*
+    'mysql' => [
 
-  /* 'mysql' => [
            'driver'    => 'mysql',
            'host'      => env('DB_HOST', 'localhost'),
            'database'  => env('DB_DATABASE', 'miramix'),
@@ -68,11 +69,10 @@ return [
 
        ],
 */
-   
     /*********** Server Database Details **********/
 
-        'mysql' => [ 
 
+         'mysql' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'miramixp_live'),
@@ -84,6 +84,7 @@ return [
             'strict'    => false,
         ],
 
+    
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

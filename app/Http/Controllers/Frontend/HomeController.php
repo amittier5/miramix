@@ -38,8 +38,7 @@ class HomeController extends BaseController {
     * @return Response
     */
     public function index()
-    {
-    	 
+    { 
 	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
@@ -67,6 +66,7 @@ class HomeController extends BaseController {
                  ->where('brandmembers.admin_status', 1)
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
+		 ->whereRaw('products.visiblity="0"')
 		 ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id')
 		 ->groupBy('product_rating.product_id')	 ;
@@ -96,6 +96,12 @@ class HomeController extends BaseController {
 	  }
 	  
 	  }
+	  
+	  
+	$sku=Request::input('sku');
+	if(!empty($sku)){
+	   $products->whereRaw('products.sku="'.$sku.'"'); 
+	}
 	$sortby=Request::input('sortby');
 	 if(!empty($sortby)){
 	    
@@ -126,8 +132,10 @@ class HomeController extends BaseController {
                  ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
                  ->where('subscription_status', "active")
                  ->where('brandmembers.admin_status', 1)
+		 
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
+		  ->whereRaw('products.visiblity="0"')
          ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id');          
 	$tags=Request::input('tags');  
@@ -138,6 +146,12 @@ class HomeController extends BaseController {
 	    $products2->whereRaw('products.id IN('.$pids.')');
 	   }
 	  }
+	  
+	  $sku=Request::input('sku');
+	    if(!empty($sku)){
+	       $products2->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	
 	  $p2=$products2->get();
 	  $total_records=count($p2);
 	
@@ -183,10 +197,14 @@ class HomeController extends BaseController {
             Session::forget('member_username');
             
             /* Delete Cart Session */
+            
 			Session::forget('coupon_code');
 			Session::forget('coupon_type');
 			Session::forget('coupon_discount');
+			Session::forget('coupon_amount');
 			Session::forget('share_coupon_status');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 
 			/* Delete Cart Session */
 

@@ -51,12 +51,14 @@ class OrderController extends BaseController {
 	$limit = 20;
 	Session::forget('orderstatus');
 	Session::forget('filterdate');
+	Session::forget('filtertodate');
 	Session::forget('brandemail');
 	$order_list = Order::with('getOrderMembers','AllOrderItems')->orderBy('id','DESC')->paginate($limit);
 	//print_r($order_list);exit;
 	$order_list->setPath('orders');
 	$orderstatus='';
 	$filterdate='';
+	$filtertodate='';
 	$brandemail='';
 
 	// Get All selected check Usps mail
@@ -64,7 +66,7 @@ class OrderController extends BaseController {
 	$all_process_labels = AddProcessOrderLabel::all();
 
 
-	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail','all_process_labels'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+	return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail','all_process_labels','filtertodate'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
 
     }
 
@@ -78,6 +80,8 @@ public function filters(){
 
     $orderstatus=Request::input('orderstatus');
 	$filterdate=Request::input('filterdate');
+	$filtertodate=Request::input('filtertodate');
+	
 	$brandemail=Request::input('brandemail');
 	if($orderstatus == '0') // If choose nothing in select box.
 	{
@@ -87,7 +91,7 @@ public function filters(){
 		Session::forget('orderstatus');
 		}
 	}
-	if($filterdate == '') // If choose nothing in select box.
+	if($filterdate == '') 
 	{
 		$filterdate = '';
 		if(Request::isMethod('post'))
@@ -95,6 +99,16 @@ public function filters(){
 		Session::forget('filterdate');
 		}
 	}
+	
+	if($filtertodate == '') 
+	{
+		$filtertodate = '';
+		if(Request::isMethod('post'))
+		{
+		Session::forget('filtertodate');
+		}
+	}
+	
 	if($brandemail == '') // If choose nothing in select box.
 	{
 		$brandemail = '';
@@ -110,6 +124,9 @@ public function filters(){
 			Session::put('orderstatus',$orderstatus);
 			if($filterdate !='')
 			Session::put('filterdate',$filterdate);
+			if($filtertodate !='')
+			Session::put('filtertodate',$filtertodate);
+			
 			if($brandemail !='')
 			Session::put('brandemail',$brandemail);
 		}
@@ -124,9 +141,10 @@ public function filters(){
 	
 	$orderstatus = Session::get('orderstatus');
 	$filterdate = Session::get('filterdate');
+	$filtertodate = Session::get('filtertodate');
 	$brandemail = Session::get('brandemail');
 	
-	if(($orderstatus =='' || $orderstatus =='0') && $filterdate =='' && $brandemail=='')
+	if(($orderstatus =='' || $orderstatus =='0') && $filterdate =='' && $filtertodate =='' && $brandemail=='')
 		{
 			Session::forget('orderstatus');
 			return redirect('/admin/orders');
@@ -135,9 +153,17 @@ public function filters(){
 	if($orderstatus!='0' && $orderstatus!=''){
 	   $order_list->whereRaw("orders.order_status='".$orderstatus."'"); 
 	}
-	if($filterdate!=''){ 
-	   $order_list->whereRaw("DATE(orders.created_at)='".$filterdate."'"); 
+	
+	if($filterdate!='' && $filtertodate==''){ 
+	   $order_list->whereRaw("DATE(orders.created_at)>='".$filterdate."'"); 
+	}elseif($filterdate!='' && $filtertodate!=''){
+	    $order_list->whereRaw("DATE(orders.created_at) between '".$filterdate."' and '".$filtertodate."'"); 
+	}elseif($filterdate=='' && $filtertodate!=''){
+	    $order_list->whereRaw("DATE(orders.created_at)<='".$filtertodate."'"); 
+	    
 	}
+	
+	
 	if($brandemail!=''){
 	   $order_list->whereRaw("(brandmembers.email='".$brandemail."' or brandmembers.business_name like '%".$brandemail."%')"); 
 	}
@@ -150,11 +176,12 @@ public function filters(){
 	{
 		Session::forget('orderstatus');
 		Session::forget('filterdate');
+		Session::forget('filtertodate');
 		Session::forget('brandemail');
 		return redirect('/admin/orders');
 	}
         
-    return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
+    return view('admin.order.order_history',compact('order_list','orderstatus','filterdate','filtertodate','brandemail'),array('title'=>'MIRAMIX | All Order','module_head'=>'Orders'));
 }
  public function edit($id)
     {

@@ -721,7 +721,7 @@ if($(window).width()>767){
                     type:"POST",
                     dataType: "json",
                     url: '<?php echo url();?>/saveShare',
-                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    data: {product_id : '{!! $productdetails->id !!}' ,_token: '{!! csrf_token() !!}'},
                     success:function(result){
 
                     }
@@ -744,15 +744,11 @@ function fb_share(product_name,url,product_id) {
   name: product_name,
   href: url,
   product_id: product_id
-  //caption: details
   },
   
   function(response) {
     if (response && !response.error_code) 
     {
-      // FB.api('/me?fields=name,email', function(response)
-      // {
-        //alert('Posting completed.'+response.email+product_id);
       $.ajax({
         url: '<?php echo url();?>/saveShare',
         type: "post",
@@ -761,7 +757,7 @@ function fb_share(product_name,url,product_id) {
         {
           //alert(data);
         }
-      // });
+      
       });
     } // end of if response
   }
