@@ -593,6 +593,7 @@ class CheckoutController extends BaseController {
 										'sub_total'					=> Request::input('sub_total'),
 										'discount'					=> Request::input('discount'),
                                         'share_discount'            => Request::input('social_discount'),
+                                        'total_discount'            => Request::input('total_discount'),
 										'order_status'           	=> 'pending',
 										'shipping_address_id'    	=> $shp_address->id,
 										'shipping_cost'    			=> Request::input('shipping_rate'),

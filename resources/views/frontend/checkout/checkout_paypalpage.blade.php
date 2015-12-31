@@ -34,7 +34,8 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 
 		<?php 
 		$i =1;
-		$total_price = ($order_list[0]->sub_total-$order_list[0]->discount);
+		$total_price = ($order_list[0]->sub_total-$order_list[0]->total_discount);
+		$subtotal = $order_list[0]->sub_total;
 		foreach($order_list as $eachOrderlist)
 		{
 			
@@ -48,20 +49,20 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 		?>
 		<?php
 			// Check Shipping rate
-			if($total_price <= $all_sitesetting['free_discount_rate']) 
+			if($subtotal <= $all_sitesetting['free_discount_rate']) 
 			{
 			  $shipping_rate = $order_list[0]->shipping_cost;
 			}
-			elseif($total_price>$all_sitesetting['free_discount_rate'])
+			elseif($subtotal>$all_sitesetting['free_discount_rate'])
 			{
 				$shipping_rate = 0.00;
 			}
 		?>
         <input type="hidden" name="handling_cart" id="handling_cart" value="{!! $shipping_rate !!}">
         <?php 
-        	if($order_list[0]->discount!=0){
+        	if($order_list[0]->total_discount!=0){
         ?>
-         <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $order_list[0]->discount; !!}" >
+         <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $order_list[0]->total_discount; !!}" >
          <?php } ?>
         <input type="hidden" name="custom" id="custom" value="{!! $custom_data !!}" >
         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit">

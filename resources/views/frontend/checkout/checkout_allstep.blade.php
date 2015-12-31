@@ -823,7 +823,7 @@ $(document).ready(function() {
 						  </div>
 						  <div class="social-share-checkout clearfix">
 							<div class="col-sm-5">
-						    <p><strong>Shipping will be free above ${!! number_format($all_sitesetting['free_discount_rate'],2) !!}. </strong></p>
+						    <p><strong>Shipping will be free above ${!! number_format($all_sitesetting['free_discount_rate'],2) !!} </strong></p>
 						  	</div>
 							<?php  if(($share_discount==0) || ($share_discount=='') || (Session::get('force_social_share')!=''))
           					{?>
@@ -902,8 +902,9 @@ $(document).ready(function() {
 						    <!--###################### HIDDEN FIELD TO INSERT ORDER TABLE START ###############################-->
 						    <input name="grand_total" type="hidden" value="{!! ($all_total+$shipping_rate) !!}">
 						    <input name="sub_total" type="hidden" value="{!! ($total) !!}">
-						    <input name="discount" type="hidden" value="{!! ($total_discount) !!}">
+						    <input name="discount" type="hidden" value="{!! ($coupon_amount) !!}">
 						    <input name="social_discount" type="hidden" value="{!! ($social_discount) !!}"> 
+						    <input name="total_discount" type="hidden" value="{!! ($total_discount) !!}">
                             <input name="shipping_rate" type="hidden" value="{!! ($shipping_rate) !!}">
 						    <!--##################### HIDDEN FIELD TO INSERT ORDER TABLE END ##################################-->
 						    </div>
