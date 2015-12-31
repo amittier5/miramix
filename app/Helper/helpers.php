@@ -29,7 +29,8 @@ class helpers extends Cart {
         if($mime['mime']=='image/jpeg'){ $src_img = imagecreatefromjpeg($path); }
         if($mime['mime']=='image/pjpeg'){ $src_img = imagecreatefromjpeg($path); }
         if($mime['mime']=='image/gif'){ $src_img = imagecreatefromgif($path); }
-        
+	
+
         $old_x = imageSX($src_img);
         $old_y = imageSY($src_img);
 
@@ -71,6 +72,7 @@ class helpers extends Cart {
         if($mime['mime']=='image/jpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,100); }
         if($mime['mime']=='image/pjpeg'){ $result = imagejpeg($dst_img,$new_thumb_loc,100); }
         if($mime['mime']=='image/gif'){ $result = imagegif($dst_img,$new_thumb_loc,100); }
+
 
         imagedestroy($dst_img);
         imagedestroy($src_img);
