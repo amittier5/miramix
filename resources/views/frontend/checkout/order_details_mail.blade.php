@@ -129,11 +129,20 @@ $shipping_address = unserialize($order_list[0]->shiping_address_serialize);
                             if($order_list[0]->discount!=0){
                           ?>
                           <tr>
-                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Discount:</b></td>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Coupon Discount:</b></td>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">-${!! number_format(($order_list[0]->discount),2) !!}</td>
                           </tr>
                           <?php } ?>
                           
+                          <?php 
+                          if($order_list[0]->share_discount>0){
+                          ?>
+                          <tr>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Social Share Discount:</b></td>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">-${!! number_format(($order_list[0]->share_discount),2) !!}</td>
+                          </tr>
+                          <?php } ?>
+
                           <?php 
                             if($order_list[0]->redeem_amount>0){
                           ?>
