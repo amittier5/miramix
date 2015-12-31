@@ -50,10 +50,10 @@ $(document).ready(function(){
                 <tr>
                     <th>Name</th>
                     <th>Chemical Name</th>
-                    <th>Price/grm</th>
+                    <th>Price/gm</th>
                     <th>Type</th>
                     <th>Organic</th>
-                    <th>Antibiotic Fees</th>
+                    <th>Antibiotic</th>
                     <!-- <th>GMS</th> -->
                     <th>Form Factors</th>
                     <th>Edit</th>

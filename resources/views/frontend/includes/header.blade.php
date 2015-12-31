@@ -20,6 +20,29 @@ $about_us = $getcms_about_us->slug;
 <!-- Page Description and Author -->
 <meta name="description" content="MIRAMIX">
 <meta property="fb:app_id" content="<?php echo env('FB_CLIENT_ID')?>" /> 
+<!-- facebook og Start -->
+<?php 
+if(!empty($productdetails))
+{
+?>
+<meta property="og:title" content="<?php echo ucwords($productdetails->product_name);?>" />
+<meta property='og:site_name' content='<?php echo url();?>' />
+<meta property="og:description" content="<?php echo ($productdetails->description1);?>" />
+<meta property="og:url" content="<?php echo url().'/product-details/'.$productdetails->product_slug;?>" />
+<meta property="og:image" content="<?php echo url().'/uploads/product/'.$productdetails->image1;?>"/> 
+<?php 
+}
+elseif(!empty($all_sitesetting))
+{
+?>
+<meta property='og:site_name' content='<?php echo url();?>' />
+<meta property="og:description" content="<?php echo ($all_sitesetting['share_content']);?>" />
+<meta property="og:url" content="<?php echo url().'/social-content';?>" />
+<meta property="og:image" content="<?php echo url().'/uploads/share_image/'.$all_sitesetting['share_image'];?>"/> 
+<?php 
+}
+?>
+<!-- Facebook Og End -->
 
 <link rel="shortcut icon" href="<?php echo url();?>/public/backend/images/favicon.ico" type="image/x-icon" />
 <!--theme font-->

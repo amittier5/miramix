@@ -187,6 +187,7 @@ class CheckoutController extends BaseController {
 			return redirect('show-cart');
 		}
 		//echo "<pre>";print_r($content); exit; 
+        $share_discount = '';
 		foreach($content as $each_content)
         {
             
@@ -198,7 +199,7 @@ class CheckoutController extends BaseController {
                                 ->where('products.id','=',$each_content->product_id)
                                 ->first();
           	//echo "<pre>";print_r($brandmember); 
-                                //echo $brandmember->slug ; exit;
+            //echo $brandmember->slug ; exit;
             $brand_name = ($brandmember->fname)?($brandmember->fname.' '.$brandmember->lname):$brandmember->username;
 
             $formfactor = DB::table('form_factors')->where('id','=',$each_content->form_factor)->first();
@@ -206,19 +207,23 @@ class CheckoutController extends BaseController {
             $formfactor_id = $formfactor->id;
 
             /* Discount Share Start */
-            
             if(Session::has('product_id'))
             {
-                $share_discount = $all_sitesetting['discount_share'];
-            }   
-            else
+                $pid=unserialize(Session::get('product_id'));
+                if(in_array($each_content->product_id,$pid) )
+                {
+                    $share_discount = $all_sitesetting['discount_share'];
+                }
+                
+            }
+            if(Session::get('force_social_share')!='') // For cart page share
             {
-                $share_discount = '';
-            } 
-
+                $share_discount = $all_sitesetting['discount_share'];
+            }           
             /* Discount Share End */
 
             $cart_result[] = array('rowid'=>$each_content->row_id,
+                'product_id'=>$each_content->product_id,
                 'product_name'=>$each_content->product_name,
                 'product_slug'=>$brandmember->product_slug,
                 'product_image'=>$product_res->image1,
@@ -229,13 +234,15 @@ class CheckoutController extends BaseController {
                 'formfactor_id'=>$formfactor_id,
                 'brand_name'=>$brand_name,
                 'brand_slug'=>$brandmember->slug,
-                'share_discount'=>$share_discount,
                 'subtotal'=>$each_content->sub_total);
 
         }
 	$cartcontent = Cart::content();
 
-		return view('frontend.checkout.checkout_allstep',compact('body_class','shipAddress','allcountry','allstates','cart_result','shipping_rate','cartcontent'),array('title'=>'MIRAMIX | Checkout-Step1'));
+
+		
+		return view('frontend.checkout.checkout_allstep',compact('body_class','shipAddress','allcountry','allstates','cart_result','shipping_rate','cartcontent','share_discount'),array('title'=>'MIRAMIX | Checkout-Step1'));
+
     }
 
     //
@@ -589,7 +596,9 @@ class CheckoutController extends BaseController {
 										'order_total'            	=> Request::input('grand_total'),
 										'sub_total'					=> Request::input('sub_total'),
 										'discount'					=> Request::input('discount'),
-										'redeem_amount'					=> Request::input('redeem_amount'),
+                                        'share_discount'            => Request::input('social_discount'),
+                                        'total_discount'            => Request::input('total_discount'),
+										'redeem_amount'				=> Request::input('redeem_amount'),
 										'order_status'           	=> 'pending',
 										'shipping_address_id'    	=> $shp_address->id,
 										'shipping_cost'    			=> Request::input('shipping_rate'),
@@ -723,6 +732,7 @@ class CheckoutController extends BaseController {
 	            $formfactor_id = $formfactor->id;
 
 	            $cart_result[] = array('rowid'=>$each_content->row_id,
+                    'product_id'=>$each_content->id,
 	                'product_name'=>$each_content->product_name,
 	                'product_slug'=>$brandmember->product_slug,
 	                'product_image'=>$product_res->image1,
@@ -1193,7 +1203,10 @@ class CheckoutController extends BaseController {
 			Session::forget('guest');
 	        Session::forget('coupon_code');
 	        Session::forget('coupon_type');
+	        Session::forget('coupon_amount');
 	        Session::forget('coupon_discount');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 		/* ========================= End Remove session ==================================== */	
     	return view('frontend.checkout.pyament_success',array('title'=>'MIRAMIX | Checkout-Success'))->with('xsrf_token', $xsrfToken);
     }
@@ -1267,6 +1280,8 @@ class CheckoutController extends BaseController {
             Session::forget('coupon_type');
             Session::forget('coupon_discount');
             Session::forget('coupon_amount');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 
 		/* ========================= End Remove session ==================================== */	
 
@@ -1374,6 +1389,12 @@ class CheckoutController extends BaseController {
 		        Session::forget('step1');
 		        Session::forget('guest_array');
 		        Session::forget('guest');
+		        Session::forget('coupon_code');
+		        Session::forget('coupon_type');
+		        Session::forget('coupon_discount');
+		        Session::forget('coupon_amount');
+                Session::forget('product_id');
+                Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
 
 
@@ -1513,6 +1534,12 @@ class CheckoutController extends BaseController {
 			Session::forget('step1');
 			Session::forget('guest_array');
 			Session::forget('guest');
+			Session::forget('coupon_code');
+	        Session::forget('coupon_type');
+	        Session::forget('coupon_discount');
+	        Session::forget('coupon_amount');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
 
             return redirect('/checkout-success'); 
@@ -1533,6 +1560,12 @@ class CheckoutController extends BaseController {
 			Session::forget('step1');
 			Session::forget('guest_array');
 			Session::forget('guest');
+			Session::forget('coupon_code');
+	        Session::forget('coupon_type');
+	        Session::forget('coupon_discount');
+	        Session::forget('coupon_amount');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
 
             return redirect('/checkout-cancel'); 
@@ -1635,13 +1668,27 @@ class CheckoutController extends BaseController {
     public function uspsAddressValidate(){
 	
 	 $street = Request::input('street');
-         $city = Request::input('city');
+     $city = Request::input('city');
 	 $state = Request::input('state');
 	 $zip = Request::input('zip');
 	 
 	 $status=Usps::varifyaddress(array("Address1"=>$street,"Address2"=>$street,"City"=>$city,"State"=>$state,"Zip4"=>$zip));
 	 echo $status;
 	
+    }
+
+    public function socialShareContent()  // this page only share content from cart page
+    {
+    /* Site Setting Start */
+        $sitesettings = DB::table('sitesettings')->get();
+        $all_sitesetting = array();
+        foreach($sitesettings as $each_sitesetting)
+        {
+            $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+        }
+
+    /* End */   
+    return view('frontend.product.social_share',compact('all_sitesetting'),array('title'=>'Share Content'));
     }
     
 }

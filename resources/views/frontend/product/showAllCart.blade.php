@@ -1,9 +1,19 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+<!----Fb Script Start-->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=<?php echo env('FB_CLIENT_ID')?>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!------------ Fb Script End ------------>
 
 
-<?php //echo "cart_result=======";echo "<pre/>";print_r($cart_result); exit; 
-?>
   <div class="inner_page_container">
     <div class="header_panel">
         <div class="container">
@@ -49,7 +59,7 @@
                 <?php
                 $all_sub_total =0.00;
                 $all_total =0.00;
-                $share_discount = 0.00;
+               // $share_discount = 0.00;
                 $social_discount = 0.00;
                 if(!empty($cart_result))
                 { 
@@ -65,7 +75,7 @@
                   <td><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}">{!! ucwords($eachcart['product_name']) !!}</a><br>
                   {!! $eachcart['duration'] !!}<br>
                   {!! $eachcart['formfactor_name'] !!}
-                  <!-- <p>{!! ($eachcart['share_discount']!='')?'<strong> Social Discount : </strong> - $'.(number_format($eachcart['share_discount'],2)):'' !!}</p> -->
+                  
                   </td>
                   <td><a href="<?php echo url();?>/brand-details/{!! $eachcart['brand_slug'] !!}">{!! $eachcart['brand_name'] !!}</a></td>
                   <td><div class="input-group bootstrap-touchspin pull-left"><span class="input-group-addon bootstrap-touchspin-prefix"></span><input type="text" value="<?php echo $eachcart['qty']; ?>" id="cart<?php echo $i;?>" name="demo1" class="form-control demo1"></div><a href="javascript:void(0);" class="refresh_btn" onclick="updateCart('<?php echo $eachcart['rowid'];?>','cart<?php echo $i;?>')"><i class="fa fa-refresh"></i></a></td>
@@ -76,10 +86,13 @@
                 </tr>
                 <?php 
                  $i++;
+                
+                  //$share_discount = $share_discount+$eachcart['share_discount'];
                  }
                 
+                 //echo "o= ".$share_discount;
                 /*---------------------*/
-                $share_discount = $cart_result[0]['share_discount'];
+                
 
                  if(Session::has('coupon_discount'))
                  {
@@ -172,7 +185,6 @@
               </tfoot>
             </table>
           </div>
-          
 
           </div>
           <div class="col-sm-3">
@@ -262,6 +274,21 @@
                   
                 </div>
               </div>
+              <?php //echo (Session::get('force_social_share'));
+               if((($share_discount==0) || ($share_discount==''))&&(Session::get('force_social_share')==''))
+              {?>
+              <div class="social-share-checkout">
+              <p class="social_share"><strong>Click to Share for a ${!! number_format($all_sitesetting['discount_share'],2) !!} credit on your purchase :</strong></p>
+                <ul class="social_plug_new new-cart-social">
+                 <li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($all_sitesetting['FromName']);?>','<?php echo url().'/social-content';?>','<?php echo "social_share";?>');"><i class="fa fa-facebook"></i>
+                 </a>
+                 </li>
+<g:plusone size="medium" href="" callback="myCallback"  onendinteraction="onPlusDone"></g:plusone>
+                </ul>
+              </div>
+              <?php
+              }
+              ?>
             <?php if(Cart::count()>0){?>
             <a class="butt full-disp" href="<?php echo url();?>/checkout" id="proceed_check_btn">Proceed to Checkout</a>
             <?php } ?>
@@ -368,4 +395,78 @@ function()
 };
 
 </script>
+
+<!-------------------- for google Call back Start  ---------------------->
+
+<script type="text/javascript">
+     function onPlusDone(reponse) {
+          console.log(reponse);
+
+            var res = 'success';
+             $.ajax({
+                    type:"POST",
+                    dataType: "json",
+                    url: '<?php echo url();?>/saveShare',
+                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    success:function(result){
+
+                    }
+                })
+      }
+     function myCallback(jsonParam) {
+
+         console.log("URL: " + jsonParam.href + " state: " + jsonParam.state);
+
+      }
+</script>
+
+<!-------------------- for google Call back End ---------------------->
+
+<script>
+function fb_share(product_name,url,product_id) {
+  FB.ui(
+  {
+    method: 'share',
+    name: product_name,
+    href: url,
+    product_id: product_id
+  //caption: details
+  },
+  
+  function(response) {
+    if (response && !response.error_code) 
+    {
+      // FB.api('/me?fields=name,email', function(response)
+      // {
+        //alert('Posting completed.'+response.email+product_id);
+      $.ajax({
+        url: '<?php echo url();?>/saveShare',
+        type: "post",
+        data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
+        success:function(data)
+        {
+          //alert(data);
+        }
+      });
+      // });
+    } // end of if response
+  }
+);
+
+}
+</script>
+
+<!--------Google Share -------->
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script> 
+
+
+
+<!--------Google Share -------->
  @stop

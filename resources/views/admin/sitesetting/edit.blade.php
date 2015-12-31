@@ -82,8 +82,8 @@
             {
               echo  Form::file('image',array('class'=>'form-control','id'=>'image','accept'=>"image/*")) ;
               ?>
-              <br/><span style="color:red" id="logo_error">
               <p><span>Image size should be larger than 200x200 </span></p>
+              <span  style="color:red" id="image_error"></span>
               <p class="new_avatar"><img  src="<?php echo url()?>/uploads/share_image/{!! $sitesettings->value !!}" class="nav-avatar"></p>
 
             <?php 
@@ -107,14 +107,8 @@
     {!! Form::close() !!}
 
     <script>
-             /*---------*/
-          function check_file_type(fileName)
-          {
-             if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(fileName)) {              
-                  alert('You must select an image file only');
-                  $('#image').val('');
-             }
-          }
+        /*---------*/
+        
          $( document ).ready(function() {       
           
           var _URL = window.URL || window.webkitURL;
@@ -126,7 +120,8 @@
                     if(this.width<200 || this.height<200)
                    {
                         $('#image').val(""); 
-                        $('#image_error').html("Slider image size should be min 1920X599"); 
+                        sweetAlert("Oops...", "Social image size should be greater than 200X200", "error");
+                        //$('#image_error').html("Social image size should be greater than 200X200"); 
                    }
                    else
                    {

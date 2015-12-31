@@ -127,6 +127,7 @@ class Product1Controller extends BaseController {
                  ->get(); 
 
         //echo "<pre/>";print_r($related_product); exit;
+                 
         return view('frontend.product.productdetails',compact('productdetails','productformfactor','timeduration','rating','product_id','related_product'),array('title'=>'Product Details'));
     }
 

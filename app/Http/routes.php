@@ -92,10 +92,12 @@ Route:: get('/carttest','Frontend\HomeController@cart');
 Route:: get('/mycart','MyController@cart');  
 Route:: get('/allCart','Frontend\CartController@cart2');  // runnng...
 
+Route:: get('/social-content','Frontend\CartController@socialShareContent');    //Social Share Content
+Route:: post('/social-content','Frontend\CartController@socialShareContent');  //Social Share Content
+
+
 Route:: get('/getallrate','Frontend\Product1Controller@getallrate');  
 Route:: post('/getallrate','Frontend\Product1Controller@getallrate');  
-
-
 
 // ======================= Product Route +========================
 Route:: resource('product','Frontend\ProductController');   
@@ -148,7 +150,8 @@ Route:: post('/checkout-authorize/{id}','Frontend\CheckoutController@checkoutAut
 Route:: get('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin'); 
 Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin');
 Route:: post('/uspsAddressValidate','Frontend\CheckoutController@uspsAddressValidate');
-
+Route:: get('/social-share-content','Frontend\CheckoutController@socialShareContent');    //Social Share Content
+Route:: post('/social-share-content','Frontend\CheckoutController@socialShareContent');  //Social Share Content
 //======================== Paypal notify Url Call Start==============================//
 
 Route:: get('/wc-api/WC_Gateway_Paypal/','Frontend\CheckoutController@paypalNotify');

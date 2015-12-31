@@ -188,6 +188,7 @@ class CartController extends BaseController {
             $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
         }
 
+        $share_discount = '';
         foreach($content as $each_content)
         {
             
@@ -205,25 +206,24 @@ class CartController extends BaseController {
             $formfactor = DB::table('form_factors')->where('id','=',$each_content->options->form_factor)->first();
             $formfactor_name = $formfactor->name;
             $formfactor_id = $formfactor->id;
-
-            /* Discount Share Start */
-            // $user_share = DB::table('product_shares')
-            //                     ->where('user_email','=',Session::get('member_user_email'))
-            //                     ->where('product_id','=',$each_content->id)
-            //                     ->count();
-                                //print_r($user_share); exit;
-
-            if(Session::has('product_id'))
-            {
-                $share_discount = $all_sitesetting['discount_share'];
-            }   
-            else
-            {
-                $share_discount = '';
-            }                
-            /* Discount Share End */
+	
+	        /* Discount Share Start */
+	        if(Session::has('product_id'))
+	        {
+	        	$pid=unserialize(Session::get('product_id'));
+				if(in_array($each_content->id,$pid) )
+				{
+					$share_discount = $all_sitesetting['discount_share'];
+				}
+		    }
+		    if(Session::get('force_social_share')!='') // For cart page share
+		    {
+		    	$share_discount = $all_sitesetting['discount_share'];
+		    }           
+	        /* Discount Share End */
 
             $cart_result[] = array('rowid'=>$each_content->rowid,
+            	'product_id'=>$each_content->id,
                 'product_name'=>$each_content->name,
                 'product_slug'=>$brandmember->product_slug,
                 'product_image'=>$product_res->image1,
@@ -234,8 +234,8 @@ class CartController extends BaseController {
                 'formfactor_id'=>$formfactor_id,
                 'brand_name'=>$brand_name,
                 'brand_slug'=>$brandmember->slug,
-                'share_discount'=>$share_discount,
                 'subtotal'=>$each_content->subtotal);
+           
         }
 	
 	$cartcontent = Cart::content();
@@ -249,7 +249,8 @@ class CartController extends BaseController {
 	$redemctrl=array("min"=>$setting_point->value,"max"=>$step,"step"=>$setting_point->value);
 	
 	}
-        return view('frontend.product.showAllCart',compact('cart_result','cartcontent','member','redemctrl'),array('title'=>'cart product'));
+        return view('frontend.product.showAllCart',compact('cart_result','cartcontent','member','redemctrl','share_discount'),array('title'=>'cart product'));
+
 
     }
 
@@ -292,6 +293,12 @@ class CartController extends BaseController {
 	$cartcount=Cart::count();
 	if($cartcount<=0){
 	    Cart::destroy();
+        Session::forget('coupon_code');
+        Session::forget('coupon_type');
+        Session::forget('coupon_discount');
+        Session::forget('coupon_amount');
+        Session::forget('product_id');
+        Session::forget('force_social_share');
 	}
         echo 1; // Remove from  cart
     }
@@ -373,6 +380,21 @@ class CartController extends BaseController {
        
     }
 
+
+public function socialShareContent()  // this page only share content from cart page
+{
+	/* Site Setting Start */
+        $sitesettings = DB::table('sitesettings')->get();
+        $all_sitesetting = array();
+        foreach($sitesettings as $each_sitesetting)
+        {
+            $all_sitesetting[$each_sitesetting->name] = $each_sitesetting->value; 
+        }
+
+    /* End */   
+	return view('frontend.product.social_share',compact('all_sitesetting'),array('title'=>'Share Content'));
+}
+
 public function redeem_cart(){
     $obj = new helpers();
     $points=Request::input('user_points');
@@ -398,6 +420,7 @@ public function redeem_cart(){
     Session::flash('success', '$'.$amount.' Is applied as redeem amount in your cart.');
     
     return redirect('show-cart');
+
 }
               
 }
