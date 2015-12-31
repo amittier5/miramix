@@ -142,23 +142,14 @@
                     </div>
                     <div class="col-sm-6">
                     	<div class="check_box_tab green_color marg_left pull-left">                            
-                        <input type="radio" <?php if($products->own_product==0){?> checked="checked" <?php } ?> value="0" name="own_product" id="radio-4" class="regular-checkbox">
-                        <label for="radio-4">Miramix Product</label>
-                      </div>
-                      <div class="check_box_tab green_color marg_left pull-left">                            
-                          <input type="radio" <?php if($products->own_product==1){?> checked="checked" <?php } ?> value="1" name="own_product" id="radio-5" class="regular-checkbox">
-                          <label for="radio-5">Non Miramix product</label>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="check_box_tab green_color marg_left pull-left">                            
-                          <input type="radio" <?php if($products->visiblity==0){?> checked="checked" <?php } ?> value="0" name="visiblity" id="radio-99" class="regular-checkbox">
-                          <label for="radio-99">Public</label>
-                      </div>
-                      <div class="check_box_tab green_color marg_left pull-left">                            
-                        <input type="radio" <?php if($products->visiblity==1){?> checked="checked" <?php } ?> value="1" name="visiblity" id="radio-98" class="regular-checkbox">
-                        <label for="radio-98">Private</label>
-                      </div>                        
+                              <input type="radio" <?php if($products->own_product==0){?> checked="checked" <?php } ?> value="0" name="own_product" id="radio-4" class="regular-checkbox">
+                              <label for="radio-4">Miramix Product</label>
+                        </div>
+                        <div class="check_box_tab green_color marg_left pull-left">                            
+                              <input type="radio" <?php if($products->own_product==1){?> checked="checked" <?php } ?> value="1" name="own_product" id="radio-5" class="regular-checkbox">
+                              <label for="radio-5">Non Miramix product</label>
+                          </div>
+                        
                     </div>
                 </div>
             </div> 
@@ -1683,7 +1674,7 @@ function check_radio_state(){
 	//alert(checkradiostate_var);	
  }
  
- $(document).on('change','input[name=own_product]',function(){
+ $(document).on('change','input[type=radio]',function(){
 	  check_radio_state();
 	  clearall();	  
 	  //selec_option();
