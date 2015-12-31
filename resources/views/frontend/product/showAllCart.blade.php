@@ -59,7 +59,7 @@
                 <?php
                 $all_sub_total =0.00;
                 $all_total =0.00;
-               // $share_discount = 0.00;
+                $coupon_amount = 0.00;
                 $social_discount = 0.00;
                 if(!empty($cart_result))
                 { 
@@ -216,7 +216,7 @@
                       {
                         if(Session::has('coupon_discount') && Cart::count() > 0 ){ ?>
                         <tr>
-                          <td>Discount:</td>
+                          <td>Coupon Discount:</td>
                           <td><?php echo '- $'.number_format($coupon_amount,2);?></td>
                         </tr>
                         <?php } 
@@ -225,7 +225,7 @@
                       {
                       ?>
                         <tr>
-                          <td>Discount:</td>
+                          <td>Coupon Discount:</td>
                           <td><?php echo '- $'.number_format($coupon_amount,2);?></td>
                         </tr>
                       <?php 

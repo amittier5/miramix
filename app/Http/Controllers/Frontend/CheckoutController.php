@@ -1205,6 +1205,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_amount');
 	        Session::forget('coupon_discount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 		/* ========================= End Remove session ==================================== */	
@@ -1280,6 +1281,7 @@ class CheckoutController extends BaseController {
             Session::forget('coupon_type');
             Session::forget('coupon_discount');
             Session::forget('coupon_amount');
+            Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 
@@ -1393,6 +1395,7 @@ class CheckoutController extends BaseController {
 		        Session::forget('coupon_type');
 		        Session::forget('coupon_discount');
 		        Session::forget('coupon_amount');
+		        Session::forget('share_coupon_status');
                 Session::forget('product_id');
                 Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1538,6 +1541,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_discount');
 	        Session::forget('coupon_amount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1564,6 +1568,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_discount');
 	        Session::forget('coupon_amount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
