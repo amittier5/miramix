@@ -60,10 +60,21 @@ $custom_data =$order_list[0]->user_id.",".$order_list[0]->id;
 		?>
         <input type="hidden" name="handling_cart" id="handling_cart" value="{!! $shipping_rate !!}">
         <?php 
-        	if($order_list[0]->total_discount!=0){
+
+        if($order_list[0]->total_discount!=0){
+        	
+			$discount=$order_list[0]->total_discount;
+			if($order_list[0]->redeem_amount>0){
+			$discount=$discount+$order_list[0]->redeem_amount;
+			}
         ?>
-         <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $order_list[0]->total_discount; !!}" >
-         <?php } ?>
+         <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $discount; !!}" >
+         <?php }
+
+         elseif($order_list[0]->redeem_amount>0){ ?>
+	 <input type="hidden" name="discount_amount_cart" id="discount_amount_cart" value="{!! $order_list[0]->redeem_amount; !!}" >
+	 <?php }?>
+
         <input type="hidden" name="custom" id="custom" value="{!! $custom_data !!}" >
         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit">
 </form>

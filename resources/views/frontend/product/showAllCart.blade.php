@@ -165,6 +165,11 @@
                     }
                     
                  }
+                 
+                 //for redeemption
+                 if(isset($cartcontent->redeem_amount) && $cartcontent->redeem_amount>0){
+                 $all_total=$all_total-$cartcontent->redeem_amount;
+                 }
                   
                 } // empty cart if end
 
@@ -193,6 +198,12 @@
                         <td>Sub Total:</td>
                         <td>{!! ($all_sub_total!='')?'$':'' !!}{!! number_format($all_sub_total,2); !!}</td>
                       </tr>
+                        <?php if(isset($cartcontent->redeem_amount) &&  $cartcontent->redeem_amount>0){ ?>
+                          <tr>
+                            <td>Redeem Discount:</td>
+                            <td><?php echo '- $'.number_format($cartcontent->redeem_amount,2);?></td>
+                          </tr>
+                        <?php }?>
                       <?php if($share_discount > 0 ){ ?>
                       <tr>
                         <td>Social Discount:</td>
@@ -230,8 +241,9 @@
                         <td colspan="2" class="special-pad" align="center">Apply Coupon: </td>
                       </tr>
                       <tr>
-                        <td colspan="2" class="special-pad no-bord" align="center"><div class="couponcode_apply"><input type="text" name="coupon_code" id="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"><button type="submit" name="sub" id="sub_coupon">Apply</button></div></td>
+                        <td colspan="2" class="special-pad no-bord" align="center"><div class="couponcode_apply"><input type="text" name="coupon_code" id="coupon_code" class="coupon_code" value="<?php if(Session::has('coupon_code') && Cart::count() > 0) { echo Session::get('coupon_code'); } ?>"><button type="submit" name="sub" id="sub_coupon" class="sub_coupon">Apply</button></div></td>
                       </tr>
+                      
                        <!--<tr>
                         <td>Submit:</td>
                         <td><input type="submit" name="sub" value="Submit"></td>
@@ -239,6 +251,27 @@
                     </tbody>
                   </table>
                   {!! Form::close() !!}
+                  
+                  {!! Form::open(['url' => 'redeem-cart','method'=>'POST', 'files'=>true, 'id'=>'redeem_form']) !!}
+                  <table class="table">
+                    <tbody>
+                         <?php if(Session::has('member_userid')){
+                         if(isset($member->user_points) && $member->user_points>0){
+                         ?> 
+                        <tr>
+                        <td colspan="2" class="special-pad" align="center">Redeem Points: </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="special-pad no-bord" align="center"><div class="couponcode_apply"><input type="number" name="user_points" id="user_points" class="coupon_code" value="" min="<?php echo $redemctrl['min']?>" max="<?php echo $redemctrl['max']?>" step="<?php echo $redemctrl['step']?>"><button type="submit" name="redeem" id="sub_coupon" class="sub_coupon">Redeem</button></div></td>
+                      </tr>
+                        
+                        <?php }}?>
+                  
+                  </tbody>
+                  </table>
+                  {!! Form::close() !!}
+                  
+                  
                 </div>
               </div>
               <?php //echo (Session::get('force_social_share'));
@@ -291,6 +324,8 @@
         boostat: 5,
         maxboostedstep: 10
     });
+    
+    $("#user_points").ForceNumericOnly();
   });    
 
 /*------------ UPDATE CART THROUGH AJAX START -----------------*/
@@ -335,6 +370,30 @@
   }
 /*-----------------  DALETE CART THROUGH AJAX END --------------*/
    
+   jQuery.fn.ForceNumericOnly =
+function()
+{
+    return this.each(function()
+    {
+        $(this).keydown(function(e)
+        {
+            var key = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+            // home, end, period, and numpad decimal
+            return (
+                key == 8 || 
+                key == 9 ||
+                key == 13 ||
+                key == 46 ||
+                key == 110 ||
+                key == 190 ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+        });
+    });
+};
+
 </script>
 
 <!-------------------- for google Call back Start  ---------------------->

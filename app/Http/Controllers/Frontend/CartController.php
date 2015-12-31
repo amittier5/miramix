@@ -237,9 +237,20 @@ class CartController extends BaseController {
                 'subtotal'=>$each_content->subtotal);
            
         }
+	
+	$cartcontent = Cart::content();
+	$member=array();
+	$redemctrl=array("min"=>5,"max"=>100,"step"=>5);
+	if(Session::has('member_userid')){
+	$member =DB::table('brandmembers')->where("id",Session::get('member_userid'))->first();
+	$setting_point = DB::table('sitesettings')->where('name','points_for_price')->first();
+	$step=$member->user_points;
+	
+	$redemctrl=array("min"=>$setting_point->value,"max"=>$step,"step"=>$setting_point->value);
+	
+	}
+        return view('frontend.product.showAllCart',compact('cart_result','cartcontent','member','redemctrl','share_discount'),array('title'=>'cart product'));
 
-		//print_r($cart_result); exit;
-        return view('frontend.product.showAllCart',compact('cart_result','share_discount'),array('title'=>'cart product'));
 
     }
 
@@ -277,6 +288,12 @@ class CartController extends BaseController {
                 ->where('user_id', '=',Session::get('member_userid'))
                 ->delete();   // Delete cart product from DB respect with cart rowid.
         }
+	
+	//destroy cart
+	$cartcount=Cart::count();
+	if($cartcount<=0){
+	    Cart::destroy();
+	}
         echo 1; // Remove from  cart
     }
 
@@ -357,6 +374,7 @@ class CartController extends BaseController {
        
     }
 
+
 public function socialShareContent()  // this page only share content from cart page
 {
 	/* Site Setting Start */
@@ -369,6 +387,34 @@ public function socialShareContent()  // this page only share content from cart 
 
     /* End */   
 	return view('frontend.product.social_share',compact('all_sitesetting'),array('title'=>'Share Content'));
+}
+
+public function redeem_cart(){
+    $obj = new helpers();
+    $points=Request::input('user_points');
+    $member =DB::table('brandmembers')->where("id",Session::get('member_userid'))->first();
+    if($points>$member->user_points){
+	Session::flash('error', "You don't have enough points to redeem.");
+	return redirect('show-cart');
+    }
+    
+    $setting_point_price = DB::table('sitesettings')->where('name','price_for_point')->first();
+    $setting_point = DB::table('sitesettings')->where('name','points_for_price')->first();
+    
+     $amount=$points*$setting_point_price->value;
+    
+    $total_amount = Cart::total();
+    
+    if($amount>$total_amount){
+	Session::flash('error', "Your redeem value is higher than total amount.");
+	return redirect('show-cart');
+    }
+    
+    $obj->demandredeem($points,$amount);
+    Session::flash('success', '$'.$amount.' Is applied as redeem amount in your cart.');
+    
+    return redirect('show-cart');
+
 }
               
 }

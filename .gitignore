@@ -3,11 +3,12 @@ Homestead.yaml
 Homestead.json
 
 =======
-/config
+
 /node_modules
 Homestead.yaml
 Homestead.json
 .htaccess
 config/database.php
-config
-config/*
+
+
+uploads/*

@@ -54,29 +54,31 @@ return [
 
     /*********** Local Database Details **********/
 
-
     'mysql' => [
 
            'driver'    => 'mysql',
            'host'      => env('DB_HOST', 'localhost'),
            'database'  => env('DB_DATABASE', 'miramix'),
            'username'  => env('DB_USERNAME', 'root'),
-           'password'  => env('DB_PASSWORD', 'user123'),
+           'password'  => env('DB_PASSWORD', ''),
            'charset'   => 'utf8',
            'collation' => 'utf8_unicode_ci',
            'prefix'    => '',
            'strict'    => false,
 
        ],
+
    
     /*********** Server Database Details **********/
+
 
 
      /*   
 
 
 
-         'mysql' => [
+
+      'mysql' => [ 
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'miramixp_live'),

@@ -198,7 +198,7 @@ class ProductController extends BaseController {
       $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
       $product['created_at'] = date("Y-m-d H:i:s");
 
-      // Create Product
+      /// Create Product
       $product_row = Product::create($product); 
       $lastinsertedId = $product_row->id;
 

@@ -404,7 +404,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			each_weightval=$this.val();	
 		  }	
           total_wg += parseFloat(each_weightval);
-          console.log( index + ": " + each_weightval );
+          //console.log( index + ": " + each_weightval );
         });
 		total_wg=total_wg.toFixed(2);
 		//alert(total_wg);
@@ -423,7 +423,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			 this_total_val=$this.val(); 
 		  }
           total_pr += parseFloat(this_total_val);
-          console.log( index + ": " + this_total_val );
+          //console.log( index + ": " + this_total_val );
         });
 		//alert(total_pr);
 
@@ -465,10 +465,15 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : $this.val()  ,_token: '{!! csrf_token() !!}'},
           success:function(data)
           {
+
+          //console.log(data);  
+          var getprice;
+
             //console.log(data);return false;
             //jsonval = JSON.parse(data);
             //alert(jsonval);
             var getprice;
+
 			     var html='';
             //if(!empty(data)){
             var json = JSON.parse(data);
@@ -482,6 +487,8 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 
                   if(k=='formfactor')
                     html=html+v+',';
+					
+					
                     
               });
 			  //console.log(html);
@@ -522,8 +529,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : ingredient_id  ,_token: '{!! csrf_token() !!}',ingredient_text : ingredient_text,id_tr : id_tr},
           success:function(data)
           {
-            if(data !='' ) 
-            {
+            	
 			$('#load_table').show();
 			$('.form_check_table table').css({'opacity':0});
 			
@@ -579,7 +585,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			 checktable_val(); 
 			  
 			  
-            }
+            
           }
       });
 
@@ -888,7 +894,7 @@ function checktable_val(){
       // Individual ingredient
       $(document).on('click','.remove_row',function(){		
         var $this=$(this);
-		console.log($this);
+		//console.log($this);
 		//calc_weight_ingred($this);
 		var tot_recieve=calc_weight_ingred($this);
 		//alert(tot_recieve);
@@ -1414,7 +1420,7 @@ function checktable_val(){
   });
  function calc_weight_ingred(obj){
 	var total=0;
-	console.log(obj);
+	//console.log(obj);
     var $this=obj;
 	
 	//alert($this.attr('class'));
