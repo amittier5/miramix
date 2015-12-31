@@ -1,0 +1,28 @@
+password : ~~m8xxm5T]v*
+sumitra@miramix-development.com
+
+
+Secure SSL/TLS Settings
+(Recommended)
+Username:	sumitra@miramix-development.com
+Password:	Use the email account’s password.
+Incoming Server:	server1.miramix-development.com
+IMAP Port: 993
+POP3 Port: 995
+
+Outgoing Server:	server1.miramix-development.com
+SMTP Port: 465
+Authentication is required for IMAP, POP3, and SMTP.
+
+
+Non-SSL Settings
+(This is NOT recommended.)
+Username:	sumitra@miramix-development.com
+Password:	Use the email account’s password.
+Incoming Server:	mail.miramix-development.com
+IMAP Port: 143
+POP3 Port: 110
+
+Outgoing Server:	mail.miramix-development.com
+SMTP Port: 25
+Authentication is required for IMAP, POP3, and SMTP.

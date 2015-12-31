@@ -437,7 +437,7 @@ $(document).on('change','.new_panel_section input[type="radio"]',function(){
 
                 </div>
             </div>
-            <!--- <div class="tot_wrap">
+            <!-- <div class="tot_wrap">
                 <div class="input_fields_wrap" id="0">
                     <div class="control-group comp_val">
                         <label class="control-label" for="basicinput">Components Group</label>

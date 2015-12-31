@@ -441,7 +441,7 @@ var vit_car=0;
                 $i=0;
                 foreach($all_components as $each_component)
                 {
-                  ///echo $each_component['component_details']->name;
+                  //echo $each_component['component_details']->name;
                ?>
                <div class="input_fields_wrap" id="<?php echo $i;?>">
                 <div class="control-group">

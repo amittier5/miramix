@@ -141,7 +141,6 @@ class IngredientController extends Controller {
 		}
       
       	// Add Component and vitamins 
-		
 		/*$cnt = 0;
 		foreach (Request::input('component_name') as $key => $each_component) {
 

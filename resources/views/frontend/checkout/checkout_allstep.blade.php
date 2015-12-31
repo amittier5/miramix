@@ -723,7 +723,12 @@ $(document).ready(function() {
                     
                  }
 
-                 $total_discount = ($social_discount + $coupon_amount); // total discount (Share discout and coupon discount)
+                 $total_discount = ($social_discount + $coupon_amount); // total discount (Share discout and coupon discount);
+		 
+		  //for redeemption
+                 if(isset($cartcontent->redeem_amount) && $cartcontent->redeem_amount>0){
+                 $all_total=$all_total-$cartcontent->redeem_amount;
+                 }
                 ?>
 						        <?php 
 						        if($all_sub_total<=$all_sitesetting['free_discount_rate']) 
@@ -788,6 +793,15 @@ $(document).ready(function() {
 			                      <?php 
 			                      }
 			                      ?>
+					      
+					      <?php if(isset($cartcontent->redeem_amount) &&  $cartcontent->redeem_amount>0){ ?>
+						<tr>
+						   <td colspan="5"></td>
+						      <td class="text-left" colspan="2"><span>Redeem Discount:</span></td>
+						  <td class="text-right"> <span><?php echo '- $'.number_format($cartcontent->redeem_amount,2);?></span></td>
+						</tr>
+					      <?php }?>
+			
 
 						      <tr>
 							      <td colspan="5"></td>
@@ -872,6 +886,7 @@ $(document).ready(function() {
 						    <input name="grand_total" type="hidden" value="{!! ($all_total+$shipping_rate) !!}">
 						    <input name="sub_total" type="hidden" value="{!! ($total) !!}">
 						    <input name="discount" type="hidden" value="{!! ($total_discount) !!}">
+						    <input name="redeem_amount" type="hidden" value="<?php echo (isset($cartcontent->redeem_amount) && $cartcontent->redeem_amount>0)?$cartcontent->redeem_amount:0?>">
                             <input name="shipping_rate" type="hidden" value="{!! ($shipping_rate) !!}">
 						    <!--##################### HIDDEN FIELD TO INSERT ORDER TABLE END ##################################-->
 						    </div>
