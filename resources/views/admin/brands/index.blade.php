@@ -60,7 +60,7 @@
                            <a href="{{ URL::to('admin/brand/admin_active_status/' . $brand->id) }}" data-toggle="tooltip" title="Make Active" >Inactive</a>
                         @endif
                         
-                      <!--  <a href="{{ URL::to('admin/brand-orders/' . $brand->id) }}" data-toggle="tooltip" title="Orders" >Orders</a>-->
+                       <a href="{{ URL::to('admin/brand-orders/' . $brand->id) }}" data-toggle="tooltip" title="Orders" >Orders</a>
                     </td>
                    
                     <td>
