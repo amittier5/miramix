@@ -13,10 +13,8 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
       <div class="container-fluid">
         <div class="col-sm-12">
          <div class="row">
-         <div class="form_dashboardacct">
-            
+         <div class="form_dashboardacct">         
             <div class="custom_addedlater clearfix">
-
             <h3 class="pull-left">Order History</h3>
               
                   </div>
@@ -96,81 +94,75 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                   
                   <div class="table-responsive spec_tab_resp">
                     <table class="table table-information">
-                        <thead>
-                          <tr>
-                            <th>Product Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                            
-                              
-                              @if(!empty($order_items_list))
-                                @foreach($order_items_list as $each_item)
+                      <thead>
+                        <tr>
+                          <th>Product Image</th>
+                          <th>Product Name</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(!empty($order_items_list))
+                          @foreach($order_items_list as $each_item)
 
-                                 <?php  $pro_dtls = $obj->getProductDetails($each_item->product_id);?>
-                                
-                                  <tr>
-                                    <td>
-                                      @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
-                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt=""  style="max-width:100px"">
-                                      @else
-                                      <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
-                                      @endif
-              
-              
-                                    </td>
-                                    <td><a href="{!! url().'/product-details/'.$pro_dtls->product_slug; !!}" target="_blank"> {!! $each_item->product_name; !!} </a></td>
-                 
-                                    <td>{!! $each_item->quantity; !!}</td>
-                                    <td>${!! number_format($each_item->price,2); !!}</td>
-                                    <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
-                                  </tr>
-          @endforeach
-                              @else
-                                  <tr>
-                                    <td colspan="5">No records found</td>
-                                  </tr>      
-                              @endif                       
-                              </tbody>    
-                              <tfoot>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
-                                </tr>
-                                 <?php if($order_list->discount!=0){?>
-                                 <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Discount</td>
-                                    <td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
-                                </tr>
-                                 <?php } ?>
-                                 
-                                 <?php if($order_list->redeem_amount!=0){?>
-                                 <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Redeem Amount</td>
-                                    <td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
-                                </tr>
-                                 <?php } ?>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Flat Shipping Rate</td>
-                                    <td class="text-right">${!! number_format($order_list->shipping_cost,2); !!}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Total</td>
-                                    <td class="text-right">${!! number_format($order_list->order_total,2); !!}</td>
-                                </tr>
-                              </tfoot>
-                            
+                           <?php  $pro_dtls = $obj->getProductDetails($each_item->product_id);?>
                           
-                                                   
+                            <tr>
+                              <td>
+                                @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
+                                <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt=""  style="max-width:100px"">
+                                @else
+                                <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
+                                @endif
+        
+        
+                              </td>
+                              <td><a href="{!! url().'/product-details/'.$pro_dtls->product_slug; !!}" target="_blank"> {!! $each_item->product_name; !!} </a></td>
+           
+                              <td>{!! $each_item->quantity; !!}</td>
+                              <td>${!! number_format($each_item->price,2); !!}</td>
+                              <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
+                            </tr>
+                          @endforeach
+                        @else
+                            <tr>
+                              <td colspan="5">No records found</td>
+                            </tr>      
+                        @endif                       
+                        </tbody>    
+                        <tfoot>
+                          <tr>
+                              <td colspan="3">&nbsp;</td>
+                              <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
+                          </tr>
+                           <?php if($order_list->discount!=0){?>
+                           <tr>
+                              <td colspan="3">&nbsp;</td>
+                              <td class="text-right">Discount</td>
+                              <td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
+                          </tr>
+                           <?php } ?>
+                           
+                           <?php if($order_list->redeem_amount!=0){?>
+                           <tr>
+                              <td colspan="3">&nbsp;</td>
+                              <td class="text-right">Redeem Amount</td>
+                              <td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
+                          </tr>
+                           <?php } ?>
+                          <tr>
+                              <td colspan="3">&nbsp;</td>
+                              <td class="text-right">Flat Shipping Rate</td>
+                              <td class="text-right">${!! number_format($order_list->shipping_cost,2); !!}</td>
+                          </tr>
+                          <tr>
+                              <td colspan="3">&nbsp;</td>
+                              <td class="text-right">Total</td>
+                              <td class="text-right">${!! number_format($order_list->order_total,2); !!}</td>
+                          </tr>
+                        </tfoot>
                     </table>
                   </div>
                   
@@ -214,7 +206,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
       
       function rateproduct(productid) {
     
-  location.href='<?php echo url();?>/rate-product/'+productid
+         location.href='<?php echo url();?>/rate-product/'+productid
       }
     </script>
 @stop
