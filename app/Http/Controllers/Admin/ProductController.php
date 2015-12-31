@@ -229,7 +229,7 @@ class ProductController extends BaseController {
 
     public function edit($id){
       // Get All Ingredient whose status != 2
-      $ingredients = DB::table('ingredients')->whereNotIn('status',[2])->get();
+      $ingredients = DB::table('ingredients')->whereNotIn('status',[0,2])->get();
       
       // Get All Form factors
       $formfac = FormFactor::all();
@@ -493,8 +493,8 @@ class ProductController extends BaseController {
       $product['description2']      = htmlentities(Request::input('description2'));
       $product['description3']      = htmlentities(Request::input('description3'));
       
-      $product['tags'] = Request::input('tags');   
-
+      $product['tags'] = Request::input('tags');
+      $product['visiblity'] = Request::input('visiblity');
       $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
       $product['created_at'] = date("Y-m-d H:i:s");
 
@@ -688,7 +688,7 @@ class ProductController extends BaseController {
     public function create()
     {
 
-      $ingredients = DB::table('ingredients')->whereNotIn('status',[2])->get();
+      $ingredients = DB::table('ingredients')->whereNotIn('status',[0,2])->get();
        
       $formfac = DB::table('form_factors')->get();
 
@@ -838,6 +838,7 @@ class ProductController extends BaseController {
         $product['brandmember_id'] = Request::input('brandmember_id');
         $product['tags'] = Request::input('tags');       
         $product['sku'] = $obj->random_string(9);  
+        $product['visiblity'] = Request::input('visiblity');  
 
         $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
         $product['created_at'] = date("Y-m-d H:i:s");

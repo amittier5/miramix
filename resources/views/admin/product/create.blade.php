@@ -56,6 +56,16 @@
                         <label for="radio-5">Non Miramix product</label>
                       </div>                        
                     </div>
+                     <div class="col-sm-6">
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                          <input type="radio" checked="checked" value="0" name="visiblity" id="radio-99" class="regular-checkbox">
+                          <label for="radio-99">Public</label>
+                      </div>
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                        <input type="radio" value="1" name="visiblity" id="radio-98" class="regular-checkbox">
+                        <label for="radio-98">Private</label>
+                      </div>                        
+                    </div>
                 </div> 
             </div>   
             <div class="form_ingredient_panel">
