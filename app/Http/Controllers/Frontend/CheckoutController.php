@@ -210,7 +210,7 @@ class CheckoutController extends BaseController {
             if(Session::has('product_id'))
             {
                 $pid=unserialize(Session::get('product_id'));
-                if(in_array($each_content->id,$pid) )
+                if(in_array($each_content->product_id,$pid) )
                 {
                     $share_discount = $all_sitesetting['discount_share'];
                 }
