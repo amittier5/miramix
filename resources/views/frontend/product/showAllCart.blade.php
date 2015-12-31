@@ -1,5 +1,7 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+
+
 <!----Fb Script Start-->
 
 <div id="fb-root"></div>
@@ -18,6 +20,12 @@
     <div class="header_panel">
         <div class="container">
          <h2>Shopping Cart</h2>
+         <?php if(Session::get('a') ==1)
+{
+  echo "hello"; 
+  return Redirect::back()
+        ->withMessage('refresh');
+  }?>
           </div>
     </div>   
     <!-- Start Products panel -->

@@ -2,6 +2,7 @@
 namespace App\Helper;
 use Session;use DB;
 use Cart;
+ini_set('memory_limit', '-1');
 
 class helpers extends Cart {
 
