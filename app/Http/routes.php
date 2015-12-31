@@ -152,6 +152,10 @@ Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMembe
 Route:: post('/uspsAddressValidate','Frontend\CheckoutController@uspsAddressValidate');
 Route:: get('/social-share-content','Frontend\CheckoutController@socialShareContent');    //Social Share Content
 Route:: post('/social-share-content','Frontend\CheckoutController@socialShareContent');  //Social Share Content
+
+Route:: get('/socialShareCheckout','Frontend\ProductController@socialShareCheckout');  // Social Share From Checkout Page
+Route:: post('/socialShareCheckout','Frontend\ProductController@socialShareCheckout'); // Social Share From Checkout Page
+
 //======================== Paypal notify Url Call Start==============================//
 
 Route:: get('/wc-api/WC_Gateway_Paypal/','Frontend\CheckoutController@paypalNotify');

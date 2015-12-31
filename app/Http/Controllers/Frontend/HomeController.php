@@ -38,8 +38,7 @@ class HomeController extends BaseController {
     * @return Response
     */
     public function index()
-    {
-    	 
+    { 
 	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	

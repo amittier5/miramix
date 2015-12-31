@@ -1839,8 +1839,8 @@ $(function () {
              $.ajax({
                     type:"POST",
                     dataType: "json",
-                    url: '<?php echo url();?>/saveShare',
-                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    url: '<?php echo url();?>/socialShareCheckout',
+                    data: { product_id : 'social_share' ,_token: '{!! csrf_token() !!}'},
                     success:function(result){
 
                     }
@@ -1873,7 +1873,7 @@ function fb_share(product_name,url,product_id) {
       // {
         //alert('Posting completed.'+response.email+product_id);
       $.ajax({
-        url: '<?php echo url();?>/saveShare',
+        url: '<?php echo url();?>/socialShareCheckout',
         type: "post",
         data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
         success:function(data)
