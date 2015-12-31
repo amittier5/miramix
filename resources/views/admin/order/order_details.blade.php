@@ -100,6 +100,8 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           <th>Product Name</th>
                           <th>Quantity</th>
                           <th>Price</th>
+                          <th>Duration</th>
+                          <th>Form Factor</th>
                           <th>Total</th>
                         </tr>
                       </thead>
@@ -123,6 +125,8 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
            
                               <td>{!! $each_item->quantity; !!}</td>
                               <td>${!! number_format($each_item->price,2); !!}</td>
+                              <td>{!! $each_item->form_factor_name; !!}</td>
+                              <td>{!! $each_item->duration; !!}</td>
                               <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
                             </tr>
                           @endforeach
@@ -134,12 +138,12 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                         </tbody>    
                         <tfoot>
                           <tr>
-                              <td colspan="3">&nbsp;</td>
+                              <td colspan="5">&nbsp;</td>
                               <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
                           </tr>
                            <?php if($order_list->discount!=0){?>
                            <tr>
-                              <td colspan="3">&nbsp;</td>
+                              <td colspan="5">&nbsp;</td>
                               <td class="text-right">Discount</td>
                               <td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
                           </tr>
@@ -147,18 +151,18 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                            
                            <?php if($order_list->redeem_amount!=0){?>
                            <tr>
-                              <td colspan="3">&nbsp;</td>
+                              <td colspan="5">&nbsp;</td>
                               <td class="text-right">Redeem Amount</td>
                               <td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
                           </tr>
                            <?php } ?>
                           <tr>
-                              <td colspan="3">&nbsp;</td>
+                              <td colspan="5">&nbsp;</td>
                               <td class="text-right">Flat Shipping Rate</td>
                               <td class="text-right">${!! number_format($order_list->shipping_cost,2); !!}</td>
                           </tr>
                           <tr>
-                              <td colspan="3">&nbsp;</td>
+                              <td colspan="5">&nbsp;</td>
                               <td class="text-right">Total</td>
                               <td class="text-right">${!! number_format($order_list->order_total,2); !!}</td>
                           </tr>
