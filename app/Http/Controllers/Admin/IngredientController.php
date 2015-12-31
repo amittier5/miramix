@@ -222,7 +222,7 @@ class IngredientController extends Controller {
 		$ingredient['organic']          = Request::input('organic');
 		$ingredient['antibiotic_free']  = Request::input('antibiotic_free');
 		$ingredient['gmo']              = Request::input('gmo');
-    	$ingredient['status']           = Request::input('status');
+    $ingredient['status']           = Request::input('status');
    // $ingredient['weight_measurement']= Request::input('weight_measurement');
 
 		if(Input::hasFile('image')){

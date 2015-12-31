@@ -507,7 +507,48 @@ var vit_car=0;
              }
             ?>
             
-
+             <div class="control-group">
+                <label class="control-label" for="basicinput">Status</label>
+                <div class="controls">
+                <?php 
+                	if($ingredient->status==0){
+                ?>
+                    {!! Form::radio('status', 0,true) !!} <label>Require Attention</label> 
+                <?php
+           			}
+           			else{
+           		?>
+           			 {!! Form::radio('status', 0) !!} <label>Require Attention</label> 
+           		<?php
+           			}
+                ?>
+                <?php 
+                	if($ingredient->status==1){
+                ?>
+                     {!! Form::radio('status', 1,true) !!}<label>Active</label>
+                <?php
+           			}
+           			else{
+           		?>
+           			 {!! Form::radio('status', 1) !!}<label>Active</label>
+           		<?php
+           			}
+                ?>
+                <?php 
+                	if($ingredient->status==2){
+                ?>
+                    {!! Form::radio('status', 2,true) !!} <label>Inactive</label> 
+                <?php
+           			}
+           			else{
+           		?>
+           			 {!! Form::radio('status', 2) !!} <label>Inactive</label> 
+           		<?php
+           			}
+                ?>
+                   
+                </div>
+            </div>
 
             <div class="control-group">
                 <div class="controls">
