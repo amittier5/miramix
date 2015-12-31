@@ -66,6 +66,7 @@ class HomeController extends BaseController {
                  ->where('brandmembers.admin_status', 1)
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
+		 ->whereRaw('products.visiblity="0"')
 		 ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id')
 		 ->groupBy('product_rating.product_id')	 ;
@@ -95,6 +96,12 @@ class HomeController extends BaseController {
 	  }
 	  
 	  }
+	  
+	  
+	$sku=Request::input('sku');
+	if(!empty($sku)){
+	   $products->whereRaw('products.sku="'.$sku.'"'); 
+	}
 	$sortby=Request::input('sortby');
 	 if(!empty($sortby)){
 	    
@@ -125,8 +132,10 @@ class HomeController extends BaseController {
                  ->leftJoin('brandmembers', 'products.brandmember_id', '=', 'brandmembers.id')
                  ->where('subscription_status', "active")
                  ->where('brandmembers.admin_status', 1)
+		 
                  ->where('is_deleted', 0)
                  ->whereRaw('products.active="1"')
+		  ->whereRaw('products.visiblity="0"')
          ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id');          
 	$tags=Request::input('tags');  
@@ -137,6 +146,12 @@ class HomeController extends BaseController {
 	    $products2->whereRaw('products.id IN('.$pids.')');
 	   }
 	  }
+	  
+	  $sku=Request::input('sku');
+	    if(!empty($sku)){
+	       $products2->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	
 	  $p2=$products2->get();
 	  $total_records=count($p2);
 	
