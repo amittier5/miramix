@@ -223,7 +223,7 @@ class CheckoutController extends BaseController {
             /* Discount Share End */
 
             $cart_result[] = array('rowid'=>$each_content->row_id,
-                'product_id'=>$each_content->id,
+                'product_id'=>$each_content->product_id,
                 'product_name'=>$each_content->product_name,
                 'product_slug'=>$brandmember->product_slug,
                 'product_image'=>$product_res->image1,
@@ -1203,6 +1203,7 @@ class CheckoutController extends BaseController {
 			Session::forget('guest');
 	        Session::forget('coupon_code');
 	        Session::forget('coupon_type');
+	        Session::forget('coupon_amount');
 	        Session::forget('coupon_discount');
             Session::forget('product_id');
             Session::forget('force_social_share');
@@ -1388,6 +1389,10 @@ class CheckoutController extends BaseController {
 		        Session::forget('step1');
 		        Session::forget('guest_array');
 		        Session::forget('guest');
+		        Session::forget('coupon_code');
+		        Session::forget('coupon_type');
+		        Session::forget('coupon_discount');
+		        Session::forget('coupon_amount');
                 Session::forget('product_id');
                 Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1529,6 +1534,10 @@ class CheckoutController extends BaseController {
 			Session::forget('step1');
 			Session::forget('guest_array');
 			Session::forget('guest');
+			Session::forget('coupon_code');
+	        Session::forget('coupon_type');
+	        Session::forget('coupon_discount');
+	        Session::forget('coupon_amount');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1551,6 +1560,10 @@ class CheckoutController extends BaseController {
 			Session::forget('step1');
 			Session::forget('guest_array');
 			Session::forget('guest');
+			Session::forget('coupon_code');
+	        Session::forget('coupon_type');
+	        Session::forget('coupon_discount');
+	        Session::forget('coupon_amount');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	

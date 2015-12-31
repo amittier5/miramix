@@ -293,6 +293,12 @@ class CartController extends BaseController {
 	$cartcount=Cart::count();
 	if($cartcount<=0){
 	    Cart::destroy();
+        Session::forget('coupon_code');
+        Session::forget('coupon_type');
+        Session::forget('coupon_discount');
+        Session::forget('coupon_amount');
+        Session::forget('product_id');
+        Session::forget('force_social_share');
 	}
         echo 1; // Remove from  cart
     }
