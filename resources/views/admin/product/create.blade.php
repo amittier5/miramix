@@ -26,7 +26,7 @@
           <div class="choose_brand">
           		<div class="col-sm-3 choosebrand_lab text-right"><label>Choose Your Brand</label></div>
                     <div class="col-sm-6 special_padleft">
-                    <select class="form-control selectclass" id="brandmember_id" name="brandmember_id">
+                    <select class="form-control" id="brandmember_id" name="brandmember_id">
                        <option value="">Choose Brand</option>
                        <?php //print_r($all_brands);exit;
                           if(!empty($all_brands)){
