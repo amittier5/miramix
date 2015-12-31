@@ -1,14 +1,25 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+
+<!-- Fb Script Start -->
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=<?php echo env('FB_CLIENT_ID')?>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!------------ Fb Script End ------------>
+
 <script src="https://connect.facebook.net/en_US/all.js"></script>
  
  <script src="https://apis.google.com/js/api:client.js"></script>
 
 <meta name="google-signin-client_id" content="<?php echo env('GOOGLE_CLIENT_ID')?>">
 <script>
-
-
-
 
       var clientId = '<?php echo env('GOOGLE_CLIENT_ID')?>';
       
@@ -618,7 +629,7 @@ $(document).ready(function() {
 						          $total =0.00;
 						          $grand_total=0.00;
 						          $total_discount = 0.00;
-						          $share_discount = 0.00;
+						          //$share_discount = 0.00;
                 				  $social_discount = 0.00;
                 				  $coupon_amount = 0.00;
 
@@ -649,7 +660,7 @@ $(document).ready(function() {
 						        }
 
 						        /*---------------------*/
-                $share_discount = $cart_result[0]['share_discount'];
+                //$share_discount = $cart_result[0]['share_discount'];
 
                  if(Session::has('coupon_discount'))
                  {
@@ -810,6 +821,26 @@ $(document).ready(function() {
 							    </tbody>
 							</table>
 						  </div>
+						  <div class="social-share-checkout clearfix">
+							<div class="col-sm-5">
+						    <p><strong>Shipping will be free above ${!! number_format($all_sitesetting['free_discount_rate'],2) !!}. </strong></p>
+						  	</div>
+							<?php  if(($share_discount==0) || ($share_discount=='') || (Session::get('force_social_share')!=''))
+          					{?>
+  								<div class="col-sm-7">
+								<p class="social_share"><strong>Click to Share for a ${!! number_format($all_sitesetting['discount_share'],2) !!} credit on your purchase :</strong></p>
+								<ul class="social_plug_new new-cart-social">
+								<li class="fb_li"><a href="javascript:void(0);" onclick="fb_share('<?php echo ucwords($all_sitesetting['FromName']);?>','<?php echo url().'/social-content';?>','<?php echo "social_share";?>');"><i class="fa fa-facebook"></i>
+								</a>
+								</li>
+								<g:plusone size="medium" href="" callback="myCallback" onendinteraction="onPlusDone"></g:plusone>
+							    </ul>
+							    </div>
+								
+							<?php
+							}
+							?>
+						  </div>
 					     <div class="form_bottom_part clearfix <?php if(Session::has('member_userid')) {?>no_botpad<?php } else { ?>bot_padreq<?php } ?>">					    
 						    <div class="credit_div" style="display:none;">
 					    	<div class="row">
@@ -872,6 +903,7 @@ $(document).ready(function() {
 						    <input name="grand_total" type="hidden" value="{!! ($all_total+$shipping_rate) !!}">
 						    <input name="sub_total" type="hidden" value="{!! ($total) !!}">
 						    <input name="discount" type="hidden" value="{!! ($total_discount) !!}">
+						    <input name="social_discount" type="hidden" value="{!! ($social_discount) !!}"> 
                             <input name="shipping_rate" type="hidden" value="{!! ($shipping_rate) !!}">
 						    <!--##################### HIDDEN FIELD TO INSERT ORDER TABLE END ##################################-->
 						    </div>
@@ -1780,5 +1812,79 @@ $(function () {
 
 <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo env('GOOGLE_CLIENT_SECRET')?>&signed_in=true&libraries=places&callback=initAutocomplete"
     async defer></script>
+
+<!-------------------- for google Call back Start  ---------------------->
+
+<script type="text/javascript">
+     function onPlusDone(reponse) {
+          console.log(reponse);
+
+            var res = 'success';
+             $.ajax({
+                    type:"POST",
+                    dataType: "json",
+                    url: '<?php echo url();?>/saveShare',
+                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    success:function(result){
+
+                    }
+                })
+      }
+     function myCallback(jsonParam) {
+
+         console.log("URL: " + jsonParam.href + " state: " + jsonParam.state);
+
+      }
+</script>
+
+<!-------------------- for google Call back End ---------------------->
+
+<script>
+function fb_share(product_name,url,product_id) {
+  FB.ui(
+  {
+      method: 'share',
+	  name: product_name,
+	  href: url,
+	  product_id: product_id
+	  //caption: details
+  },
+  
+  function(response) {
+    if (response && !response.error_code) 
+    {
+      // FB.api('/me?fields=name,email', function(response)
+      // {
+        //alert('Posting completed.'+response.email+product_id);
+      $.ajax({
+        url: '<?php echo url();?>/saveShare',
+        type: "post",
+        data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
+        success:function(data)
+        {
+          //alert(data);
+        }
+      });
+      // });
+    } // end of if response
+  }
+);
+
+}
+</script>
+
+<!--------Google Share -------->
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script> 
+
+
+
+<!--------Google Share -------->
 
 @stop

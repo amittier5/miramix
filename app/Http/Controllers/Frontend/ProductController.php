@@ -1099,20 +1099,28 @@ class ProductController extends BaseController {
       return redirect('my-products');
 
     }
-public function show(){
-    return redirect('my-products');
-}
+    public function show(){
+        return redirect('my-products');
+    }
   
   public function saveShare()
   {
-    $product_id = Input::get('product_id');
-    Session::put('product_id',$product_id);
-    //echo Session::get('product_id');
-    // if(Session::has('product_id'))
-    // {
+    if(Session::has('product_id'))
+    {
+      $product_array = Session::get('product_id');
+    }
+    else
+    {
+       $product_array = array();
+    }
+    $product_array[] = Input::get('product_id');
+    Session::put('product_id',serialize($product_array));
 
-    // }
-    
+    // If Social Share from Cart Page and Checkout Page.
+    if(Input::get('product_id') == 'social_share')
+    {
+      Session::put('force_social_share','social_share'); 
+    }
   }
               
 }

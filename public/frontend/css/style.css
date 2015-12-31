@@ -10576,6 +10576,23 @@ input#paypal_checkout.logged_outbtn {
     width: auto;
     height: 30px;
 }
+.social_plug_new.new-cart-social li.fb_li a{
+    padding:0;		
+}
+.social_plug_new.new-cart-social li.fb_li a i{
+    margin:0;
+    padding:0 15px;		
+}
+.social-share-checkout{
+    padding: 10px 10px 20px 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    box-shadow: 0 0 5px #DEDCDC;
+    padding-top: 5px;
+    border: 1px solid #DCDCDC;
+    border-top: 5px solid #71d2e3;	
+}
+
 
 
 

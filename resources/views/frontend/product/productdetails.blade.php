@@ -750,8 +750,8 @@ function fb_share(product_name,url,product_id) {
   function(response) {
     if (response && !response.error_code) 
     {
-      FB.api('/me?fields=name,email', function(response)
-      {
+      // FB.api('/me?fields=name,email', function(response)
+      // {
         //alert('Posting completed.'+response.email+product_id);
       $.ajax({
         url: '<?php echo url();?>/saveShare',
@@ -761,7 +761,7 @@ function fb_share(product_name,url,product_id) {
         {
           //alert(data);
         }
-      });
+      // });
       });
     } // end of if response
   }
