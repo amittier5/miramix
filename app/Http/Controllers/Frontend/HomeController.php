@@ -39,10 +39,7 @@ class HomeController extends BaseController {
     */
     public function index()
     {
-    	$pid=serialize(array(16,200));
-    	Session::put('product_id',$pid);
-    	Session::put('force_social_share','social_share');
-    	echo "p= ".Session:: get('product_id')."  ".Session:: get('force_social_share'); 
+    	 
 	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
