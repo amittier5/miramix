@@ -60,7 +60,7 @@ return [
            'host'      => env('DB_HOST', 'localhost'),
            'database'  => env('DB_DATABASE', 'miramix'),
            'username'  => env('DB_USERNAME', 'root'),
-           'password'  => env('DB_PASSWORD', ''),
+           'password'  => env('DB_PASSWORD', 'user123'),
            'charset'   => 'utf8',
            'collation' => 'utf8_unicode_ci',
            'prefix'    => '',
