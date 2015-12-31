@@ -183,10 +183,14 @@ class HomeController extends BaseController {
             Session::forget('member_username');
             
             /* Delete Cart Session */
+            
 			Session::forget('coupon_code');
 			Session::forget('coupon_type');
 			Session::forget('coupon_discount');
+			Session::forget('coupon_amount');
 			Session::forget('share_coupon_status');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 
 			/* Delete Cart Session */
 
