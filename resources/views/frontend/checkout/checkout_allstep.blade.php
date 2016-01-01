@@ -1842,6 +1842,8 @@ $(function () {
                     url: '<?php echo url();?>/socialShareCheckout',
                     data: { product_id : 'social_share' ,_token: '{!! csrf_token() !!}'},
                     success:function(result){
+                    	if(data !='')
+                      window.location = "<?php echo url().'/checkout'?>";
 
                     }
                 })
@@ -1869,19 +1871,17 @@ function fb_share(product_name,url,product_id) {
   function(response) {
     if (response && !response.error_code) 
     {
-      // FB.api('/me?fields=name,email', function(response)
-      // {
-        //alert('Posting completed.'+response.email+product_id);
+      
       $.ajax({
         url: '<?php echo url();?>/socialShareCheckout',
         type: "post",
         data: { product_id : product_id ,_token: '{!! csrf_token() !!}'},
         success:function(data)
         {
-          //alert(data);
+          if(data !='')
+            window.location = "<?php echo url().'/checkout'?>";
         }
       });
-      // });
     } // end of if response
   }
 );
@@ -1898,8 +1898,6 @@ function fb_share(product_name,url,product_id) {
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
   })();
 </script> 
-
-
 
 <!--------Google Share -------->
 
