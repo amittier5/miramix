@@ -19,7 +19,7 @@
   <div class="inner_page_container">
     <div class="header_panel">
         <div class="container">
-         <h2>Shopping Cart</h2>
+         <h2>Shopping Cart : <?php echo Session::get('share_product_id').' = '.Session::get('force_social_share'); ?></h2>
          
           </div>
     </div>   
