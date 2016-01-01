@@ -1,4 +1,14 @@
-/config
 /node_modules
 Homestead.yaml
 Homestead.json
+
+=======
+
+/node_modules
+Homestead.yaml
+Homestead.json
+.htaccess
+config/database.php
+.env
+error_log
+uploads/*
