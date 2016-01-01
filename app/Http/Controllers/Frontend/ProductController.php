@@ -1104,14 +1104,12 @@ class ProductController extends BaseController {
   
   public function saveShare()
   {
+    //$product_array = array();
     if(Session::has('product_id'))
     {
-      $product_array = Session::get('product_id');
+      $product_array[] = Session::get('product_id');
     }
-    else
-    {
-       $product_array = array();
-    }
+    
     $product_array[] = Input::get('product_id');
     Session::put('product_id',serialize($product_array));
 
