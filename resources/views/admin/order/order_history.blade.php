@@ -27,6 +27,15 @@
         
         window.location = '<?php echo url();?>/admin/push_order_process/'+param;
     }
+    
+    <?php
+    if (Session::has("merge")) {
+        echo 'window.open("'.url().'/uploads/pdf/'.Session::get("pdffile").'")';
+        Session::forget("merge");
+        Session::forget("pdffile");
+    }
+    
+    ?>
 </script>
     <div class="module">
           

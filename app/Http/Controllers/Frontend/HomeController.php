@@ -73,7 +73,10 @@ class HomeController extends BaseController {
                 
 	$tags=Request::input('tags');
 	$sku=Request::input('sku');
-	  if(!empty($tags)){
+	if(!empty($sku)){
+	   $products->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	  elseif(!empty($tags)){
 	    $tag=explode(",",$tags);
 	    $ptags='';
 	    foreach($tag as $t){
@@ -96,9 +99,7 @@ class HomeController extends BaseController {
 	   $products->whereRaw('products.id IN('.$pids.')');
 	  }
 	  
-	  }elseif(!empty($sku)){
-	   $products->whereRaw('products.sku="'.$sku.'"'); 
-	    }
+	  }
 	    
 	    
 	$sortby=Request::input('sortby');
@@ -139,15 +140,16 @@ class HomeController extends BaseController {
                  ->groupBy('product_formfactors.product_id');          
 	$tags=Request::input('tags');
 	$sku=Request::input('sku');
-	  if(!empty($tags)){
+	  if(!empty($sku)){
+	       $products2->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	  elseif(!empty($tags)){
 	    
 	
 	    if(!empty($pids)){ 
 	    $products2->whereRaw('products.id IN('.$pids.')');
 	   }
-	  }elseif(!empty($sku)){
-	       $products2->whereRaw('products.sku="'.$sku.'"'); 
-	    }
+	  }
 	
 	  $p2=$products2->get();
 	  $total_records=count($p2);

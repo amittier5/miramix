@@ -30,6 +30,7 @@ use Mail;
 use App\Helper\helpers;
 use App\libraries\Usps;
 
+
 class OrderController extends BaseController {
 
     public function __construct() 
@@ -47,8 +48,7 @@ class OrderController extends BaseController {
     */
    public function index()
    {
-      
-	$limit = 20;
+   	$limit = 20;
 	Session::forget('orderstatus');
 	Session::forget('filterdate');
 	Session::forget('filtertodate');
@@ -60,7 +60,7 @@ class OrderController extends BaseController {
 	$filterdate='';
 	$filtertodate='';
 	$brandemail='';
-
+	
 	// Get All selected check Usps mail
 	//$all_process_labels = DB::table('add_process_order_labels')->select('order_id', 'label')->get();
 	$all_process_labels = AddProcessOrderLabel::all();
@@ -406,7 +406,18 @@ public function update(Request $request, $id)
 				}
 			}
 			if(!empty($full_path))
-			$usps_obj->new_printPdf($full_path);
+			{//$usps_obj->new_printPdf($full_path);
+			    
+				    // $full_path=array("./uploads/pdf/label22.pdf","./uploads/pdf/slabel.pdf");
+				    $ch = curl_init(url()."/print.php");
+				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				    curl_setopt($ch, CURLOPT_POSTFIELDS, $full_path);
+				    
+				    $response = curl_exec($ch);
+				    curl_close($ch);
+				    Session::put("merge","done");
+				    Session::put("pdffile",$response);
+			}
 
 		}
 		//echo $flag;print_r($all_filename);exit;
@@ -415,7 +426,7 @@ public function update(Request $request, $id)
 	    	Session::flash('success', 'Message is sent to user and order status is updated successfully.'); 
 		else
 	    	Session::flash('error', 'No label is created.'); 
-
+	   
 	    return redirect('admin/orders');
         
     }
