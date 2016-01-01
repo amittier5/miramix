@@ -120,8 +120,35 @@
                           <div class="form-group">
                              {!! Form::text('phone_no',$member['phone_no'],['class'=>'form-control','placeholder'=>'Phone Number', 'aria-describedby'=>'basic-addon2'])!!}
                           </div>
-			      
-			  <div class="form-group">
+			                   
+                            <div class="form-group">
+                            <h5>Preffered Communication : </h5>
+                              <?php 
+                                  if($member['preffered_communication']==0){
+                                ?>
+                                  <label>  {!! Form::radio('preffered_communication', 0,true) !!} E-Mail</label> 
+                                <?php
+                                }
+                                else
+                                {
+                              ?>
+                                <label> {!! Form::radio('preffered_communication', 0) !!} E-Mail</label> 
+                              <?php
+                                }
+                                if($member['preffered_communication']==1){
+                              ?>
+                                  <label>  {!! Form::radio('preffered_communication', 1,true) !!} Message</label> 
+                                <?php
+                                }
+                              else
+                                {
+                              ?>
+                                <label> {!! Form::radio('preffered_communication', 1) !!} Message</label> 
+                              <?php
+                                }
+                              ?>
+                            </div>
+			                    <div class="form-group">
                              <span>Total Points : <?php echo $member['user_points']?></span>
                           </div>
                           

@@ -298,7 +298,7 @@ class CartController extends BaseController {
         Session::forget('coupon_type');
         Session::forget('coupon_discount');
         Session::forget('coupon_amount');
-        Session::forget('product_id');
+        Session::forget('share_product_id');
         Session::forget('force_social_share');
 	}
         echo 1; // Remove from  cart
@@ -337,7 +337,7 @@ class CartController extends BaseController {
             
             /* Discount Share Start */
 
-                if(Session::has('product_id'))
+                if(Session::has('share_product_id'))
                 {
                     $share_discount = 1;
                 }   

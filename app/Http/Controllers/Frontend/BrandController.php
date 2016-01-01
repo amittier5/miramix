@@ -237,6 +237,7 @@ class BrandController extends BaseController {
                          'facebook_url'=> Request::input('facebook_url'),
                          'twitter_url'=> Request::input('twitter_url'),
                          'linkedin_url'=> Request::input('linkedin_url'),
+                         'preffered_communication'=>  Request::input('preffered_communication')
                                 );
              if($branduser->email!=$email){
                 $brand['email']=$email;

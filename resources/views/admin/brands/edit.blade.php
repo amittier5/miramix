@@ -111,7 +111,7 @@ $( "#dob" ).datepicker({
         <div class="control-group">
             <label class="control-label" for="basicinput">Password</label>
             <div class="controls">
-                 {!! Form::text('password',null,['class'=>'span8','id'=>'password']) !!}
+                 {!! Form::password('password',null,['class'=>'span8','id'=>'password']) !!}
             </div>
         </div>
         <!--<div class="control-group">
