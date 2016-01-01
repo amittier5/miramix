@@ -1105,30 +1105,27 @@ class ProductController extends BaseController {
   
   public function saveShare()
   {
-    
-    if(Session::has('product_id'))
+    if(Session::has('share_product_id'))
     {
-      $product_array = Session::get('product_id');
-
-      print_r($product_array); exit;
-
+      $new_array = Session::get('share_product_id');
+      //print_r($new_array); 
+      $new = array_merge($new_array,array(Input::get('product_id')));
+      Session::put('share_product_id',$new); 
+      //print_r(Session::get('share_product_id')); 
     }
     else
     {
-      $product_array = array();
+      $product_array[] = Input::get('product_id');
+      Session::put('share_product_id',$product_array);
+      //print_r(Session::get('share_product_id'));
     }
-    
-    array_merge($product_array,array(Input::get('product_id')));
-    //$product_array[] = Input::get('product_id');
-
-    Session::put('product_id',serialize($product_array));
 
     // If Social Share from Cart Page and Checkout Page.
     if(Input::get('product_id') == 'social_share')
     {
       Session::put('force_social_share','social_share'); 
-      return redirect('/show-cart');
     }
+    echo 1; exit;
   }
               
 }
