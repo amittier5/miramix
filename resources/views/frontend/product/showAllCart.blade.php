@@ -1,5 +1,7 @@
 @extends('frontend/layout/frontend_template')
 @section('content')
+
+
 <!----Fb Script Start-->
 
 <div id="fb-root"></div>
@@ -18,6 +20,7 @@
     <div class="header_panel">
         <div class="container">
          <h2>Shopping Cart</h2>
+         
           </div>
     </div>   
     <!-- Start Products panel -->
@@ -59,7 +62,7 @@
                 <?php
                 $all_sub_total =0.00;
                 $all_total =0.00;
-               // $share_discount = 0.00;
+                $coupon_amount = 0.00;
                 $social_discount = 0.00;
                 if(!empty($cart_result))
                 { 
@@ -216,7 +219,7 @@
                       {
                         if(Session::has('coupon_discount') && Cart::count() > 0 ){ ?>
                         <tr>
-                          <td>Discount:</td>
+                          <td>Coupon Discount:</td>
                           <td><?php echo '- $'.number_format($coupon_amount,2);?></td>
                         </tr>
                         <?php } 
@@ -225,7 +228,7 @@
                       {
                       ?>
                         <tr>
-                          <td>Discount:</td>
+                          <td>Coupon Discount:</td>
                           <td><?php echo '- $'.number_format($coupon_amount,2);?></td>
                         </tr>
                       <?php 
@@ -407,7 +410,7 @@ function()
                     type:"POST",
                     dataType: "json",
                     url: '<?php echo url();?>/saveShare',
-                    data: { email : 'sumi@gmail.com', product_id : '10' ,_token: '{!! csrf_token() !!}'},
+                    data: { product_id : 'social_share' ,_token: '{!! csrf_token() !!}'},
                     success:function(result){
 
                     }
@@ -430,15 +433,11 @@ function fb_share(product_name,url,product_id) {
     name: product_name,
     href: url,
     product_id: product_id
-  //caption: details
   },
   
   function(response) {
     if (response && !response.error_code) 
     {
-      // FB.api('/me?fields=name,email', function(response)
-      // {
-        //alert('Posting completed.'+response.email+product_id);
       $.ajax({
         url: '<?php echo url();?>/saveShare',
         type: "post",
@@ -448,7 +447,6 @@ function fb_share(product_name,url,product_id) {
           //alert(data);
         }
       });
-      // });
     } // end of if response
   }
 );

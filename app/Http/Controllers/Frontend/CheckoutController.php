@@ -1205,6 +1205,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_amount');
 	        Session::forget('coupon_discount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 		/* ========================= End Remove session ==================================== */	
@@ -1280,6 +1281,7 @@ class CheckoutController extends BaseController {
             Session::forget('coupon_type');
             Session::forget('coupon_discount');
             Session::forget('coupon_amount');
+            Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 
@@ -1393,6 +1395,7 @@ class CheckoutController extends BaseController {
 		        Session::forget('coupon_type');
 		        Session::forget('coupon_discount');
 		        Session::forget('coupon_amount');
+		        Session::forget('share_coupon_status');
                 Session::forget('product_id');
                 Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1538,6 +1541,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_discount');
 	        Session::forget('coupon_amount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1564,6 +1568,7 @@ class CheckoutController extends BaseController {
 	        Session::forget('coupon_type');
 	        Session::forget('coupon_discount');
 	        Session::forget('coupon_amount');
+	        Session::forget('share_coupon_status');
             Session::forget('product_id');
             Session::forget('force_social_share');
 			/* ========================= End Remove session ==================================== */	
@@ -1691,4 +1696,24 @@ class CheckoutController extends BaseController {
     return view('frontend.product.social_share',compact('all_sitesetting'),array('title'=>'Share Content'));
     }
     
+	public function socialShareCheckout()
+	{
+		if(Session::has('product_id'))
+		{
+		  $product_array = Session::get('product_id');
+		}
+		else
+		{
+		   $product_array = array();
+		}
+		$product_array[] = Input::get('product_id');
+		Session::put('product_id',serialize($product_array));
+
+		// If Social Share from Cart Page and Checkout Page.
+		if(Input::get('product_id') == 'social_share')
+		{
+		  Session::put('force_social_share','social_share'); 
+		  return redirect('/checkout');
+		}
+	}
 }

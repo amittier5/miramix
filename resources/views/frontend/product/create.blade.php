@@ -1434,7 +1434,7 @@ function checktable_val(){
   selec_option();
   $("#formfactortable").find("tr:gt(1)").remove();
  }
- $(document).on('change','input[type=radio]',function(){
+ $(document).on('change','input[name=own_product]',function(){
     check_radio_state(); 
     clearall();
 });

@@ -38,8 +38,7 @@ class HomeController extends BaseController {
     * @return Response
     */
     public function index()
-    {
-    	 
+    { 
 	if(substr($_SERVER['SERVER_NAME'],0,4) != "www." && $_SERVER['SERVER_NAME'] != '192.168.1.112' && $_SERVER['SERVER_NAME'] != 'localhost')
 	header('Location: http://www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	
@@ -198,10 +197,14 @@ class HomeController extends BaseController {
             Session::forget('member_username');
             
             /* Delete Cart Session */
+            
 			Session::forget('coupon_code');
 			Session::forget('coupon_type');
 			Session::forget('coupon_discount');
+			Session::forget('coupon_amount');
 			Session::forget('share_coupon_status');
+            Session::forget('product_id');
+            Session::forget('force_social_share');
 
 			/* Delete Cart Session */
 

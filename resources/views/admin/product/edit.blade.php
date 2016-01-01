@@ -298,7 +298,7 @@
                                 <th>Ingredient<span class="weight_span">Weight Range</span></th>
                                @if (!empty($formfac))
                                   @foreach ($formfac as $key => $value) 
-                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm) <a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Not Within Available Weight Range">i</a></span></th>
+                                     <th data-rel="{!! $value->id; !!}" data-min-weight="{!! $value->minimum_weight; !!}" data-max-weight="{!! $value->maximum_weight; !!}" <?php if (in_array($value->id, $check_arr)){?> class="all_selec" <?php } ?> >{!! $value->name; !!}<span class="weight_span">{!! $value->minimum_weight; !!}--{!! $value->maximum_weight; !!}(gm) <!--<a href="#" class="toll_tipfor_red" data-toggle="tooltip" title="Not Within Available Weight Range">i</a>--></span></th>
                                   @endforeach
                                 @endif
                                 
@@ -1563,6 +1563,7 @@ function calc_weight_ingred(obj){
  }
  
 function check_radio_state(){
+	
 	onlyforradiostatecheck();	
 	selec_option();
 	$("#formfactortable").find("tr:gt(1)").remove();
@@ -1577,7 +1578,7 @@ function check_radio_state(){
 	//alert(checkradiostate_var);	
  }
  
- $(document).on('change','input[type=own_product]',function(){
+ $(document).on('change','input[name=own_product]',function(){
 	  check_radio_state();
 	  clearall();	  
 	  //selec_option();
