@@ -1108,16 +1108,16 @@ class ProductController extends BaseController {
     if(Session::has('share_product_id'))
     {
       $new_array = Session::get('share_product_id');
-      //print_r($new_array); 
+      print_r($new_array); 
       $new = array_merge($new_array,array(Input::get('product_id')));
       Session::put('share_product_id',$new); 
-      //print_r(Session::get('share_product_id')); 
+      print_r(Session::get('share_product_id')); 
     }
     else
     {
       $product_array[] = Input::get('product_id');
       Session::put('share_product_id',$product_array);
-      //print_r(Session::get('share_product_id'));
+      print_r(Session::get('share_product_id'));
     }
 
     // If Social Share from Cart Page and Checkout Page.
