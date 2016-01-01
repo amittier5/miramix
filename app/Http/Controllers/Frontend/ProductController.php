@@ -63,7 +63,7 @@ class ProductController extends BaseController {
         }
 
         
-        $ingredients = DB::table('ingredients')->whereNotIn('status',[0,2])->get();
+        $ingredients = DB::table('ingredients')->whereNotIn('status',[2])->get();
          
         $formfac = DB::table('form_factors')->get();
 
@@ -191,10 +191,10 @@ class ProductController extends BaseController {
       $product['description2']      = htmlentities(Request::input('description2'));
       $product['description3']      = htmlentities(Request::input('description3'));
       $product['brandmember_id'] = Session::get('brand_userid');
+      //$product['brandmember_id'] = 33;
       $product['tags'] = Request::input('tags');       
-      $product['sku'] = $obj->random_string(9);
-      $product['visiblity'] = Request::input('visiblity');  
-
+      $product['sku'] = $obj->random_string(9);  
+      //$product['tags'] = 'test';
       $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
       $product['created_at'] = date("Y-m-d H:i:s");
 
@@ -335,8 +335,8 @@ class ProductController extends BaseController {
 
         $ingredients_details = DB::table('ingredients as I')
                               ->select(DB::raw('I.price_per_gram,FF.name'))
-                              ->leftJoin('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
-                              ->leftJoin('form_factors as FF','FF.id','=','IFF.form_factor_id')
+                              ->Join('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
+                              ->Join('form_factors as FF','FF.id','=','IFF.form_factor_id')
                               ->where('I.id','=',$ingredient_id)
                               ->get();
         
@@ -441,7 +441,7 @@ class ProductController extends BaseController {
         }
         
       // Get All Ingredient whose status != 2
-      $ingredients = DB::table('ingredients')->whereNotIn('status',[0,2])->get();
+      $ingredients = DB::table('ingredients')->whereNotIn('status',[2])->get();
       
       // Get All Form factors
       $formfac = FormFactor::all();
@@ -574,240 +574,242 @@ class ProductController extends BaseController {
     if(Request::input('own_product')==1)  
     {
 
-  		if(Input::hasFile('image1')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image1')->getClientOriginalExtension(); // getting image extension
-  			$fileName1 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image1')->move($destinationPath, $fileName1); // uploading file to given path
+		if(Input::hasFile('image1')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image1')->getClientOriginalExtension(); // getting image extension
+			$fileName1 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image1')->move($destinationPath, $fileName1); // uploading file to given path
 
-  			$obj->createThumbnail($fileName1,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName1,109,89,$destinationPath,$medium);
+			$obj->createThumbnail($fileName1,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName1,109,89,$destinationPath,$medium);
 
-  		}
-  		else{
-  			$fileName1 = Request::input('hidden_image1');
-  		}
+		}
+		else{
+			$fileName1 = Request::input('hidden_image1');
+		}
 
-  		if(Input::hasFile('image2')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image2')->getClientOriginalExtension(); // getting image extension
-  			$fileName2 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image2')->move($destinationPath, $fileName2); // uploading file to given path
+		if(Input::hasFile('image2')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image2')->getClientOriginalExtension(); // getting image extension
+			$fileName2 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image2')->move($destinationPath, $fileName2); // uploading file to given path
 
-  			$obj->createThumbnail($fileName2,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName2,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName2,109,89,$destinationPath,$medium);
+			$obj->createThumbnail($fileName2,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName2,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName2,109,89,$destinationPath,$medium);
 
-  		}
-  		else{
-  			$fileName2 = Request::input('hidden_image2');
-  		}
+		}
+		else{
+			$fileName2 = Request::input('hidden_image2');
+		}
 
-  		if(Input::hasFile('image3')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image3')->getClientOriginalExtension(); // getting image extension
-  			$fileName3 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image3')->move($destinationPath, $fileName3); // uploading file to given path
+		if(Input::hasFile('image3')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image3')->getClientOriginalExtension(); // getting image extension
+			$fileName3 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image3')->move($destinationPath, $fileName3); // uploading file to given path
 
-  			$obj->createThumbnail($fileName3,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName3,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName3,109,89,$destinationPath,$medium);
+			$obj->createThumbnail($fileName3,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName3,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName3,109,89,$destinationPath,$medium);
 
-  		}
-  		else{
-  			$fileName3 = Request::input('hidden_image3');
-  		}
+		}
+		else{
+			$fileName3 = Request::input('hidden_image3');
+		}
 
-  		if(Input::hasFile('image4')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image4')->getClientOriginalExtension(); // getting image extension
-  			$fileName4 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image4')->move($destinationPath, $fileName4); // uploading file to given path
+		if(Input::hasFile('image4')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image4')->getClientOriginalExtension(); // getting image extension
+			$fileName4 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image4')->move($destinationPath, $fileName4); // uploading file to given path
 
-  			$obj->createThumbnail($fileName4,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName4,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName4,109,89,$destinationPath,$medium);
+			$obj->createThumbnail($fileName4,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName4,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName4,109,89,$destinationPath,$medium);
 
-  		}
-  		else{
-  			$fileName4 = Request::input('hidden_image4');
-  		}
-  		if(Input::hasFile('image5')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image5')->getClientOriginalExtension(); // getting image extension
-  			$fileName5 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image5')->move($destinationPath, $fileName5); // uploading file to given path
+		}
+		else{
+			$fileName4 = Request::input('hidden_image4');
+		}
+		if(Input::hasFile('image5')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image5')->getClientOriginalExtension(); // getting image extension
+			$fileName5 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image5')->move($destinationPath, $fileName5); // uploading file to given path
 
-  			$obj->createThumbnail($fileName5,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName5,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName5,109,89,$destinationPath,$medium);
-
-
-  		}
-  		else{
-  			$fileName5 = (Request::input('hidden_image5')!='')?Request::input('hidden_image5'):'';
-  		}
-  		if(Input::hasFile('image6')){
-  			$destinationPath = 'uploads/product/';   // upload path
-  			$thumb_path = 'uploads/product/thumb/';
-  			$home_thumb_path = 'uploads/product/home_thumb/';
-  			$medium = 'uploads/product/medium/';
-  			$extension = Input::file('image6')->getClientOriginalExtension(); // getting image extension
-  			$fileName6 = rand(111111111,999999999).'.'.$extension; // renameing image
-  			Input::file('image6')->move($destinationPath, $fileName6); // uploading file to given path
-
-  			$obj->createThumbnail($fileName6,771,517,$destinationPath,$thumb_path);
-  			$obj->createThumbnail($fileName6,580,270,$destinationPath,$home_thumb_path);
-  			$obj->createThumbnail($fileName6,109,89,$destinationPath,$medium);
-
-  		}
-  		else{
-  			$fileName6 = Request::input('hidden_image6');
-  		}
-
-  		$lastinsertedId = $id = Request::input('product_id');
-  		$product = Product::find(Request::input('product_id'));
-
-  		$product['id'] = Request::input('product_id');
-  	    $product['own_product'] = Request::input('own_product');
-  		$product['product_name'] = Request::input('product_name');
-  		$product['product_slug'] = $obj->edit_slug($product['product_name'],'products','product_slug',Request::input('product_id'));
-  		$product['image1'] = $fileName1;
-  		$product['image2'] = $fileName2;
-  		$product['image3'] = $fileName3;
-  		$product['image4'] = $fileName4;
-  		$product['image5'] = $fileName5;
-  		$product['image6'] = $fileName6;
-  		$product['description1']      = htmlentities(Request::input('description1'));
-  		$product['description2']      = htmlentities(Request::input('description2'));
-  		$product['description3']      = htmlentities(Request::input('description3'));
-
-  		$product['tags'] = Request::input('tags');   
-      $product['visiblity'] = Request::input('visiblity');
-
-  		$product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
-  		$product['created_at'] = date("Y-m-d H:i:s");
-
-  		$product->save();
+			$obj->createThumbnail($fileName5,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName5,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName5,109,89,$destinationPath,$medium);
 
 
-  		// ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+		}
+		else{
+			$fileName5 = (Request::input('hidden_image5')!='')?Request::input('hidden_image5'):'';
+		}
+		if(Input::hasFile('image6')){
+			$destinationPath = 'uploads/product/';   // upload path
+			$thumb_path = 'uploads/product/thumb/';
+			$home_thumb_path = 'uploads/product/home_thumb/';
+			$medium = 'uploads/product/medium/';
+			$extension = Input::file('image6')->getClientOriginalExtension(); // getting image extension
+			$fileName6 = rand(111111111,999999999).'.'.$extension; // renameing image
+			Input::file('image6')->move($destinationPath, $fileName6); // uploading file to given path
 
-  		// Delete Search tags
-  		Searchtag::where('product_id', '=', $id)->delete();
+			$obj->createThumbnail($fileName6,771,517,$destinationPath,$thumb_path);
+			$obj->createThumbnail($fileName6,580,270,$destinationPath,$home_thumb_path);
+			$obj->createThumbnail($fileName6,109,89,$destinationPath,$medium);
 
-  		$allTags = array();
-  		$ii=0;
-  		if($product['tags']!=""){
-  			$allTags = explode(",", $product['tags']);
+		}
+		else{
+			$fileName6 = Request::input('hidden_image6');
+		}
 
-  			
-  			foreach ($allTags as $key => $value) {
-  				$all_data_arr[$ii]['value'] = $value;
-  				$all_data_arr[$ii]['type'] = 'tags';
-  				$ii++;
-  			}
-  		}
+		$lastinsertedId = $id = Request::input('product_id');
+		$product = Product::find(Request::input('product_id'));
 
-  		// get Brand Name from brand id 
-  		$ii = $ii + 1;
-  		$brand_dtls = Brandmember::find($product['brandmember_id']);
+		$product['id'] = Request::input('product_id');
+	    $product['own_product'] = Request::input('own_product');
+		$product['product_name'] = Request::input('product_name');
+		$product['product_slug'] = $obj->edit_slug($product['product_name'],'products','product_slug',Request::input('product_id'));
+		$product['image1'] = $fileName1;
+		$product['image2'] = $fileName2;
+		$product['image3'] = $fileName3;
+		$product['image4'] = $fileName4;
+		$product['image5'] = $fileName5;
+		$product['image6'] = $fileName6;
+		$product['description1']      = htmlentities(Request::input('description1'));
+		$product['description2']      = htmlentities(Request::input('description2'));
+		$product['description3']      = htmlentities(Request::input('description3'));
 
-  		$brand_name = $brand_dtls['fname'].' '.$brand_dtls['lname'];
-  		$all_data_arr[$ii]['value'] = $brand_name;
-  		$all_data_arr[$ii]['type'] = 'brand_name';
+		$product['tags'] = Request::input('tags');   
 
-  		//Insert Into searchtags table
-  		foreach ($all_data_arr as $key => $value) {
-  			$arr = array('product_id'=>$id,'type'=>$value['type'],'name'=>trim($value['value']));
-  			Searchtag::create($arr);
-  		}
-    // ++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+		$product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
+		$product['created_at'] = date("Y-m-d H:i:s");
 
-
-
-        // Delete all ingredient before save new
-          ProductIngredientGroup::where('product_id', '=', $id)->delete();   // Delete ingredient group
-
-          ProductIngredient::where('product_id', '=', $id)->delete();     // Delete ingredient individual
-
-          $flag = 0;
-  		if(NULL!=Request::input('ingredient_group')){
-  			foreach (Request::input('ingredient_group') as $key => $value) {
-          
-  	        	// Check if that group contain atleast one ingredient
-  	           if(isset($value['ingredient']) && NULL!=$value['ingredient']){
-  	             
-  	              foreach ($value['ingredient'] as $key1 => $next_value) {
-  	                 if($next_value['ingredient_id']!="" && $next_value['weight']!=""){
-  	                    $flag = 1;
-  	                    break;
-  	                 }
-  	              }
-  	            }
+		$product->save();
 
 
-            	// ========================  Insert If flag==1 =====================
-  	           if($flag==1) {
-  	                $arr = array('product_id'=>$lastinsertedId,'group_name'=>$value['group_name']);
-  	                $pro_ing_grp = ProductIngredientGroup::create($arr);
-  	                $group_id = $pro_ing_grp->id;
+		// ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
 
-  	                 if(NULL!=$value['ingredient']){
+		// Delete Search tags
+		Searchtag::where('product_id', '=', $id)->delete();
 
-  	                    foreach ($value['ingredient'] as $key1 => $next_value) {
-  	                      if($next_value['ingredient_id']!="" && $next_value['weight']!=""){
+		$allTags = array();
+		$ii=0;
+		if($product['tags']!=""){
+			$allTags = explode(",", $product['tags']);
 
-  	                        $arr_next = array('product_id'=>$lastinsertedId,'ingredient_id'=>$next_value['ingredient_id'],'weight'=>$next_value['weight'],'ingredient_price'=>$next_value['ingredient_price'],'ingredient_group_id'=>$group_id);
-  	                        ProductIngredient::create($arr_next);
+			
+			foreach ($allTags as $key => $value) {
+				$all_data_arr[$ii]['value'] = $value;
+				$all_data_arr[$ii]['type'] = 'tags';
+				$ii++;
+			}
+		}
 
-  	                      }
-  	                      
-  	                    }
-  	                 }
-  	              }
-              //  ========================  Insert If flag==1 =====================
-            }
+		// get Brand Name from brand id 
+		$ii = $ii + 1;
+		$brand_dtls = Brandmember::find($product['brandmember_id']);
+
+		$brand_name = $brand_dtls['fname'].' '.$brand_dtls['lname'];
+		$all_data_arr[$ii]['value'] = $brand_name;
+		$all_data_arr[$ii]['type'] = 'brand_name';
+
+		//Insert Into searchtags table
+		foreach ($all_data_arr as $key => $value) {
+			$arr = array('product_id'=>$id,'type'=>$value['type'],'name'=>trim($value['value']));
+			Searchtag::create($arr);
+		}
+  // ++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
+
+
+
+      // Delete all ingredient before save new
+        ProductIngredientGroup::where('product_id', '=', $id)->delete();   // Delete ingredient group
+
+        ProductIngredient::where('product_id', '=', $id)->delete();     // Delete ingredient individual
+
+        $flag = 0;
+		if(NULL!=Request::input('ingredient_group')){
+			foreach (Request::input('ingredient_group') as $key => $value) {
+        
+	        	// Check if that group contain atleast one ingredient
+	           if(isset($value['ingredient']) && NULL!=$value['ingredient']){
+	             
+	              foreach ($value['ingredient'] as $key1 => $next_value) {
+	                 if($next_value['ingredient_id']!="" && $next_value['weight']!=""){
+	                    $flag = 1;
+	                    break;
+	                 }
+	              }
+	            }
+
+
+          	// ========================  Insert If flag==1 =====================
+	           if($flag==1) {
+	                $arr = array('product_id'=>$lastinsertedId,'group_name'=>$value['group_name']);
+	                $pro_ing_grp = ProductIngredientGroup::create($arr);
+	                $group_id = $pro_ing_grp->id;
+
+	                 if(NULL!=$value['ingredient']){
+
+	                    foreach ($value['ingredient'] as $key1 => $next_value) {
+	                      if($next_value['ingredient_id']!="" && $next_value['weight']!=""){
+
+	                        $arr_next = array('product_id'=>$lastinsertedId,'ingredient_id'=>$next_value['ingredient_id'],'weight'=>$next_value['weight'],'ingredient_price'=>$next_value['ingredient_price'],'ingredient_group_id'=>$group_id);
+	                        ProductIngredient::create($arr_next);
+
+	                      }
+	                      
+	                    }
+	                 }
+	              }
+            //  ========================  Insert If flag==1 =====================
           }
-
-        // Create Product Ingredient        
-        if(NULL!=Request::input('ingredient')){
-  	      foreach (Request::input('ingredient') as $key2 => $ing_value) {
-  	        if($ing_value['id']!="" && $ing_value['weight']!=""){
-
-  	            $arr_next = array('product_id'=>$lastinsertedId,'ingredient_id'=>$ing_value['id'],'weight'=>$ing_value['weight'],'ingredient_price'=>$ing_value['ingredient_price'],'ingredient_group_id'=>0);
-  	            ProductIngredient::create($arr_next);
-  	        }
-  	          
-  	      }
-  	  	}		
-
-  	  //echo "<pre>";print_r(Request::input('formfactor') );exit;
-         // Delete all Formfactor before save new
-        ProductFormfactor::where('product_id', '=', $id)->delete();
-
-        // Add Ingredient form factor
-        foreach (Request::input('formfactor') as $key3 => $formfactor_value) {
-          
-          $arr_pro_fac = array('product_id'=>$id,'formfactor_id'=>$formfactor_value['formfactor_id'],'servings'=>$formfactor_value['servings'],'min_price'=>$formfactor_value['min_price'],'recomended_price'=>$formfactor_value['recomended_price'],'actual_price'=>$formfactor_value['actual_price']);
-          ProductFormfactor::create($arr_pro_fac);
         }
+
+      // Create Product Ingredient        
+      if(NULL!=Request::input('ingredient')){
+	      foreach (Request::input('ingredient') as $key2 => $ing_value) {
+	        if($ing_value['id']!="" && $ing_value['weight']!=""){
+
+	            $arr_next = array('product_id'=>$lastinsertedId,'ingredient_id'=>$ing_value['id'],'weight'=>$ing_value['weight'],'ingredient_price'=>$ing_value['ingredient_price'],'ingredient_group_id'=>0);
+	            ProductIngredient::create($arr_next);
+	        }
+	          
+	      }
+	  	}		
+
+	  //echo "<pre>";print_r(Request::input('formfactor') );exit;
+       // Delete all Formfactor before save new
+      ProductFormfactor::where('product_id', '=', $id)->delete();
+
+      // Add Ingredient form factor
+      foreach (Request::input('formfactor') as $key3 => $formfactor_value) {
+        
+        $arr_pro_fac = array('product_id'=>$id,'formfactor_id'=>$formfactor_value['formfactor_id'],'servings'=>$formfactor_value['servings'],'min_price'=>$formfactor_value['min_price'],'recomended_price'=>$formfactor_value['recomended_price'],'actual_price'=>$formfactor_value['actual_price']);
+        ProductFormfactor::create($arr_pro_fac);
+      }
+
+
+
     }
     else
     {
@@ -823,14 +825,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image1')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image1')->getClientOriginalExtension(); // getting image extension
         $fileName1 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image1')->move($destinationPath, $fileName1); // uploading file to given path
 
         $obj->createThumbnail($fileName1,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName1,109,89,$destinationPath,$medium);
 
         // Delete old image
@@ -845,14 +847,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image2')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image2')->getClientOriginalExtension(); // getting image extension
         $fileName2 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image2')->move($destinationPath, $fileName2); // uploading file to given path
 
         $obj->createThumbnail($fileName2,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName2,109,89,$destinationPath,$medium);
         
       }
@@ -863,14 +865,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image3')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image3')->getClientOriginalExtension(); // getting image extension
         $fileName3 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image3')->move($destinationPath, $fileName3); // uploading file to given path
 
         $obj->createThumbnail($fileName3,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName3,109,89,$destinationPath,$medium);
 
       }
@@ -881,14 +883,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image4')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image4')->getClientOriginalExtension(); // getting image extension
         $fileName4 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image4')->move($destinationPath, $fileName4); // uploading file to given path
 
         $obj->createThumbnail($fileName4,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName4,109,89,$destinationPath,$medium);
       
       }
@@ -898,14 +900,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image5')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image5')->getClientOriginalExtension(); // getting image extension
         $fileName5 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image5')->move($destinationPath, $fileName5); // uploading file to given path
 
         $obj->createThumbnail($fileName5,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName5,109,89,$destinationPath,$medium);
 
        
@@ -916,14 +918,14 @@ class ProductController extends BaseController {
       if(Input::hasFile('image6')){
         $destinationPath = 'uploads/product/';   // upload path
         $thumb_path = 'uploads/product/thumb/';
-		    $home_thumb_path = 'uploads/product/home_thumb/';
+		$home_thumb_path = 'uploads/product/home_thumb/';
         $medium = 'uploads/product/medium/';
         $extension = Input::file('image6')->getClientOriginalExtension(); // getting image extension
         $fileName6 = rand(111111111,999999999).'.'.$extension; // renameing image
         Input::file('image6')->move($destinationPath, $fileName6); // uploading file to given path
 
         $obj->createThumbnail($fileName6,771,517,$destinationPath,$thumb_path);
-		    $obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
+		$obj->createThumbnail($fileName1,580,270,$destinationPath,$home_thumb_path);
         $obj->createThumbnail($fileName6,109,89,$destinationPath,$medium);
 
       }
@@ -944,11 +946,10 @@ class ProductController extends BaseController {
       $product['description2']      = htmlentities(Request::input('description2'));
       $product['description3']      = htmlentities(Request::input('description3'));
       $product['brandmember_id'] = Session::get('brand_userid');
-
+      //$product['brandmember_id'] = 33; 
       $product['tags'] = Request::input('tags');   
       $product['sku'] = $obj->random_string(9);  
-      $product['visiblity'] = Request::input('visiblity');
-      
+
       $product['script_generated'] = '<a href="'.url().'/product-details/'.$product['product_slug'].'" style="color: #FFF;background: #78d5e5 none repeat scroll 0% 0%;padding: 10px 20px;font-weight: 400;font-size: 12px;line-height: 25px;text-shadow: none;border: 0px none;text-transform: uppercase;font-weight: 200;vertical-align: middle;box-shadow: none;display: block;float: left;" onMouseOver="this.style.backgroundColor=\'#afc149\'" onMouseOut="this.style.backgroundColor=\'#78d5e5\'">Buy Now</a>';
       $product['created_at'] = date("Y-m-d H:i:s");
 
@@ -1075,7 +1076,7 @@ class ProductController extends BaseController {
 	return redirect('my-products');
 
       //exit;
-  }
+    }
 
 
     public function delete_product($id){
@@ -1104,12 +1105,14 @@ class ProductController extends BaseController {
   
   public function saveShare()
   {
-    //$product_array = array();
     if(Session::has('product_id'))
     {
-      $product_array[] = Session::get('product_id');
+      $product_array = Session::get('product_id');
     }
-    
+    else
+    {
+       $product_array = array();
+    }
     $product_array[] = Input::get('product_id');
     Session::put('product_id',serialize($product_array));
 
