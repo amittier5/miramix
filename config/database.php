@@ -54,8 +54,8 @@ return [
 
     /*********** Local Database Details **********/
 
-/*
-    'mysql' => [
+
+   /* 'mysql' => [
 
            'driver'    => 'mysql',
            'host'      => env('DB_HOST', 'localhost'),
@@ -67,11 +67,11 @@ return [
            'prefix'    => '',
            'strict'    => false,
 
-       ],
-*/
-    /*********** Server Database Details **********/
+       ], 
+    */
+/*********** Server Database Details **********/
 
- 'mysql' => [
+        'mysql' => [
              'driver'    => 'mysql',
              'host'      => env('DB_HOST', 'localhost'),
              'database'  => env('DB_DATABASE', 'miramix_miramix'),
@@ -81,8 +81,9 @@ return [
              'collation' => 'utf8_unicode_ci',
              'prefix'    => '',
              'strict'    => false,
-         ],
+            ],
     
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

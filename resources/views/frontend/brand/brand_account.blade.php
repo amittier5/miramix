@@ -232,6 +232,34 @@
                           </div>
                        
                         
+                        <div class="form-group">
+                            <h5>Preffered Communication : </h5>
+                              <?php 
+                                  if($brand_details['preffered_communication']==0){
+                                ?>
+                                  <label>  {!! Form::radio('preffered_communication', 0,true) !!} E-Mail</label> 
+                                <?php
+                                }
+                                else
+                                {
+                              ?>
+                                <label> {!! Form::radio('preffered_communication', 0) !!} E-Mail</label> 
+                              <?php
+                                }
+                                if($brand_details['preffered_communication']==1){
+                              ?>
+                                  <label>  {!! Form::radio('preffered_communication', 1,true) !!} Message</label> 
+                                <?php
+                                }
+                              else
+                                {
+                              ?>
+                                <label> {!! Form::radio('preffered_communication', 1) !!} Message</label> 
+                              <?php
+                                }
+                              ?>
+                            </div>
+                            
                         </div>
                         
                         

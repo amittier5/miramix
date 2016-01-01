@@ -52,32 +52,30 @@ class MemberController extends BaseController {
         
         
         if(Request::isMethod('post'))
-        {
-            
-            
-            if($_FILES['image']['name']!="")
-			{
-		$destinationPath = 'uploads/member/'; // upload path
-                $thumb_path = 'uploads/member/thumb/';
-                $medium = 'uploads/member/thumb/';
-		$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
-		$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
-		Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
-				
-                $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
-                $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
-			}
-			else
-			{
-				$fileName = '';
-			}
+        { 
+          if($_FILES['image']['name']!="")
+    			{
+        		$destinationPath = 'uploads/member/'; // upload path
+            $thumb_path = 'uploads/member/thumb/';
+            $medium = 'uploads/member/thumb/';
+        		$extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+        		$fileName = rand(111111111,999999999).'.'.$extension; // renameing image
+        		Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+    				
+            $obj->createThumbnail($fileName,661,440,$destinationPath,$thumb_path);
+            $obj->createThumbnail($fileName,116,116,$destinationPath,$medium);
+    			}
+    			else
+    			{
+    				$fileName = '';
+    			}
             
             $member=array('fname'=> Request::input('fname'),
-			 'lname'=> Request::input('lname'),
-                         
+			                   'lname'=> Request::input('lname'),
                          'phone_no'=> Request::input('phone_no'),
-                       
-                                );
+                         'preffered_communication'=>  Request::input('preffered_communication')
+                          );
+
             if(!empty($fileName)){
                 $member['pro_image']=$fileName;
             }
@@ -89,10 +87,6 @@ class MemberController extends BaseController {
             
         }
       $member = Brandmember::find(Session::get('member_userid'));
-        
-        
-        
-        
 
         $body_class = '';
         return view('frontend.member.member_account',compact('body_class','member'),array('title'=>'Member Information'));
