@@ -12,3 +12,4 @@ config/database.php
 .env
 error_log
 uploads/*
+live/*
