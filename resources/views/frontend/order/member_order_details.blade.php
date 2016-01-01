@@ -136,7 +136,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           </tr>
                         </thead>
                         <tbody>
-                          <td colspan="5">
+                          <td colspan="7">
                             <table class="table table-information">
                               <tbody>
                               @if(!empty($order_items_list))
@@ -149,9 +149,9 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                                   <tr>
                                     <td>
                                       @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
-                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt="" style="max-width:100px"">
+                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt="" style="max-width: 74px;">
                                       @else
-                                      <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
+                                      <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width: 74px;">
                                       @endif
 
 				      
@@ -166,7 +166,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                                     <td>{!! $each_item->quantity; !!}</td>
                                     <td>${!! number_format($each_item->price,2); !!}</td>
                                     <td>{!! $each_item->form_factor_name; !!}</td>
-                                    <td>{!! $each_item->duration; !!}</td>
+                                    <td class="text-right">{!! $each_item->duration; !!}</td>
                                     <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
                                   </tr>
   				                      @endforeach
@@ -178,12 +178,12 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
   							               </tbody>
                               <tfoot>
                                 <tr>
-                                    <td colspan="6">&nbsp;</td>
+                                    <td colspan="5">&nbsp;</td>
                                     <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
                                 </tr>
                                 <?php if($order_list->discount!=0){?>
                                  <tr>
-                                    <td colspan="6">&nbsp;</td>
+                                    <td colspan="5">&nbsp;</td>
                                     <td class="text-right">Discount</td><td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
                                 </tr>
                                 <?php } ?>
@@ -191,7 +191,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
 				
 				                      <?php if($order_list->redeem_amount>0){?>
                                  <tr>
-                                    <td colspan="6">&nbsp;</td>
+                                    <td colspan="5">&nbsp;</td>
                                     <td class="text-right">Redeem Amount</td><td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
                                 </tr>
                                 <?php } ?>

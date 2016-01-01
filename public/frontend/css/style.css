@@ -10574,6 +10574,34 @@ input#paypal_checkout.logged_outbtn {
 }
 
 
+/*...............added on 31st dec...............*/
+
+.form_dashboardacct table.table-information>thead>tr>th:first-child,.form_dashboardacct table.table-information>thead>tr>th:nth-child(2),.form_dashboardacct table.table-information>thead>tr>th:nth-child(3),.form_dashboardacct table.table-information>thead>tr>th:nth-child(4),.form_dashboardacct table.table-information>thead>tr>th:nth-child(5),.form_dashboardacct table.table-information .table td:nth-child(3),.form_dashboardacct table.table-information .table td:nth-child(4),.form_dashboardacct table.table-information .table td:first-child{
+	width:auto;	
+}
+.form_dashboardacct table.table-information>thead>tr>th:nth-child(5){
+	padding: 12px 30px;	
+}
+.form_dashboardacct table.table-information .table td:first-child{
+	max-width:90px;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(2){
+	max-width:90px;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(4){
+	min-width: 110px;
+}
+.form_dashboardacct table.table-information .table td:nth-child(5){
+	min-width:115px;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(3){
+	min-width:100px;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(6){
+	text-align:right !important;
+}
+
+
 
 
 
