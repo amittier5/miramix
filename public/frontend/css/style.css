@@ -1,8 +1,4 @@
-/* CSS Document */
-/* CSS Document */
-
-
-
+/* CSS Document responsive*/
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
 @import url(http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic);
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700);
@@ -10530,9 +10526,68 @@ input#paypal_checkout.logged_outbtn {
 .form_dashboardacct .table .btn-white{
 	overflow:hidden;	
 }
+.order-history .st-head-row.st-head-row-main,.order-history .st-head-row{
+	color:#fff;	
+}
+.order-history .st-head-row{
+	border-bottom:1px solid #fff;	
+} 
+.form_dashboardacct p.status_btn.cancel_btn{
+	background:#ed5e68;	
+}
+.bordered_panel p.social_share{
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #000;
+    margin-top: 15px;
 
-
-
+}
+.right_table .table>tbody>tr>td.special-pad{
+	padding: 15px 15px 0 15px;
+    text-align: center;	
+}
+.right_table .table>tbody>tr>td.no-bord.special-pad{
+	border:none;
+	padding:10px 15px 7px 15px;	
+}
+.coupon_code {
+    max-width: 125px !important;
+    border: 1px solid #ccc !important;
+    line-height: 26px !important;
+    border-radius: 2px 0 0 2px !important;
+    padding-left: 10px !important;
+    padding: 1px 10px !important;
+}
+.sub_coupon {
+    font-size: 14px !important;
+    color: #78D5E5 !important;
+    background: transparent !important;
+    border: none !important;
+    border: 1px solid #ccc !important;
+    padding: 2px 10px !important;
+    border-left: none !important;
+    position: relative !important;
+    top: 0px !important;
+    border-radius: 0 2px 2px 0 !important;
+    width: auto !important;
+    height: 30px !important;
+}
+.social_plug_new.new-cart-social li.fb_li a{
+    padding:0;		
+}
+.social_plug_new.new-cart-social li.fb_li a i{
+    margin:0;
+    padding:0 15px;		
+}
+.social-share-checkout{
+    padding: 10px 10px 20px 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    box-shadow: 0 0 5px #DEDCDC;
+    padding-top: 5px;
+    border: 1px solid #DCDCDC;
+    border-top: 5px solid #71d2e3;	
+}
 
 
 
