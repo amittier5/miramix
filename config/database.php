@@ -54,7 +54,7 @@ return [
 
     /*********** Local Database Details **********/
 
-
+/*
     'mysql' => [
 
            'driver'    => 'mysql',
@@ -68,22 +68,20 @@ return [
            'strict'    => false,
 
        ],
-
+*/
     /*********** Server Database Details **********/
 
-/*
-         'mysql' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'miramixp_live'),
-            'username'  => env('DB_USERNAME', 'miramixp_live'),
-            'password'  => env('DB_PASSWORD', 'ZV$qdmU=]X2t'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
-*/
+ 'mysql' => [
+             'driver'    => 'mysql',
+             'host'      => env('DB_HOST', 'localhost'),
+             'database'  => env('DB_DATABASE', 'miramix_miramix'),
+             'username'  => env('DB_USERNAME', 'miramix_uipl'),
+             'password'  => env('DB_PASSWORD', '*c&m)$C8I%X3'),
+             'charset'   => 'utf8',
+             'collation' => 'utf8_unicode_ci',
+             'prefix'    => '',
+             'strict'    => false,
+         ],
     
         'pgsql' => [
             'driver'   => 'pgsql',
