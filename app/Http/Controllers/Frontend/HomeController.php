@@ -71,8 +71,12 @@ class HomeController extends BaseController {
                  ->groupBy('product_formfactors.product_id')
 		 ->groupBy('product_rating.product_id')	 ;
                 
-	$tags=Request::input('tags');  
-	  if(!empty($tags)){
+	$tags=Request::input('tags');
+	$sku=Request::input('sku');
+	if(!empty($sku)){
+	   $products->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	  elseif(!empty($tags)){
 	    $tag=explode(",",$tags);
 	    $ptags='';
 	    foreach($tag as $t){
@@ -96,12 +100,8 @@ class HomeController extends BaseController {
 	  }
 	  
 	  }
-	  
-	  
-	$sku=Request::input('sku');
-	if(!empty($sku)){
-	   $products->whereRaw('products.sku="'.$sku.'"'); 
-	}
+	    
+	    
 	$sortby=Request::input('sortby');
 	 if(!empty($sortby)){
 	    
@@ -138,19 +138,18 @@ class HomeController extends BaseController {
 		  ->whereRaw('products.visiblity="0"')
          ->where('product_formfactors.actual_price','!=', 0)
                  ->groupBy('product_formfactors.product_id');          
-	$tags=Request::input('tags');  
-	  if(!empty($tags)){
+	$tags=Request::input('tags');
+	$sku=Request::input('sku');
+	  if(!empty($sku)){
+	       $products2->whereRaw('products.sku="'.$sku.'"'); 
+	    }
+	  elseif(!empty($tags)){
 	    
 	
 	    if(!empty($pids)){ 
 	    $products2->whereRaw('products.id IN('.$pids.')');
 	   }
 	  }
-	  
-	  $sku=Request::input('sku');
-	    if(!empty($sku)){
-	       $products2->whereRaw('products.sku="'.$sku.'"'); 
-	    }
 	
 	  $p2=$products2->get();
 	  $total_records=count($p2);
