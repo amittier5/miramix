@@ -411,7 +411,10 @@ function()
                     dataType: "json",
                     url: '<?php echo url();?>/saveShare',
                     data: { product_id : 'social_share' ,_token: '{!! csrf_token() !!}'},
+
                     success:function(result){
+                        if(data!='')
+                        window.location = "<?php echo url().'/show-cart' ?>";
 
                     }
                 })
@@ -445,6 +448,9 @@ function fb_share(product_name,url,product_id) {
         success:function(data)
         {
           //alert(data);
+          if(data!='')
+          window.location = "<?php echo url().'/show-cart' ?>";
+
         }
       });
     } // end of if response

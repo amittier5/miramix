@@ -208,9 +208,10 @@ class CartController extends BaseController {
             $formfactor_id = $formfactor->id;
 	
 	        /* Discount Share Start */
-	        if(Session::has('product_id'))
+	        if(Session::has('share_product_id'))
 	        {
-	        	$pid=unserialize(Session::get('product_id'));
+                $pid = array();
+	        	$pid=Session::get('share_product_id');
 				if(in_array($each_content->id,$pid) )
 				{
 					$share_discount = $all_sitesetting['discount_share'];
