@@ -13,14 +13,20 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
       <div class="container-fluid">
         <div class="col-sm-12">
          <div class="row">
-         <div class="form_dashboardacct">
-            <h3>Order History</h3>
+         <div class="form_dashboardacct">         
+            <div class="custom_addedlater clearfix">
+            <h3 class="pull-left">Order History</h3>
+              
+                  </div>
+                
               <div class="bottom_dash clearfix">
                   
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="order_box">
+
                   <h6>Order Information</h6>
+                  
                     <div class="bottom_panel_ship"><p>Order ID: #{!! $order_list->order_number; !!}<br>
                     <?php if($order_list->shipping_address_id == 1){?>
                       Account Email: {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
@@ -31,7 +37,15 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       Payment Method: {!! $order_list->payment_method; !!}<br>
                       Shipping Type: {!! $order_list->shipping_type; !!}<br>
                       Shipping Cost: ${!! number_format($order_list->shipping_cost,2); !!}</p>
+                      <p>
+                      {!! isset($order_list->tracking_number) && ($order_list->tracking_number !='')?'<strong>Tracking Number: </strong>'.$order_list->tracking_number :''; !!}</br>
+                      {!! isset($order_list->shipping_carrier) && ($order_list->shipping_carrier !='')?'<strong>Shipping Carrier: </strong>'.$order_list->shipping_carrier :''; !!}
+                      @if($order_list->usps_label !='')
+                      <div class="pull-left custom-styles"><strong>Label:</strong><a href="{!! url().'/uploads/pdf/'.$order_list->usps_label; !!}" target="_blank">Print Label</a></div>
+                      @endif
+                      </p>
                     </div>
+
                   </div>
                     </div>
                     <div class="col-sm-6">
@@ -47,7 +61,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $state = $serialize_address['zone_id'];
+                            $state = $obj->get_state_name($serialize_address['zone_id'],$serialize_address['country_id']);
                           }
                         }
 
@@ -59,7 +73,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                           }
                           else
                           {
-                            $country = $serialize_address['country_id'];
+                            $country = $obj->get_country_name($serialize_address['country_id']);
                           }
                         }
                       ?>
@@ -69,10 +83,10 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                       {!! isset($serialize_address['email'])?$serialize_address['email']:''; !!}<br>
                       {!! isset($serialize_address['address'])?$serialize_address['address']:''; !!}<br>
                       {!! ($serialize_address['address2']!='')?$serialize_address['address2'].'<br>':''; !!}
-                      {!! "City: ".isset($serialize_address['city'])?$serialize_address['city']:''; !!}<br>
+                      {!! isset($serialize_address['city'])?"City: ".$serialize_address['city']:''; !!}<br>
                       {!! (isset($serialize_address['zone_id']) && ($serialize_address['zone_id']!=''))?"State: ".$state :'' !!}<br>
                       {!! (isset($serialize_address['country_id']) && ($serialize_address['country_id']!=''))? "Country : " .$country:'' !!}<br>
-                      {!! "Post Code: ". isset($serialize_address['postcode'])?$serialize_address['postcode']:'';!!}</p>
+                      {!! isset($serialize_address['postcode'])?"Post Code: ".$serialize_address['postcode']:'';!!}</p>
                        </div>
                       </div>
                     </div>                    
@@ -80,73 +94,80 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
                   
                   <div class="table-responsive spec_tab_resp">
                     <table class="table table-information">
-                        <thead>
-                          <tr>
-                            <th>Product Image</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                            
-                              
-                              @if(!empty($order_items_list))
-                                @foreach($order_items_list as $each_item)
+                      <thead>
+                        <tr>
+                          <th>Product Image</th>
+                          <th>Product Name</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                          <th>Duration</th>
+                          <th>Form Factor</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if(!empty($order_items_list))
+                          @foreach($order_items_list as $each_item)
 
-                                 <?php  $pro_dtls = $obj->getProductDetails($each_item->product_id);?>
-                                
-                                  <tr>
-                                    <td>
-                                      @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
-                                      <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt=""  style="max-width:100px"">
-                                      @else
-                                      <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
-                                      @endif
-              
-              
-                                    </td>
-                                    <td><a href="{!! url().'/product-details/'.$pro_dtls->product_slug; !!}" target="_blank"> {!! $each_item->product_name; !!} </a></td>
-                 
-                                    <td>{!! $each_item->quantity; !!}</td>
-                                    <td>${!! number_format($each_item->price,2); !!}</td>
-                                    <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
-                                  </tr>
-          @endforeach
-                              @else
-                                  <tr>
-                                    <td colspan="5">No records found</td>
-                                  </tr>      
-                              @endif                       
-                              </tbody>    
-                              <tfoot>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
-                                </tr>
-                                 <?php if($order_list->discount!=0){?>
-                                 <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Discount</td>
-                                    <td class="text-right">${!! number_format($order_list->discount,2); !!}</td>
-                                </tr>
-                                 <?php } ?>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Flat Shipping Rate</td>
-                                    <td class="text-right">${!! number_format($order_list->shipping_cost,2); !!}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                    <td class="text-right">Total</td>
-                                    <td class="text-right">${!! number_format($order_list->order_total,2); !!}</td>
-                                </tr>
-                              </tfoot>
-                            
-                          
-                                                   
+
+                           <?php  $pro_dtls = $obj->getProductDetails($each_item->product_id);?>
+         
+                            <tr>
+                              <td>
+                                @if($each_item->product_image!="" && file_exists('./uploads/product/medium/'.$each_item->product_image))
+                                <img src="{!! url(); !!}/uploads/product/medium/{!! $each_item->product_image !!}" alt=""  style="max-width:100px"">
+                                @else
+                                <img src="{!! url(); !!}/uploads/brandmember/noimage.png" alt=""  style="max-width:100px"">
+                                @endif
+        
+        
+                              </td>
+                              <td><a href="{!! url().'/product-details/'.$pro_dtls->product_slug; !!}" target="_blank"> {!! $each_item->product_name; !!} </a></td>
+           
+                              <td>{!! $each_item->quantity; !!}</td>
+                              <td>${!! number_format($each_item->price,2); !!}</td>
+                              <td>{!! $each_item->form_factor_name; !!}</td>
+                              <td>{!! $each_item->duration; !!}</td>
+                              <td class="text-right">${!! number_format(($each_item->price * $each_item->quantity),2); !!}</td>
+                            </tr>
+                          @endforeach
+                        @else
+                            <tr>
+                              <td colspan="5">No records found</td>
+                            </tr>      
+                        @endif                       
+                        </tbody>    
+                        <tfoot>
+                          <tr>
+                              <td colspan="5">&nbsp;</td>
+                              <td class="text-right">Sub-Total</td><td class="text-right">${!! number_format($order_list->sub_total,2); !!}</td>
+                          </tr>
+                           <?php if($order_list->discount!=0){?>
+                           <tr>
+                              <td colspan="5">&nbsp;</td>
+                              <td class="text-right">Discount</td>
+                              <td class="text-right">-${!! number_format($order_list->discount,2); !!}</td>
+                          </tr>
+                           <?php } ?>
+                           
+                           <?php if($order_list->redeem_amount!=0){?>
+                           <tr>
+                              <td colspan="5">&nbsp;</td>
+                              <td class="text-right">Redeem Amount</td>
+                              <td class="text-right">-${!! number_format($order_list->redeem_amount,2); !!}</td>
+                          </tr>
+                           <?php } ?>
+                          <tr>
+                              <td colspan="5">&nbsp;</td>
+                              <td class="text-right">Flat Shipping Rate</td>
+                              <td class="text-right">${!! number_format($order_list->shipping_cost,2); !!}</td>
+                          </tr>
+                          <tr>
+                              <td colspan="5">&nbsp;</td>
+                              <td class="text-right">Total</td>
+                              <td class="text-right">${!! number_format($order_list->order_total,2); !!}</td>
+                          </tr>
+                        </tfoot>
                     </table>
                   </div>
                   
@@ -190,7 +211,7 @@ $serialize_address = unserialize($order_list->shiping_address_serialize);
       
       function rateproduct(productid) {
     
-  location.href='<?php echo url();?>/rate-product/'+productid
+         location.href='<?php echo url();?>/rate-product/'+productid
       }
     </script>
 @stop

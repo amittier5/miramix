@@ -335,8 +335,8 @@ class ProductController extends BaseController {
 
         $ingredients_details = DB::table('ingredients as I')
                               ->select(DB::raw('I.price_per_gram,FF.name'))
-                              ->Join('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
-                              ->Join('form_factors as FF','FF.id','=','IFF.form_factor_id')
+                              ->leftJoin('ingredient_formfactors as IFF','I.id','=','IFF.ingredient_id')
+                              ->leftJoin('form_factors as FF','FF.id','=','IFF.form_factor_id')
                               ->where('I.id','=',$ingredient_id)
                               ->get();
         
@@ -962,10 +962,10 @@ class ProductController extends BaseController {
 
   // ++++++++++++++++++++++++++ Logic for insert brand name and tags in tag table +++++++++++++++++++++++++++++++++++++
 
+      $ii=0;
       if($product['tags']!=""){
         $allTags = explode(",", $product['tags']);
 
-        $ii=0;
         foreach ($allTags as $key => $value) {
           $all_data_arr[$ii]['value'] = $value;
           $all_data_arr[$ii]['type'] = 'tags';

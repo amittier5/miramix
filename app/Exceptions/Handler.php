@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Exceptions;
@@ -40,7 +41,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-   public function render($request, Exception $e)
+  /* public function render($request, Exception $e)
     {
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
@@ -48,9 +49,9 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $e);
     }
+    */
     
-    
-     /* public function render($request, Exception $e)
+    public function render($request, Exception $e)
      {
          if ($e instanceof ModelNotFoundException) {
              $e = new NotFoundHttpException($e->getMessage(), $e);
@@ -64,5 +65,5 @@ class Handler extends ExceptionHandler
          }
     
          return parent::render($request, $e);
-     }*/
+     }
 }

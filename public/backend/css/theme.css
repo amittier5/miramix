@@ -5191,4 +5191,11 @@ span.weight_span {
     line-height: 24px;	
 }
 
+.dataTables_wrapper .table-bordered td img{
+    max-height:70px;
+    width:auto;
+    display:block;
+    margin:0 auto;
+}
+
 

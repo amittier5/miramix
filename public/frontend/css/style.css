@@ -10589,6 +10589,40 @@ input#paypal_checkout.logged_outbtn {
     border-top: 5px solid #71d2e3;	
 }
 
+.form_dashboardacct table.table-information .table td:first-child {
+   	width:auto;
+    max-width: 80px;
+}
+.form_dashboardacct table.table-information .table td:nth-child(2) {
+    max-width: 138px;
+	width:auto;
+}
+.form_dashboardacct table.table-information .table td:nth-child(3) {
+    width:auto;
+    min-width: 72px;
+}
+.form_dashboardacct table.table-information .table td:nth-child(4) {
+    width:auto;
+    min-width: 120px;
+    text-align: right;
+}
+.form_dashboardacct table.table-information .table td:nth-child(5){
+	min-width: 120px;
+    text-align: right !important;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(6){
+	max-width: 40px;
+    width: 45px;
+    text-align: right;	
+}
+.form_dashboardacct table.table-information .table td:nth-child(7){
+    padding-left: 0;	
+}
+.form_dashboardacct table.table-information>thead>tr>th:nth-child(5){
+	padding-right:30px;	
+}
+
+
 
 
 

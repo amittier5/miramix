@@ -2,8 +2,6 @@
 @section('content')
 
 
-<?php //echo "cart_result=======";echo "<pre/>";print_r($cart_result); exit; 
-?>
   <div class="inner_page_container">
     <div class="header_panel">
         <div class="container">
@@ -165,7 +163,84 @@
             </table>
           </div>
           
+      <div class="col-xs-12 forthetabbelowres">
+            <?php
+                $all_sub_total =0.00;
+                $all_total =0.00;
+                if(!empty($cart_result))
+                { 
+                  $i=1;
+                  foreach($cart_result as $eachcart)
+                  {
+                    $all_sub_total = $all_sub_total+$eachcart['subtotal'];
+                   // $all_sub_total = number_format($all_sub_total,2);
+                ?>
+       		
+            	<div class="row cart_prod_row_whole">
+                    <div class="cart_prodrow clearfix">
+                        
+                            <div class="whole_topcart">
+                                <div class="col-xs-4 tablecell_left">
+                                    <a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}"><img src="<?php echo url();?>/uploads/product/{!! $eachcart['product_image'] !!}" width="116" alt=""></a>
+                                </div>
+                                <div class="col-xs-8 tablecell_right">
+                                    <h4><a href="<?php echo url();?>/product-details/{!! $eachcart['product_slug'] !!}">{!! ucwords($eachcart['product_name']) !!}</a></h4>
+                                    <h6><a href="<?php echo url();?>/brand-details/{!! $eachcart['brand_slug'] !!}">{!! $eachcart['brand_name'] !!}</a></h6>
+                                      {!! $eachcart['duration'] !!}<br>
+                                      {!! $eachcart['formfactor_name'] !!}
+                                    <p>Unit Price-<span>$ {!! number_format($eachcart['price'],2) !!}</span></p> 
+                                    <p><strong>Total Price-</strong><span>$ {!! number_format($eachcart['subtotal'],2) !!}</span></p>                                
+                                </div>
+                            </div>
+                            
+                            <div class="bot_cart">
+                            	<div class="col-xs-6 text-center left_botcart">
+                                	<a href="javascript:void(0);" class="remove_this_prod" onclick="deleteCart('<?php echo $eachcart['rowid'];?>')"><i class="fa fa-times"></i>Remove</a>
+                                </div>
+                                <div class="col-xs-6 text-center">
+                                	<a href="javascript:void(0);" class="edit_cart_qty"><i class="fa fa-pencil"></i>Edit</a>
+                                </div>
+                            </div>
+                            
+                        
+                    </div>
+                    <div class="edit_qty_thisprod text-center">
+                    	<div class="total_width_of_qty"><div class="input-group bootstrap-touchspin pull-left"><span class="input-group-addon bootstrap-touchspin-prefix"></span><input type="text" value="<?php echo $eachcart['qty']; ?>" id="cartmob<?php echo $i;?>" name="demo1" class="form-control demo1"></div><a href="javascript:void(0);" class="refresh_btn" onclick="updateCart('<?php echo $eachcart['rowid'];?>','cartmob<?php echo $i;?>')"><i class="fa fa-refresh"></i></a></div>
+                    </div>
+                </div>
+                
+                <?php 
+                 $i++;
+                 } 
+				 if(Session::has('coupon_discount')){
+                  
+                  if(Session::get('coupon_type')=='P'){
+                    $dis_percent = Session::get('coupon_discount');
 
+                    $dis_amnt = ($dis_percent/100) * $all_sub_total;
+                    $net_amnt = $all_sub_total - $dis_amnt;
+                    if($net_amnt<0)
+                      $all_total = $all_sub_total;
+                    else
+                      $all_total = $net_amnt;
+
+
+                    $coupon_amount = $dis_amnt;
+                  }
+                  else{
+
+                    $all_total = $all_sub_total - Session::get('coupon_discount');
+                    $coupon_amount = Session::get('coupon_discount');
+                  }
+                 }
+                 else
+                  $all_total = $all_sub_total;
+
+                }
+                ?>
+                
+                
+       		</div>
           </div>
           <div class="col-sm-3">
             <div class="row">

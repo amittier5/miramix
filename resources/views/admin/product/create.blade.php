@@ -26,7 +26,7 @@
           <div class="choose_brand">
           		<div class="col-sm-3 choosebrand_lab text-right"><label>Choose Your Brand</label></div>
                     <div class="col-sm-6 special_padleft">
-                    <select class="form-control selectclass" id="brandmember_id" name="brandmember_id">
+                    <select class="form-control" id="brandmember_id" name="brandmember_id">
                        <option value="">Choose Brand</option>
                        <?php //print_r($all_brands);exit;
                           if(!empty($all_brands)){
@@ -54,6 +54,16 @@
                       <div class="check_box_tab green_color marg_left pull-left">                            
                         <input type="radio" value="1" name="own_product" id="radio-5" class="regular-checkbox">
                         <label for="radio-5">Non Miramix product</label>
+                      </div>                        
+                    </div>
+                     <div class="col-sm-6">
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                          <input type="radio" checked="checked" value="0" name="visiblity" id="radio-99" class="regular-checkbox">
+                          <label for="radio-99">Public</label>
+                      </div>
+                      <div class="check_box_tab green_color marg_left pull-left">                            
+                        <input type="radio" value="1" name="visiblity" id="radio-98" class="regular-checkbox">
+                        <label for="radio-98">Private</label>
                       </div>                        
                     </div>
                 </div> 
@@ -437,8 +447,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
           data: { ingredient_id : ingredient_id  ,_token: '{!! csrf_token() !!}',ingredient_text : ingredient_text,id_tr : id_tr},
           success:function(data)
           {
-            if(data !='' ) 
-            {
+            
 			$('#load_table').show();
 			$('.form_check_table table').css({'opacity':0});
 			
@@ -494,7 +503,7 @@ var total_value = parseFloat(this_vald) * parseFloat($this.parent().parent().fin
 			 checktable_val(); 
 			  
 			  
-            }
+            
           }
       });
 
@@ -1362,7 +1371,7 @@ function checktable_val(){
 	selec_option();
 	$("#formfactortable").find("tr:gt(1)").remove();
  }
- $(document).on('change','input[type=radio]',function(){
+ $(document).on('change','input[name=own_product]',function(){
 	  check_radio_state(); 
 	  clearall();
 });

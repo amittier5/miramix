@@ -81,6 +81,8 @@ Route:: post('/reorder','Frontend\CartController@reorder');          // runnng..
 Route:: get('/coupon-cart','Frontend\CartController@coupon_cart');          // runnng...
 Route:: post('/coupon-cart','Frontend\CartController@coupon_cart');          // runnng...
 
+Route:: get('/redeem-cart','Frontend\CartController@redeem_cart');          // runnng...
+Route:: post('/redeem-cart','Frontend\CartController@redeem_cart');          // runnng...
 
 Route:: get('/allmycard1','Frontend\Product1Controller@cart1');  
 Route:: post('/allmycard1','Frontend\Product1Controller@cart1');  
@@ -90,10 +92,12 @@ Route:: get('/carttest','Frontend\HomeController@cart');
 Route:: get('/mycart','MyController@cart');  
 Route:: get('/allCart','Frontend\CartController@cart2');  // runnng...
 
+Route:: get('/social-content','Frontend\CartController@socialShareContent');    //Social Share Content
+Route:: post('/social-content','Frontend\CartController@socialShareContent');  //Social Share Content
+
+
 Route:: get('/getallrate','Frontend\Product1Controller@getallrate');  
 Route:: post('/getallrate','Frontend\Product1Controller@getallrate');  
-
-
 
 // ======================= Product Route +========================
 Route:: resource('product','Frontend\ProductController');   
@@ -145,6 +149,12 @@ Route:: post('/checkout-authorize/{id}','Frontend\CheckoutController@checkoutAut
 
 Route:: get('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin'); 
 Route:: post('/checkout-member-login','Frontend\CheckoutController@checkoutMemberLogin');
+Route:: post('/uspsAddressValidate','Frontend\CheckoutController@uspsAddressValidate');
+Route:: get('/social-share-content','Frontend\CheckoutController@socialShareContent');    //Social Share Content
+Route:: post('/social-share-content','Frontend\CheckoutController@socialShareContent');  //Social Share Content
+
+Route:: get('/socialShareCheckout','Frontend\ProductController@socialShareCheckout');  // Social Share From Checkout Page
+Route:: post('/socialShareCheckout','Frontend\ProductController@socialShareCheckout'); // Social Share From Checkout Page
 
 //======================== Paypal notify Url Call Start==============================//
 
@@ -310,6 +320,7 @@ $router->group([
     post('admin/orders/filter', 'OrderController@filters');
 
     post('admin/add-process-queue', 'OrderController@add_process_queue');
+    get('admin/push_order_process/{id}', 'OrderController@push_order_process');
     
     get('admin/change_related_status/{id}/{param}', 'ProductController@change_related_status');
     resource('admin/discontinue-product-search', 'ProductController@discontinue_product_search');  
