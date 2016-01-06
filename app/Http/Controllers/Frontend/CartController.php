@@ -207,12 +207,13 @@ class CartController extends BaseController {
             $formfactor_id = $formfactor->id;
 
             /* Discount Share Start */
-            $user_share = DB::table('product_shares')
-                                ->where('user_email','=',Session::get('member_user_email'))
-                                ->where('product_id','=',$each_content->id)
-                                ->count();
+            // $user_share = DB::table('product_shares')
+            //                     ->where('user_email','=',Session::get('member_user_email'))
+            //                     ->where('product_id','=',$each_content->id)
+            //                     ->count();
                                 //print_r($user_share); exit;
-            if($user_share >0)
+
+            if(Session::has('product_id'))
             {
                 $share_discount = $all_sitesetting['discount_share'];
             }   
@@ -235,10 +236,20 @@ class CartController extends BaseController {
                 'brand_slug'=>$brandmember->slug,
                 'share_discount'=>$share_discount,
                 'subtotal'=>$each_content->subtotal);
-
         }
-
-        return view('frontend.product.showAllCart',compact('cart_result'),array('title'=>'cart product'));
+	
+	$cartcontent = Cart::content();
+	$member=array();
+	$redemctrl=array("min"=>5,"max"=>100,"step"=>5);
+	if(Session::has('member_userid')){
+	$member =DB::table('brandmembers')->where("id",Session::get('member_userid'))->first();
+	$setting_point = DB::table('sitesettings')->where('name','points_for_price')->first();
+	$step=$member->user_points;
+	
+	$redemctrl=array("min"=>$setting_point->value,"max"=>$step,"step"=>$setting_point->value);
+	
+	}
+        return view('frontend.product.showAllCart',compact('cart_result','cartcontent','member','redemctrl'),array('title'=>'cart product'));
 
     }
 
@@ -276,6 +287,12 @@ class CartController extends BaseController {
                 ->where('user_id', '=',Session::get('member_userid'))
                 ->delete();   // Delete cart product from DB respect with cart rowid.
         }
+	
+	//destroy cart
+	$cartcount=Cart::count();
+	if($cartcount<=0){
+	    Cart::destroy();
+	}
         echo 1; // Remove from  cart
     }
 
@@ -308,27 +325,20 @@ class CartController extends BaseController {
             Session::put('coupon_discount',$counpon_res[0]->discount);
             Session::put('share_coupon_status',$counpon_res[0]->share_coupon); // if 1="discount coupon + share coupon rate", 0="Only discount coupon"//
             
-            $content = $obj->content();
-            foreach($content as $each_content)
-            {
+            //$content = $obj->content();
+            
             /* Discount Share Start */
-                $user_share = DB::table('product_shares')
-                                    ->where('user_email','=',Session::get('member_user_email'))
-                                    ->where('product_id','=',$each_content->id)
-                                    ->count();
-                                    //print_r($user_share); exit;
-                if($user_share >0)
+
+                if(Session::has('product_id'))
                 {
                     $share_discount = 1;
-                    break;
                 }   
                 else
                 {
                     $share_discount = 0;
-                }                
-                /* Discount Share End */
-            }
-
+                }               
+            /* Discount Share End */
+           
             if($share_discount ==1 && $counpon_res[0]->share_coupon==1) //social discount and also apply valid coupon with social
             {
                 Session::flash('success', 'Your coupon code is active.'); 
@@ -363,5 +373,31 @@ class CartController extends BaseController {
        
     }
 
+public function redeem_cart(){
+    $obj = new helpers();
+    $points=Request::input('user_points');
+    $member =DB::table('brandmembers')->where("id",Session::get('member_userid'))->first();
+    if($points>$member->user_points){
+	Session::flash('error', "You don't have enough points to redeem.");
+	return redirect('show-cart');
+    }
+    
+    $setting_point_price = DB::table('sitesettings')->where('name','price_for_point')->first();
+    $setting_point = DB::table('sitesettings')->where('name','points_for_price')->first();
+    
+     $amount=$points*$setting_point_price->value;
+    
+    $total_amount = Cart::total();
+    
+    if($amount>$total_amount){
+	Session::flash('error', "Your redeem value is higher than total amount.");
+	return redirect('show-cart');
+    }
+    
+    $obj->demandredeem($points,$amount);
+    Session::flash('success', '$'.$amount.' Is applied as redeem amount in your cart.');
+    
+    return redirect('show-cart');
+}
               
 }

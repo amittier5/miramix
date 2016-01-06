@@ -133,6 +133,16 @@ $shipping_address = unserialize($order_list[0]->shiping_address_serialize);
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">-${!! number_format(($order_list[0]->discount),2) !!}</td>
                           </tr>
                           <?php } ?>
+                          
+                          <?php 
+                            if($order_list[0]->redeem_amount>0){
+                          ?>
+                          <tr>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Redeem Amount:</b></td>
+                            <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">-${!! number_format(($order_list[0]->redeem_amount),2) !!}</td>
+                          </tr>
+                          <?php } ?>
+                          
                           <tr>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px" colspan="4"><b>Flat Shipping Rate:</b></td>
                             <td style="font-size: 12px; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; text-align: right; padding: 7px">${!! number_format(($order_list[0]->shipping_cost),2) !!}</td>

@@ -45,7 +45,7 @@
   
   </script>
 
-    {!! Form::model($sitesettings,['method' => 'PATCH','id'=>'cms_form','class'=>'form-horizontal row-fluid','route'=>['admin.sitesetting.update',$sitesettings->id]]) !!}
+    {!! Form::model($sitesettings,['method' => 'PATCH','id'=>'cms_form','files'=>true,'class'=>'form-horizontal row-fluid','route'=>['admin.sitesetting.update',$sitesettings->id]]) !!}
    
     <div class="control-group">
         <label class="control-label" for="basicinput">Name</label>
@@ -78,6 +78,17 @@
                 echo "<div class='label_siteadmin pull-left'><label>". Form::radio('value', 'live',['id'=>snake_case($sitesettings->name)])."Live</label></div>";
                 
             }
+            elseif($sitesettings->type == 'file')
+            {
+              echo  Form::file('image',array('class'=>'form-control','id'=>'image','accept'=>"image/*")) ;
+              ?>
+              <br/><span style="color:red" id="logo_error">
+              <p><span>Image size should be larger than 200x200 </span></p>
+              <p class="new_avatar"><img  src="<?php echo url()?>/uploads/share_image/{!! $sitesettings->value !!}" class="nav-avatar"></p>
+
+            <?php 
+            echo Form::hidden('share_icon',null,['class'=>'span8']);
+            }
             ?>
         </div>
     </div>
@@ -94,4 +105,37 @@
     </div>
         
     {!! Form::close() !!}
+
+    <script>
+             /*---------*/
+          function check_file_type(fileName)
+          {
+             if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(fileName)) {              
+                  alert('You must select an image file only');
+                  $('#image').val('');
+             }
+          }
+         $( document ).ready(function() {       
+          
+          var _URL = window.URL || window.webkitURL;
+         $("#image").change(function (e) {
+             var file, img;
+             if ((file = this.files[0])) {
+                 img = new Image();
+                 img.onload = function () {
+                    if(this.width<200 || this.height<200)
+                   {
+                        $('#image').val(""); 
+                        $('#image_error').html("Slider image size should be min 1920X599"); 
+                   }
+                   else
+                   {
+                         $('#image_error').html(""); 
+                   }
+                 };
+                 img.src = _URL.createObjectURL(file);
+             }
+         });   
+         })
+</script>
 @stop

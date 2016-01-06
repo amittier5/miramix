@@ -518,6 +518,22 @@
 	.product_list.shop_cart .alert{
 		margin-right:0;	
 	}
+	.form_dashboardacct .table.order-history > tbody > tr > td.st-key{
+		text-align:right;
+		position:relative;	
+	}
+	.form_dashboardacct .table.order-history > tbody > tr > td.st-key:after{
+		content:':';
+		position:absolute;
+		right:0;	
+	}
+	.bottomest_order_hist{
+		border:none;
+		margin-top:10px;	
+	}
+	.form_dashboardacct .bottomest_order_hist .table tbody{
+		border-bottom:none;	
+	}
 	
 }
 @media only screen and (max-width: 479px) { 
